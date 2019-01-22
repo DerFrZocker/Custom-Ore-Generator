@@ -1,0 +1,7 @@
+package de.derfrzocker.custom.generator.ore.api;
+
+public enum OreSetting {
+
+    VEIN_SIZE, VEINS_PER_CHUNK, HEIGHT_RANGE, HEIGHT_CENTER, MINIMUM_ORES_PER_CHUNK, ORES_PER_CHUNK_RANGE, MINIMUM_HEIGHT, HEIGHT_SUBTRACT_VALUE
+
+}
