@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.generator.ore.generators;
+package de.derfrzocker.custom.generator.ore;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
@@ -18,12 +18,16 @@ import java.util.Set;
 
 public class MinableGenerator_v1_12_R1 implements OreGenerator {
 
-    public final Predicate<IBlockData> blocks = (var0) -> {
-        if (var0 == null) {
+    public MinableGenerator_v1_12_R1() {
+        CustomOreGenerator.getService().setDefaultOreGenerator(this);
+    }
+
+    public final Predicate<IBlockData> blocks = (value) -> {
+        if (value == null) {
             return false;
         } else {
-            Block var1 = var0.getBlock();
-            return var1 == Blocks.STONE || var1 == Blocks.END_STONE || var1 == Blocks.NETHERRACK;
+            Block block = value.getBlock();
+            return block == Blocks.STONE || block == Blocks.END_STONE || block == Blocks.NETHERRACK;
         }
     };
 
@@ -35,27 +39,24 @@ public class MinableGenerator_v1_12_R1 implements OreGenerator {
 
     @Override
     public void generate(OreConfig config, World world, int x2, int z2, Random random, Biome biome) {
-        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(0);
-        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(0);
-        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(0);
-        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(0);
+        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(OreSetting.VEIN_SIZE.getSaveValue());
+        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(OreSetting.VEINS_PER_CHUNK.getSaveValue());
+        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(OreSetting.HEIGHT_RANGE.getSaveValue());
+        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(OreSetting.MINIMUM_HEIGHT.getSaveValue());
 
         final CraftWorld craftWorld = (CraftWorld) world;
         final CraftChunk craftChunk = (CraftChunk) world.getChunkAt(x2, z2);
 
-        WorldGenMinable generator = new WorldGenMinable(CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(),veinSize, blocks);
+        WorldGenMinable generator = new WorldGenMinable(CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize, blocks);
 
         for (int trys = 0; trys < veinsPerChunk; ++trys) {
             int x = random.nextInt(15);
             int y = random.nextInt(heightRange) + minimumHeight;
             int z = random.nextInt(15);
 
-            if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome){
-                generator.generate(craftWorld.getHandle(), random, new BlockPosition(x + (x2 <<4), y, z + (z2 <<4)));
+            if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome) {
+                generator.generate(craftWorld.getHandle(), random, new BlockPosition(x + (x2 << 4), y, z + (z2 << 4)));
             }
         }
-
-
     }
-
 }

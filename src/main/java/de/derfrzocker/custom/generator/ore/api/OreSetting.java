@@ -1,7 +1,15 @@
 package de.derfrzocker.custom.generator.ore.api;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 public enum OreSetting {
 
-    VEIN_SIZE, VEINS_PER_CHUNK, HEIGHT_RANGE, HEIGHT_CENTER, MINIMUM_ORES_PER_CHUNK, ORES_PER_CHUNK_RANGE, MINIMUM_HEIGHT, HEIGHT_SUBTRACT_VALUE
+    // TODO add other save values
+    VEIN_SIZE(0), VEINS_PER_CHUNK(0), HEIGHT_RANGE(1), HEIGHT_CENTER(-1), MINIMUM_ORES_PER_CHUNK(-1), ORES_PER_CHUNK_RANGE(-1), MINIMUM_HEIGHT(0), HEIGHT_SUBTRACT_VALUE(-1);
+
+    @Getter
+    private final int saveValue;
 
 }

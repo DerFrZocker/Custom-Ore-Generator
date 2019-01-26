@@ -1,7 +1,8 @@
-package de.derfrzocker.custom.generator.ore.generators.v1_13_R2;
+package de.derfrzocker.custom.generator.ore.v1_13_R2;
 
 import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
 import de.derfrzocker.custom.generator.ore.api.*;
+import de.derfrzocker.custom.generator.ore.util.CustomOreGeneratorUtil;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.block.Biome;
@@ -9,10 +10,13 @@ import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongSet;
 
 import javax.annotation.Nullable;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @RequiredArgsConstructor
-public class ChunkOverrieder <C extends GeneratorSettings> implements ChunkGenerator<C> {
+public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenerator<C> {
 
     final ChunkGenerator<C> parent;
 
@@ -29,8 +33,6 @@ public class ChunkOverrieder <C extends GeneratorSettings> implements ChunkGener
 
     @Override
     public void addDecorations(RegionLimitedWorldAccess regionLimitedWorldAccess) {
-        CustomOreGenerator.getInstance().getLogger().info("call addDecorations");
-
         Set<Biome> biomes = getBiomes(regionLimitedWorldAccess);
 
         CustomOreGeneratorService service = CustomOreGenerator.getService();
@@ -47,7 +49,9 @@ public class ChunkOverrieder <C extends GeneratorSettings> implements ChunkGener
         }
 
         biomes.forEach(biome -> {
-            Set<OreConfig> oreConfigs = worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(worldConfig::getOreConfigs);
+            Set<OreConfig> oreConfigs = new HashSet<>(worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(HashSet::new));
+
+            worldConfig.getOreConfigs().stream().filter(value -> oreConfigs.stream().noneMatch(value2 -> value2.getMaterial() == value.getMaterial())).forEach(oreConfigs::add);
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, regionLimitedWorldAccess, biome));
         });
@@ -133,12 +137,13 @@ public class ChunkOverrieder <C extends GeneratorSettings> implements ChunkGener
         int x = access.a() << 4;
         int z = access.b() << 4;
 
-        for (int x2 = x; x2 < x+ 16; x2++)
-            for (int z2 = z; z2 < z+16; z2++) {
-                    BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
-            try {
-                set.add(Biome.valueOf(IRegistry.BIOME.getKey(base).getKey().toUpperCase()));
-}catch (Exception ignored){}
+        for (int x2 = x; x2 < x + 16; x2++)
+            for (int z2 = z; z2 < z + 16; z2++) {
+                BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
+                try {
+                    set.add(Biome.valueOf(IRegistry.BIOME.getKey(base).getKey().toUpperCase()));
+                } catch (Exception ignored) {
+                }
             }
 
         return set;
@@ -154,22 +159,11 @@ public class ChunkOverrieder <C extends GeneratorSettings> implements ChunkGener
 
         OreGenerator oreGenerator = optional.get();
 
-        if(oreGenerator instanceof  MinableGenerator_v1_13_R2){
-            ((MinableGenerator_v1_13_R2) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), access, getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
+        if (oreGenerator instanceof MinableGenerator_v1_13_R2) {
+            ((MinableGenerator_v1_13_R2) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), access, CustomOreGeneratorUtil.getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
             return;
         }
 
-        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
-    }
-
-    private static Random getRandom(long seed, int x, int z) {
-        Random random = new Random(seed);
-
-        long long1 = random.nextLong();
-        long long2 = random.nextLong();
-        long newseed = (long) x * long1 ^ (long) z * long2 ^ seed;
-        random.setSeed(newseed);
-
-        return random;
+        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), CustomOreGeneratorUtil.getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
     }
 }

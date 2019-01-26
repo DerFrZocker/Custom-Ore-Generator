@@ -1,9 +1,14 @@
 package de.derfrzocker.custom.generator.ore;
 
 import de.derfrzocker.custom.generator.ore.api.*;
+import de.derfrzocker.custom.generator.ore.util.CustomOreGeneratorUtil;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.generator.BlockPopulator;
 
 import java.util.HashSet;
@@ -11,7 +16,11 @@ import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
 
-public class CustomOreBlockPopulator extends BlockPopulator {
+public class CustomOreBlockPopulator extends BlockPopulator implements WorldHandler, Listener {
+
+    public CustomOreBlockPopulator() {
+        Bukkit.getPluginManager().registerEvents(this, CustomOreGenerator.getInstance());
+    }
 
     @Override
     public void populate(World world, Random random, Chunk source) {
@@ -31,7 +40,9 @@ public class CustomOreBlockPopulator extends BlockPopulator {
         }
 
         biomes.forEach(biome -> {
-            Set<OreConfig> oreConfigs = worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(worldConfig::getOreConfigs);
+            Set<OreConfig> oreConfigs = new HashSet<>(worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(HashSet::new));
+
+            worldConfig.getOreConfigs().stream().filter(value -> oreConfigs.stream().noneMatch(value2 -> value2.getMaterial() == value.getMaterial())).forEach(oreConfigs::add);
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome));
         });
@@ -58,18 +69,16 @@ public class CustomOreBlockPopulator extends BlockPopulator {
 
         OreGenerator oreGenerator = optional.get();
 
-        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), getRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk), biome);
+        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), CustomOreGeneratorUtil.getRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ()), biome);
     }
 
-    private static Random getRandom(long seed, Chunk chunk) {
-        Random random = new Random(seed);
 
-        long long1 = random.nextLong();
-        long long2 = random.nextLong();
-        long newseed = (long) chunk.getX() * long1 ^ (long) chunk.getZ() * long2 ^ seed;
-        random.setSeed(newseed);
+    @EventHandler
+    public void onWorldLoad(WorldLoadEvent event) {
+        if (event.getWorld().getPopulators().contains(this))
+            return;
 
-        return random;
+        event.getWorld().getPopulators().add(this);
     }
 
 }

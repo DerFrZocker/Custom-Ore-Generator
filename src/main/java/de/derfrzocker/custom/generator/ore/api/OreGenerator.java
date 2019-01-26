@@ -1,6 +1,5 @@
 package de.derfrzocker.custom.generator.ore.api;
 
-import org.bukkit.Chunk;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 

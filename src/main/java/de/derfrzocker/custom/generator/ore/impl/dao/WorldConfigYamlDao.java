@@ -36,7 +36,12 @@ public class WorldConfigYamlDao implements WorldConfigDao, YamlReloadAble {
 
     @Override
     public Optional<WorldConfig> get(@NonNull String world) {
-        return Optional.ofNullable(yaml.getSerializable(world, WorldConfigYamlImpl.class, null));
+        Object object = yaml.get(world);
+
+        if (object == null)
+            return Optional.empty();
+
+        return Optional.of((WorldConfig) object);
     }
 
     @Override

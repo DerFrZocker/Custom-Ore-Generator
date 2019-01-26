@@ -8,7 +8,6 @@ import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import java.util.*;
@@ -60,13 +59,13 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         biomeConfigs.put(biomeConfig.getBiome(), biomeConfig);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
 
         map.put(WORLD_KEY, world);
 
-        //noinspection Duplicates
         getOreConfigs().forEach(value -> {
             if (value instanceof ConfigurationSerializable) {
                 map.put(value.getMaterial().toString(), value);
@@ -108,7 +107,7 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
     }
 
     private static boolean isBiomeConfig(Map.Entry<String, Object> entry) {
-        return entry.getValue() instanceof OreConfig;
+        return entry.getValue() instanceof BiomeConfig;
     }
 
 }

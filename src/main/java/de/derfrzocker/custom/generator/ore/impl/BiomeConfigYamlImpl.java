@@ -7,7 +7,6 @@ import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import java.util.*;
@@ -42,13 +41,13 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
         oreConfigs.put(oreConfig.getMaterial(), oreConfig);
     }
 
+    @SuppressWarnings("Duplicates")
     @Override
     public Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
 
         map.put(BIOME_KEY, biome.toString());
 
-        //noinspection Duplicates
         getOreConfigs().forEach(value -> {
             if (value instanceof ConfigurationSerializable) {
                 map.put(value.getMaterial().toString(), value);

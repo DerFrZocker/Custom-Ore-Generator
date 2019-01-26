@@ -1,6 +1,7 @@
-package de.derfrzocker.custom.generator.ore.generators.v1_13_R2;
+package de.derfrzocker.custom.generator.ore.v1_13_R2;
 
 import com.google.common.collect.Sets;
+import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
 import de.derfrzocker.custom.generator.ore.api.OreConfig;
 import de.derfrzocker.custom.generator.ore.api.OreGenerator;
 import de.derfrzocker.custom.generator.ore.api.OreSetting;
@@ -26,22 +27,26 @@ public class MinableGenerator_v1_13_R2 implements OreGenerator {
     @Getter
     private final String name = "vanilla_minable_generator";
 
-    public final Predicate<IBlockData> blocks = (var0) -> {
-        if (var0 == null) {
+    public final Predicate<IBlockData> blocks = (value) -> {
+        if (value == null) {
             return false;
         } else {
-            Block var1 = var0.getBlock();
-            return var1 == Blocks.STONE || var1 == Blocks.GRANITE || var1 == Blocks.DIORITE || var1 == Blocks.ANDESITE || var1 == Blocks.END_STONE || var1 == Blocks.NETHERRACK;
+            Block block = value.getBlock();
+            return block == Blocks.STONE || block == Blocks.GRANITE || block == Blocks.DIORITE || block == Blocks.ANDESITE || block == Blocks.END_STONE || block == Blocks.NETHERRACK;
         }
     };
+
+    public MinableGenerator_v1_13_R2() {
+        CustomOreGenerator.getService().setDefaultOreGenerator(this);
+    }
 
     @SuppressWarnings("Duplicates")
     @Override
     public void generate(OreConfig config, World world, int x2, int z2, Random random, Biome biome) {
-        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(0);
-        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(0);
-        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(0);
-        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(0);
+        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(OreSetting.VEIN_SIZE.getSaveValue());
+        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(OreSetting.VEINS_PER_CHUNK.getSaveValue());
+        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(OreSetting.HEIGHT_RANGE.getSaveValue());
+        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(OreSetting.MINIMUM_HEIGHT.getSaveValue());
 
         final CraftWorld craftWorld = (CraftWorld) world;
         final CraftChunk craftChunk = (CraftChunk) world.getChunkAt(x2, z2);
@@ -54,19 +59,20 @@ public class MinableGenerator_v1_13_R2 implements OreGenerator {
             int y = random.nextInt(heightRange) + minimumHeight;
             int z = random.nextInt(15);
 
+            BlockPosition position = new BlockPosition(x + (x2 << 4), y, z + (z2 << 4));
 
-            if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome){
-                    generator.a(craftWorld.getHandle(), craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, new BlockPosition(x + (x2 * 16), y, z + (z2 * 16)), new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
-             }
+            if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome) {
+                generator.a(craftWorld.getHandle(), craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
+            }
         }
 
     }
 
     public void generate(OreConfig config, World world, RegionLimitedWorldAccess access, Random random, Biome biome) {
-        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(0);
-        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(0);
-        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(0);
-        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(0);
+        final int veinSize = config.getValue(OreSetting.VEIN_SIZE).orElse(OreSetting.VEIN_SIZE.getSaveValue());
+        final int veinsPerChunk = config.getValue(OreSetting.VEINS_PER_CHUNK).orElse(OreSetting.VEINS_PER_CHUNK.getSaveValue());
+        final int heightRange = config.getValue(OreSetting.HEIGHT_RANGE).orElse(OreSetting.HEIGHT_RANGE.getSaveValue());
+        final int minimumHeight = config.getValue(OreSetting.MINIMUM_HEIGHT).orElse(OreSetting.MINIMUM_HEIGHT.getSaveValue());
 
         final CraftWorld craftWorld = (CraftWorld) world;
 
@@ -77,14 +83,14 @@ public class MinableGenerator_v1_13_R2 implements OreGenerator {
 
             BlockPosition position = new BlockPosition(x + (access.a() << 4), y, z + (access.b() << 4));
 
-            if (biome == null || biome.toString().equalsIgnoreCase(IRegistry.BIOME.getKey(access.getBiome(position)).getKey())){
-                    generator.a(access, craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
+            if (biome == null || biome.toString().equalsIgnoreCase(IRegistry.BIOME.getKey(access.getBiome(position)).getKey())) {
+                generator.a(access, craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
             }
         }
 
     }
 
-    private final class HeightMapOverrider extends HeightMap{
+    private final class HeightMapOverrider extends HeightMap {
         private HeightMapOverrider(IChunkAccess iChunkAccess, Type type) {
             super(iChunkAccess, type);
         }

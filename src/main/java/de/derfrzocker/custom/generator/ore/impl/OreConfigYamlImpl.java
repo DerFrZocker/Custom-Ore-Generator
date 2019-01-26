@@ -6,7 +6,6 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
-import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.configuration.serialization.SerializableAs;
 
 import java.util.HashMap;

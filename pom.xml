@@ -19,6 +19,7 @@
         <project.authors>DerFrZocker</project.authors>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
+        <nms.directory>G:/Minecraft/Versions</nms.directory>
     </properties>
 
     <repositories>
@@ -38,36 +39,43 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.1-R0.1-SNAPSHOT</version>
+            <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.11.2</artifactId>
+            <version>1.11.2</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.11.2/spigot-1.11.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>minecraft</groupId>
             <artifactId>nms-1.12.2</artifactId>
             <version>1.12.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.12.2.jar</systemPath>
+            <systemPath>${nms.directory}/1.12.2/spigot-1.12.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>minecraft</groupId>
             <artifactId>nms-1.13</artifactId>
             <version>1.13</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.13.jar</systemPath>
+            <systemPath>${nms.directory}/1.13/spigot-1.13.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>minecraft</groupId>
             <artifactId>nms-1.13.1</artifactId>
             <version>1.13.1</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.13.1.jar</systemPath>
+            <systemPath>${nms.directory}/1.13.1/spigot-1.13.1.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>minecraft</groupId>
             <artifactId>nms-1.13.2</artifactId>
             <version>1.13.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/lib/spigot-1.13.2.jar</systemPath>
+            <systemPath>${nms.directory}/1.13.2/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>

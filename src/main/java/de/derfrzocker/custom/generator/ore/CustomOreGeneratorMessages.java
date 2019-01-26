@@ -19,8 +19,6 @@ public class CustomOreGeneratorMessages extends Messages {
     public final static MessageKey SET_SUCCESS = new MessageKey(getInstance(), "command.set.success");
     public final static MessageKey SET_SETTING_NOT_FOUND = new MessageKey(getInstance(), "command.set.setting_not_found");
     public final static MessageKey SET_SETTING_NOT_VALID = new MessageKey(getInstance(), "command.set.setting_not_valid");
-    public final static MessageKey SET_NOT_SAVE = new MessageKey(getInstance(), "command.set.not_save");
-    public final static MessageKey SET_NOT_SAVE_WARNING = new MessageKey(getInstance(), "command.set.not_save_warning");
     public final static MessageKey SET_BIOME_NOT_ENOUGH_ARGS = new MessageKey(getInstance(), "command.set.biome.not_enough_args");
     public final static MessageKey SET_BIOME_NOT_FOUND = new MessageKey(getInstance(), "command.set.biome.biome_not_found");
     public final static MessageKey HELP_HEADER = new MessageKey(getInstance(), "command.help.header");
