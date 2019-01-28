@@ -141,7 +141,7 @@ public class SetBiomeCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> list = new ArrayList<>();
 
-        if (!Permissions.SET_PERMISSION.hasPermission(sender))
+        if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
             return list;
 
         if(args.length == 2){
