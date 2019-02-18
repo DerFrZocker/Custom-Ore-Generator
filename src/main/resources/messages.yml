@@ -1,0 +1,53 @@
+command:
+
+  set:
+    not_enough_args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9oregen set &f<&9world&f> <&9material&f> <&9setting&f> <&9amount&f>"
+    world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
+    no_number: "&f'&9%value%&f' &4is not a valid number!"
+    setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
+    setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
+    no_block_material: "&4The material &f'&9%material%&f' &4is not a block!"
+    material_not_found:
+      - "&4The material &f'&9%material%&f' &4does not exist!"
+    success: "&aThe value has been updated successfully!"
+    biome:
+      not_enough_args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse &f/&9oregen setbiome &f<&9biome&f> <&9world&f> <&9material&f>"
+        - "                                 <&9setting&f> <&9amount&f>"
+      biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
+
+  reload:
+    begin: "&aBegin with the reload!"
+    end: "&aReload finish!"
+
+  help:
+    header: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    footer: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    separator: "  "
+    set:
+      command: "&f/&9oregen set &f<&9world&f> <&9material&f> <&9setting&f> <&9amount&f>"
+      description:
+        - "   -> &9permission&f: custom.ore.gen.set"
+        - "   -> &9description&f: Set a specific value to an material type and world"
+      biome:
+        command:
+          - "&f/&9oregen setbiome &f<&9biome&f> <&9world&f> <&9material&f>"
+          - "                            <&9setting&f> <&9amount&f>"
+        description:
+          - "   -> &9permission&f: custom.ore.gen.set.biome"
+          - "   -> &9description&f: Set a specific value for an material setting, "
+          - "                      for a specific biome in a specific world"
+    reload:
+      command: "&f/&9oregen reload"
+      description:
+        - "   -> &9permission&f: custom.ore.gen.reload"
+        - "   -> &9description&f: Reload the '&9messages.yml&f'"
+    help:
+      command: "&f/&9oregen help &f(<&9subcommand&f>)"
+      description:
+        - "   -> &9permission&f: any command permission"
+        - "   -> &9description&f: Displays all commands and if a subcommand "
+        - "                       is specified, more details are displayed"

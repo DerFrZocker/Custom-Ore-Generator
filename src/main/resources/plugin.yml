@@ -1,0 +1,10 @@
+name: ${project.name}
+version: ${project.version}
+description: ${project.description}
+author: ${project.authors}
+main: de.derfrzocker.custom.generator.ore.CustomOreGenerator
+api-version: 1.13
+load: STARTUP
+commands:
+  oregen:
+    permission: "custom.ore.gen"
