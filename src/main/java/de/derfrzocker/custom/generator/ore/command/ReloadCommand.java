@@ -3,7 +3,6 @@ package de.derfrzocker.custom.generator.ore.command;
 import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
 import de.derfrzocker.custom.generator.ore.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.generator.ore.Permissions;
-import de.derfrzocker.custom.generator.ore.util.Config;
 import de.derfrzocker.custom.generator.ore.util.ReloadAble;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -23,8 +22,7 @@ public class ReloadCommand implements TabExecutor {
         Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
             CustomOreGeneratorMessages.RELOAD_BEGIN.sendMessage(sender);
 
-            CustomOreGeneratorMessages.getInstance().setFile(Config.getConfig(CustomOreGenerator.getInstance(), "messages"));
-            CustomOreGenerator.getInstance().getReloadAbles().forEach(ReloadAble::reload);
+            ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);
 
             CustomOreGeneratorMessages.RELOAD_END.sendMessage(sender);
         });

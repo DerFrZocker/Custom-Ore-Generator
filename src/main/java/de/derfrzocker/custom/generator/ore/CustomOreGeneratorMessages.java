@@ -1,8 +1,12 @@
 package de.derfrzocker.custom.generator.ore;
 
+import de.derfrzocker.custom.generator.ore.util.Language;
 import de.derfrzocker.custom.generator.ore.util.MessageKey;
 import de.derfrzocker.custom.generator.ore.util.Messages;
 import lombok.Getter;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.function.Supplier;
 
 public class CustomOreGeneratorMessages extends Messages {
 
@@ -33,4 +37,7 @@ public class CustomOreGeneratorMessages extends Messages {
     public final static MessageKey HELP_COMMAND = new MessageKey(getInstance(), "command.help.help.command");
     public final static MessageKey HELP_DESCRIPTION = new MessageKey(getInstance(), "command.help.help.description");
 
+    public CustomOreGeneratorMessages() {
+        super(CustomOreGenerator.getInstance(), () -> Language.CUSTOM);
+    }
 }

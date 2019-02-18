@@ -9,8 +9,6 @@ import de.derfrzocker.custom.generator.ore.impl.OreConfigYamlImpl;
 import de.derfrzocker.custom.generator.ore.impl.WorldConfigYamlImpl;
 import de.derfrzocker.custom.generator.ore.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.generator.ore.util.CommandSeparator;
-import de.derfrzocker.custom.generator.ore.util.Config;
-import de.derfrzocker.custom.generator.ore.util.ReloadAble;
 import de.derfrzocker.custom.generator.ore.v1_13_R1.MinableGenerator_v1_13_R1;
 import de.derfrzocker.custom.generator.ore.v1_13_R1.WorldHandler_v1_13_R1;
 import de.derfrzocker.custom.generator.ore.v1_13_R2.MinableGenerator_v1_13_R2;
@@ -23,8 +21,6 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class CustomOreGenerator extends JavaPlugin implements Listener {
 
@@ -32,9 +28,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     private static CustomOreGenerator instance;
 
     private final CommandSeparator commandSeparator = new OreGenCommand();
-
-    @Getter
-    private List<ReloadAble> reloadAbles = new ArrayList<>();
 
     static {
         Version.v1_13_R2.add(() -> new MinableGenerator_v1_13_R2());
@@ -63,8 +56,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        CustomOreGeneratorMessages.getInstance().setFile(Config.getConfig(this, "messages.yml"));
-
         Version.getCurrent().run();
         Version.clear();
 
