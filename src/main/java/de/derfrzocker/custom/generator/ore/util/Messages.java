@@ -3,7 +3,6 @@ package de.derfrzocker.custom.generator.ore.util;
 import com.google.common.collect.Lists;
 import lombok.Getter;
 import lombok.NonNull;
-import lombok.Setter;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -12,7 +11,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.List;
 import java.util.function.Supplier;
 
-public class Messages implements ReloadAble{
+public class Messages implements ReloadAble {
 
     @Getter
     private static Messages instance; //TODO add better way

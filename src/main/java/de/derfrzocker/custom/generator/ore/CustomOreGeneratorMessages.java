@@ -4,9 +4,6 @@ import de.derfrzocker.custom.generator.ore.util.Language;
 import de.derfrzocker.custom.generator.ore.util.MessageKey;
 import de.derfrzocker.custom.generator.ore.util.Messages;
 import lombok.Getter;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.util.function.Supplier;
 
 public class CustomOreGeneratorMessages extends Messages {
 

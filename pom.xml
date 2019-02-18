@@ -44,6 +44,48 @@
         </dependency>
         <dependency>
             <groupId>minecraft</groupId>
+            <artifactId>nms-1.8</artifactId>
+            <version>1.1.8</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.8/spigot-1.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.8.3</artifactId>
+            <version>1.8.3</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.8.3/spigot-1.8.3.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.8.8</artifactId>
+            <version>1.8.8</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.8.8/spigot-1.8.8.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.9.2</artifactId>
+            <version>1.9.2</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.9.2/spigot-1.9.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.9.4</artifactId>
+            <version>1.9.4</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.9.4/spigot-1.9.4.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.10.2</artifactId>
+            <version>1.10.2</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.10.2/spigot-1.10.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
             <artifactId>nms-1.11.2</artifactId>
             <version>1.11.2</version>
             <scope>system</scope>

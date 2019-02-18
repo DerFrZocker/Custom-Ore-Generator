@@ -30,6 +30,10 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     private final CommandSeparator commandSeparator = new OreGenCommand();
 
     static {
+        ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
+        ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
+        ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
+
         Version.v1_13_R2.add(() -> new MinableGenerator_v1_13_R2());
         Version.v1_13_R2.add(WorldHandler_v1_13_R2::new);
 
@@ -39,17 +43,31 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         Version.v1_12_R1.add(() -> new MinableGenerator_v1_12_R1());
         Version.v1_12_R1.add(CustomOreBlockPopulator::new);
 
-       // Version.v1_11_R1.add(() -> new MinableGenerator_v1_11_R1()); TODO Test Minecraft 1.11
-        //Version.v1_11_R1.add(CustomOreBlockPopulator::new);
+        Version.v1_11_R1.add(() -> new MinableGenerator_v1_11_R1());
+        Version.v1_11_R1.add(CustomOreBlockPopulator::new);
+
+        Version.v1_10_R1.add(() -> new MinableGenerator_v1_10_R1());
+        Version.v1_10_R1.add(CustomOreBlockPopulator::new);
+
+        Version.v1_9_R2.add(() -> new MinableGenerator_v1_9_R2());
+        Version.v1_9_R2.add(CustomOreBlockPopulator::new);
+
+        Version.v1_9_R1.add(() -> new MinableGenerator_v1_9_R1());
+        Version.v1_9_R1.add(CustomOreBlockPopulator::new);
+
+        Version.v1_8_R3.add(() -> new MinableGenerator_v1_8_R3());
+        Version.v1_8_R3.add(CustomOreBlockPopulator::new);
+
+        Version.v1_8_R2.add(() -> new MinableGenerator_v1_8_R2());
+        Version.v1_8_R2.add(CustomOreBlockPopulator::new);
+
+        Version.v1_8_R1.add(() -> new MinableGenerator_v1_8_R1());
+        Version.v1_8_R1.add(CustomOreBlockPopulator::new);
     }
 
     @Override
     public void onLoad() {
         instance = this;
-
-        ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
-        ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
-        ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
 
         Bukkit.getServicesManager().register(CustomOreGeneratorService.class, new CustomOreGeneratorServiceImpl(new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"))), this, ServicePriority.Normal);
     }
@@ -68,7 +86,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         commandSeparator.registerExecuter(helpCommand, null);
         commandSeparator.registerExecuter(helpCommand, "help");
     }
-
 
     public static CustomOreGeneratorService getService() {
         CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);

@@ -64,9 +64,9 @@ public class SetBiomeCommand implements TabExecutor {
 
             Biome biome;
 
-            try{
+            try {
                 biome = Biome.valueOf(biome_name.toUpperCase());
-            }catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 SET_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", biome_name));
                 return;
             }
@@ -144,15 +144,15 @@ public class SetBiomeCommand implements TabExecutor {
         if (!Permissions.SET_BIOME_PERMISSION.hasPermission(sender))
             return list;
 
-        if(args.length == 2){
+        if (args.length == 2) {
             final String biome_name = args[1].toLowerCase();
             Stream.of(Biome.values()).map(Enum::toString).map(String::toLowerCase).filter(value -> value.contains(biome_name)).forEach(list::add);
             return list;
         }
 
         if (args.length == 3) {
-           if(Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
-               return list;
+            if (Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
+                return list;
 
             final String world_name = args[2].toLowerCase();
             Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().contains(world_name)).forEach(list::add);
@@ -160,7 +160,7 @@ public class SetBiomeCommand implements TabExecutor {
         }
 
         if (args.length == 4) {
-            if(Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
+            if (Stream.of(Biome.values()).map(Enum::toString).noneMatch(value -> value.equalsIgnoreCase(args[1])))
                 return list;
 
             Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[2])).findAny();
@@ -176,7 +176,7 @@ public class SetBiomeCommand implements TabExecutor {
         if (args.length == 5) {
             Optional<Biome> biome = Stream.of(Biome.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
 
-            if(!biome.isPresent())
+            if (!biome.isPresent())
                 return list;
 
             Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[2])).findAny();
@@ -198,10 +198,10 @@ public class SetBiomeCommand implements TabExecutor {
                     map(value2 -> value2.
                             map(value3 -> value3.getOreConfig(material.get())).
                             map(value4 ->
-                                    value4.map(value5-> service.getOreGenerator(value5.getOreGenerator()).
-                                    map(OreGenerator::getNeededOreSettings).
+                                    value4.map(value5 -> service.getOreGenerator(value5.getOreGenerator()).
+                                            map(OreGenerator::getNeededOreSettings).
                                             orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
-                                    orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
+                                            orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
                             orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
                     orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings());
 
@@ -213,7 +213,7 @@ public class SetBiomeCommand implements TabExecutor {
         if (args.length == 6) {
             Optional<Biome> biome = Stream.of(Biome.values()).filter(value -> value.toString().equalsIgnoreCase(args[1])).findAny();
 
-            if(!biome.isPresent())
+            if (!biome.isPresent())
                 return list;
 
             Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[1])).findAny();
@@ -230,11 +230,11 @@ public class SetBiomeCommand implements TabExecutor {
 
             Optional<WorldConfig> config = service.getWorldConfig(world.get().getName());
 
-            Set<OreSetting> settings =  config.map(value -> value.getBiomeConfig(biome.get())).
+            Set<OreSetting> settings = config.map(value -> value.getBiomeConfig(biome.get())).
                     map(value2 -> value2.
                             map(value3 -> value3.getOreConfig(material.get())).
                             map(value4 ->
-                                    value4.map(value5-> service.getOreGenerator(value5.getOreGenerator()).
+                                    value4.map(value5 -> service.getOreGenerator(value5.getOreGenerator()).
                                             map(OreGenerator::getNeededOreSettings).
                                             orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
                                             orElseGet(() -> service.getDefaultOreGenerator().getNeededOreSettings())).
@@ -251,7 +251,7 @@ public class SetBiomeCommand implements TabExecutor {
 
             Optional<BiomeConfig> biomeConfig = config.get().getBiomeConfig(biome.get());
 
-            if(!biomeConfig.isPresent())
+            if (!biomeConfig.isPresent())
                 return list;
 
             Optional<OreConfig> oreConfig = biomeConfig.get().getOreConfig(material.get());
