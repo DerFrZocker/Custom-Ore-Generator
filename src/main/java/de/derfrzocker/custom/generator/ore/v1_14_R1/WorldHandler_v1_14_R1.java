@@ -1,21 +1,20 @@
-package de.derfrzocker.custom.generator.ore.v1_13_R2;
+package de.derfrzocker.custom.generator.ore.v1_14_R1;
 
 import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
 import de.derfrzocker.custom.generator.ore.api.WorldHandler;
-import net.minecraft.server.v1_13_R2.ChunkGenerator;
-import net.minecraft.server.v1_13_R2.ChunkProviderServer;
-import net.minecraft.server.v1_13_R2.ChunkTaskScheduler;
+import net.minecraft.server.v1_14_R1.ChunkGenerator;
+import net.minecraft.server.v1_14_R1.PlayerChunkMap;
 import org.bukkit.Bukkit;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
+import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 
 import java.lang.reflect.Field;
 
-public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
+public class WorldHandler_v1_14_R1 implements WorldHandler, Listener {
 
-    public WorldHandler_v1_13_R2() {
+    public WorldHandler_v1_14_R1() {
         Bukkit.getPluginManager().registerEvents(this, CustomOreGenerator.getInstance());
     }
 
@@ -32,21 +31,14 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
         final CraftWorld world = (CraftWorld) event.getWorld();
 
         try {
-            // get the ChunkScheduler from the ChunkProviderServer
-            final Field chunkSchedulerField = ChunkProviderServer.class.getDeclaredField("chunkScheduler");
-            chunkSchedulerField.setAccessible(true);
-            final Object chunkSchedulerObject = chunkSchedulerField.get(world.getHandle().getChunkProvider());
 
-            // if the given chunkScheduler is not an instance of ChunkTaskScheduler return
-            if(!(chunkSchedulerObject instanceof ChunkTaskScheduler)) {
-                CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
-                return;
-            }
+            // get the playerChunkMap where the ChunkGenerator is store, that we need to override
+            final PlayerChunkMap playerChunkMap = world.getHandle().getChunkProvider().playerChunkMap;
 
-            // get the ChunkGenerator from the ChunkTaskScheduler
-            final Field ChunkGeneratorField = ChunkTaskScheduler.class.getDeclaredField("d");
+            // get the ChunkGenerator from the PlayerChunkMap
+            final Field ChunkGeneratorField = PlayerChunkMap.class.getDeclaredField("chunkGenerator");
             ChunkGeneratorField.setAccessible(true);
-            final Object chunkGeneratorObject = ChunkGeneratorField.get(chunkSchedulerObject);
+            final Object chunkGeneratorObject = ChunkGeneratorField.get(playerChunkMap);
 
             // return, if the chunkGeneratorObject is not an instance of ChunkGenerator
             if(!(chunkGeneratorObject instanceof ChunkGenerator)) {
@@ -57,10 +49,10 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
             final ChunkGenerator<?> chunkGenerator = (ChunkGenerator<?>) chunkGeneratorObject;
 
             // create a new ChunkOverrider
-            final ChunkOverrieder<?> overrider = new ChunkOverrieder<>(chunkGenerator);
+            final ChunkOverrider<?> overrider = new ChunkOverrider<>(chunkGenerator);
 
-            // set the ChunkOverrider tho the ChunkTaskScheduler
-            ChunkGeneratorField.set(chunkSchedulerObject, overrider);
+            // set the ChunkOverrider to the PlayerChunkMap
+            ChunkGeneratorField.set(playerChunkMap, overrider);
 
         } catch (Exception e) {
             CustomOreGenerator.getInstance().getLogger().warning("Unexpected error while hook into world: " + world.getName() + ", send the stacktrace below to the developer");

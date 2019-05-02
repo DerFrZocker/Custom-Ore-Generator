@@ -13,6 +13,8 @@ import de.derfrzocker.custom.generator.ore.v1_13_R1.MinableGenerator_v1_13_R1;
 import de.derfrzocker.custom.generator.ore.v1_13_R1.WorldHandler_v1_13_R1;
 import de.derfrzocker.custom.generator.ore.v1_13_R2.MinableGenerator_v1_13_R2;
 import de.derfrzocker.custom.generator.ore.v1_13_R2.WorldHandler_v1_13_R2;
+import de.derfrzocker.custom.generator.ore.v1_14_R1.MinableGenerator_v1_14_R1;
+import de.derfrzocker.custom.generator.ore.v1_14_R1.WorldHandler_v1_14_R1;
 import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -33,6 +35,9 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
+
+        Version.v1_14_R1.add(() -> new MinableGenerator_v1_14_R1());
+        Version.v1_14_R1.add(WorldHandler_v1_14_R1::new);
 
         Version.v1_13_R2.add(() -> new MinableGenerator_v1_13_R2());
         Version.v1_13_R2.add(WorldHandler_v1_13_R2::new);

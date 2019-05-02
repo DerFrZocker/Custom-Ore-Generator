@@ -120,6 +120,20 @@
             <systemPath>${nms.directory}/1.13.2/spigot-1.13.2.jar</systemPath>
         </dependency>
         <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.13.2-paper</artifactId>
+            <version>1.13.2</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.13.2 (paper)/patched_1.13.2.jar</systemPath>
+        </dependency>
+        <dependency>
+            <groupId>minecraft</groupId>
+            <artifactId>nms-1.14</artifactId>
+            <version>1.14</version>
+            <scope>system</scope>
+            <systemPath>${nms.directory}/1.14/spigot-1.14.jar</systemPath>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.1.0</version>
@@ -151,7 +165,6 @@
             <type>jar</type>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
     <build>
