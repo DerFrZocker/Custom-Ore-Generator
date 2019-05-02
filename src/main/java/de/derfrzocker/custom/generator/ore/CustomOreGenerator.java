@@ -16,6 +16,7 @@ import de.derfrzocker.custom.generator.ore.v1_13_R2.WorldHandler_v1_13_R2;
 import de.derfrzocker.custom.generator.ore.v1_14_R1.MinableGenerator_v1_14_R1;
 import de.derfrzocker.custom.generator.ore.v1_14_R1.WorldHandler_v1_14_R1;
 import lombok.Getter;
+import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.event.Listener;
@@ -90,6 +91,8 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         commandSeparator.registerExecuter(helpCommand, "");
         commandSeparator.registerExecuter(helpCommand, null);
         commandSeparator.registerExecuter(helpCommand, "help");
+
+        new Metrics(this);
     }
 
     public static CustomOreGeneratorService getService() {

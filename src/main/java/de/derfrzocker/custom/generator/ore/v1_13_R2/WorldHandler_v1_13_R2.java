@@ -38,7 +38,7 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
             final Object chunkSchedulerObject = chunkSchedulerField.get(world.getHandle().getChunkProvider());
 
             // if the given chunkScheduler is not an instance of ChunkTaskScheduler return
-            if(!(chunkSchedulerObject instanceof ChunkTaskScheduler)) {
+            if (!(chunkSchedulerObject instanceof ChunkTaskScheduler)) {
                 CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
                 return;
             }
@@ -49,7 +49,7 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
             final Object chunkGeneratorObject = ChunkGeneratorField.get(chunkSchedulerObject);
 
             // return, if the chunkGeneratorObject is not an instance of ChunkGenerator
-            if(!(chunkGeneratorObject instanceof ChunkGenerator)) {
+            if (!(chunkGeneratorObject instanceof ChunkGenerator)) {
                 CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
                 return;
             }

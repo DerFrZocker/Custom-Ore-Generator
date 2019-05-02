@@ -9,23 +9,33 @@ import org.bukkit.block.Biome;
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGenerator<C> {
 
     final ChunkGenerator<C> parent;
 
-    final Method getCarvingBiome;
-    final Method getDecoratingBiome;
+    final static Method getCarvingBiome;
+    final static Method getDecoratingBiome;
 
-    public ChunkOverrider(ChunkGenerator<C> parent) throws NoSuchMethodException {
+    static {
+        try {
+            getCarvingBiome = ChunkGenerator.class.getDeclaredMethod("getCarvingBiome", IChunkAccess.class);
+            getCarvingBiome.setAccessible(true);
+
+            getDecoratingBiome = ChunkGenerator.class.getDeclaredMethod("getDecoratingBiome", RegionLimitedWorldAccess.class, BlockPosition.class);
+            getDecoratingBiome.setAccessible(true);
+        } catch (NoSuchMethodException e) {
+            throw new RuntimeException("Unexpected Error while get Method");
+        }
+    }
+
+    public ChunkOverrider(ChunkGenerator<C> parent) {
         super(DummyGeneratorAccess.INSTANCE, null, null);
         this.parent = parent;
-        getCarvingBiome = ChunkGenerator.class.getDeclaredMethod("getCarvingBiome", IChunkAccess.class);
-        getCarvingBiome.setAccessible(true);
-
-        getDecoratingBiome = ChunkGenerator.class.getDeclaredMethod("getDecoratingBiome", RegionLimitedWorldAccess.class, BlockPosition.class);
-        getDecoratingBiome.setAccessible(true);
     }
 
     @Override
@@ -38,7 +48,7 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         try {
             return (BiomeBase) getCarvingBiome.invoke(parent, ichunkaccess);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Unexpected Error while invoke method getCarvingBiome",e);
+            throw new RuntimeException("Unexpected Error while invoke method getCarvingBiome", e);
         }
     }
 
@@ -47,7 +57,7 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         try {
             return (BiomeBase) getDecoratingBiome.invoke(parent, regionlimitedworldaccess, blockposition);
         } catch (IllegalAccessException | InvocationTargetException e) {
-            throw new RuntimeException("Unexpected Error while invoke method getDecoratingBiome",e);
+            throw new RuntimeException("Unexpected Error while invoke method getDecoratingBiome", e);
         }
     }
 

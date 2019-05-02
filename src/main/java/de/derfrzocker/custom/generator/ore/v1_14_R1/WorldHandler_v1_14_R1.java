@@ -41,7 +41,7 @@ public class WorldHandler_v1_14_R1 implements WorldHandler, Listener {
             final Object chunkGeneratorObject = ChunkGeneratorField.get(playerChunkMap);
 
             // return, if the chunkGeneratorObject is not an instance of ChunkGenerator
-            if(!(chunkGeneratorObject instanceof ChunkGenerator)) {
+            if (!(chunkGeneratorObject instanceof ChunkGenerator)) {
                 CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
                 return;
             }
