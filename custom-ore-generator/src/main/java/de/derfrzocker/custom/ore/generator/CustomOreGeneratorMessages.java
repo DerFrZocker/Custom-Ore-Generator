@@ -1,12 +1,11 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.spigot.utils.message.MessageKey;
-import lombok.Getter;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
-public class CustomOreGeneratorMessages {
-
-    @Getter
-    private static final CustomOreGeneratorMessages instance = new CustomOreGeneratorMessages();
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public final class CustomOreGeneratorMessages {
 
     public final static MessageKey RELOAD_BEGIN = new MessageKey(CustomOreGenerator.getInstance(), "command.reload.begin");
     public final static MessageKey RELOAD_END = new MessageKey(CustomOreGenerator.getInstance(), "command.reload.end");
