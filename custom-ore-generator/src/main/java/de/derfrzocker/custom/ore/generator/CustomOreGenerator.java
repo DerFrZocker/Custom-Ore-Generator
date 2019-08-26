@@ -37,7 +37,11 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     public void onLoad() {
         instance = this;
 
-        Bukkit.getServicesManager().register(CustomOreGeneratorService.class, new CustomOreGeneratorServiceImpl(new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"))), this, ServicePriority.Normal);
+        final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"));
+
+        Bukkit.getServicesManager().register(CustomOreGeneratorService.class, new CustomOreGeneratorServiceImpl(worldConfigYamlDao), this, ServicePriority.Normal);
+
+        worldConfigYamlDao.init();
     }
 
     @Override
