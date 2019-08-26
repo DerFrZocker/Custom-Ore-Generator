@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.Permissions;
+import de.derfrzocker.spigot.utils.Permission;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -17,7 +18,7 @@ public class HelpCommand implements TabExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!Permissions.hasAnyCommandPermission(sender))
+        if (!Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender))
             return false;
 
         Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
@@ -106,7 +107,7 @@ public class HelpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> list = new ArrayList<>();
 
-        if (args.length == 2 && Permissions.hasAnyCommandPermission(sender)) {
+        if (args.length == 2 && Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender)) {
             final String subcommand = args[1].toLowerCase();
 
             if ("set".startsWith(subcommand) && Permissions.SET_PERMISSION.hasPermission(sender))

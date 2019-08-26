@@ -1,7 +1,9 @@
 package de.derfrzocker.custom.ore.generator.command;
 
+import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.spigot.utils.CommandSeparator;
+import de.derfrzocker.spigot.utils.Permission;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -22,7 +24,7 @@ public class OreGenCommand extends CommandSeparator {
                 list.add("setbiome");
             if ("reload".startsWith(args[0].toLowerCase()) && Permissions.RELOAD_PERMISSION.hasPermission(sender))
                 list.add("reload");
-            if ("help".startsWith(args[0].toLowerCase()) && Permissions.hasAnyCommandPermission(sender))
+            if ("help".startsWith(args[0].toLowerCase()) && Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender))
                 list.add("help");
             return list;
         }

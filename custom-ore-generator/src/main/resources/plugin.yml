@@ -8,3 +8,37 @@ load: STARTUP
 commands:
   oregen:
     permission: "custom.ore.gen"
+
+permissions:
+  custom.ore.gen:
+    description: "Base permission"
+    default: op
+  custom.ore.gen.*:
+    description: "Gives access to all Custom Ore Generation commands and functions"
+    default: op
+    children:
+      custom.ore.gen: true
+      custom.ore.gen.*: true
+      custom.ore.gen.reload: true
+  custom.ore.gen.set.*:
+    description: "Gives access to the subcommand 'set'  and 'setbiome'"
+    default: op
+    children:
+      custom.ore.gen: true
+      ore.control.set: true
+      ore.control.set.biome: true
+  custom.ore.gen.set:
+    description: "Gives access to the subcommand 'set'"
+    default: op
+    children:
+      custom.ore.gen: true
+  custom.ore.gen.set.biome:
+    description: "Gives access to the subcommand 'setbiome'"
+    default: op
+    children:
+      custom.ore.gen: true
+  custom.ore.gen.reload:
+    description: "Gives access to the subcommand 'reload'"
+    default: op
+    children:
+      custom.ore.gen: true
