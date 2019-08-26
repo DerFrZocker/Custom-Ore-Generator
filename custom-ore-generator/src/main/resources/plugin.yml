@@ -18,7 +18,7 @@ permissions:
     default: op
     children:
       custom.ore.gen: true
-      custom.ore.gen.*: true
+      custom.ore.gen.set.*: true
       custom.ore.gen.reload: true
   custom.ore.gen.set.*:
     description: "Gives access to the subcommand 'set'  and 'setbiome'"
