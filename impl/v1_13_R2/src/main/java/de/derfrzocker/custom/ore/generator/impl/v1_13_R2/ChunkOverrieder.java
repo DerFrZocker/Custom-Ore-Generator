@@ -32,6 +32,8 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
 
     @Override
     public void addDecorations(RegionLimitedWorldAccess regionLimitedWorldAccess) {
+        parent.addDecorations(regionLimitedWorldAccess);
+
         Set<Biome> biomes = getBiomes(regionLimitedWorldAccess);
 
         CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
@@ -54,8 +56,6 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, regionLimitedWorldAccess, biome));
         });
-
-        parent.addDecorations(regionLimitedWorldAccess);
     }
 
     @Override
