@@ -5,31 +5,38 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.derfrzocker</groupId>
-    <artifactId>custom-ore-generator</artifactId>
-    <version>${maven.build.timestamp}</version>
-    <packaging>jar</packaging>
+    <artifactId>custom-ore-generator-parent</artifactId>
+    <version>${revision}</version>
+
+    <modules>
+        <module>custom-ore-generator</module>
+        <module>impl</module>
+    </modules>
+
+    <packaging>pom</packaging>
     <description>A custom ore generator</description>
     <name>Custom-Ore-Generator</name>
 
+
     <properties>
+        <revision>dev-SNAPSHOT</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <maven.build.timestamp.format>yyyy.MM.d</maven.build.timestamp.format>
-        <project.authors>DerFrZocker</project.authors>
+        <project.author>DerFrZocker</project.author>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
-        <nms.directory>G:/Minecraft/Versions</nms.directory>
     </properties>
 
     <repositories>
         <repository>
-            <id>CodeMC</id>
-            <url>https://repo.codemc.org/repository/maven-public</url>
-        </repository>
-        <repository>
             <id>spigot-repo</id>
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>derfrzocker-repo</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
         </repository>
     </repositories>
 
@@ -41,107 +48,16 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.bstats</groupId>
-            <artifactId>bstats-bukkit</artifactId>
-            <version>1.4</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.13.2-R0.1-SNAPSHOT</version>
+            <version>1.14.4-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.8</artifactId>
-            <version>1.1.8</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.8/spigot-1.8.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.8.3</artifactId>
-            <version>1.8.3</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.8.3/spigot-1.8.3.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.8.8</artifactId>
-            <version>1.8.8</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.8.8/spigot-1.8.8.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.9.2</artifactId>
-            <version>1.9.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.9.2/spigot-1.9.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.9.4</artifactId>
-            <version>1.9.4</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.9.4/spigot-1.9.4.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.10.2</artifactId>
-            <version>1.10.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.10.2/spigot-1.10.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.11.2</artifactId>
-            <version>1.11.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.11.2/spigot-1.11.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.12.2</artifactId>
-            <version>1.12.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.12.2/spigot-1.12.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.13</artifactId>
-            <version>1.13</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.13/spigot-1.13.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.13.1</artifactId>
-            <version>1.13.1</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.13.1/spigot-1.13.1.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.13.2</artifactId>
-            <version>1.13.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.13.2/spigot-1.13.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.13.2-paper</artifactId>
-            <version>1.13.2</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.13.2 (paper)/patched_1.13.2.jar</systemPath>
-        </dependency>
-        <dependency>
-            <groupId>minecraft</groupId>
-            <artifactId>nms-1.14</artifactId>
-            <version>1.14</version>
-            <scope>system</scope>
-            <systemPath>${nms.directory}/1.14/spigot-1.14.jar</systemPath>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>spigot-utils</artifactId>
+            <version>dev-30-SNAPSHOT</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -181,40 +97,54 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.0.0</version>
+                <artifactId>maven-source-plugin</artifactId>
                 <executions>
                     <execution>
-                        <phase>package</phase>
+                        <id>attach-sources</id>
+                        <phase>install</phase>
                         <goals>
-                            <goal>shade</goal>
+                            <goal>jar</goal>
                         </goals>
                     </execution>
                 </executions>
-                <configuration>
-                    <createDependencyReducedPom>false</createDependencyReducedPom>
-                    <shadedArtifactAttached>false</shadedArtifactAttached>
-                    <relocations>
-                        <relocation>
-                            <pattern>org.bstats</pattern>
-                            <shadedPattern>de.derfrzocker.custom.generator.ore.util</shadedPattern>
-                        </relocation>
-                    </relocations>
-                </configuration>
             </plugin>
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.20</version>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.0.0</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
-
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
     </build>
 
+    <distributionManagement>
+        <repository>
+            <id>derfrzocker-repo</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+            <id>derfrzocker-repo</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    
 </project>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <artifactId>custom-ore-generator-parent</artifactId>
+        <groupId>de.derfrzocker</groupId>
+        <version>${revision}</version>
+    </parent>
+
+    <modules>
+        <module>custom-ore-generator-impl-yaml</module>
+        <module>v1_8_R1</module>
+        <module>v1_8_R2</module>
+        <module>v1_8_R3</module>
+        <module>v1_9_R1</module>
+        <module>v1_9_R2</module>
+        <module>v1_10_R1</module>
+        <module>v1_11_R1</module>
+        <module>v1_12_R1</module>
+        <module>v1_13_R1</module>
+        <module>v1_13_R2</module>
+        <module>v1_14_R1</module>
+    </modules>
+
+    <artifactId>custom-ore-generator-impl</artifactId>
+    <packaging>pom</packaging>
+
+
+</project>
