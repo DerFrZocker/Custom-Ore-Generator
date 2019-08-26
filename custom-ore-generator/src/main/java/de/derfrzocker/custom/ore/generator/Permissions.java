@@ -1,10 +1,8 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.spigot.utils.Permission;
-import lombok.*;
-import org.bukkit.permissions.Permissible;
-
-import java.util.stream.Stream;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Permissions {
