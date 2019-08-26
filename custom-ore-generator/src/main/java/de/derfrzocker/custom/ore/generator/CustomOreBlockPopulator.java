@@ -1,7 +1,6 @@
 package de.derfrzocker.custom.ore.generator;
 
-import de.derfrzocker.custom.generator.ore.api.*;
-import de.derfrzocker.custom.generator.ore.util.CustomOreGeneratorUtil;
+import de.derfrzocker.custom.ore.generator.api.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.World;
@@ -69,7 +68,7 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
 
         OreGenerator oreGenerator = optional.get();
 
-        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), CustomOreGeneratorUtil.getRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ()), biome);
+        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ()), biome);
     }
 
 

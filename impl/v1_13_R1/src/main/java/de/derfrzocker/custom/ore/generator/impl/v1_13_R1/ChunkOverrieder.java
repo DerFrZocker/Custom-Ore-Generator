@@ -1,10 +1,9 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R1;
 
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.api.*;
-import de.derfrzocker.custom.generator.ore.util.CustomOreGeneratorUtil;
+import de.derfrzocker.custom.ore.generator.api.*;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R1.*;
+import org.bukkit.Bukkit;
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongSet;
@@ -35,7 +34,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
     public void addDecorations(RegionLimitedWorldAccess regionLimitedWorldAccess) {
         Set<Biome> biomes = getBiomes(regionLimitedWorldAccess);
 
-        CustomOreGeneratorService service = CustomOreGenerator.getService();
+        CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
 
         WorldConfig worldConfig;
 
@@ -150,7 +149,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
     }
 
     private void generate(OreConfig oreConfig, RegionLimitedWorldAccess access, Biome biome) {
-        CustomOreGeneratorService service = CustomOreGenerator.getService();
+        CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
 
         Optional<OreGenerator> optional = service.getOreGenerator(oreConfig.getOreGenerator());
 
@@ -160,10 +159,10 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
         OreGenerator oreGenerator = optional.get();
 
         if (oreGenerator instanceof MinableGenerator_v1_13_R1) {
-            ((MinableGenerator_v1_13_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), access, CustomOreGeneratorUtil.getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
+            ((MinableGenerator_v1_13_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), access, service.createRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
             return;
         }
 
-        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), CustomOreGeneratorUtil.getRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
+        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), service.createRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
     }
 }

@@ -2,9 +2,9 @@ package de.derfrzocker.custom.ore.generator.impl.v_1_9_R2;
 
 import com.google.common.base.Predicate;
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.generator.ore.api.OreConfig;
-import de.derfrzocker.custom.generator.ore.api.OreGenerator;
-import de.derfrzocker.custom.generator.ore.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import lombok.Getter;
 import net.minecraft.server.v1_9_R2.*;
 import org.bukkit.World;
@@ -17,10 +17,6 @@ import java.util.Random;
 import java.util.Set;
 
 public class MinableGenerator_v1_9_R2 implements OreGenerator {
-
-    public MinableGenerator_v1_9_R2() {
-        CustomOreGenerator.getService().setDefaultOreGenerator(this);
-    }
 
     public final Predicate<IBlockData> blocks = (value) -> {
         if (value == null) {

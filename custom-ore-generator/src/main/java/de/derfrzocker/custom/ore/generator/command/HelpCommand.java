@@ -1,7 +1,7 @@
 package de.derfrzocker.custom.ore.generator.command;
 
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.Permissions;
+import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
+import de.derfrzocker.custom.ore.generator.Permissions;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -10,7 +10,7 @@ import org.bukkit.command.TabExecutor;
 import java.util.ArrayList;
 import java.util.List;
 
-import static de.derfrzocker.custom.generator.ore.CustomOreGeneratorMessages.*;
+import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
 public class HelpCommand implements TabExecutor {
 

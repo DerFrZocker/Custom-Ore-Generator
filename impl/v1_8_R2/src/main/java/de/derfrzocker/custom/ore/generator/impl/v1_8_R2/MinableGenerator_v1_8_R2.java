@@ -18,10 +18,6 @@ import java.util.Set;
 
 public class MinableGenerator_v1_8_R2 implements OreGenerator {
 
-    public MinableGenerator_v1_8_R2() {
-        CustomOreGenerator.getService().setDefaultOreGenerator(this);
-    }
-
     public final Predicate<IBlockData> blocks = (value) -> {
         if (value == null) {
             return false;

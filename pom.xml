@@ -11,6 +11,7 @@
     <modules>
         <module>custom-ore-generator</module>
         <module>impl</module>
+        <module>api</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -146,5 +147,5 @@
         </snapshotRepository>
     </distributionManagement>
 
-    
+
 </project>

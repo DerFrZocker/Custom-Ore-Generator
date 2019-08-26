@@ -1,11 +1,11 @@
 package de.derfrzocker.custom.ore.generator.command;
 
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.Permissions;
-import de.derfrzocker.custom.generator.ore.api.*;
-import de.derfrzocker.custom.generator.ore.impl.BiomeConfigYamlImpl;
-import de.derfrzocker.custom.generator.ore.impl.OreConfigYamlImpl;
-import de.derfrzocker.custom.generator.ore.util.MessageValue;
+import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
+import de.derfrzocker.custom.ore.generator.Permissions;
+import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -20,7 +20,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Stream;
 
-import static de.derfrzocker.custom.generator.ore.CustomOreGeneratorMessages.*;
+import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
 public class SetBiomeCommand implements TabExecutor {
 

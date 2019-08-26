@@ -1,10 +1,9 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.api.OreConfig;
-import de.derfrzocker.custom.generator.ore.api.OreGenerator;
-import de.derfrzocker.custom.generator.ore.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import lombok.Getter;
 import net.minecraft.server.v1_14_R1.*;
 import org.bukkit.World;
@@ -35,10 +34,6 @@ public class MinableGenerator_v1_14_R1 implements OreGenerator {
             return block == Blocks.STONE || block == Blocks.GRANITE || block == Blocks.DIORITE || block == Blocks.ANDESITE || block == Blocks.END_STONE || block == Blocks.NETHERRACK;
         }
     };
-
-    public MinableGenerator_v1_14_R1() {
-        CustomOreGenerator.getService().setDefaultOreGenerator(this);
-    }
 
     @SuppressWarnings("Duplicates")
     @Override

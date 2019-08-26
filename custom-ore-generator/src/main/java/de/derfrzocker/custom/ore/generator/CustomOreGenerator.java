@@ -1,20 +1,15 @@
 package de.derfrzocker.custom.ore.generator;
 
-import de.derfrzocker.custom.generator.ore.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.generator.ore.api.Version;
-import de.derfrzocker.custom.generator.ore.command.*;
-import de.derfrzocker.custom.generator.ore.impl.BiomeConfigYamlImpl;
-import de.derfrzocker.custom.generator.ore.impl.CustomOreGeneratorServiceImpl;
-import de.derfrzocker.custom.generator.ore.impl.OreConfigYamlImpl;
-import de.derfrzocker.custom.generator.ore.impl.WorldConfigYamlImpl;
-import de.derfrzocker.custom.generator.ore.impl.dao.WorldConfigYamlDao;
-import de.derfrzocker.custom.generator.ore.util.CommandSeparator;
-import de.derfrzocker.custom.generator.ore.v1_13_R1.MinableGenerator_v1_13_R1;
-import de.derfrzocker.custom.generator.ore.v1_13_R1.WorldHandler_v1_13_R1;
-import de.derfrzocker.custom.generator.ore.v1_13_R2.MinableGenerator_v1_13_R2;
-import de.derfrzocker.custom.generator.ore.v1_13_R2.WorldHandler_v1_13_R2;
-import de.derfrzocker.custom.generator.ore.v1_14_R1.MinableGenerator_v1_14_R1;
-import de.derfrzocker.custom.generator.ore.v1_14_R1.WorldHandler_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.command.*;
+import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
+import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
+import de.derfrzocker.custom.ore.generator.util.VersionPicker;
+import de.derfrzocker.spigot.utils.CommandSeparator;
+import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
@@ -36,39 +31,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
-
-        Version.v1_14_R1.add(() -> new MinableGenerator_v1_14_R1());
-        Version.v1_14_R1.add(WorldHandler_v1_14_R1::new);
-
-        Version.v1_13_R2.add(() -> new MinableGenerator_v1_13_R2());
-        Version.v1_13_R2.add(WorldHandler_v1_13_R2::new);
-
-        Version.v1_13_R1.add(() -> new MinableGenerator_v1_13_R1());
-        Version.v1_13_R1.add(WorldHandler_v1_13_R1::new);
-
-        Version.v1_12_R1.add(() -> new MinableGenerator_v1_12_R1());
-        Version.v1_12_R1.add(CustomOreBlockPopulator::new);
-
-        Version.v1_11_R1.add(() -> new MinableGenerator_v1_11_R1());
-        Version.v1_11_R1.add(CustomOreBlockPopulator::new);
-
-        Version.v1_10_R1.add(() -> new MinableGenerator_v1_10_R1());
-        Version.v1_10_R1.add(CustomOreBlockPopulator::new);
-
-        Version.v1_9_R2.add(() -> new MinableGenerator_v1_9_R2());
-        Version.v1_9_R2.add(CustomOreBlockPopulator::new);
-
-        Version.v1_9_R1.add(() -> new MinableGenerator_v1_9_R1());
-        Version.v1_9_R1.add(CustomOreBlockPopulator::new);
-
-        Version.v1_8_R3.add(() -> new MinableGenerator_v1_8_R3());
-        Version.v1_8_R3.add(CustomOreBlockPopulator::new);
-
-        Version.v1_8_R2.add(() -> new MinableGenerator_v1_8_R2());
-        Version.v1_8_R2.add(CustomOreBlockPopulator::new);
-
-        Version.v1_8_R1.add(() -> new MinableGenerator_v1_8_R1());
-        Version.v1_8_R1.add(CustomOreBlockPopulator::new);
     }
 
     @Override
@@ -80,17 +42,17 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        Version.getCurrent().run();
-        Version.clear();
+
+        new VersionPicker(Version.getCurrent(), getService()).init();
 
         getCommand("oregen").setExecutor(commandSeparator);
-        commandSeparator.registerExecuter(new SetCommand(), "set");
-        commandSeparator.registerExecuter(new SetBiomeCommand(), "setbiome");
-        commandSeparator.registerExecuter(new ReloadCommand(), "reload");
+        commandSeparator.registerExecutor(new SetCommand(), "set");
+        commandSeparator.registerExecutor(new SetBiomeCommand(), "setbiome");
+        commandSeparator.registerExecutor(new ReloadCommand(), "reload");
         HelpCommand helpCommand = new HelpCommand();
-        commandSeparator.registerExecuter(helpCommand, "");
-        commandSeparator.registerExecuter(helpCommand, null);
-        commandSeparator.registerExecuter(helpCommand, "help");
+        commandSeparator.registerExecutor(helpCommand, "");
+        commandSeparator.registerExecutor(helpCommand, null);
+        commandSeparator.registerExecutor(helpCommand, "help");
 
         new Metrics(this);
     }

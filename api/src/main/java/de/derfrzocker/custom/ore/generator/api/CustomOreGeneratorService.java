@@ -4,6 +4,7 @@ package de.derfrzocker.custom.ore.generator.api;
 import org.bukkit.World;
 
 import java.util.Optional;
+import java.util.Random;
 import java.util.Set;
 
 public interface CustomOreGeneratorService {
@@ -23,5 +24,7 @@ public interface CustomOreGeneratorService {
     void setDefaultOreGenerator(OreGenerator oreGenerator);
 
     OreGenerator getDefaultOreGenerator();
+
+    Random createRandom(long seed, int x, int z);
 
 }

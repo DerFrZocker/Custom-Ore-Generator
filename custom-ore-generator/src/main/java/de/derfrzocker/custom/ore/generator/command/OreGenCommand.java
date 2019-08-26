@@ -1,7 +1,7 @@
 package de.derfrzocker.custom.ore.generator.command;
 
-import de.derfrzocker.custom.generator.ore.Permissions;
-import de.derfrzocker.custom.generator.ore.util.CommandSeparator;
+import de.derfrzocker.custom.ore.generator.Permissions;
+import de.derfrzocker.spigot.utils.CommandSeparator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;

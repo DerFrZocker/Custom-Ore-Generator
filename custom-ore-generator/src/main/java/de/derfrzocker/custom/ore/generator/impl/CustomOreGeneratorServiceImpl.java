@@ -1,18 +1,15 @@
 package de.derfrzocker.custom.ore.generator.impl;
 
-import de.derfrzocker.custom.generator.ore.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.generator.ore.api.OreGenerator;
-import de.derfrzocker.custom.generator.ore.api.WorldConfig;
-import de.derfrzocker.custom.generator.ore.api.dao.WorldConfigDao;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.World;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService {
@@ -63,6 +60,18 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     public void setDefaultOreGenerator(OreGenerator oreGenerator) {
         registerOreGenerator(oreGenerator);
         defaultOreGenerator = oreGenerator;
+    }
+
+    @Override
+    public Random createRandom(final long seed, final int x, final int z) {
+        final Random random = new Random(seed);
+
+        long long1 = random.nextLong();
+        long long2 = random.nextLong();
+        long newseed = (long) x * long1 ^ (long) z * long2 ^ seed;
+        random.setSeed(newseed);
+
+        return random;
     }
 
 

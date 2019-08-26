@@ -1,7 +1,7 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2;
 
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.api.WorldHandler;
+import de.derfrzocker.custom.ore.generator.api.WorldHandler;
+import lombok.NonNull;
 import net.minecraft.server.v1_13_R2.ChunkGenerator;
 import net.minecraft.server.v1_13_R2.ChunkProviderServer;
 import net.minecraft.server.v1_13_R2.ChunkTaskScheduler;
@@ -10,22 +10,20 @@ import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.lang.reflect.Field;
 
 public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
 
-    public WorldHandler_v1_13_R2() {
-        Bukkit.getPluginManager().registerEvents(this, CustomOreGenerator.getInstance());
+    public WorldHandler_v1_13_R2(final @NonNull JavaPlugin javaPlugin) {
+        Bukkit.getPluginManager().registerEvents(this, javaPlugin);
     }
 
     @EventHandler
     public void onWorldLoad(final WorldLoadEvent event) {
-        CustomOreGenerator.getInstance().getLogger().info("try to hook in to world " + event.getWorld().getName());
-
         // checking if the Bukkit world is an instance of CraftWorld, if not return
         if (!(event.getWorld() instanceof CraftWorld)) {
-            CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + event.getWorld().getName() + ", because World is not an instance of CraftWorld");
             return;
         }
 
@@ -39,7 +37,6 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
 
             // if the given chunkScheduler is not an instance of ChunkTaskScheduler return
             if (!(chunkSchedulerObject instanceof ChunkTaskScheduler)) {
-                CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
                 return;
             }
 
@@ -50,7 +47,6 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
 
             // return, if the chunkGeneratorObject is not an instance of ChunkGenerator
             if (!(chunkGeneratorObject instanceof ChunkGenerator)) {
-                CustomOreGenerator.getInstance().getLogger().info("can't hook into world: " + world.getName() + ", because object is not an instance of ChunkTaskScheduler");
                 return;
             }
 
@@ -63,7 +59,6 @@ public class WorldHandler_v1_13_R2 implements WorldHandler, Listener {
             ChunkGeneratorField.set(chunkSchedulerObject, overrider);
 
         } catch (Exception e) {
-            CustomOreGenerator.getInstance().getLogger().warning("Unexpected error while hook into world: " + world.getName() + ", send the stacktrace below to the developer");
             e.printStackTrace();
         }
     }

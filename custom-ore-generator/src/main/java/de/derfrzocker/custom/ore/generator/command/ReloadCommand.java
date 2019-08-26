@@ -1,9 +1,9 @@
 package de.derfrzocker.custom.ore.generator.command;
 
-import de.derfrzocker.custom.generator.ore.CustomOreGenerator;
-import de.derfrzocker.custom.generator.ore.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.generator.ore.Permissions;
-import de.derfrzocker.custom.generator.ore.util.ReloadAble;
+import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
+import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
+import de.derfrzocker.custom.ore.generator.Permissions;
+import de.derfrzocker.spigot.utils.ReloadAble;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

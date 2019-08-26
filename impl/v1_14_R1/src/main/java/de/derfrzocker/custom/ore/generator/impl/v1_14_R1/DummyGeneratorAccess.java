@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.impl.v1_14_R1;
 
 import net.minecraft.server.v1_14_R1.*;
 
+import javax.annotation.Nullable;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Predicate;
@@ -45,6 +46,11 @@ public class DummyGeneratorAccess implements GeneratorAccess {
     }
 
     public void update(BlockPosition bp, Block block) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void playSound(@Nullable EntityHuman entityHuman, BlockPosition blockPosition, SoundEffect soundEffect, SoundCategory soundCategory, float v, float v1) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
