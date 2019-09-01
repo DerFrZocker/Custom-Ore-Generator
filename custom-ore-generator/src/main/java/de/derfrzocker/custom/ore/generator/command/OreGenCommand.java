@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.Permissions;
+import de.derfrzocker.custom.ore.generator.command.set.SetCommand;
 import de.derfrzocker.spigot.utils.CommandSeparator;
 
 public class OreGenCommand extends CommandSeparator {

@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.command;
+package de.derfrzocker.custom.ore.generator.command.set;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.*;
