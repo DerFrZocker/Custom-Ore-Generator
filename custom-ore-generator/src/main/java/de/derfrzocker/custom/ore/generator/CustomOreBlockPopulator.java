@@ -10,10 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.generator.BlockPopulator;
 
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 
 public class CustomOreBlockPopulator extends BlockPopulator implements WorldHandler, Listener {
 
@@ -39,9 +36,7 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         }
 
         biomes.forEach(biome -> {
-            Set<OreConfig> oreConfigs = new HashSet<>(worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(HashSet::new));
-
-            worldConfig.getOreConfigs().stream().filter(value -> oreConfigs.stream().noneMatch(value2 -> value2.getMaterial() == value.getMaterial())).forEach(oreConfigs::add);
+            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome)).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome));
         });

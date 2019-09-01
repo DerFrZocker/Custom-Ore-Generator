@@ -31,7 +31,6 @@ public class WorldConfigYamlDao extends BasicYamlDao<String, WorldConfig> implem
     public void save(@NonNull WorldConfig config) {
         if (!(config instanceof ConfigurationSerializable)) {
             WorldConfig config2 = new WorldConfigYamlImpl(config.getWorld());
-            config.getBiomeConfigs().forEach(config2::addBiomeConfig);
             config.getOreConfigs().forEach(config2::addOreConfig);
             config = config2;
         }

@@ -107,8 +107,8 @@ public class HelpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> list = new ArrayList<>();
 
-        if (args.length == 2 && Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender)) {
-            final String subcommand = args[1].toLowerCase();
+        if (args.length == 1 && Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender)) {
+            final String subcommand = args[0].toLowerCase();
 
             if ("set".startsWith(subcommand) && Permissions.SET_PERMISSION.hasPermission(sender))
                 list.add("set");

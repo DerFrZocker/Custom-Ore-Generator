@@ -1,6 +1,9 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R1;
 
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Bukkit;
@@ -9,10 +12,7 @@ import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongSet;
 
 import javax.annotation.Nullable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 @RequiredArgsConstructor
 public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenerator<C> {
@@ -50,9 +50,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
         }
 
         biomes.forEach(biome -> {
-            Set<OreConfig> oreConfigs = new HashSet<>(worldConfig.getBiomeConfig(biome).map(BiomeConfig::getOreConfigs).orElseGet(HashSet::new));
-
-            worldConfig.getOreConfigs().stream().filter(value -> oreConfigs.stream().noneMatch(value2 -> value2.getMaterial() == value.getMaterial())).forEach(oreConfigs::add);
+            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome)).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, regionLimitedWorldAccess, biome));
         });

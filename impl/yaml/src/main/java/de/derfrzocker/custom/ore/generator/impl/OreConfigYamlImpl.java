@@ -4,42 +4,66 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.Setter;
 import org.bukkit.Material;
+import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
 
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 @SerializableAs(value = "CustomOreGenerator#OreConfig")
 public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
+    private final static String NAME_KEY = "name";
     private final static String MATERIAL_KEY = "material";
-    private final static String ORE_GENERATOR_KEY = "ore_generator";
+
+    @Deprecated
+    private final static String ORE_GENERATOR_KEY_OLD = "ore_generator";
+
+    private final static String ORE_GENERATOR_KEY = "ore-generator";
+    private final static String ACTIVATED_KEY = "activated";
+    private final static String GENERATED_ALL_KEY = "generated-all";
+    private final static String BIOMES_KEY = "biomes";
+
+    @Getter
+    @NonNull
+    private final String name;
 
     @Getter
     @NonNull
     private final Material material;
 
     @NonNull
+    @Getter
     private final String oreGenerator;
+
+    @Getter
+    @Setter
+    private boolean activated = true;
+
+    @Setter
+    private boolean generatedAll = true;
 
     @Getter
     private final Map<OreSetting, Integer> oreSettings = new HashMap<>();
 
-    public OreConfigYamlImpl(Material material, String oreGenerator) {
+    @Getter
+    private final Set<Biome> biomes = new HashSet<>();
+
+    public OreConfigYamlImpl(String name, Material material, String oreGenerator) {
         if (!material.isBlock())
             throw new IllegalArgumentException("material " + material + " must be a block!");
 
+        this.name = name;
         this.material = material;
         this.oreGenerator = oreGenerator;
     }
 
+
     @Override
-    public String getOreGenerator() {
-        return oreGenerator;
+    public boolean shouldGeneratedAll() {
+        return generatedAll;
     }
 
     @Override
@@ -56,8 +80,19 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     public Map<String, Object> serialize() {
         Map<String, Object> map = new LinkedHashMap<>();
 
-        map.put(MATERIAL_KEY, material.toString());
-        map.put(ORE_GENERATOR_KEY, oreGenerator);
+        map.put(NAME_KEY, getName());
+        map.put(MATERIAL_KEY, getMaterial().toString());
+        map.put(ORE_GENERATOR_KEY, getOreGenerator());
+        map.put(GENERATED_ALL_KEY, shouldGeneratedAll());
+        map.put(ACTIVATED_KEY, isActivated());
+
+        if (!getBiomes().isEmpty()) {
+            List<String> biomes = new ArrayList<>();
+
+            getBiomes().forEach(biome -> biomes.add(biome.toString()));
+
+            map.put(BIOMES_KEY, biomes);
+        }
 
         getOreSettings().forEach((key, value) -> map.put(key.toString(), value));
 
@@ -65,7 +100,19 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     }
 
     public static OreConfigYamlImpl deserialize(Map<String, Object> map) {
-        OreConfigYamlImpl oreConfig = new OreConfigYamlImpl(Material.valueOf((String) map.get(MATERIAL_KEY)), (String) map.get(ORE_GENERATOR_KEY));
+        final OreConfigYamlImpl oreConfig;
+
+        if (!map.containsKey(NAME_KEY)) {
+            oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), (String) map.get(ORE_GENERATOR_KEY_OLD));
+        } else {
+            oreConfig = new OreConfigYamlImpl((String) map.get(NAME_KEY), Material.valueOf((String) map.get(MATERIAL_KEY)), (String) map.get(ORE_GENERATOR_KEY));
+            oreConfig.setActivated((boolean) map.get(ACTIVATED_KEY));
+            oreConfig.setGeneratedAll((boolean) map.get(GENERATED_ALL_KEY));
+
+            if (map.containsKey(BIOMES_KEY)) {
+                ((List<String>) map.get(BIOMES_KEY)).forEach(biome -> oreConfig.getBiomes().add(Biome.valueOf(biome)));
+            }
+        }
 
         map.entrySet().stream().filter(OreConfigYamlImpl::isOreSetting).forEach(entry -> oreConfig.setValue(OreSetting.valueOf(entry.getKey()), (Integer) entry.getValue()));
 

@@ -12,6 +12,7 @@ import org.bukkit.configuration.serialization.SerializableAs;
 import java.util.*;
 
 @SerializableAs(value = "CustomOreGenerator#BiomeConfig")
+@Deprecated //TODO remove in newer versions
 public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializable {
 
     private final static String BIOME_KEY = "biome";
@@ -44,23 +45,7 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
     @SuppressWarnings("Duplicates")
     @Override
     public Map<String, Object> serialize() {
-        Map<String, Object> map = new LinkedHashMap<>();
-
-        map.put(BIOME_KEY, biome.toString());
-
-        getOreConfigs().forEach(value -> {
-            if (value instanceof ConfigurationSerializable) {
-                map.put(value.getMaterial().toString(), value);
-                return;
-            }
-            OreConfigYamlImpl oreConfig = new OreConfigYamlImpl(value.getMaterial(), value.getOreGenerator());
-
-            value.getOreSettings().forEach(oreConfig::setValue);
-
-            map.put(value.getMaterial().toString(), value);
-        });
-
-        return map;
+        throw new UnsupportedOperationException("Not supported");
     }
 
     public static BiomeConfigYamlImpl deserialize(Map<String, Object> map) {

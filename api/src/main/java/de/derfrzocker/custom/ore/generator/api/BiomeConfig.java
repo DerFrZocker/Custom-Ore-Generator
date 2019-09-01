@@ -6,6 +6,7 @@ import org.bukkit.block.Biome;
 import java.util.Optional;
 import java.util.Set;
 
+@Deprecated
 public interface BiomeConfig {
 
     Biome getBiome();

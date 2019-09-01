@@ -1,14 +1,13 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.ore.generator.command.*;
+import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.util.VersionPicker;
-import de.derfrzocker.spigot.utils.CommandSeparator;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;
@@ -24,8 +23,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
     @Getter
     private static CustomOreGenerator instance;
-
-    private final CommandSeparator commandSeparator = new OreGenCommand();
 
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
@@ -46,17 +43,9 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-
         new VersionPicker(Version.getCurrent(), getService()).init();
 
-        getCommand("oregen").setExecutor(commandSeparator);
-        commandSeparator.registerExecutor(new SetCommand(), "set");
-        commandSeparator.registerExecutor(new SetBiomeCommand(), "setbiome");
-        commandSeparator.registerExecutor(new ReloadCommand(), "reload");
-        HelpCommand helpCommand = new HelpCommand();
-        commandSeparator.registerExecutor(helpCommand, "");
-        commandSeparator.registerExecutor(helpCommand, null);
-        commandSeparator.registerExecutor(helpCommand, "help");
+        getCommand("oregen").setExecutor(new OreGenCommand());
 
         new Metrics(this);
     }
