@@ -1,12 +1,14 @@
 package de.derfrzocker.custom.ore.generator.impl;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.util.*;
@@ -33,6 +35,11 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     }
 
     @Override
+    public Set<OreGenerator> getOreGenerators() {
+        return new HashSet<>(oreGenerator.values());
+    }
+
+    @Override
     public Optional<WorldConfig> getWorldConfig(String world) {
         return dao.get(world);
     }
@@ -44,6 +51,11 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
         saveWorldConfig(worldConfig);
 
         return worldConfig;
+    }
+
+    @Override
+    public OreConfig createOreConfig(String name, Material material, OreGenerator oreGenerator) {
+        return new OreConfigYamlImpl(name, material, oreGenerator.getName());
     }
 
     @Override

@@ -1,6 +1,7 @@
 package de.derfrzocker.custom.ore.generator.api;
 
 
+import org.bukkit.Material;
 import org.bukkit.World;
 
 import java.util.Optional;
@@ -13,9 +14,13 @@ public interface CustomOreGeneratorService {
 
     void registerOreGenerator(OreGenerator oreGenerator);
 
+    Set<OreGenerator> getOreGenerators();
+
     Optional<WorldConfig> getWorldConfig(String world);
 
     WorldConfig createWorldConfig(World world);
+
+    OreConfig createOreConfig(String name, Material material, OreGenerator oreGenerator);
 
     void saveWorldConfig(WorldConfig config);
 
