@@ -1,9 +1,6 @@
 package de.derfrzocker.custom.ore.generator.impl;
 
-import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import lombok.Getter;
 import lombok.NonNull;
@@ -21,6 +18,8 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
 
     private final Map<String, OreGenerator> oreGenerator = new HashMap<>();
 
+    private final Map<String, CustomData> customData = new HashMap<>();
+
     @Getter
     private OreGenerator defaultOreGenerator;
 
@@ -37,6 +36,21 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     @Override
     public Set<OreGenerator> getOreGenerators() {
         return new HashSet<>(oreGenerator.values());
+    }
+
+    @Override
+    public Optional<CustomData> getCustomData(String name) {
+        return Optional.ofNullable(customData.get(name));
+    }
+
+    @Override
+    public void registerCustomData(CustomData customData) {
+        this.customData.put(customData.getName(), customData);
+    }
+
+    @Override
+    public Set<CustomData> getCustomData() {
+        return new HashSet<>(customData.values());
     }
 
     @Override
