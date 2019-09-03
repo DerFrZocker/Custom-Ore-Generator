@@ -31,4 +31,10 @@ public interface OreConfig {
 
     Map<OreSetting, Integer> getOreSettings();
 
+    Map<CustomData, Object> getCustomData();
+
+    Optional<Object> getCustomData(CustomData customData);
+
+    void setCustomData(CustomData customData, Object data);
+
 }

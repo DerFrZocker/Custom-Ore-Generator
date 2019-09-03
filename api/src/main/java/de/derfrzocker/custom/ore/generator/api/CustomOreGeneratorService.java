@@ -16,6 +16,12 @@ public interface CustomOreGeneratorService {
 
     Set<OreGenerator> getOreGenerators();
 
+    Optional<CustomData> getCustomData(String name);
+
+    void registerCustomData(CustomData customData);
+
+    Set<CustomData> getCustomData();
+
     Optional<WorldConfig> getWorldConfig(String world);
 
     WorldConfig createWorldConfig(World world);
