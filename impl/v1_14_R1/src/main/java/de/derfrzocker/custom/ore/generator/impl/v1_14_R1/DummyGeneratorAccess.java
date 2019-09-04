@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.function.Predicate;
 
 public class DummyGeneratorAccess implements GeneratorAccess {
+
     public static final GeneratorAccess INSTANCE = new DummyGeneratorAccess();
 
     private DummyGeneratorAccess() {
@@ -153,4 +154,5 @@ public class DummyGeneratorAccess implements GeneratorAccess {
     public boolean b(BlockPosition blockposition, boolean flag) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
+
 }
