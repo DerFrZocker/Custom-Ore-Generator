@@ -52,7 +52,21 @@ public class MinableGenerator_v1_11_R1 implements OreGenerator {
             int z = random.nextInt(15);
 
             if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome) {
+                craftWorld.getHandle().captureTreeGeneration = true;
+                craftWorld.getHandle().captureBlockStates = true;
+
                 generator.generate(craftWorld.getHandle(), random, new BlockPosition(x + (x2 << 4), y, z + (z2 << 4)));
+
+                craftWorld.getHandle().captureTreeGeneration = false;
+                craftWorld.getHandle().captureBlockStates = false;
+
+                for (org.bukkit.block.BlockState blockState : craftWorld.getHandle().capturedBlockStates) {
+                    if (blockState.update(true, false)) {
+                        config.getCustomData().forEach((customData, object) -> customData.getCustomDataApplier().apply(config, new BlockPosition(blockState.getLocation().getBlockX(), blockState.getLocation().getBlockY(), blockState.getLocation().getBlockZ()), craftWorld.getHandle()));
+                    }
+                }
+
+                craftWorld.getHandle().capturedBlockStates.clear();
             }
         }
     }

@@ -4,7 +4,6 @@ import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.custom.ore.generator.command.set.SetCommand;
 import de.derfrzocker.spigot.utils.CommandSeparator;
-import lombok.RequiredArgsConstructor;
 
 public class OreGenCommand extends CommandSeparator {
 

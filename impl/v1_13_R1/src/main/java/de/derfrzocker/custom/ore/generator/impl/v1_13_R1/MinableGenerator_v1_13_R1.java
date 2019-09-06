@@ -56,7 +56,7 @@ public class MinableGenerator_v1_13_R1 implements OreGenerator {
             BlockPosition position = new BlockPosition(x + (x2 << 4), y, z + (z2 << 4));
 
             if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome) {
-                generator.a(craftWorld.getHandle(), craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
+                generator.a(new GeneratorAccessOverrider(craftWorld.getHandle(), config), craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
             }
         }
 
@@ -78,7 +78,7 @@ public class MinableGenerator_v1_13_R1 implements OreGenerator {
             BlockPosition position = new BlockPosition(x + (access.a() << 4), y, z + (access.b() << 4));
 
             if (biome == null || biome.toString().equalsIgnoreCase(BiomeBase.REGISTRY_ID.b(access.getBiome(position)).getKey())) {
-                generator.a(access, craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
+                generator.a(new GeneratorAccessOverrider(access, config), craftWorld.getHandle().getChunkProvider().getChunkGenerator(), random, position, new WorldGenFeatureOreConfiguration(blocks, CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize));
             }
         }
 
