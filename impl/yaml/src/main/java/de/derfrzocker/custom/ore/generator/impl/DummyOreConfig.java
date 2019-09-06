@@ -7,7 +7,7 @@ import java.util.Map;
 @Deprecated //TODO remove in newer versions
 public class DummyOreConfig extends OreConfigYamlImpl {
 
-    public DummyOreConfig(Material material, String oreGenerator) {
+    DummyOreConfig(Material material, String oreGenerator) {
         super("dummy_ore_config", material, oreGenerator);
     }
 
