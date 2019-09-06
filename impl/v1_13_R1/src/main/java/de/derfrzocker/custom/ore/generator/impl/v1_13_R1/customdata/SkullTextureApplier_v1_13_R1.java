@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
@@ -7,16 +7,16 @@ import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.GeneratorAccess;
-import net.minecraft.server.v1_14_R1.TileEntity;
-import net.minecraft.server.v1_14_R1.TileEntitySkull;
+import net.minecraft.server.v1_13_R1.BlockPosition;
+import net.minecraft.server.v1_13_R1.GeneratorAccess;
+import net.minecraft.server.v1_13_R1.TileEntity;
+import net.minecraft.server.v1_13_R1.TileEntitySkull;
 
 import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class SkullTextureApplier_v1_14_R1 implements CustomDataApplier {
+public class SkullTextureApplier_v1_13_R1 implements CustomDataApplier {
 
     @NonNull
     private final CustomData customData;
@@ -28,8 +28,8 @@ public class SkullTextureApplier_v1_14_R1 implements CustomDataApplier {
         final GeneratorAccess generatorAccess = (GeneratorAccess) blockAccess;
         final TileEntity tileEntity = generatorAccess.getTileEntity(blockPosition);
 
-        generatorAccess.w(blockPosition).removeTileEntity(blockPosition);
-        generatorAccess.w(blockPosition).setTileEntity(blockPosition, tileEntity);
+        generatorAccess.y(blockPosition).d(blockPosition);
+        generatorAccess.y(blockPosition).a(blockPosition, tileEntity);
 
         if (tileEntity == null)
             return; //TODO maybe throw exeption?

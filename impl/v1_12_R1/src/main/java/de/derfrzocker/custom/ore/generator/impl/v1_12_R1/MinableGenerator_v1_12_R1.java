@@ -44,12 +44,14 @@ public class MinableGenerator_v1_12_R1 implements OreGenerator {
         final CraftWorld craftWorld = (CraftWorld) world;
         final CraftChunk craftChunk = (CraftChunk) world.getChunkAt(x2, z2);
 
-        WorldGenMinable generator = new WorldGenMinable(CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData(), veinSize, blocks);
+        final IBlockData blockData = CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData();
+
+        WorldGenMinable generator = new WorldGenMinable(blockData, veinSize, blocks);
 
         for (int trys = 0; trys < veinsPerChunk; ++trys) {
-            int x = random.nextInt(15);
+            int x = random.nextInt(16);
             int y = random.nextInt(heightRange) + minimumHeight;
-            int z = random.nextInt(15);
+            int z = random.nextInt(16);
 
             if (biome == null || craftChunk.getBlock(x, y, z).getBiome() == biome) {
                 craftWorld.getHandle().captureTreeGeneration = true;
@@ -61,7 +63,7 @@ public class MinableGenerator_v1_12_R1 implements OreGenerator {
                 craftWorld.getHandle().captureBlockStates = false;
 
                 for (org.bukkit.block.BlockState blockState : craftWorld.getHandle().capturedBlockStates) {
-                    if (blockState.update(true, false)) {
+                    if (craftWorld.getHandle().setTypeAndData(new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ()), blockData, 2)) {
                         config.getCustomData().forEach((customData, object) -> customData.getCustomDataApplier().apply(config, new BlockPosition(blockState.getLocation().getBlockX(), blockState.getLocation().getBlockY(), blockState.getLocation().getBlockZ()), craftWorld.getHandle()));
                     }
                 }

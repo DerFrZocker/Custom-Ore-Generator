@@ -108,7 +108,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @Override
     public void setCustomData(CustomData customData, Object data) {
-        this.customData.put(customData, data);
+        getCustomData().put(customData, data);
     }
 
     @Override
@@ -132,7 +132,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         if (!getCustomData().isEmpty() || !lazyCustomData.isEmpty()) {
             final Map<String, Object> data = new LinkedHashMap<>(lazyCustomData);
 
-            getCustomData().forEach((customData, object) -> data.put(customData.getName(), data));
+            getCustomData().forEach((customData, object) -> data.put(customData.getName(), object));
 
             map.put(CUSTOM_DATA_KEY, data);
         }

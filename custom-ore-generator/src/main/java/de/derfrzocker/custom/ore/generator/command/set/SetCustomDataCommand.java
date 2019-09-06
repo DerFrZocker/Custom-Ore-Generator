@@ -91,7 +91,7 @@ public class SetCustomDataCommand implements TabExecutor {
             service.saveWorldConfig(worldConfig);
         });
 
-        return false;
+        return true;
     }
 
     @Override

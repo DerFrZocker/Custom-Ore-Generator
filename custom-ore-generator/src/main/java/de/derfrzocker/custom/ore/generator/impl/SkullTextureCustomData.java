@@ -7,7 +7,17 @@ import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.SkullTextureApplier_v1_10_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.SkullTextureApplier_v1_11_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.SkullTextureApplier_v1_12_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.SkullTextureApplier_v1_13_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.SkullTextureApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.SkullTextureApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.SkullTextureApplier_v1_8_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.SkullTextureApplier_v1_8_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.SkullTextureApplier_v1_8_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.SkullTextureApplier_v1_9_R1;
+import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.SkullTextureApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -29,23 +39,18 @@ public class SkullTextureCustomData implements CustomData {
             case v1_14_R1:
             case v1_13_R2:
             case v1_13_R1:
-                materials.add(Material.PLAYER_HEAD);
+                materials.add(Material.valueOf("PLAYER_HEAD"));
+                materials.add(Material.valueOf("PLAYER_WALL_HEAD"));
                 break;
             case v1_12_R1:
-                break;
             case v1_11_R1:
-                break;
             case v1_10_R1:
-                break;
             case v1_9_R2:
-                break;
             case v1_9_R1:
-                break;
             case v1_8_R3:
-                break;
             case v1_8_R2:
-                break;
             case v1_8_R1:
+                materials.add(Material.valueOf("SKULL"));
                 break;
         }
 
@@ -95,25 +100,25 @@ public class SkullTextureCustomData implements CustomData {
             case v1_14_R1:
                 return new SkullTextureApplier_v1_14_R1(this);
             case v1_13_R2:
-                break;
+                return new SkullTextureApplier_v1_13_R2(this);
             case v1_13_R1:
-                break;
+                return new SkullTextureApplier_v1_13_R1(this);
             case v1_12_R1:
-                break;
+                return new SkullTextureApplier_v1_12_R1(this);
             case v1_11_R1:
-                break;
+                return new SkullTextureApplier_v1_11_R1(this);
             case v1_10_R1:
-                break;
+                return new SkullTextureApplier_v1_10_R1(this);
             case v1_9_R2:
-                break;
+                return new SkullTextureApplier_v1_9_R2(this);
             case v1_9_R1:
-                break;
+                return new SkullTextureApplier_v1_9_R1(this);
             case v1_8_R3:
-                break;
+                return new SkullTextureApplier_v1_8_R3(this);
             case v1_8_R2:
-                break;
+                return new SkullTextureApplier_v1_8_R2(this);
             case v1_8_R1:
-                break;
+                return new SkullTextureApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

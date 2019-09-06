@@ -51,9 +51,9 @@ public class MinableGenerator_v1_13_R2 implements OreGenerator {
             craftChunk.getHandle().heightMap.put(HeightMap.Type.OCEAN_FLOOR_WG, new HeightMapOverrider(craftChunk.getHandle(), HeightMap.Type.OCEAN_FLOOR_WG));
 
         for (int trys = 0; trys < veinsPerChunk; ++trys) {
-            int x = random.nextInt(15);
+            int x = random.nextInt(16);
             int y = random.nextInt(heightRange) + minimumHeight;
-            int z = random.nextInt(15);
+            int z = random.nextInt(16);
 
             BlockPosition position = new BlockPosition(x + (x2 << 4), y, z + (z2 << 4));
 

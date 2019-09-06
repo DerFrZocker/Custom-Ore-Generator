@@ -36,7 +36,7 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         }
 
         biomes.forEach(biome -> {
-            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome)).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
+            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
             oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome));
         });
