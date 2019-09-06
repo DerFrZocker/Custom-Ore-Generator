@@ -6,6 +6,8 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
@@ -18,7 +20,11 @@ import java.util.*;
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.SET_BIOME_NOT_ENOUGH_ARGS;
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.SET_WORLD_NOT_FOUND;
 
+@RequiredArgsConstructor
 public class SetBiomeCommand implements TabExecutor {
+
+    @NonNull
+    private final CustomOreGenerator customOreGenerator;
 
     @Override //oregen set biome <world> <config_name> <biome> <biome> ...
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -28,7 +34,7 @@ public class SetBiomeCommand implements TabExecutor {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
             String world_name = args[0];
             String config_name = args[1];
 

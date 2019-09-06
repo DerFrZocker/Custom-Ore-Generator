@@ -3,6 +3,8 @@ package de.derfrzocker.custom.ore.generator.command.set;
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
@@ -16,8 +18,11 @@ import java.util.Set;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
-
+@RequiredArgsConstructor
 public class SetValueCommand implements TabExecutor {
+
+    @NonNull
+    private final CustomOreGenerator customOreGenerator;
 
     @Override //oregen set value <world> <config_name> <setting> <amount>
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,7 +31,7 @@ public class SetValueCommand implements TabExecutor {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
             String world_name = args[0];
             String config_name = args[1];
             String setting_name = args[2];

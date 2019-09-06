@@ -14,8 +14,8 @@ import java.util.*;
 
 public class CustomOreBlockPopulator extends BlockPopulator implements WorldHandler, Listener {
 
-    public CustomOreBlockPopulator() {
-        Bukkit.getPluginManager().registerEvents(this, CustomOreGenerator.getInstance());
+    public CustomOreBlockPopulator(CustomOreGenerator customOreGenerator) {
+        Bukkit.getPluginManager().registerEvents(this, customOreGenerator);
     }
 
     @Override

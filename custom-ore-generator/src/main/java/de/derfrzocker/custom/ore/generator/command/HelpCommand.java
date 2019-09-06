@@ -3,6 +3,8 @@ package de.derfrzocker.custom.ore.generator.command;
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.spigot.utils.Permission;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -13,15 +15,19 @@ import java.util.List;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
+@RequiredArgsConstructor
 public class HelpCommand implements TabExecutor {
+
+    @NonNull
+    private final CustomOreGenerator customOreGenerator;
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender))
+        if (!Permission.hasAnyCommandPermission(customOreGenerator, sender))
             return false;
 
-        Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
 
             if (args.length == 1) {
                 if ("set".equalsIgnoreCase(args[0])) {
@@ -107,7 +113,7 @@ public class HelpCommand implements TabExecutor {
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         final List<String> list = new ArrayList<>();
 
-        if (args.length == 1 && Permission.hasAnyCommandPermission(CustomOreGenerator.getInstance(), sender)) {
+        if (args.length == 1 && Permission.hasAnyCommandPermission(customOreGenerator, sender)) {
             final String subcommand = args[0].toLowerCase();
 
             if ("set".startsWith(subcommand) && Permissions.SET_PERMISSION.hasPermission(sender))

@@ -27,11 +27,15 @@ import lombok.RequiredArgsConstructor;
 public class VersionPicker {
 
     private boolean init;
+
     @NonNull
     private final Version version;
 
     @NonNull
     private final CustomOreGeneratorService customOreGeneratorService;
+
+    @NonNull
+    private final CustomOreGenerator customOreGenerator;
 
     public void init() {
         if (init) {
@@ -83,62 +87,62 @@ public class VersionPicker {
     }
 
     private void init_V1_8_R1() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R1());
     }
 
     private void init_V1_8_R2() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R2());
     }
 
     private void init_V1_8_R3() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R3());
     }
 
     private void init_V1_9_R1() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_9_R1());
     }
 
     private void init_V1_9_R2() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_9_R2());
     }
 
     private void init_V1_10_R1() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_10_R1());
     }
 
     private void init_V1_11_R1() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_11_R1());
     }
 
     private void init_V1_12_R1() {
-        new CustomOreBlockPopulator();
+        new CustomOreBlockPopulator(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_12_R1());
     }
 
     private void init_V1_13_R1() {
-        new WorldHandler_v1_13_R1(CustomOreGenerator.getInstance());
+        new WorldHandler_v1_13_R1(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R1());
     }
 
     private void init_V1_13_R2() {
-        new WorldHandler_v1_13_R2(CustomOreGenerator.getInstance());
+        new WorldHandler_v1_13_R2(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R2());
     }
 
     private void init_V1_13_R2_paper() {
-        new WorldHandler_v1_13_R2_paper(CustomOreGenerator.getInstance());
+        new WorldHandler_v1_13_R2_paper(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R2_paper());
     }
 
     private void init_V1_14_R1() {
-        new WorldHandler_v1_14_R1(CustomOreGenerator.getInstance());
+        new WorldHandler_v1_14_R1(customOreGenerator);
         customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_14_R1());
     }
 

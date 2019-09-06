@@ -7,10 +7,10 @@ import de.derfrzocker.spigot.utils.CommandSeparator;
 
 public class SetCommand extends CommandSeparator {
 
-    public SetCommand() {
-        super(CustomOreGenerator.getInstance());
-        registerExecutor(new SetValueCommand(), "value", Permissions.SET_VALUE_PERMISSION);
-        registerExecutor(new SetBiomeCommand(), "biome", Permissions.SET_BIOME_PERMISSION);
+    public SetCommand(CustomOreGenerator customOreGenerator) {
+        super(customOreGenerator);
+        registerExecutor(new SetValueCommand(customOreGenerator), "value", Permissions.SET_VALUE_PERMISSION);
+        registerExecutor(new SetBiomeCommand(customOreGenerator), "biome", Permissions.SET_BIOME_PERMISSION);
     }
 
 }

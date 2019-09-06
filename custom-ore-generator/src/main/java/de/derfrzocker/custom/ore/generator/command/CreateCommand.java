@@ -6,6 +6,8 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import lombok.NonNull;
+import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -18,7 +20,11 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+@RequiredArgsConstructor
 public class CreateCommand implements TabExecutor {
+
+    @NonNull
+    private final CustomOreGenerator customOreGenerator;
 
     @Override //oregen create <world> <name> <material> [<ore-generator>]
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -27,7 +33,7 @@ public class CreateCommand implements TabExecutor {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(CustomOreGenerator.getInstance(), () -> {
+        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
             final String worldName = args[0];
             final String oreConfigName = args[1];
             final String materialName = args[2];

@@ -40,9 +40,9 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
     @Override
     public void onEnable() {
-        new VersionPicker(Version.getCurrent(), getService()).init();
+        new VersionPicker(Version.getCurrent(), getService(), this).init();
 
-        getCommand("oregen").setExecutor(new OreGenCommand());
+        getCommand("oregen").setExecutor(new OreGenCommand(this));
 
         getService().registerCustomData(SkullTextureCustomData.INSTANCE);
 
