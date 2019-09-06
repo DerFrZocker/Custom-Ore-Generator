@@ -139,7 +139,7 @@ public class SetCustomDataCommand implements TabExecutor {
 
             final String customDataName = args[2].toUpperCase();
 
-            service.getCustomData().stream().map(CustomData::getName).filter(value -> value.contains(customDataName)).forEach(list::add);
+            service.getCustomData().stream().filter(customData -> customData.canApply(oreConfig.get())).map(CustomData::getName).filter(value -> value.contains(customDataName)).forEach(list::add);
 
             return list;
         }
