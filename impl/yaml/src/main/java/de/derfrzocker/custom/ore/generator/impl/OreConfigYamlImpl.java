@@ -134,7 +134,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
             getCustomData().forEach((customData, object) -> data.put(customData.getName(), data));
 
-            map.put(CUSTOM_DATA_KEY, customData);
+            map.put(CUSTOM_DATA_KEY, data);
         }
 
         if (!getOreSettings().isEmpty()) {

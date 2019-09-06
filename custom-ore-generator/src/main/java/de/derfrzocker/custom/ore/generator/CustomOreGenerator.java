@@ -2,10 +2,7 @@ package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
-import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
-import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
-import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.*;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.util.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
@@ -46,6 +43,8 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         new VersionPicker(Version.getCurrent(), getService()).init();
 
         getCommand("oregen").setExecutor(new OreGenCommand());
+
+        getService().registerCustomData(SkullTextureCustomData.INSTANCE);
 
         new Metrics(this);
     }
