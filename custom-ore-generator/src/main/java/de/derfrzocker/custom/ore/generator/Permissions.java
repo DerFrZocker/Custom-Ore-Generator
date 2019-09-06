@@ -13,5 +13,6 @@ public final class Permissions {
     public final static Permission SET_PERMISSION = new Permission(BASE_PERMISSION, "set", CustomOreGenerator.getInstance(), true);
     public final static Permission SET_VALUE_PERMISSION = new Permission(SET_PERMISSION, "value", CustomOreGenerator.getInstance(), true);
     public final static Permission SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", CustomOreGenerator.getInstance(), true);
+    public final static Permission SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", CustomOreGenerator.getInstance(), true);
 
 }

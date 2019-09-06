@@ -11,6 +11,7 @@ public class SetCommand extends CommandSeparator {
         super(customOreGenerator);
         registerExecutor(new SetValueCommand(customOreGenerator), "value", Permissions.SET_VALUE_PERMISSION);
         registerExecutor(new SetBiomeCommand(customOreGenerator), "biome", Permissions.SET_BIOME_PERMISSION);
+        registerExecutor(new SetCustomDataCommand(customOreGenerator), "customdata", Permissions.SET_CUSTOMDATA_PERMISSION);
     }
 
 }
