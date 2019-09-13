@@ -15,7 +15,7 @@ import java.util.List;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
-@RequiredArgsConstructor
+@RequiredArgsConstructor //TODO rework help command
 public class HelpCommand implements TabExecutor {
 
     @NonNull

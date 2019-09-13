@@ -1,9 +1,45 @@
 command:
+  world-not-found: "&4The world &f'&9%world%&f' &4does not exist!"
+  ore-generator-not-found: "&4The ore generator &f'&9%ore-generator%&f' &4does not exist!"
+  material-not-found: "&4The material &f'&9%material%&f' &4does not exist!"
+  material-no-block: "&4The material &f'&9%material%&f' &4is not a block!"
+  ore-config-not-found: "&4The ore config &f'&9%ore-config%&f' &4does not exist!"
+  biome-not-found: "&4The biome &f'&9%biome%&f' &4does not exist!"
+
+  create:
+    not-enough-args:
+      - "&4Wrong amount of arguments!"
+      - "&cuse &f/&9oregen create &f<&9world&f> <&name&f> <&material&f> [<&ore-generator&f>]"
+    already-exists: "&4The Ore-Config &f'&9%ore-config%&f' &4already exists!"
+    ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&9%ore-generator%&f'"
+    success: "&aThe ore config &f'&9%ore-config%&f', was successfully created, with the material &f'&9%material%&f' and ore generator &f'&9%ore-generator%&f'"
 
   set:
-    not_enough_args:
-      - "&4Wrong amount of arguments!"
-      - "&cuse &f/&9oregen set &f<&9world&f> <&9material&f> <&9setting&f> <&9amount&f>"
+
+    value:
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse &f/&9oregen set value &f<&9world&f> <&9ore-config&f> <&9setting&f> <&9amount&f>"
+      setting-not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
+      setting-not-valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore generator &f'&9%ore-generator%&f'&4!"
+      value-not-valid: "&f'&9%value%&f' &4is not a valid number!"
+      success: "&aThe value has been updated successfully!"
+
+    customdata:
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse &f/&9oregen set customdata &f<&9world&f> <&9ore-config&f> <&9customdata&f> <&9value&f>"
+      not-found: "&4The custom data &f'&9%customdata%&f' &4does not exist!"
+      ore-config-not-valid: "&4The custom data &f'&9%customdata%&f' &4can not be applied to the ore config &f'&9%ore-config%&f'&4!"
+      value-not-valid: "&f'&9%value%&f' &4is not a valid custom data!"
+      success: "&aThe custom data was set successfully!"
+
+    biome:
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse &f/&9oregen set biome &f<&9world&f> <&9ore-config&f> <biome> ..."
+      success: "&aThe biomes are set successfully!"
+
     world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
     no_number: "&f'&9%value%&f' &4is not a valid number!"
     setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
@@ -12,11 +48,7 @@ command:
     material_not_found:
       - "&4The material &f'&9%material%&f' &4does not exist!"
     success: "&aThe value has been updated successfully!"
-    biome:
-      not_enough_args:
-        - "&4Wrong amount of arguments!"
-        - "&cuse &f/&9oregen setbiome &f<&9biome&f> <&9world&f> <&9material&f>"
-        - "                                 <&9setting&f> <&9amount&f>"
+
       biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
 
   reload:

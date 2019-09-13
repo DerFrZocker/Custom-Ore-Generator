@@ -27,20 +27,20 @@ public class SetValueCommand implements TabExecutor {
     @Override //oregen set value <world> <config_name> <setting> <amount>
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 4) {
-            SET_NOT_ENOUGH_ARGS.sendMessage(sender);
+            COMMAND_SET_VALUE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
         Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
-            String world_name = args[0];
+            String worldName = args[0];
             String config_name = args[1];
             String setting_name = args[2];
             String amount = args[3];
 
-            World world = Bukkit.getWorld(world_name);
+            World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                SET_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world_name", world_name));
+                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
@@ -49,7 +49,7 @@ public class SetValueCommand implements TabExecutor {
             Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                sender.sendMessage("Not found! //TODO add message"); //TODO add message
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
                 return;
             }
 
@@ -58,7 +58,7 @@ public class SetValueCommand implements TabExecutor {
             Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(config_name);
 
             if (!oreConfigOptional.isPresent()) {
-                sender.sendMessage("Not found! //TODO add message"); //TODO add message
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
                 return;
             }
 
@@ -69,7 +69,7 @@ public class SetValueCommand implements TabExecutor {
             try {
                 setting = OreSetting.valueOf(setting_name.toUpperCase());
             } catch (IllegalArgumentException e) {
-                SET_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", setting_name));
+                COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", setting_name));
                 return;
             }
 
@@ -77,7 +77,7 @@ public class SetValueCommand implements TabExecutor {
             Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
 
             if (!optionalOreGenerator.isPresent()) {
-                sender.sendMessage("Not found! //TODO add message"); //TODO add message
+                COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", oreConfig.getOreGenerator()));
                 return;
             }
 
@@ -86,7 +86,7 @@ public class SetValueCommand implements TabExecutor {
             Set<OreSetting> settings = generator.getNeededOreSettings();
 
             if (settings.stream().noneMatch(value -> value == setting)) {
-                SET_SETTING_NOT_VALID.sendMessage(sender, new MessageValue("setting", setting_name), new MessageValue("generator", generator.getName()));
+                COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender, new MessageValue("setting", setting_name), new MessageValue("ore-generator", generator.getName()));
                 return;
             }
 
@@ -95,14 +95,14 @@ public class SetValueCommand implements TabExecutor {
             try {
                 value = Integer.parseInt(amount);
             } catch (NumberFormatException e) {
-                SET_NO_NUMBER.sendMessage(sender, new MessageValue("value", amount));
+                COMMAND_SET_VALUE_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
                 return;
             }
 
             oreConfig.setValue(setting, value);
 
             service.saveWorldConfig(worldConfig);
-            SET_SUCCESS.sendMessage(sender);
+            COMMAND_SET_VALUE_SUCCESS.sendMessage(sender, new MessageValue("value", value));
         });
 
         return true;

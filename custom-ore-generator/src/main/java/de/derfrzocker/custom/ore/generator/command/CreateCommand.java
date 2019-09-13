@@ -6,6 +6,7 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import de.derfrzocker.spigot.utils.message.MessageValue;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
@@ -20,6 +21,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
+
 @RequiredArgsConstructor
 public class CreateCommand implements TabExecutor {
 
@@ -29,7 +32,7 @@ public class CreateCommand implements TabExecutor {
     @Override //oregen create <world> <name> <material> [<ore-generator>]
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length < 3) {
-            sender.sendMessage("Not enough args! //TODO add message"); //TODO add message
+            COMMAND_CREATE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -41,7 +44,7 @@ public class CreateCommand implements TabExecutor {
             final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                sender.sendMessage("World not found! //TODO add message"); //TODO add message
+                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
@@ -54,7 +57,7 @@ public class CreateCommand implements TabExecutor {
             final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(oreConfigName);
 
             if (oreConfigOptional.isPresent()) {
-                sender.sendMessage("already present! //TODO add message"); //TODO add message
+                COMMAND_CREATE_ALREADY_EXISTS.sendMessage(sender, new MessageValue("ore-config", oreConfigOptional.get().getName()));
                 return;
             }
 
@@ -63,12 +66,12 @@ public class CreateCommand implements TabExecutor {
             try {
                 material = Material.valueOf(materialName.toUpperCase());
             } catch (final IllegalArgumentException e) {
-                sender.sendMessage("no material! //TODO add message"); //TODO add message
+                COMMAND_MATERIAL_NOT_FOUND.sendMessage(sender, new MessageValue("material", materialName));
                 return;
             }
 
             if (!material.isBlock()) {
-                sender.sendMessage("no block! //TODO add message"); //TODO add message
+                COMMAND_MATERIAL_NO_BLOCK.sendMessage(sender, new MessageValue("material", materialName));
                 return;
             }
 
@@ -77,14 +80,14 @@ public class CreateCommand implements TabExecutor {
             if (args.length == 4) {
                 final Optional<OreGenerator> oreGeneratorOptional = service.getOreGenerator(args[3]);
                 if (!oreGeneratorOptional.isPresent()) {
-                    sender.sendMessage("no ore generator! //TODO add message"); //TODO add message
+                    COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[3]));
                     return;
                 }
 
                 oreGenerator = oreGeneratorOptional.get();
             } else {
-                sender.sendMessage("no ore generator specified, use default! //TODO add message"); //TODO add message
                 oreGenerator = service.getDefaultOreGenerator();
+                COMMAND_CREATE_ORE_GENERATOR_NOT_SPECIFIED.sendMessage(sender, new MessageValue("ore-generator", oreGenerator.getName()));
             }
 
             final OreConfig oreConfig = new OreConfigYamlImpl(oreConfigName, material, oreGenerator.getName()); //TODO create OreConfig over service
@@ -92,7 +95,11 @@ public class CreateCommand implements TabExecutor {
             worldConfig.addOreConfig(oreConfig);
 
             service.saveWorldConfig(worldConfig);
-            sender.sendMessage("success! //TODO add message"); //TODO add message
+            COMMAND_CREATE_SUCCESS.sendMessage(sender,
+                    new MessageValue("world", world.getName()),
+                    new MessageValue("material", material),
+                    new MessageValue("ore-config", oreConfig.getName()),
+                    new MessageValue("ore-generator", oreGenerator.getName()));
         });
 
         return true;

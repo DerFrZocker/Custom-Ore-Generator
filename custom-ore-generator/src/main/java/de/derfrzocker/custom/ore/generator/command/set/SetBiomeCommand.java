@@ -17,8 +17,7 @@ import org.bukkit.command.TabExecutor;
 
 import java.util.*;
 
-import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.SET_BIOME_NOT_ENOUGH_ARGS;
-import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.SET_WORLD_NOT_FOUND;
+import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
 @RequiredArgsConstructor
 public class SetBiomeCommand implements TabExecutor {
@@ -28,9 +27,8 @@ public class SetBiomeCommand implements TabExecutor {
 
     @Override //oregen set biome <world> <config_name> <biome> <biome> ...
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-
         if (args.length < 3) {
-            SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
+            COMMAND_SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -41,7 +39,7 @@ public class SetBiomeCommand implements TabExecutor {
             World world = Bukkit.getWorld(world_name);
 
             if (world == null) {
-                SET_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world_name", world_name));
+                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", world_name));
                 return;
             }
 
@@ -50,7 +48,7 @@ public class SetBiomeCommand implements TabExecutor {
             Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                sender.sendMessage("Not found! //TODO add message"); //TODO add message
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
                 return;
             }
 
@@ -59,7 +57,7 @@ public class SetBiomeCommand implements TabExecutor {
             Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(config_name);
 
             if (!oreConfigOptional.isPresent()) {
-                sender.sendMessage("Not found! //TODO add message"); //TODO add message
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
                 return;
             }
 
@@ -71,7 +69,7 @@ public class SetBiomeCommand implements TabExecutor {
                 try {
                     biomes.add(Biome.valueOf(args[i].toUpperCase()));
                 } catch (IllegalArgumentException e) {
-                    sender.sendMessage("Not Biome! //TODO add message"); //TODO add message
+                    COMMAND_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", args[i]));
                     return;
                 }
             }
@@ -81,8 +79,7 @@ public class SetBiomeCommand implements TabExecutor {
             oreConfig.setGeneratedAll(false);
 
             service.saveWorldConfig(worldConfig);
-
-            sender.sendMessage("success! //TODO add message"); //TODO add message
+            COMMAND_SET_BIOME_SUCCESS.sendMessage(sender);
         });
 
         return true;

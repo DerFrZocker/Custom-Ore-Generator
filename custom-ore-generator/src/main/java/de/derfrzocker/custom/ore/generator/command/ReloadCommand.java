@@ -27,11 +27,11 @@ public class ReloadCommand implements TabExecutor {
             return false;
 
         Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
-            CustomOreGeneratorMessages.RELOAD_BEGIN.sendMessage(sender);
+            CustomOreGeneratorMessages.COMMAND_RELOAD_BEGIN.sendMessage(sender);
 
             ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);
 
-            CustomOreGeneratorMessages.RELOAD_END.sendMessage(sender);
+            CustomOreGeneratorMessages.COMMAND_RELOAD_END.sendMessage(sender);
         });
 
         return true;
