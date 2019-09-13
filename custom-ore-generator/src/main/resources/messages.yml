@@ -40,17 +40,6 @@ command:
         - "&cuse &f/&9oregen set biome &f<&9world&f> <&9ore-config&f> <biome> ..."
       success: "&aThe biomes are set successfully!"
 
-    world_not_found: "&4The world &f'&9%world_name%&f'&4 does not exist!"
-    no_number: "&f'&9%value%&f' &4is not a valid number!"
-    setting_not_found: "&4The setting &f'&9%setting%&f' &4does not exist!"
-    setting_not_valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore &f'&9%ore%&f'&4!"
-    no_block_material: "&4The material &f'&9%material%&f' &4is not a block!"
-    material_not_found:
-      - "&4The material &f'&9%material%&f' &4does not exist!"
-    success: "&aThe value has been updated successfully!"
-
-      biome_not_found: "&4The biome &f'&9%biome%&f' &4does not exist!"
-
   reload:
     begin: "&aBegin with the reload!"
     end: "&aReload finish!"
