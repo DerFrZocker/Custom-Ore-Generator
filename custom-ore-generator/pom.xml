@@ -139,11 +139,11 @@
                     <relocations>
                         <relocation>
                             <pattern>org.bstats</pattern>
-                            <shadedPattern>de.derfrzocker.custom.generator.ore.utils</shadedPattern>
+                            <shadedPattern>de.derfrzocker.custom.ore.generator.utils</shadedPattern>
                         </relocation>
                         <relocation>
                             <pattern>de.derfrzocker.spigot.utils</pattern>
-                            <shadedPattern>de.derfrzocker.custom.generator.ore.utils</shadedPattern>
+                            <shadedPattern>de.derfrzocker.custom.ore.generator.utils</shadedPattern>
                         </relocation>
                     </relocations>
                 </configuration>

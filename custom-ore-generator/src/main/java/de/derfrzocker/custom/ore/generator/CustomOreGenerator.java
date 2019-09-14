@@ -4,7 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.custom.ore.generator.impl.*;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
-import de.derfrzocker.custom.ore.generator.util.VersionPicker;
+import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.Getter;
 import org.bstats.bukkit.Metrics;

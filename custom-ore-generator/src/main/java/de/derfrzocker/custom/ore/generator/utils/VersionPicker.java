@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.util;
+package de.derfrzocker.custom.ore.generator.utils;
 
 import de.derfrzocker.custom.ore.generator.CustomOreBlockPopulator;
 import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
