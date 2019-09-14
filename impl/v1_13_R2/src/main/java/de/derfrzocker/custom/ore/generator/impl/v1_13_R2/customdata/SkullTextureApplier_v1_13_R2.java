@@ -7,10 +7,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_13_R2.BlockPosition;
-import net.minecraft.server.v1_13_R2.GeneratorAccess;
-import net.minecraft.server.v1_13_R2.TileEntity;
-import net.minecraft.server.v1_13_R2.TileEntitySkull;
+import net.minecraft.server.v1_13_R2.*;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -27,9 +24,6 @@ public class SkullTextureApplier_v1_13_R2 implements CustomDataApplier {
         final BlockPosition blockPosition = (BlockPosition) location;
         final GeneratorAccess generatorAccess = (GeneratorAccess) blockAccess;
         final TileEntity tileEntity = generatorAccess.getTileEntity(blockPosition);
-
-        generatorAccess.y(blockPosition).d(blockPosition);
-        generatorAccess.y(blockPosition).a(blockPosition, tileEntity);
 
         if (tileEntity == null)
             return; //TODO maybe throw exeption?
@@ -49,6 +43,14 @@ public class SkullTextureApplier_v1_13_R2 implements CustomDataApplier {
         gameProfile.getProperties().put("textures", new Property("textures", texture));
 
         skull.setGameProfile(gameProfile);
+
+        final NBTTagCompound nbtTagCompound = new NBTTagCompound();
+
+        skull.save(nbtTagCompound);
+
+        generatorAccess.y(blockPosition).d(blockPosition);
+        generatorAccess.y(blockPosition).a(nbtTagCompound);
+
     }
 
 }
