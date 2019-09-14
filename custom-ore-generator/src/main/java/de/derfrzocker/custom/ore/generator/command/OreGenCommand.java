@@ -13,11 +13,5 @@ public class OreGenCommand extends CommandSeparator {
         registerExecutor(new ReloadCommand(customOreGenerator), "reload", Permissions.RELOAD_PERMISSION);
         registerExecutor(new CreateCommand(customOreGenerator), "create", Permissions.CREATE_PERMISSION);
 
-        final HelpCommand helpCommand = new HelpCommand(customOreGenerator);
-
-        this.setHelp(true);
-        registerExecutor(helpCommand, "help", null);
-        registerExecutor(helpCommand, null, null);
-
     }
 }

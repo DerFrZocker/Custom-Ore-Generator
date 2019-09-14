@@ -9,7 +9,7 @@ command:
   create:
     not-enough-args:
       - "&4Wrong amount of arguments!"
-      - "&cuse &f/&9oregen create &f<&9world&f> <&name&f> <&material&f> [<&ore-generator&f>]"
+      - "&cuse &f/&9oregen create &f<&9world&f> <&9name&f> <&9material&f> [<&9ore-generator&f>]"
     already-exists: "&4The Ore-Config &f'&9%ore-config%&f' &4already exists!"
     ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&9%ore-generator%&f'"
     success: "&aThe ore config &f'&9%ore-config%&f', was successfully created, with the material &f'&9%material%&f' and ore generator &f'&9%ore-generator%&f'"
@@ -37,38 +37,9 @@ command:
     biome:
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse &f/&9oregen set biome &f<&9world&f> <&9ore-config&f> <biome> ..."
+        - "&cuse &f/&9oregen set biome &f<&9world&f> <&9ore-config&f> <&9biome&f> &9..."
       success: "&aThe biomes are set successfully!"
 
   reload:
     begin: "&aBegin with the reload!"
     end: "&aReload finish!"
-
-  help:
-    header: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
-    footer: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
-    separator: "  "
-    set:
-      command: "&f/&9oregen set &f<&9world&f> <&9material&f> <&9setting&f> <&9amount&f>"
-      description:
-        - "   -> &9permission&f: custom.ore.gen.set"
-        - "   -> &9description&f: Set a specific value to an material type and world"
-      biome:
-        command:
-          - "&f/&9oregen setbiome &f<&9biome&f> <&9world&f> <&9material&f>"
-          - "                            <&9setting&f> <&9amount&f>"
-        description:
-          - "   -> &9permission&f: custom.ore.gen.set.biome"
-          - "   -> &9description&f: Set a specific value for an material setting, "
-          - "                      for a specific biome in a specific world"
-    reload:
-      command: "&f/&9oregen reload"
-      description:
-        - "   -> &9permission&f: custom.ore.gen.reload"
-        - "   -> &9description&f: Reload the '&9messages.yml&f'"
-    help:
-      command: "&f/&9oregen help &f(<&9subcommand&f>)"
-      description:
-        - "   -> &9permission&f: any command permission"
-        - "   -> &9description&f: Displays all commands and if a subcommand "
-        - "                       is specified, more details are displayed"
