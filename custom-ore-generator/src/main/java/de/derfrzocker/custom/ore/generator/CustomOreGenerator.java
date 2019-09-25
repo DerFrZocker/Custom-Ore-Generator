@@ -45,6 +45,7 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         getCommand("oregen").setExecutor(new OreGenCommand(this));
 
         getService().registerCustomData(SkullTextureCustomData.INSTANCE);
+        getService().registerCustomData(DirectionCustomData.INSTANCE);
 
         new Metrics(this);
     }

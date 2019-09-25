@@ -26,16 +26,16 @@ public class SkullTextureApplier_v1_14_R1 implements CustomDataApplier {
         final TileEntity tileEntity = generatorAccess.getTileEntity(blockPosition);
 
         if (tileEntity == null)
-            return; //TODO maybe throw exeption?
+            return; //TODO maybe throw exception?
 
         if (!(tileEntity instanceof TileEntitySkull))
-            return; //TODO maybe throw exeption?
+            return; //TODO maybe throw exception?
 
         final TileEntitySkull skull = (TileEntitySkull) tileEntity;
         final Optional<Object> objectOptional = oreConfig.getCustomData(customData);
 
         if (!objectOptional.isPresent())
-            return; //TODO maybe throw exeption?
+            return; //TODO maybe throw exception?
 
         final String texture = (String) objectOptional.get();
         final GameProfile gameProfile = new GameProfile(UUID.nameUUIDFromBytes(texture.getBytes()), null);
