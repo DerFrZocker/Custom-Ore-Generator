@@ -4,7 +4,17 @@ import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.FacingApplier_v1_10_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.FacingApplier_v1_11_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.FacingApplier_v1_12_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.FacingApplier_v1_13_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.FacingApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.FacingApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.FacingApplier_v1_18_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.FacingApplier_v1_18_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.FacingApplier_v1_18_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.FacingApplier_v1_19_R1;
+import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.FacingApplier_v1_19_R2;
 import de.derfrzocker.spigot.utils.Version;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -61,16 +71,25 @@ public class FacingCustomData implements CustomData {
             case v1_14_R1:
                 return new FacingApplier_v1_14_R1(this);
             case v1_13_R2:
+                return new FacingApplier_v1_13_R2(this);
             case v1_13_R1:
+                return new FacingApplier_v1_13_R1(this);
             case v1_12_R1:
+                return new FacingApplier_v1_12_R1(this);
             case v1_11_R1:
+                return new FacingApplier_v1_11_R1(this);
             case v1_10_R1:
+                return new FacingApplier_v1_10_R1(this);
             case v1_9_R2:
+                return new FacingApplier_v1_19_R2(this);
             case v1_9_R1:
+                return new FacingApplier_v1_19_R1(this);
             case v1_8_R3:
+                return new FacingApplier_v1_18_R3(this);
             case v1_8_R2:
+                return new FacingApplier_v1_18_R2(this);
             case v1_8_R1:
-                throw new UnsupportedOperationException("Version not supported jet!");
+                return new FacingApplier_v1_18_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

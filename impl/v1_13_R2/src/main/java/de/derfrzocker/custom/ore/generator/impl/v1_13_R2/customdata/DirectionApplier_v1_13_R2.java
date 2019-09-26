@@ -1,20 +1,20 @@
-package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.BlockStateBoolean;
-import net.minecraft.server.v1_14_R1.GeneratorAccess;
-import net.minecraft.server.v1_14_R1.IBlockData;
+import net.minecraft.server.v1_13_R2.BlockPosition;
+import net.minecraft.server.v1_13_R2.BlockStateBoolean;
+import net.minecraft.server.v1_13_R2.GeneratorAccess;
+import net.minecraft.server.v1_13_R2.IBlockData;
 import org.bukkit.block.BlockFace;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
+public class DirectionApplier_v1_13_R2 implements CustomDataApplier {
 
     @NonNull
     private final CustomData customData;

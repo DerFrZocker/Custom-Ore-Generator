@@ -1,20 +1,17 @@
-package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_14_R1.BlockPosition;
-import net.minecraft.server.v1_14_R1.BlockStateBoolean;
-import net.minecraft.server.v1_14_R1.GeneratorAccess;
-import net.minecraft.server.v1_14_R1.IBlockData;
+import net.minecraft.server.v1_9_R1.*;
 import org.bukkit.block.BlockFace;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
+public class DirectionApplier_v1_19_R1 implements CustomDataApplier {
 
     @NonNull
     private final CustomData customData;
@@ -24,10 +21,17 @@ public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
     @Override
     public void apply(OreConfig oreConfig, Object location, Object blockAccess) {
         final BlockPosition blockPosition = (BlockPosition) location;
-        final GeneratorAccess generatorAccess = (GeneratorAccess) blockAccess;
-        IBlockData iBlockData = generatorAccess.getType(blockPosition);
+        final World world = (World) blockAccess;
+        IBlockData iBlockData = world.getType(blockPosition);
 
-        final BlockStateBoolean blockStateBoolean = (BlockStateBoolean) iBlockData.getBlock().getStates().a(blockFace.name().toLowerCase());
+        BlockStateBoolean blockStateBoolean = null;
+
+        for (final IBlockState<?> iBlockState : iBlockData.getBlock().t().d()) {
+            if (iBlockState.a().equals(blockFace.name().toLowerCase())) {
+                blockStateBoolean = (BlockStateBoolean) iBlockState;
+                break;
+            }
+        }
 
         if (blockStateBoolean == null)
             return; //TODO maybe throw exception?
@@ -39,7 +43,7 @@ public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
 
         iBlockData = iBlockData.set(blockStateBoolean, (boolean) objectOptional.get());
 
-        generatorAccess.setTypeAndData(blockPosition, iBlockData, 2);
+        world.setTypeAndData(blockPosition, iBlockData, 2);
     }
 
 }
