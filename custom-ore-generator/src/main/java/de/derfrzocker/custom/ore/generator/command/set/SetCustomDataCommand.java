@@ -158,6 +158,8 @@ public class SetCustomDataCommand implements TabExecutor {
                 return Integer.parseInt(data);
             case DOUBLE:
                 return Double.parseDouble(data);
+            case BOOLEAN:
+                return Boolean.parseBoolean(data);
         }
 
         throw new IllegalArgumentException();

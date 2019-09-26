@@ -46,6 +46,12 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
         getService().registerCustomData(SkullTextureCustomData.INSTANCE);
         getService().registerCustomData(FacingCustomData.INSTANCE);
+        getService().registerCustomData(DirectionCustomData.DOWN);
+        getService().registerCustomData(DirectionCustomData.UP);
+        getService().registerCustomData(DirectionCustomData.NORTH);
+        getService().registerCustomData(DirectionCustomData.SOUTH);
+        getService().registerCustomData(DirectionCustomData.EAST);
+        getService().registerCustomData(DirectionCustomData.WEST);
 
         new Metrics(this);
     }
