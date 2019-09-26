@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
+public class FacingApplier_v1_14_R1 implements CustomDataApplier {
 
     private final static Map<String, EnumDirection> DIRECTION_MAP = new HashMap<>(6);
 
