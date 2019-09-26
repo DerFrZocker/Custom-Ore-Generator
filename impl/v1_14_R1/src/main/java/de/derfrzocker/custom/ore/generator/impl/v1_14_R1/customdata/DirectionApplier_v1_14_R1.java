@@ -32,7 +32,7 @@ public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
     public void apply(OreConfig oreConfig, Object location, Object blockAccess) {
         final BlockPosition blockPosition = (BlockPosition) location;
         final GeneratorAccess generatorAccess = (GeneratorAccess) blockAccess;
-        final IBlockData iBlockData = generatorAccess.getType(blockPosition);
+        IBlockData iBlockData = generatorAccess.getType(blockPosition);
 
         final BlockStateDirection blockStateDirection = (BlockStateDirection) iBlockData.getBlock().getStates().a("facing");
 
@@ -46,7 +46,7 @@ public class DirectionApplier_v1_14_R1 implements CustomDataApplier {
 
         final String facing = (String) objectOptional.get();
 
-        iBlockData.set(blockStateDirection, DIRECTION_MAP.get(facing.toUpperCase()));
+        iBlockData = iBlockData.set(blockStateDirection, DIRECTION_MAP.get(facing.toUpperCase()));
 
         generatorAccess.setTypeAndData(blockPosition, iBlockData, 2);
     }
