@@ -9,6 +9,7 @@ import de.derfrzocker.spigot.utils.Version;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
@@ -38,17 +39,13 @@ public class FacingCustomData implements CustomData {
         if (!(customData instanceof String))
             return false;
 
-        switch (((String) customData).toUpperCase()) {
-            case "DOWN":
-            case "UP":
-            case "NORTH":
-            case "SOUTH":
-            case "WEST":
-            case "EAST":
-                return true;
-        }
+        try {
+            final BlockFace blockFace = BlockFace.valueOf(((String) customData).toUpperCase());
 
-        return false;
+            return ((Directional) Bukkit.createBlockData(oreConfig.getMaterial())).getFaces().contains(blockFace);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
     }
 
     @Override
