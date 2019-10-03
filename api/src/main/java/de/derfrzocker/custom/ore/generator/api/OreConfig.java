@@ -2,39 +2,200 @@ package de.derfrzocker.custom.ore.generator.api;
 
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
+/**
+ * A OreConfig holds the data, to generate veins of Ores. Each different vein type,
+ * has it's own OreConfig.
+ */
 public interface OreConfig {
 
+    /**
+     * The name is use to identify the OreConfig.
+     * No OreConfig with the same name can be Present in a WorldOreConfig
+     * The name is also use to seed the Random, that is use to generate the Ore of this
+     * OreConfig.
+     *
+     * @return the name of this OreConfig
+     */
+    @NotNull
     String getName();
 
+    /**
+     * Return if this OreConfig should get generated or not.
+     *
+     * @return true if it should generate other wise false
+     */
     boolean isActivated();
 
+    /**
+     * Return if this OreConfig should be generated on all biomes,
+     * or only on the biomes that are in the Set which getBiomes() returns.
+     *
+     * @return true if this should generate on all biomes other wise false
+     */
     boolean shouldGeneratedAll(); //TODO maybe better name
 
+    /**
+     * Set if this OreConfig should get generated or not.
+     *
+     * @param activated true for generate, false for not generate
+     */
     void setActivated(boolean activated);
 
+    /**
+     * Set if this OreConfig should get generated on all biomes.
+     *
+     * @param generatedAll true for all, false for only specific biomes
+     */
     void setGeneratedAll(boolean generatedAll); //TODO maybe better name
 
+    /**
+     * Returns a copy of all biomes which should get generate.
+     * The OreConfig gets only generated on the the specific biomes,
+     * when shouldGeneratedAll() false is.
+     * <p>
+     * The Set that get's returned maybe immutable.
+     *
+     * @return a set with biomes
+     */
+    @NotNull
     Set<Biome> getBiomes();
 
+    /**
+     * Add a biome to this OreConfig
+     *
+     * @param biome which should be added
+     * @throws IllegalArgumentException if biome is null
+     */
+    void addBiome(@NotNull Biome biome);
+
+    /**
+     * Remove a biome from this OreConfig
+     *
+     * @param biome which should be removed
+     * @throws IllegalArgumentException if biome is null
+     */
+    void removeBiome(@NotNull Biome biome);
+
+    /**
+     * @return the main Material of this OreConfig
+     */
+    @NotNull
     Material getMaterial();
 
+
+    /**
+     * Set the OreGenerator of this OreConfig
+     *
+     * @param oreGenerator to set
+     * @throws IllegalArgumentException if oreGenerator is null
+     */
+    void setOreGenerator(@NotNull OreGenerator oreGenerator);
+
+    /**
+     * @return the name of the OreGenerator
+     */
+    @NotNull
     String getOreGenerator();
 
-    Optional<Integer> getValue(OreSetting setting);
+    /**
+     * Set the BlockSelector of this OreConfig
+     *
+     * @param blockSelector to set
+     * @throws IllegalArgumentException if blockSelector is null
+     */
+    void setBlockSelector(@NotNull BlockSelector blockSelector);
 
-    void setValue(OreSetting setting, int value);
+    /**
+     * @return the name of the BlockSelector
+     */
+    @NotNull
+    String getBlockSelector();
 
+    /**
+     * If this OreConfig contains the value of the given OreSetting,
+     * it returns an Optional that contains the value,
+     * otherwise it return an empty Optional
+     *
+     * @param oreSetting which must be non-null
+     * @return an Optional that hold the value of the given OreSetting,
+     * or an empty Optional if the OreConfig not contain the given oreSetting.
+     * @throws IllegalArgumentException if oreSetting is null
+     */
+    @NotNull
+    Optional<Integer> getValue(@NotNull OreSetting oreSetting);
+
+    /**
+     * This sets the given OreSetting with the given value, to this
+     * OreConfig. If this OreConfig already contains the given OreSetting,
+     * than the old value get's replaced.
+     *
+     * @param oreSetting which must be non-null
+     * @param value      for the given setting
+     * @throws IllegalArgumentException if oreSetting is null
+     */
+    void setValue(@NotNull OreSetting oreSetting, int value);
+
+    /**
+     * Removes the value of the given OreSetting from this OreConfig.
+     * If this OreConfig don't contains a value of the given OreSetting, nothing happens.
+     *
+     * @param oreSetting which get's removed
+     * @return true if it was removed, false if this OreConfig don't have the OreSetting.
+     * @throws IllegalArgumentException if oreSetting is null
+     */
+    boolean removeValue(@NotNull OreSetting oreSetting);
+
+    /**
+     * Returns a copy of all OreSettings and it's values, which this OreConfig has.
+     * <p>
+     * The map that get's returned is maybe immutable.
+     *
+     * @return a map with all OreSetting and values
+     */
+    @NotNull
     Map<OreSetting, Integer> getOreSettings();
 
+    /**
+     * Returns a copy of all CustomData and it's values, which this OreConfig has.
+     * <p>
+     * The map that get's returned is maybe immutable.
+     *
+     * @return a map with all CustomData and values
+     */
+    @NotNull
     Map<CustomData, Object> getCustomData();
 
-    Optional<Object> getCustomData(CustomData customData);
+    /**
+     * If this OreConfig contains the value of the given CustomData,
+     * it returns an Optional that contains the value,
+     * otherwise it return an empty Optional
+     *
+     * @param customData which must be non-null
+     * @return an Optional that hold the value of the given CustomData,
+     * or an empty Optional if the OreConfig not contain the given customData.
+     * @throws IllegalArgumentException if customData is null
+     */
+    @NotNull
+    Optional<Object> getCustomData(@NotNull CustomData customData);
 
-    void setCustomData(CustomData customData, Object data);
+    /**
+     * This sets the given CustomData with the given value, to this
+     * OreConfig. If this OreConfig already contains the given CustomData,
+     * than the old value get's replaced.
+     * <p>
+     * If data is null, the CustomData get's removed from this OreConfig.
+     *
+     * @param customData which must be non-null
+     * @param data       for the given customData
+     * @throws IllegalArgumentException if customData is null
+     */
+    void setCustomData(@NotNull CustomData customData, @Nullable Object data);
 
 }
