@@ -287,7 +287,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         final Map<String, Object> serialize = new LinkedHashMap<>();
 
         serialize.put(NAME_KEY, getName());
-        serialize.put(MATERIAL_KEY, getMaterial());
+        serialize.put(MATERIAL_KEY, getMaterial().toString());
         serialize.put(ORE_GENERATOR_KEY, getOreGenerator());
         serialize.put(BLOCK_SELECTOR_KEY, getBlockSelector());
         serialize.put(ACTIVATED_KEY, isActivated());
@@ -315,7 +315,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         if (!oreSettingsMap.isEmpty()) {
             final Map<String, Integer> data = new LinkedHashMap<>(lazyOreSettings);
 
-            oreSettingsMap.forEach((key, value) -> data.put(key.toString(), value));
+            oreSettingsMap.forEach((key, value) -> data.put(key.getName(), value));
 
             serialize.put(ORE_SETTINGS_KEY, data);
         }
