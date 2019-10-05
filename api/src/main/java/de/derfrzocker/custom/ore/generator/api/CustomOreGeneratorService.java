@@ -8,6 +8,7 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Optional;
 import java.util.Random;
 import java.util.Set;
+import java.util.logging.Logger;
 
 public interface CustomOreGeneratorService {
 
@@ -181,7 +182,7 @@ public interface CustomOreGeneratorService {
 
     /**
      * Creates a new OreConfig with the given parameters.
-     * The name must match the following Regex: ^[a-zA-Z_-]*$
+     * The name must match the following Regex: ^[a-zA-Z0-9_-]*$
      * The name can not be empty
      *
      * @param name          of the OreConfig
@@ -190,7 +191,7 @@ public interface CustomOreGeneratorService {
      * @param blockSelector of the OreConfig
      * @return a new OreConfig with the given values
      * @throws IllegalArgumentException if name, material, oreGenerator or blockSelector are null
-     * @throws IllegalArgumentException if the name doesn't match the Regex: ^[a-zA-Z_-]*$
+     * @throws IllegalArgumentException if the name doesn't match the Regex: ^[a-zA-Z0-9_-]*$
      * @throws IllegalArgumentException if the name is empty
      */
     @NotNull
@@ -220,5 +221,11 @@ public interface CustomOreGeneratorService {
      */
     @NotNull
     Random createRandom(long seed, int x, int z);
+
+    /**
+     * @return the logger of the CustomOreGeneratorService
+     */
+    @NotNull
+    Logger getLogger();
 
 }

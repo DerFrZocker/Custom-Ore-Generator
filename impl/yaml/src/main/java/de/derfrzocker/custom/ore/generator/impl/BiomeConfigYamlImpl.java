@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
 import org.bukkit.configuration.serialization.SerializableAs;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
@@ -23,7 +24,7 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
 
     private final Map<Material, OreConfig> oreConfigs = new HashMap<>();
 
-    public BiomeConfigYamlImpl(Biome biome) {
+    private BiomeConfigYamlImpl(Biome biome) {
         this.biome = biome;
     }
 
@@ -43,6 +44,7 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
     }
 
     @SuppressWarnings("Duplicates")
+    @NotNull
     @Override
     public Map<String, Object> serialize() {
         throw new UnsupportedOperationException("Not supported");

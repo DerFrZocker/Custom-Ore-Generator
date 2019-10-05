@@ -4,33 +4,39 @@ import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
 import de.derfrzocker.spigot.utils.dao.yaml.BasicYamlDao;
-import lombok.NonNull;
+import org.apache.commons.lang.Validate;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
+import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.util.Optional;
 
 public class WorldConfigYamlDao extends BasicYamlDao<String, WorldConfig> implements WorldConfigDao {
 
-
     public WorldConfigYamlDao(File file) {
         super(file);
     }
 
     @Override
-    public Optional<WorldConfig> get(final @NonNull String key) {
+    public Optional<WorldConfig> get(@NotNull final String key) {
+        Validate.notNull(key, "String key can not be null");
+
         return getFromStringKey(key);
     }
 
     @Override
-    public void remove(final @NonNull WorldConfig value) {
-        saveFromStringKey(value.getWorld(), null);
+    public void remove(@NotNull final WorldConfig config) {
+        Validate.notNull(config, "WorldConfig can not be null");
+
+        saveFromStringKey(config.getWorld(), null);
     }
 
     @Override
-    public void save(@NonNull WorldConfig config) {
+    public void save(@NotNull WorldConfig config) {
+        Validate.notNull(config, "WorldConfig can not be null");
+
         if (!(config instanceof ConfigurationSerializable)) {
-            WorldConfig config2 = new WorldConfigYamlImpl(config.getWorld());
+            final WorldConfig config2 = new WorldConfigYamlImpl(config.getWorld());
             config.getOreConfigs().forEach(config2::addOreConfig);
             config = config2;
         }
