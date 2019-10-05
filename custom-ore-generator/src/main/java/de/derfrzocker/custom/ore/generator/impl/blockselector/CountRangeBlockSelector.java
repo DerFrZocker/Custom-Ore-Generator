@@ -15,7 +15,7 @@ import java.util.Set;
 
 public class CountRangeBlockSelector implements BlockSelector {
 
-    private final Set<OreSetting>  neededOreSettings = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.HEIGHT_RANGE, OreSettings.MINIMUM_HEIGHT, OreSettings.VEINS_PER_CHUNK));
+    private final Set<OreSetting> neededOreSettings = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.HEIGHT_RANGE, OreSettings.MINIMUM_HEIGHT, OreSettings.VEINS_PER_CHUNK));
 
     @NotNull
     @Override
@@ -26,7 +26,7 @@ public class CountRangeBlockSelector implements BlockSelector {
         final int minimumHeight = config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(OreSettings.MINIMUM_HEIGHT.getSaveValue());
         final int veinsPerChunk = config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue());
 
-        for(int i = 0; i < veinsPerChunk; i++){
+        for (int i = 0; i < veinsPerChunk; i++) {
             final int x = random.nextInt(16);
             final int y = random.nextInt(heightRange) + minimumHeight;
             final int z = random.nextInt(16);

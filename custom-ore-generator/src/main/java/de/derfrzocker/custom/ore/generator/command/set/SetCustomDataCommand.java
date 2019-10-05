@@ -1,81 +1,93 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
-import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
-@RequiredArgsConstructor
 public class SetCustomDataCommand implements TabExecutor {
 
-    private final CustomOreGenerator customOreGenerator;
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+    @NotNull
+    private final JavaPlugin javaPlugin;
+
+    public SetCustomDataCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+        this.javaPlugin = javaPlugin;
+    }
 
     @Override //oregen set customdata <world> <config_name> <customdata> <value>
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 4) {
             COMMAND_SET_CUSTOMDATA_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
-        CommandUtil.runAsynchronously(sender, customOreGenerator, () -> {
+        CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
             final String worldName = args[0];
             final String configName = args[1];
             final String customDataName = args[2];
             final String customDataValue = args[3];
 
-            World world = Bukkit.getWorld(worldName);
+            final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
                 COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
-            CustomOreGeneratorService service = CustomOreGenerator.getService();
+            final CustomOreGeneratorService service = serviceSupplier.get();
 
-            Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
+            final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
                 COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
-            WorldConfig worldConfig = worldConfigOptional.get();
+            final WorldConfig worldConfig = worldConfigOptional.get();
 
-            Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
+            final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
                 COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
-            OreConfig oreConfig = oreConfigOptional.get();
+            final OreConfig oreConfig = oreConfigOptional.get();
 
-            Optional<CustomData> customDataOptional = service.getCustomData(customDataName);
+            final Optional<CustomData> customDataOptional = service.getCustomData(customDataName);
 
             if (!customDataOptional.isPresent()) {
                 COMMAND_SET_CUSTOMDATA_NOT_FOUND.sendMessage(sender, new MessageValue("customdata", customDataName));
                 return;
             }
 
-            CustomData customData = customDataOptional.get();
+            final CustomData customData = customDataOptional.get();
 
             if (!customData.canApply(oreConfig)) {
                 COMMAND_SET_CUSTOMDATA_ORE_CONFIG_NOT_VALID.sendMessage(sender, new MessageValue("customdata", customData.getName()), new MessageValue("ore-config", oreConfig.getName()));
                 return;
             }
 
-            Object data;
+            final Object data;
 
             try {
                 data = parse(customDataValue, customData.getCustomDataType());
@@ -98,9 +110,9 @@ public class SetCustomDataCommand implements TabExecutor {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
-        final CustomOreGeneratorService service = CustomOreGenerator.getService();
+        final CustomOreGeneratorService service = serviceSupplier.get();
 
         if (args.length == 1) {
             final String world_name = args[0].toLowerCase();
@@ -109,12 +121,12 @@ public class SetCustomDataCommand implements TabExecutor {
         }
 
         if (args.length == 2) {
-            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
             if (!world.isPresent())
                 return list;
 
-            Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
             if (!worldConfig.isPresent())
                 return list;
@@ -125,17 +137,17 @@ public class SetCustomDataCommand implements TabExecutor {
         }
 
         if (args.length == 3) {
-            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
             if (!world.isPresent())
                 return list;
 
-            Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
             if (!worldConfig.isPresent())
                 return list;
 
-            Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
+            final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
 
             if (!oreConfig.isPresent())
                 return list;
@@ -150,7 +162,7 @@ public class SetCustomDataCommand implements TabExecutor {
         return list;
     }
 
-    private Object parse(String data, CustomDataType customDataType) throws IllegalArgumentException {
+    private Object parse(final String data, final CustomDataType customDataType) throws IllegalArgumentException {
         switch (customDataType) {
             case STRING:
                 return data;

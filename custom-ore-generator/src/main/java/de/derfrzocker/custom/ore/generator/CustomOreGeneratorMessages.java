@@ -10,6 +10,7 @@ public final class CustomOreGeneratorMessages {
     // general command
     public final static MessageKey COMMAND_WORLD_NOT_FOUND = new MessageKey(CustomOreGenerator.getInstance(), "command.world-not-found");
     public final static MessageKey COMMAND_ORE_GENERATOR_NOT_FOUND = new MessageKey(CustomOreGenerator.getInstance(), "command.ore-generator-not-found");
+    public final static MessageKey COMMAND_BLOCK_SELECTOR_NOT_FOUND = new MessageKey(CustomOreGenerator.getInstance(), "command.block-selector-not-found");
     public final static MessageKey COMMAND_MATERIAL_NOT_FOUND = new MessageKey(CustomOreGenerator.getInstance(), "command.material-not-found");
     public final static MessageKey COMMAND_MATERIAL_NO_BLOCK = new MessageKey(CustomOreGenerator.getInstance(), "command.material-no-block");
     public final static MessageKey COMMAND_ORE_CONFIG_NOT_FOUND = new MessageKey(CustomOreGenerator.getInstance(), "command.ore-config-not-found");
@@ -19,6 +20,7 @@ public final class CustomOreGeneratorMessages {
     public final static MessageKey COMMAND_CREATE_NOT_ENOUGH_ARGS = new MessageKey(CustomOreGenerator.getInstance(), "command.create.not-enough-args");
     public final static MessageKey COMMAND_CREATE_ALREADY_EXISTS = new MessageKey(CustomOreGenerator.getInstance(), "command.create.already-exists");
     public final static MessageKey COMMAND_CREATE_ORE_GENERATOR_NOT_SPECIFIED = new MessageKey(CustomOreGenerator.getInstance(), "command.create.ore-generator-not-specified");
+    public final static MessageKey COMMAND_CREATE_BLOCK_SELECTOR_NOT_SPECIFIED = new MessageKey(CustomOreGenerator.getInstance(), "command.create.block-selector-not-specified");
     public final static MessageKey COMMAND_CREATE_SUCCESS = new MessageKey(CustomOreGenerator.getInstance(), "command.create.success");
 
     // reload command

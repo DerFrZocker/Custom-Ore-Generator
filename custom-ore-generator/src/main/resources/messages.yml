@@ -1,6 +1,7 @@
 command:
   world-not-found: "&4The world &f'&9%world%&f' &4does not exist!"
   ore-generator-not-found: "&4The ore generator &f'&9%ore-generator%&f' &4does not exist!"
+  block-selector-not-found: "&4The block selector &f'&9%block-selector%&f' &4does not exist!"
   material-not-found: "&4The material &f'&9%material%&f' &4does not exist!"
   material-no-block: "&4The material &f'&9%material%&f' &4is not a block!"
   ore-config-not-found: "&4The ore config &f'&9%ore-config%&f' &4does not exist!"
@@ -12,7 +13,8 @@ command:
       - "&cuse &f/&9oregen create &f<&9world&f> <&9name&f> <&9material&f> [<&9ore-generator&f>]"
     already-exists: "&4The Ore-Config &f'&9%ore-config%&f' &4already exists!"
     ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&9%ore-generator%&f'"
-    success: "&aThe ore config &f'&9%ore-config%&f', was successfully created, with the material &f'&9%material%&f' and ore generator &f'&9%ore-generator%&f'"
+    block-selector-not-specified: "&6Block selector not specified use default one: &f'&9%block-selector%&f'"
+    success: "&aThe ore config &f'&9%ore-config%&f', was successfully created, with the material &f'&9%material%&f', ore generator &f'&9%ore-generator%&f' and block selector &f'&9%block-selector%&f'"
 
   set:
 

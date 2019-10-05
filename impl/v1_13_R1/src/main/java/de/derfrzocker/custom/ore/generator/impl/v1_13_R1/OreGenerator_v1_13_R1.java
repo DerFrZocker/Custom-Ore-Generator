@@ -12,6 +12,6 @@ import java.util.Set;
 
 public interface OreGenerator_v1_13_R1 extends OreGenerator {
 
-    void generate(@NotNull OreConfig config, @NotNull  World world, @NotNull GeneratorAccessOverrider access, @NotNull  Random random, @NotNull  Biome biome, @NotNull Set<Location> locations);
+    void generate(@NotNull OreConfig config, @NotNull World world, @NotNull GeneratorAccessOverrider access, @NotNull Random random, @NotNull Biome biome, @NotNull Set<Location> locations);
 
 }

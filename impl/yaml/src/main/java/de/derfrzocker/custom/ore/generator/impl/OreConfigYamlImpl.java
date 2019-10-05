@@ -52,9 +52,9 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     /**
      * Creates a new OreConfigYamlImpl with the given values
      *
-     * @param name of the OreConfig
-     * @param material of the OreConfig
-     * @param oreGenerator of the OreConfig
+     * @param name          of the OreConfig
+     * @param material      of the OreConfig
+     * @param oreGenerator  of the OreConfig
      * @param blockSelector of the OreConfig
      */
     public OreConfigYamlImpl(@NotNull final String name, @NotNull final Material material, @NotNull final String oreGenerator, @NotNull final String blockSelector) {
@@ -135,7 +135,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
      * @param target to which the data should be get copy
      */
     @Deprecated
-    static void copyData(@NotNull final OreConfigYamlImpl toCopy, @NotNull final OreConfigYamlImpl target){
+    static void copyData(@NotNull final OreConfigYamlImpl toCopy, @NotNull final OreConfigYamlImpl target) {
         target.setActivated(toCopy.isActivated());
         target.setGeneratedAll(toCopy.shouldGeneratedAll());
         target.getBiomes().forEach(target::addBiome);

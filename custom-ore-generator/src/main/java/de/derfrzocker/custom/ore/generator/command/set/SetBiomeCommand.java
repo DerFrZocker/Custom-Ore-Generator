@@ -1,69 +1,79 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
-@RequiredArgsConstructor
 public class SetBiomeCommand implements TabExecutor {
 
-    @NonNull
-    private final CustomOreGenerator customOreGenerator;
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+    @NotNull
+    private final JavaPlugin javaPlugin;
+
+    public SetBiomeCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+        this.javaPlugin = javaPlugin;
+    }
 
     @Override //oregen set biome <world> <config_name> <biome> <biome> ...
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length < 3) {
             COMMAND_SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
-            String world_name = args[0];
-            String config_name = args[1];
+        Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
+            final String worldName = args[0];
+            final String configName = args[1];
 
-            World world = Bukkit.getWorld(world_name);
+            final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", world_name));
+                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
-            CustomOreGeneratorService service = CustomOreGenerator.getService();
+            final CustomOreGeneratorService service = serviceSupplier.get();
 
-            Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
+            final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
-            WorldConfig worldConfig = worldConfigOptional.get();
+            final WorldConfig worldConfig = worldConfigOptional.get();
 
-            Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(config_name);
+            final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
-            OreConfig oreConfig = oreConfigOptional.get();
+            final OreConfig oreConfig = oreConfigOptional.get();
 
-            Set<Biome> biomes = new HashSet<>();
+            final Set<Biome> biomes = new HashSet<>();
 
             for (int i = 2; i < args.length; i++) {
                 try {
@@ -74,8 +84,8 @@ public class SetBiomeCommand implements TabExecutor {
                 }
             }
 
-            oreConfig.getBiomes().clear();
-            oreConfig.getBiomes().addAll(biomes);
+            oreConfig.getBiomes().forEach(oreConfig::removeBiome);
+            biomes.forEach(oreConfig::addBiome);
             oreConfig.setGeneratedAll(false);
 
             service.saveWorldConfig(worldConfig);
@@ -86,9 +96,9 @@ public class SetBiomeCommand implements TabExecutor {
     }
 
     @Override //oregen set biome <world> <config_name> <biome> <biome> ...
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
-        final CustomOreGeneratorService service = CustomOreGenerator.getService();
+        final CustomOreGeneratorService service = serviceSupplier.get();
 
         if (args.length == 1) {
             final String world_name = args[0].toLowerCase();
@@ -97,12 +107,12 @@ public class SetBiomeCommand implements TabExecutor {
         }
 
         if (args.length == 2) {
-            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
             if (!world.isPresent())
                 return list;
 
-            Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
             if (!worldConfig.isPresent())
                 return list;
@@ -112,22 +122,22 @@ public class SetBiomeCommand implements TabExecutor {
             return list;
         }
 
-        Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+        final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
         if (!world.isPresent())
             return list;
 
-        Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+        final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
         if (!worldConfig.isPresent())
             return list;
 
-        Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
+        final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
 
         if (!oreConfig.isPresent())
             return list;
 
-        Set<Biome> biomes = new HashSet<>();
+        final Set<Biome> biomes = new HashSet<>();
 
         for (int i = 2; i < (args.length - 1); i++) {
             try {
@@ -137,7 +147,7 @@ public class SetBiomeCommand implements TabExecutor {
             }
         }
 
-        Set<Biome> biomeSet = Sets.newHashSet(Biome.values());
+        final Set<Biome> biomeSet = Sets.newHashSet(Biome.values());
 
         biomeSet.removeAll(biomes);
 

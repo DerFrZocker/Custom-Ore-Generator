@@ -1,96 +1,112 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
-import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
+import java.util.function.Supplier;
 
 import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
 
-@RequiredArgsConstructor
 public class SetValueCommand implements TabExecutor {
 
-    @NonNull
-    private final CustomOreGenerator customOreGenerator;
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+    @NotNull
+    private final JavaPlugin javaPlugin;
+
+    public SetValueCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+        this.javaPlugin = javaPlugin;
+    }
 
     @Override //oregen set value <world> <config_name> <setting> <amount>
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 4) {
             COMMAND_SET_VALUE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(customOreGenerator, () -> {
-            String worldName = args[0];
-            String config_name = args[1];
-            String setting_name = args[2];
-            String amount = args[3];
+        Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
+            final String worldName = args[0];
+            final String configName = args[1];
+            final String settingName = args[2];
+            final String amount = args[3];
 
-            World world = Bukkit.getWorld(worldName);
+            final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
                 COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
-            CustomOreGeneratorService service = CustomOreGenerator.getService();
+            final CustomOreGeneratorService service = serviceSupplier.get();
 
-            Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
+            final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
-            WorldConfig worldConfig = worldConfigOptional.get();
+            final WorldConfig worldConfig = worldConfigOptional.get();
 
-            Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(config_name);
+            final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", config_name));
+                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
-            OreConfig oreConfig = oreConfigOptional.get();
+            final OreConfig oreConfig = oreConfigOptional.get();
 
-            OreSetting setting;
+            final OreSetting setting = OreSetting.getOreSetting(settingName.toUpperCase());
 
-            try {
-                setting = OreSetting.valueOf(setting_name.toUpperCase());
-            } catch (IllegalArgumentException e) {
-                COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", setting_name));
+            if (setting == null) {
+                COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
                 return;
             }
 
-
-            Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
+            final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
 
             if (!optionalOreGenerator.isPresent()) {
                 COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", oreConfig.getOreGenerator()));
                 return;
             }
 
-            OreGenerator generator = optionalOreGenerator.get();
+            final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
 
-            Set<OreSetting> settings = generator.getNeededOreSettings();
-
-            if (settings.stream().noneMatch(value -> value == setting)) {
-                COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender, new MessageValue("setting", setting_name), new MessageValue("ore-generator", generator.getName()));
+            if (!optionalBlockSelector.isPresent()) {
+                COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("block-selector", oreConfig.getBlockSelector()));
                 return;
             }
 
-            int value;
+            final OreGenerator generator = optionalOreGenerator.get();
+            final BlockSelector blockSelector = optionalBlockSelector.get();
+
+            if (generator.getNeededOreSettings().stream().noneMatch(value -> value == setting) && blockSelector.getNeededOreSettings().stream().noneMatch(value -> value == setting)) {
+                COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender,
+                        new MessageValue("setting", settingName),
+                        new MessageValue("ore-generator", generator.getName()),
+                        new MessageValue("block-selector", blockSelector.getName())
+                );
+                return;
+            }
+
+            final int value;
 
             try {
                 value = Integer.parseInt(amount);
@@ -109,9 +125,9 @@ public class SetValueCommand implements TabExecutor {
     }
 
     @Override //oregen set value <world> <config_name> <setting> <amount>
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
-        final CustomOreGeneratorService service = CustomOreGenerator.getService();
+        final CustomOreGeneratorService service = serviceSupplier.get();
 
         if (args.length == 1) {
             final String world_name = args[0].toLowerCase();
@@ -120,12 +136,12 @@ public class SetValueCommand implements TabExecutor {
         }
 
         if (args.length == 2) {
-            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
             if (!world.isPresent())
                 return list;
 
-            Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
             if (!worldConfig.isPresent())
                 return list;
@@ -136,29 +152,27 @@ public class SetValueCommand implements TabExecutor {
         }
 
         if (args.length == 3) {
-            Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
 
             if (!world.isPresent())
                 return list;
 
-            Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
+            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
 
             if (!worldConfig.isPresent())
                 return list;
 
-            Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
+            final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
 
             if (!oreConfig.isPresent())
                 return list;
 
-            final String setting_name = args[2].toUpperCase();
+            final String settingName = args[2].toUpperCase();
 
             final Optional<OreGenerator> oreGenerator = service.getOreGenerator(oreConfig.get().getOreGenerator());
-
-            if (!oreGenerator.isPresent())
-                return list;
-
-            oreGenerator.get().getNeededOreSettings().stream().map(Enum::toString).filter(value -> value.contains(setting_name)).forEach(list::add);
+            oreGenerator.ifPresent(generator -> generator.getNeededOreSettings().stream().map(OreSetting::getName).filter(value -> value.contains(settingName)).forEach(list::add));
+            final Optional<BlockSelector> blockSelector = service.getBlockSelector(oreConfig.get().getBlockSelector());
+            blockSelector.ifPresent(selector -> selector.getNeededOreSettings().stream().map(OreSetting::getName).filter(value -> value.contains(settingName)).forEach(list::add));
 
             return list;
         }

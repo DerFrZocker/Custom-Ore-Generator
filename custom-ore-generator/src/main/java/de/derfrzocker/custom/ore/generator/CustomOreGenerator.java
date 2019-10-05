@@ -62,7 +62,7 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     public void onEnable() {
         new VersionPicker(CustomOreGeneratorServiceSupplier.INSTANCE, this, Version.getCurrent()).init();
 
-        getCommand("oregen").setExecutor(new OreGenCommand(this));
+        getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this));
 
 
         new Metrics(this);
