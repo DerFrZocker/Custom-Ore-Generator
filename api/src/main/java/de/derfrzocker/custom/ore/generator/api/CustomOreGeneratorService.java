@@ -50,6 +50,7 @@ public interface CustomOreGeneratorService {
      * already set, it get's overridden by the new one.
      *
      * @param blockSelector the new default BlockSelector
+     * @throws IllegalArgumentException if the blockSelector is not null and not registered
      */
     void setDefaultBlockSelector(@Nullable BlockSelector blockSelector);
 
@@ -97,6 +98,7 @@ public interface CustomOreGeneratorService {
      * already set, it get's overridden by the new one.
      *
      * @param oreGenerator the new default OreGenerator
+     * @throws IllegalArgumentException if the oreGenerator is not null and not registered
      */
     void setDefaultOreGenerator(@Nullable OreGenerator oreGenerator);
 
@@ -193,6 +195,9 @@ public interface CustomOreGeneratorService {
      * @throws IllegalArgumentException if name, material, oreGenerator or blockSelector are null
      * @throws IllegalArgumentException if the name doesn't match the Regex: ^[a-zA-Z0-9_-]*$
      * @throws IllegalArgumentException if the name is empty
+     * @throws IllegalArgumentException if material is not a block
+     * @throws IllegalArgumentException if oreGenerator is not registered
+     * @throws IllegalArgumentException if blockSelector is not registered
      */
     @NotNull
     OreConfig createOreConfig(@NotNull String name, @NotNull Material material, @NotNull OreGenerator oreGenerator, @NotNull BlockSelector blockSelector);
