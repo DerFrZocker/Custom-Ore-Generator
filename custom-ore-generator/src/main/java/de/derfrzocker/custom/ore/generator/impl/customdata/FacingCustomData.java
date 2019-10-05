@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.impl;
+package de.derfrzocker.custom.ore.generator.impl.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
@@ -16,36 +16,41 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.FacingApplier
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.FacingApplier_v1_19_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.FacingApplier_v1_19_R2;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class FacingCustomData implements CustomData {
 
     public static final FacingCustomData INSTANCE = new FacingCustomData();
 
+    @Nullable
     private CustomDataApplier customDataApplier;
 
+    private FacingCustomData() {
+    }
+
+    @NotNull
     @Override
     public String getName() {
         return "FACING";
     }
 
+    @NotNull
     @Override
     public CustomDataType getCustomDataType() {
         return CustomDataType.STRING;
     }
 
     @Override
-    public boolean canApply(OreConfig oreConfig) {
+    public boolean canApply(@NotNull final OreConfig oreConfig) {
         return Bukkit.createBlockData(oreConfig.getMaterial()) instanceof Directional;
     }
 
     @Override
-    public boolean isValidCustomData(Object customData, OreConfig oreConfig) {
+    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         if (!(customData instanceof String))
             return false;
 
@@ -58,6 +63,7 @@ public class FacingCustomData implements CustomData {
         }
     }
 
+    @NotNull
     @Override
     public CustomDataApplier getCustomDataApplier() {
         if (customDataApplier == null)

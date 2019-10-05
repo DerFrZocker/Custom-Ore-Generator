@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.impl;
+package de.derfrzocker.custom.ore.generator.impl.customdata;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
@@ -19,15 +19,14 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.SkullTextureA
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.SkullTextureApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.SkullTextureApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
 import org.bukkit.Material;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SkullTextureCustomData implements CustomData {
 
     public static final SkullTextureCustomData INSTANCE = new SkullTextureCustomData();
@@ -56,26 +55,32 @@ public class SkullTextureCustomData implements CustomData {
 
     }
 
+    @Nullable
     private CustomDataApplier customDataApplier;
 
+    private SkullTextureCustomData() {
+    }
+
+    @NotNull
     @Override
     public String getName() {
         return "SKULL_TEXTURE";
     }
 
+    @NotNull
     @Override
     public CustomDataType getCustomDataType() {
         return CustomDataType.STRING;
     }
 
     @Override
-    public boolean canApply(OreConfig oreConfig) {
+    public boolean canApply(@NotNull final OreConfig oreConfig) {
         return materials.contains(oreConfig.getMaterial());
     }
 
     @Override
     // example decoded Base64 String: {"textures":{"SKIN":{"url":"http://textures.minecraft.net/texture/59ac16f296b461d05ea0785d477033e527358b4f30c266aa02f020157ffca736"}}}
-    public boolean isValidCustomData(Object customData, OreConfig oreConfig) { // TODO test method
+    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) { // TODO test method
         if (!(customData instanceof String))
             return false;
 
@@ -87,6 +92,7 @@ public class SkullTextureCustomData implements CustomData {
         }
     }
 
+    @NotNull
     @Override
     public CustomDataApplier getCustomDataApplier() {
         if (customDataApplier == null)

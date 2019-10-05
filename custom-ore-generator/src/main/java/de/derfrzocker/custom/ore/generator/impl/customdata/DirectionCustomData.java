@@ -1,4 +1,4 @@
-package de.derfrzocker.custom.ore.generator.impl;
+package de.derfrzocker.custom.ore.generator.impl.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
@@ -16,14 +16,13 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.DirectionAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.DirectionApplier_v1_19_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.DirectionApplier_v1_19_R2;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
-@RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 public class DirectionCustomData implements CustomData {
 
     public static final DirectionCustomData DOWN = new DirectionCustomData("DOWN", BlockFace.DOWN);
@@ -33,24 +32,32 @@ public class DirectionCustomData implements CustomData {
     public static final DirectionCustomData WEST = new DirectionCustomData("WEST", BlockFace.WEST);
     public static final DirectionCustomData EAST = new DirectionCustomData("EAST", BlockFace.EAST);
 
+    @NotNull
+    private final String name;
+    @NotNull
+    private final BlockFace blockFace;
+    @Nullable
     private CustomDataApplier customDataApplier;
 
-    private final String name;
+    private DirectionCustomData(@NotNull final String name, @NotNull final BlockFace blockFace) {
+        this.name = name;
+        this.blockFace = blockFace;
+    }
 
-    private final BlockFace blockFace;
-
+    @NotNull
     @Override
     public String getName() {
         return name;
     }
 
+    @NotNull
     @Override
     public CustomDataType getCustomDataType() {
         return CustomDataType.BOOLEAN;
     }
 
     @Override
-    public boolean canApply(OreConfig oreConfig) {
+    public boolean canApply(@NotNull final OreConfig oreConfig) {
         final BlockData blockData = Bukkit.createBlockData(oreConfig.getMaterial());
 
         if (!(blockData instanceof MultipleFacing))
@@ -60,10 +67,11 @@ public class DirectionCustomData implements CustomData {
     }
 
     @Override
-    public boolean isValidCustomData(Object customData, OreConfig oreConfig) {
+    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         return customData instanceof Boolean;
     }
 
+    @NotNull
     @Override
     public CustomDataApplier getCustomDataApplier() {
         if (customDataApplier == null)
