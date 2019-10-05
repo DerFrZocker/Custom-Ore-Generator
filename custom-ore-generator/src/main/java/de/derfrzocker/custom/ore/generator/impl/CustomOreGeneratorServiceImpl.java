@@ -58,7 +58,7 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
         Validate.notNull(blockSelector, "BlockSelector can not be null");
         Validate.notEmpty(blockSelector.getName(), "BlockSelector name can not be empty");
         Validate.isTrue(!getBlockSelector(blockSelector.getName()).isPresent(), "BlockSelector " + blockSelector.getName() + " is already registered");
-        Validate.isTrue(!BLOCK_SELECTOR_NAME_PATTERN.matcher(blockSelector.getName()).matches(), "BlockSelector " + blockSelector.getName() + " does not match the regex: ^[A-Z_]*$");
+        Validate.isTrue(BLOCK_SELECTOR_NAME_PATTERN.matcher(blockSelector.getName()).matches(), "BlockSelector " + blockSelector.getName() + " does not match the regex: ^[A-Z_]*$");
 
         this.blockSelectors.put(blockSelector.getName(), blockSelector);
     }
@@ -100,7 +100,7 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
         Validate.notNull(oreGenerator, "OreGenerator can not be null");
         Validate.notEmpty(oreGenerator.getName(), "OreGenerator name can not be empty");
         Validate.isTrue(!getOreGenerator(oreGenerator.getName()).isPresent(), "OreGenerator " + oreGenerator.getName() + " is already registered");
-        Validate.isTrue(!ORE_GENERATOR_NAME_PATTERN.matcher(oreGenerator.getName()).matches(), "OreGenerator " + oreGenerator.getName() + " does not match the regex: ^[A-Z_]*$");
+        Validate.isTrue(ORE_GENERATOR_NAME_PATTERN.matcher(oreGenerator.getName()).matches(), "OreGenerator " + oreGenerator.getName() + " does not match the regex: ^[A-Z_]*$");
 
         this.oreGenerators.put(oreGenerator.getName(), oreGenerator);
     }
@@ -142,7 +142,7 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
         Validate.notNull(customData, "CustomData can not be null");
         Validate.notEmpty(customData.getName(), "CustomData name can not be empty");
         Validate.isTrue(!getCustomData(customData.getName()).isPresent(), "CustomData " + customData.getName() + " is already registered");
-        Validate.isTrue(!CUSTOM_DATA_NAME_PATTERN.matcher(customData.getName()).matches(), "CustomData " + customData.getName() + " does not match the regex: ^[A-Z_]*$");
+        Validate.isTrue(CUSTOM_DATA_NAME_PATTERN.matcher(customData.getName()).matches(), "CustomData " + customData.getName() + " does not match the regex: ^[A-Z_]*$");
 
         this.customDatas.put(customData.getName(), customData);
     }
