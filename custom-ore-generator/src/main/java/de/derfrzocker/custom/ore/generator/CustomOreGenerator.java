@@ -1,8 +1,10 @@
 package de.derfrzocker.custom.ore.generator;
 
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.custom.ore.generator.impl.*;
+import de.derfrzocker.custom.ore.generator.impl.blockselector.CountRangeBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
@@ -15,6 +17,7 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
+import java.util.function.Supplier;
 
 public class CustomOreGenerator extends JavaPlugin implements Listener {
 
@@ -33,36 +36,57 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
         final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"));
 
-        Bukkit.getServicesManager().register(CustomOreGeneratorService.class, new CustomOreGeneratorServiceImpl(worldConfigYamlDao, getLogger()), this, ServicePriority.Normal);
+        final CustomOreGeneratorService service = new CustomOreGeneratorServiceImpl(worldConfigYamlDao, getLogger());
+
+        Bukkit.getServicesManager().register(CustomOreGeneratorService.class, service, this, ServicePriority.Normal);
+
+        //register BlockSelector
+        final BlockSelector blockSelector = new CountRangeBlockSelector();
+        service.registerBlockSelector(blockSelector);
+        service.setDefaultBlockSelector(blockSelector);
+
+        // register CustomData
+        service.registerCustomData(SkullTextureCustomData.INSTANCE);
+        service.registerCustomData(FacingCustomData.INSTANCE);
+        service.registerCustomData(DirectionCustomData.DOWN);
+        service.registerCustomData(DirectionCustomData.UP);
+        service.registerCustomData(DirectionCustomData.NORTH);
+        service.registerCustomData(DirectionCustomData.SOUTH);
+        service.registerCustomData(DirectionCustomData.EAST);
+        service.registerCustomData(DirectionCustomData.WEST);
 
         worldConfigYamlDao.init();
     }
 
     @Override
     public void onEnable() {
-        new VersionPicker(Version.getCurrent(), getService(), this).init();
+        new VersionPicker(CustomOreGeneratorServiceSupplier.INSTANCE, this, Version.getCurrent()).init();
 
         getCommand("oregen").setExecutor(new OreGenCommand(this));
 
-        getService().registerCustomData(SkullTextureCustomData.INSTANCE);
-        getService().registerCustomData(FacingCustomData.INSTANCE);
-        getService().registerCustomData(DirectionCustomData.DOWN);
-        getService().registerCustomData(DirectionCustomData.UP);
-        getService().registerCustomData(DirectionCustomData.NORTH);
-        getService().registerCustomData(DirectionCustomData.SOUTH);
-        getService().registerCustomData(DirectionCustomData.EAST);
-        getService().registerCustomData(DirectionCustomData.WEST);
 
         new Metrics(this);
     }
 
-    public static CustomOreGeneratorService getService() {
-        CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+    private static final class CustomOreGeneratorServiceSupplier implements Supplier<CustomOreGeneratorService> {
 
-        if (service == null)
-            throw new IllegalStateException("The Bukkit Service have no " + CustomOreGeneratorService.class.getName() + " registered", new NullPointerException("service can't be null"));
+        private static final CustomOreGeneratorServiceSupplier INSTANCE = new CustomOreGeneratorServiceSupplier();
 
-        return service;
+        private CustomOreGeneratorService service;
+
+        @Override
+        public CustomOreGeneratorService get() {
+            final CustomOreGeneratorService tempService = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+
+            if (service == null && tempService == null)
+                throw new NullPointerException("The Bukkit Service has no CustomOreGeneratorService and no CustomOreGeneratorService is cached!");
+
+            if (tempService != null && service != tempService)
+                service = tempService;
+
+            return service;
+        }
+
     }
 
 }

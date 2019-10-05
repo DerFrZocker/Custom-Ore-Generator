@@ -1,33 +1,46 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.generator.BlockPopulator;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.Supplier;
 
 public class CustomOreBlockPopulator extends BlockPopulator implements WorldHandler, Listener {
 
-    public CustomOreBlockPopulator(CustomOreGenerator customOreGenerator) {
-        Bukkit.getPluginManager().registerEvents(this, customOreGenerator);
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+
+    public CustomOreBlockPopulator(@NotNull final JavaPlugin javaPlugin, @NotNull Supplier<CustomOreGeneratorService> serviceSupplier) {
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+
+        Bukkit.getPluginManager().registerEvents(this, javaPlugin);
     }
 
     @Override
-    public void populate(World world, Random random, Chunk source) {
-        Set<Biome> biomes = getBiomes(source);
+    public void populate(@NotNull final World world, @NotNull final Random random, @NotNull final Chunk source) {
+        final Set<Biome> biomes = getBiomes(source);
 
-        CustomOreGeneratorService service = CustomOreGenerator.getService();
+        final CustomOreGeneratorService service = serviceSupplier.get();
 
-        WorldConfig worldConfig;
+        final WorldConfig worldConfig;
 
         {
-            Optional<WorldConfig> optional = service.getWorldConfig(world.getName());
+            final Optional<WorldConfig> optional = service.getWorldConfig(world.getName());
 
             if (!optional.isPresent())
                 return;
@@ -36,15 +49,15 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         }
 
         biomes.forEach(biome -> {
-            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
+            final List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
-            oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome));
+            oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome, service));
         });
 
     }
 
-    private Set<Biome> getBiomes(Chunk chunk) {
-        Set<Biome> set = new HashSet<>();
+    private Set<Biome> getBiomes(final Chunk chunk) {
+        final Set<Biome> set = new HashSet<>();
 
         for (int x = 0; x < 16; x++)
             for (int z = 0; z < 16; z++)
@@ -53,22 +66,31 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         return set;
     }
 
-    private void generate(OreConfig oreConfig, World world, Chunk chunk, Biome biome) {
-        CustomOreGeneratorService service = CustomOreGenerator.getService();
+    private void generate(final OreConfig oreConfig, final World world, final Chunk chunk, final Biome biome, final CustomOreGeneratorService service) {
+        final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
+        final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
 
-        Optional<OreGenerator> optional = service.getOreGenerator(oreConfig.getOreGenerator());
-
-        if (!optional.isPresent())
+        if (!optionalOreGenerator.isPresent())
             return;
 
-        OreGenerator oreGenerator = optional.get();
+        if (!optionalBlockSelector.isPresent())
+            return;
 
-        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ()), biome);
+        final OreGenerator oreGenerator = optionalOreGenerator.get();
+        final BlockSelector blockSelector = optionalBlockSelector.get();
+        final Random random = service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ());
+
+        final Set<Location> locations = blockSelector.selectBlocks(oreConfig, random);
+        final Set<Location> biomeLocations = new HashSet<>();
+
+        locations.stream().filter(location -> chunk.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getBiome() == biome).forEach(biomeLocations::add);
+
+        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), random, biome, biomeLocations);
     }
 
 
     @EventHandler
-    public void onWorldLoad(WorldLoadEvent event) {
+    public void onWorldLoad(@NotNull final WorldLoadEvent event) {
         if (event.getWorld().getPopulators().contains(this))
             return;
 

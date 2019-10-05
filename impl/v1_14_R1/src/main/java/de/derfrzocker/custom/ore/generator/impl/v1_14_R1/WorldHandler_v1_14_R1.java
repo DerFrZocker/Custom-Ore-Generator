@@ -1,21 +1,32 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1;
 
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.WorldHandler;
-import lombok.NonNull;
 import net.minecraft.server.v1_14_R1.ChunkGenerator;
 import net.minecraft.server.v1_14_R1.PlayerChunkMap;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_14_R1.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.lang.reflect.Field;
+import java.util.function.Supplier;
 
 public class WorldHandler_v1_14_R1 implements WorldHandler, Listener {
 
-    public WorldHandler_v1_14_R1(final @NonNull JavaPlugin javaPlugin) {
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+
+    public WorldHandler_v1_14_R1(@NotNull final JavaPlugin javaPlugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier) {
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        this.serviceSupplier = serviceSupplier;
+
         Bukkit.getPluginManager().registerEvents(this, javaPlugin);
     }
 
@@ -46,7 +57,7 @@ public class WorldHandler_v1_14_R1 implements WorldHandler, Listener {
             final ChunkGenerator<?> chunkGenerator = (ChunkGenerator<?>) chunkGeneratorObject;
 
             // create a new ChunkOverrider
-            final ChunkOverrider<?> overrider = new ChunkOverrider<>(chunkGenerator);
+            final ChunkOverrider<?> overrider = new ChunkOverrider<>(serviceSupplier, chunkGenerator);
 
             // set the ChunkOverrider to the PlayerChunkMap
             ChunkGeneratorField.set(playerChunkMap, overrider);

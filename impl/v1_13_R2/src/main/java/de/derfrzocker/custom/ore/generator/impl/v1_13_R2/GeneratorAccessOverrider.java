@@ -1,10 +1,10 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2;
 
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_13_R2.*;
+import org.apache.commons.lang.Validate;
 import org.bukkit.event.entity.CreatureSpawnEvent;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.Random;
@@ -13,17 +13,35 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-@RequiredArgsConstructor
 public class GeneratorAccessOverrider implements GeneratorAccess {
 
-    @NonNull
+    @NotNull
     private final GeneratorAccess parent;
-
-    @NonNull
+    @NotNull
     private final OreConfig oreConfig;
+    private final int x;
+    private final int z;
+
+    public GeneratorAccessOverrider(@NotNull final GeneratorAccess parent, @NotNull final OreConfig oreConfig, final int x, final int z) {
+        Validate.notNull(parent, "Parent GeneratorAccess can not be null");
+        Validate.notNull(oreConfig, "OreConfig can not be null");
+
+        this.parent = parent;
+        this.oreConfig = oreConfig;
+        this.x = x;
+        this.z = z;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getZ() {
+        return z;
+    }
 
     @Override
-    public boolean setTypeAndData(BlockPosition blockPosition, IBlockData iBlockData, int i) {
+    public boolean setTypeAndData(final BlockPosition blockPosition, final IBlockData iBlockData, final int i) {
         final boolean success = parent.setTypeAndData(blockPosition, iBlockData, i);
 
         if (!success)

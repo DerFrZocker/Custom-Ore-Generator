@@ -1,8 +1,8 @@
 package de.derfrzocker.custom.ore.generator.utils;
 
 import de.derfrzocker.custom.ore.generator.CustomOreBlockPopulator;
-import de.derfrzocker.custom.ore.generator.CustomOreGenerator;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.MinableGenerator_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.MinableGenerator_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.MinableGenerator_v1_12_R1;
@@ -20,22 +20,31 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.MinableGenerator_v1_8_R3
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.MinableGenerator_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.MinableGenerator_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang.Validate;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-@RequiredArgsConstructor
+import java.util.function.Supplier;
+
 public class VersionPicker {
 
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+    @NotNull
+    private final JavaPlugin javaPlugin;
+    @NotNull
+    private final Version version;
     private boolean init;
 
-    @NonNull
-    private final Version version;
+    public VersionPicker(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final Version version) {
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(version, "Version can not be null");
 
-    @NonNull
-    private final CustomOreGeneratorService customOreGeneratorService;
-
-    @NonNull
-    private final CustomOreGenerator customOreGenerator;
+        this.serviceSupplier = serviceSupplier;
+        this.javaPlugin = javaPlugin;
+        this.version = version;
+    }
 
     public void init() {
         if (init) {
@@ -87,63 +96,123 @@ public class VersionPicker {
     }
 
     private void init_V1_8_R1() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_8_R2() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R2());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R2();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_8_R3() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_8_R3());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R3();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_9_R1() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_9_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_9_R2() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_9_R2());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R2();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_10_R1() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_10_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_10_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_11_R1() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_11_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_11_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_12_R1() {
-        new CustomOreBlockPopulator(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_12_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new CustomOreBlockPopulator(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_12_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_13_R1() {
-        new WorldHandler_v1_13_R1(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new WorldHandler_v1_13_R1(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_13_R2() {
-        new WorldHandler_v1_13_R2(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R2());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new WorldHandler_v1_13_R2(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_13_R2_paper() {
-        new WorldHandler_v1_13_R2_paper(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_13_R2_paper());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new WorldHandler_v1_13_R2_paper(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2_paper();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
     private void init_V1_14_R1() {
-        new WorldHandler_v1_14_R1(customOreGenerator);
-        customOreGeneratorService.setDefaultOreGenerator(new MinableGenerator_v1_14_R1());
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new WorldHandler_v1_14_R1(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_14_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
     }
 
 }

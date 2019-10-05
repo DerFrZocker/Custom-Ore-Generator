@@ -1,24 +1,22 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1;
 
-import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import net.minecraft.server.v1_14_R1.*;
-import org.bukkit.Bukkit;
+import org.apache.commons.lang.Validate;
+import org.bukkit.Location;
 import org.bukkit.block.Biome;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.*;
+import java.util.function.Supplier;
 
 public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGenerator<C> {
 
-    final ChunkGenerator<C> parent;
-
-    final static Method getCarvingBiome;
-    final static Method getDecoratingBiome;
+    private final static Method getCarvingBiome;
+    private final static Method getDecoratingBiome;
 
     static {
         try {
@@ -32,8 +30,17 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         }
     }
 
-    public ChunkOverrider(ChunkGenerator<C> parent) {
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
+    @NotNull
+    private final ChunkGenerator<C> parent;
+
+    public ChunkOverrider(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final ChunkGenerator<C> parent) {
         super(DummyGeneratorAccess.INSTANCE, null, null);
+        Validate.notNull(serviceSupplier, "Service supplier can not be null");
+        Validate.notNull(parent, "Parent ChunkGenerator can not be null");
+
+        this.serviceSupplier = serviceSupplier;
         this.parent = parent;
     }
 
@@ -72,17 +79,17 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
     }
 
     @Override
-    public void addDecorations(RegionLimitedWorldAccess regionLimitedWorldAccess) {
+    public void addDecorations(final RegionLimitedWorldAccess regionLimitedWorldAccess) {
         parent.addDecorations(regionLimitedWorldAccess);
 
-        Set<Biome> biomes = getBiomes(regionLimitedWorldAccess);
+        final Set<Biome> biomes = getBiomes(regionLimitedWorldAccess);
 
-        CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+        final CustomOreGeneratorService service = serviceSupplier.get();
 
-        WorldConfig worldConfig;
+        final WorldConfig worldConfig;
 
         {
-            Optional<WorldConfig> optional = service.getWorldConfig(parent.getWorld().getWorld().getName());
+            final Optional<WorldConfig> optional = service.getWorldConfig(parent.getWorld().getWorld().getName());
 
             if (!optional.isPresent())
                 return;
@@ -91,9 +98,9 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         }
 
         biomes.forEach(biome -> {
-            List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
+            final List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome)).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
-            oreConfigs.forEach(oreConfig -> generate(oreConfig, regionLimitedWorldAccess, biome));
+            oreConfigs.forEach(oreConfig -> generate(oreConfig, regionLimitedWorldAccess, biome, service));
         });
     }
 
@@ -193,15 +200,15 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         return parent.getWorld();
     }
 
-    private Set<Biome> getBiomes(RegionLimitedWorldAccess access) {
-        Set<Biome> set = new HashSet<>();
+    private Set<Biome> getBiomes(final RegionLimitedWorldAccess access) {
+        final Set<Biome> set = new HashSet<>();
 
-        int x = access.a() << 4;
-        int z = access.b() << 4;
+        final int x = access.a() << 4;
+        final int z = access.b() << 4;
 
         for (int x2 = x; x2 < x + 16; x2++)
             for (int z2 = z; z2 < z + 16; z2++) {
-                BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
+                final BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
                 try {
                     set.add(Biome.valueOf(IRegistry.BIOME.getKey(base).getKey().toUpperCase()));
                 } catch (Exception ignored) {
@@ -211,21 +218,33 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         return set;
     }
 
-    private void generate(OreConfig oreConfig, RegionLimitedWorldAccess access, Biome biome) {
-        CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+    private void generate(final OreConfig oreConfig, final RegionLimitedWorldAccess access, final Biome biome, final CustomOreGeneratorService service) {
+        final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
+        final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
 
-        Optional<OreGenerator> optional = service.getOreGenerator(oreConfig.getOreGenerator());
-
-        if (!optional.isPresent())
+        if (!optionalOreGenerator.isPresent())
             return;
 
-        OreGenerator oreGenerator = optional.get();
+        if (!optionalBlockSelector.isPresent())
+            return;
 
-        if (oreGenerator instanceof MinableGenerator_v1_14_R1) {
-            ((MinableGenerator_v1_14_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), access, service.createRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
+        final OreGenerator oreGenerator = optionalOreGenerator.get();
+        final BlockSelector blockSelector = optionalBlockSelector.get();
+        final Random random = service.createRandom(access.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b());
+
+        final Set<Location> locations = blockSelector.selectBlocks(oreConfig, random);
+        final Set<Location> biomeLocations = new HashSet<>();
+        final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
+        final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
+
+        locations.stream().filter(location -> access.getBiome(chunkPosition.b(location.getBlockX(), location.getBlockY(), location.getBlockZ())) == biomeBase).forEach(biomeLocations::add);
+
+        if (oreGenerator instanceof OreGenerator_v1_14_R1) {
+            ((OreGenerator_v1_14_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), new GeneratorAccessOverrider(access, oreConfig, access.a(), access.b()), random, biome, biomeLocations);
             return;
         }
 
-        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), service.createRandom(parent.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b()), biome);
+        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), random, biome, biomeLocations);
     }
+
 }
