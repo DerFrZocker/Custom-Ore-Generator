@@ -161,7 +161,7 @@ public class GeneratorAccessOverrider implements GeneratorAccess {
 
     @Override
     public int a(HeightMap.Type type, int i, int i1) {
-        return parent.a(type, i, i1);
+        return 255;
     }
 
     @Nullable
