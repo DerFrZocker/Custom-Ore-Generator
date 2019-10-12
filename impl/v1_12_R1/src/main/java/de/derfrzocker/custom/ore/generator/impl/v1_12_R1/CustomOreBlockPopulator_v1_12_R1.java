@@ -1,12 +1,16 @@
-package de.derfrzocker.custom.ore.generator;
+package de.derfrzocker.custom.ore.generator.impl.v1_12_R1;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.IBlockData;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldLoadEvent;
@@ -17,12 +21,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Supplier;
 
-public class CustomOreBlockPopulator extends BlockPopulator implements WorldHandler, Listener {
+public class CustomOreBlockPopulator_v1_12_R1 extends BlockPopulator implements WorldHandler, Listener {
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
 
-    public CustomOreBlockPopulator(@NotNull final JavaPlugin javaPlugin, @NotNull Supplier<CustomOreGeneratorService> serviceSupplier) {
+    public CustomOreBlockPopulator_v1_12_R1(@NotNull final JavaPlugin javaPlugin, @NotNull Supplier<CustomOreGeneratorService> serviceSupplier) {
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
 
@@ -51,7 +55,7 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         biomes.forEach(biome -> {
             final List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
-            oreConfigs.forEach(oreConfig -> generate(oreConfig, world, source, biome, service));
+            oreConfigs.forEach(oreConfig -> generate(oreConfig, (CraftWorld) world, source, biome, service));
         });
 
     }
@@ -66,7 +70,7 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
         return set;
     }
 
-    private void generate(final OreConfig oreConfig, final World world, final Chunk chunk, final Biome biome, final CustomOreGeneratorService service) {
+    private void generate(final OreConfig oreConfig, final CraftWorld craftWorld, final Chunk chunk, final Biome biome, final CustomOreGeneratorService service) {
         final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
         final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
 
@@ -78,16 +82,33 @@ public class CustomOreBlockPopulator extends BlockPopulator implements WorldHand
 
         final OreGenerator oreGenerator = optionalOreGenerator.get();
         final BlockSelector blockSelector = optionalBlockSelector.get();
-        final Random random = service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ());
+        final Random random = service.createRandom(craftWorld.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ());
 
         final Set<Location> locations = blockSelector.selectBlocks(oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
 
         locations.stream().filter(location -> chunk.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getBiome() == biome).forEach(biomeLocations::add);
 
-        oreGenerator.generate(oreConfig, world, chunk.getX(), chunk.getZ(), random, biome, biomeLocations);
-    }
+        craftWorld.getHandle().captureTreeGeneration = true;
+        craftWorld.getHandle().captureBlockStates = true;
 
+        oreGenerator.generate(oreConfig, craftWorld, chunk.getX(), chunk.getZ(), random, biome, biomeLocations);
+
+        craftWorld.getHandle().captureTreeGeneration = false;
+        craftWorld.getHandle().captureBlockStates = false;
+
+        final IBlockData blockData = CraftMagicNumbers.getBlock(oreConfig.getMaterial()).getBlockData();
+
+        for (org.bukkit.block.BlockState blockState : craftWorld.getHandle().capturedBlockStates) {
+            final BlockPosition blockPosition = new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ());
+
+            if (craftWorld.getHandle().setTypeAndData(blockPosition, blockData, 2)) {
+                oreConfig.getCustomData().forEach((customData, object) -> customData.getCustomDataApplier().apply(oreConfig, blockPosition, craftWorld.getHandle()));
+            }
+        }
+
+        craftWorld.getHandle().capturedBlockStates.clear();
+    }
 
     @EventHandler
     public void onWorldLoad(@NotNull final WorldLoadEvent event) {

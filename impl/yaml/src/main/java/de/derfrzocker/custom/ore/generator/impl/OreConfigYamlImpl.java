@@ -318,7 +318,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         }
 
         final Map<OreSetting, Integer> oreSettingsMap = getOreSettings();
-        if (!oreSettingsMap.isEmpty()|| !lazyOreSettings.isEmpty()) {
+        if (!oreSettingsMap.isEmpty() || !lazyOreSettings.isEmpty()) {
             final Map<String, Integer> data = new LinkedHashMap<>(lazyOreSettings);
 
             oreSettingsMap.forEach((key, value) -> data.put(key.getName(), value));

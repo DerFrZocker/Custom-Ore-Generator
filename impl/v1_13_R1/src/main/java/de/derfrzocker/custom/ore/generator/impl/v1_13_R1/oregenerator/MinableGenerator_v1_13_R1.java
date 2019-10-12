@@ -1,23 +1,23 @@
-package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper;
+package de.derfrzocker.custom.ore.generator.impl.v1_13_R1.oregenerator;
 
-import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.api.OreSettings;
-import net.minecraft.server.v1_13_R2.*;
+import de.derfrzocker.custom.ore.generator.impl.oregenerator.AbstractMinableGenerator;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.GeneratorAccessOverrider;
+import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.OreGenerator_v1_13_R1;
+import net.minecraft.server.v1_13_R1.*;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
-import org.bukkit.craftbukkit.v1_13_R2.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_13_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
 import java.util.function.Predicate;
 
-public class MinableGenerator_v1_13_R2_paper implements OreGenerator_v1_13_R2_paper {
+public class MinableGenerator_v1_13_R1 extends AbstractMinableGenerator implements OreGenerator_v1_13_R1 {
 
     private final Predicate<IBlockData> blocks = (value) -> {
         if (value == null) {
@@ -28,7 +28,6 @@ public class MinableGenerator_v1_13_R2_paper implements OreGenerator_v1_13_R2_pa
         }
     };
     private final WorldGenMinable generator = new WorldGenMinable();
-    private final Set<OreSetting> neededOreSettings = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEIN_SIZE));
 
     @Override
     public void generate(@NotNull final OreConfig config, @NotNull final World world, @NotNull final GeneratorAccessOverrider access, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
@@ -45,18 +44,6 @@ public class MinableGenerator_v1_13_R2_paper implements OreGenerator_v1_13_R2_pa
     @Override
     public void generate(@NotNull final OreConfig config, @NotNull final World world, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
         throw new UnsupportedOperationException("Not Supported in version 1_13_R1");
-    }
-
-    @NotNull
-    @Override
-    public Set<OreSetting> getNeededOreSettings() {
-        return neededOreSettings;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "VANILLA_MINABLE_GENERATOR";
     }
 
 }
