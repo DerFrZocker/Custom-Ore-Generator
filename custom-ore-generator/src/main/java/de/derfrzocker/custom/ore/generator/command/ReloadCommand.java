@@ -2,8 +2,8 @@ package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.spigot.utils.ReloadAble;
+import de.derfrzocker.spigot.utils.command.CommandUtil;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -31,7 +31,7 @@ public class ReloadCommand implements TabExecutor {
 
     @Override
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
+        CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
             messages.COMMAND_RELOAD_BEGIN.sendMessage(sender);
 
             ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);

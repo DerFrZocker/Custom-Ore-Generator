@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -45,17 +46,12 @@ public class CreateCommand implements TabExecutor {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
+        CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
             final String worldName = args[0];
             final String oreConfigName = args[1];
             final String materialName = args[2];
 
-            final World world = Bukkit.getWorld(worldName);
-
-            if (world == null) {
-                messages.COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
-                return;
-            }
+            final World world = CommandUtil.getWorld(worldName, messages.COMMAND_WORLD_NOT_FOUND, sender);
 
             final CustomOreGeneratorService service = serviceSupplier.get();
 

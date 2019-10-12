@@ -3,7 +3,9 @@ package de.derfrzocker.custom.ore.generator.command.set;
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.spigot.utils.CommandSeparator;
+import de.derfrzocker.custom.ore.generator.command.HelpConfigImpl;
+import de.derfrzocker.spigot.utils.command.CommandSeparator;
+import de.derfrzocker.spigot.utils.command.HelpCommand;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -19,9 +21,13 @@ public class SetCommand extends CommandSeparator {
         Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
         Validate.notNull(permissions, "Permissions can not be null");
 
-        registerExecutor(new SetValueCommand(serviceSupplier, javaPlugin, messages), "value", permissions.SET_VALUE_PERMISSION);
-        registerExecutor(new SetBiomeCommand(serviceSupplier, javaPlugin, messages), "biome", permissions.SET_BIOME_PERMISSION);
-        registerExecutor(new SetCustomDataCommand(serviceSupplier, javaPlugin, messages), "customdata", permissions.SET_CUSTOMDATA_PERMISSION);
+        registerExecutor(new SetValueCommand(serviceSupplier, javaPlugin, messages), "value", permissions.SET_VALUE_PERMISSION, messages.COMMAND_SET_VALUE_USAGE, messages.COMMAND_SET_VALUE_DESCRIPTION);
+        registerExecutor(new SetBiomeCommand(serviceSupplier, javaPlugin, messages), "biome", permissions.SET_BIOME_PERMISSION, messages.COMMAND_SET_BIOME_USAGE, messages.COMMAND_SET_BIOME_DESCRIPTION);
+        registerExecutor(new SetCustomDataCommand(serviceSupplier, javaPlugin, messages), "customdata", permissions.SET_CUSTOMDATA_PERMISSION, messages.COMMAND_SET_CUSTOMDATA_USAGE, messages.COMMAND_SET_CUSTOMDATA_DESCRIPTION);
+
+        final HelpCommand helpCommand = new HelpCommand(this, new HelpConfigImpl(messages));
+        registerExecutor(helpCommand, "help", null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
+        registerExecutor(helpCommand, null, null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
     }
 
 }

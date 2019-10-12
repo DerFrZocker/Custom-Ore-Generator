@@ -2,6 +2,9 @@ package de.derfrzocker.custom.ore.generator.command.set;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
+import de.derfrzocker.spigot.utils.Pair;
+import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -14,6 +17,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -43,38 +47,17 @@ public class SetValueCommand implements TabExecutor {
             return true;
         }
 
-        Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
+        CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
             final String worldName = args[0];
             final String configName = args[1];
             final String settingName = args[2];
             final String amount = args[3];
 
-            final World world = Bukkit.getWorld(worldName);
-
-            if (world == null) {
-                messages.COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
-                return;
-            }
-
+            final World world = CommandUtil.getWorld(worldName, messages.COMMAND_WORLD_NOT_FOUND, sender);
             final CustomOreGeneratorService service = serviceSupplier.get();
-
-            final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
-
-            if (!worldConfigOptional.isPresent()) {
-                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
-                return;
-            }
-
-            final WorldConfig worldConfig = worldConfigOptional.get();
-
-            final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
-
-            if (!oreConfigOptional.isPresent()) {
-                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
-                return;
-            }
-
-            final OreConfig oreConfig = oreConfigOptional.get();
+            final Pair<WorldConfig, OreConfig> pair = OreGenCommand.getWorldAndOreConfig(world, configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
+            final WorldConfig worldConfig = Objects.requireNonNull(pair.getFirst(), "This should never happen");
+            final OreConfig oreConfig = Objects.requireNonNull(pair.getSecond(), "This should never happen");
 
             final OreSetting setting = OreSetting.getOreSetting(settingName.toUpperCase());
 

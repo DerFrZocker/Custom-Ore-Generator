@@ -1,47 +1,73 @@
 command:
-  world-not-found: "&4The world &f'&9%world%&f' &4does not exist!"
-  ore-generator-not-found: "&4The ore generator &f'&9%ore-generator%&f' &4does not exist!"
-  block-selector-not-found: "&4The block selector &f'&9%block-selector%&f' &4does not exist!"
-  material-not-found: "&4The material &f'&9%material%&f' &4does not exist!"
-  material-no-block: "&4The material &f'&9%material%&f' &4is not a block!"
-  ore-config-not-found: "&4The ore config &f'&9%ore-config%&f' &4does not exist!"
-  biome-not-found: "&4The biome &f'&9%biome%&f' &4does not exist!"
+  world-not-found: "&4The world &f'&d%world%&f' &4does not exist!"
+  ore-generator-not-found: "&4The ore generator &f'&d%ore-generator%&f' &4does not exist!"
+  block-selector-not-found: "&4The block selector &f'&d%block-selector%&f' &4does not exist!"
+  material-not-found: "&4The material &f'&d%material%&f' &4does not exist!"
+  material-no-block: "&4The material &f'&d%material%&f' &4is not a block!"
+  ore-config-not-found: "&4The ore config &f'&d%ore-config%&f' &4does not exist!"
+  biome-not-found: "&4The biome &f'&d%biome%&f' &4does not exist!"
 
   create:
+    usage: "&f/&doregen create &f<&dworld&f> <&dname&f> <&dmaterial&f> [<&dore-generator&f>] [<&dblock-selector&f>]"
+    description: "Creates a new Ore-Config, in which you can set values"
     not-enough-args:
       - "&4Wrong amount of arguments!"
-      - "&cuse &f/&9oregen create &f<&9world&f> <&9name&f> <&9material&f> [<&9ore-generator&f>]"
-    already-exists: "&4The Ore-Config &f'&9%ore-config%&f' &4already exists!"
-    ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&9%ore-generator%&f'"
-    block-selector-not-specified: "&6Block selector not specified use default one: &f'&9%block-selector%&f'"
-    success: "&aThe ore config &f'&9%ore-config%&f', was successfully created, with the material &f'&9%material%&f', ore generator &f'&9%ore-generator%&f' and block selector &f'&9%block-selector%&f'"
+      - "&cuse %%translation:[command.create.usage]%"
+    already-exists: "&4The Ore-Config &f'&d%ore-config%&f' &4already exists!"
+    ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&d%ore-generator%&f'"
+    block-selector-not-specified: "&6Block selector not specified use default one: &f'&d%block-selector%&f'"
+    success: "&aThe ore config &f'&d%ore-config%&f'&a, was successfully created, with the material &f'&d%material%&f'&a, ore generator &f'&d%ore-generator%&f'&a and block selector &f'&d%block-selector%&f'"
 
   set:
+    usage: "&f/&doregen set &f<&dsubcommand&f>"
+    description: "Main command for different set subcommands"
 
     value:
+      usage: "&f/&doregen set value &f<&dworld&f> <&dore-config&f> <&dsetting&f> <&damount&f>"
+      description: "Set a setting value to the ore config"
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse &f/&9oregen set value &f<&9world&f> <&9ore-config&f> <&9setting&f> <&9amount&f>"
-      setting-not-found: "&4The setting &f'&9%setting%&f' &4does not exist!"
-      setting-not-valid: "&4The setting &f'&9%setting%&f' &4is not valid with the ore generator &f'&9%ore-generator%&f'&4!"
-      value-not-valid: "&f'&9%value%&f' &4is not a valid number!"
+        - "&cuse %%translation:[command.set.value.usage]%"
+      setting-not-found: "&4The setting &f'&d%setting%&f' &4does not exist!"
+      setting-not-valid: "&4The setting &f'&d%setting%&f' &4is not valid with the ore generator &f'&d%ore-generator%&f'&4!"
+      value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
       success: "&aThe value has been updated successfully!"
 
     customdata:
+      usage: "&f/&doregen set customdata &f<&dworld&f> <&dore-config&f> <&dcustomdata&f> <&dvalue&f>"
+      description: "Set a custom data to the ore config"
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse &f/&9oregen set customdata &f<&9world&f> <&9ore-config&f> <&9customdata&f> <&9value&f>"
-      not-found: "&4The custom data &f'&9%customdata%&f' &4does not exist!"
-      ore-config-not-valid: "&4The custom data &f'&9%customdata%&f' &4can not be applied to the ore config &f'&9%ore-config%&f'&4!"
-      value-not-valid: "&f'&9%value%&f' &4is not a valid custom data!"
+        - "&cuse %%translation:[command.set.customdata.usage]%"
+      not-found: "&4The custom data &f'&d%customdata%&f' &4does not exist!"
+      ore-config-not-valid: "&4The custom data &f'&d%customdata%&f' &4can not be applied to the ore config &f'&d%ore-config%&f'&4!"
+      value-not-valid: "&f'&d%value%&f' &4is not a valid custom data!"
       success: "&aThe custom data was set successfully!"
 
     biome:
+      usage: "&f/&doregen set biome &f<&dworld&f> <&dore-config&f> <&dbiome&f> &d..."
+      description: "Set the biomes in which the ore should be generate. You can set multiple Biomes, by separate them with a space. Biomes that are already set to the ore config, gets override."
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse &f/&9oregen set biome &f<&9world&f> <&9ore-config&f> <&9biome&f> &9..."
+        - "&cuse %%translation:[command.set.biome.usage]%"
       success: "&aThe biomes are set successfully!"
 
+    help:
+      usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
+
   reload:
+    usage: "&f/&9oregen reload"
+    description: "Reload the Plugin"
     begin: "&aBegin with the reload!"
     end: "&aReload finish!"
+
+  help:
+    usage: "&f/&doregen help &f(<&dsubcommand&f>)"
+    description: "Displays all commands and if a subcommand is specified, more details are displayed"
+    header-format: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    footer-format: "~~~~~~~~~~~~~~~~~~~&9Commands&f~~~~~~~~~~~~~~~~~~~"
+    separator-format: "  "
+    permission-format: "-> &9permission&f: %permission%"
+    description-format: "-> &9description&f: %description%"
+    usage-format: "&9usage&f: %usage%"
+    short-format: "&9%command%&f: %description%"
