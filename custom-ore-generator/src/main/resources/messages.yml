@@ -14,6 +14,9 @@ command:
       - "&4Wrong amount of arguments!"
       - "&cuse %%translation:[command.create.usage]%"
     already-exists: "&4The Ore-Config &f'&d%ore-config%&f' &4already exists!"
+    name-not-valid:
+      - "&4The name &f'&d%ore-config%&f' &4is not valid!"
+      - "&4Only the characters &da&f-&dz &dA&f-&dZ &d0&f-&d9 &d- &d_ &4are allowed"
     ore-generator-not-specified: "&6Ore generator not specified use default one: &f'&d%ore-generator%&f'"
     block-selector-not-specified: "&6Block selector not specified use default one: &f'&d%block-selector%&f'"
     success: "&aThe ore config &f'&d%ore-config%&f'&a, was successfully created, with the material &f'&d%material%&f'&a, ore generator &f'&d%ore-generator%&f'&a and block selector &f'&d%block-selector%&f'"

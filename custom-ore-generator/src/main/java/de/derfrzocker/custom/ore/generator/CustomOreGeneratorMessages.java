@@ -1,5 +1,6 @@
 package de.derfrzocker.custom.ore.generator;
 
+import com.mojang.brigadier.Message;
 import de.derfrzocker.spigot.utils.message.MessageKey;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,6 +22,7 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_CREATE_DESCRIPTION;
     public final MessageKey COMMAND_CREATE_NOT_ENOUGH_ARGS;
     public final MessageKey COMMAND_CREATE_ALREADY_EXISTS;
+    public final MessageKey COMMAND_CREATE_NAME_NOT_VALID;
     public final MessageKey COMMAND_CREATE_ORE_GENERATOR_NOT_SPECIFIED;
     public final MessageKey COMMAND_CREATE_BLOCK_SELECTOR_NOT_SPECIFIED;
     public final MessageKey COMMAND_CREATE_SUCCESS;
@@ -88,6 +90,7 @@ public final class CustomOreGeneratorMessages {
         COMMAND_CREATE_DESCRIPTION = new MessageKey(javaPlugin, "command.create.description");
         COMMAND_CREATE_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.create.not-enough-args");
         COMMAND_CREATE_ALREADY_EXISTS = new MessageKey(javaPlugin, "command.create.already-exists");
+        COMMAND_CREATE_NAME_NOT_VALID = new MessageKey(javaPlugin, "command.create.name-not-valid");
         COMMAND_CREATE_ORE_GENERATOR_NOT_SPECIFIED = new MessageKey(javaPlugin, "command.create.ore-generator-not-specified");
         COMMAND_CREATE_BLOCK_SELECTOR_NOT_SPECIFIED = new MessageKey(javaPlugin, "command.create.block-selector-not-specified");
         COMMAND_CREATE_SUCCESS = new MessageKey(javaPlugin, "command.create.success");

@@ -18,9 +18,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
+import java.util.regex.Pattern;
 import java.util.stream.Stream;
 
 public class CreateCommand implements TabExecutor {
+
+    private final static Pattern ORE_CONFIG_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
@@ -66,6 +69,11 @@ public class CreateCommand implements TabExecutor {
                 return;
             }
 
+            if (!ORE_CONFIG_NAME_PATTERN.matcher(oreConfigName).matches()) {
+                messages.COMMAND_CREATE_NAME_NOT_VALID.sendMessage(sender, new MessageValue("ore-config", oreConfigName));
+                return;
+            }
+
             final Material material;
 
             try {
@@ -81,7 +89,7 @@ public class CreateCommand implements TabExecutor {
             }
 
             final OreGenerator oreGenerator;
-            if (args.length == 4) {
+            if (args.length >= 4) {
                 final Optional<OreGenerator> oreGeneratorOptional = service.getOreGenerator(args[3]);
                 if (!oreGeneratorOptional.isPresent()) {
                     messages.COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[3]));
@@ -96,7 +104,7 @@ public class CreateCommand implements TabExecutor {
             }
 
             final BlockSelector blockSelector;
-            if (args.length == 5) {
+            if (args.length >= 5) {
                 final Optional<BlockSelector> blockSelectorOptional = service.getBlockSelector(args[4]);
                 if (!blockSelectorOptional.isPresent()) {
                     messages.COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[4]));
