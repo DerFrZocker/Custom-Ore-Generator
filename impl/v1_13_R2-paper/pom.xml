@@ -29,8 +29,8 @@
         <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-impl-ore-generators</artifactId>
-            <version>dev-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${project.version}</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 
