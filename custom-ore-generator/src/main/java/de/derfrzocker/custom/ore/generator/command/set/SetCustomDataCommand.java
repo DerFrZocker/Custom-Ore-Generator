@@ -1,5 +1,6 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
+import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -17,27 +18,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
-
 public class SetCustomDataCommand implements TabExecutor {
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
     @NotNull
     private final JavaPlugin javaPlugin;
+    @NotNull
+    private final CustomOreGeneratorMessages messages;
 
-    public SetCustomDataCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+    public SetCustomDataCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
 
         this.serviceSupplier = serviceSupplier;
         this.javaPlugin = javaPlugin;
+        this.messages = messages;
     }
 
     @Override //oregen set customdata <world> <config_name> <customdata> <value>
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 4) {
-            COMMAND_SET_CUSTOMDATA_NOT_ENOUGH_ARGS.sendMessage(sender);
+            messages.COMMAND_SET_CUSTOMDATA_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -50,7 +53,7 @@ public class SetCustomDataCommand implements TabExecutor {
             final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
+                messages.COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
@@ -59,7 +62,7 @@ public class SetCustomDataCommand implements TabExecutor {
             final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -68,7 +71,7 @@ public class SetCustomDataCommand implements TabExecutor {
             final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
             final OreConfig oreConfig = oreConfigOptional.get();
@@ -76,14 +79,14 @@ public class SetCustomDataCommand implements TabExecutor {
             final Optional<CustomData> customDataOptional = service.getCustomData(customDataName);
 
             if (!customDataOptional.isPresent()) {
-                COMMAND_SET_CUSTOMDATA_NOT_FOUND.sendMessage(sender, new MessageValue("customdata", customDataName));
+                messages.COMMAND_SET_CUSTOMDATA_NOT_FOUND.sendMessage(sender, new MessageValue("customdata", customDataName));
                 return;
             }
 
             final CustomData customData = customDataOptional.get();
 
             if (!customData.canApply(oreConfig)) {
-                COMMAND_SET_CUSTOMDATA_ORE_CONFIG_NOT_VALID.sendMessage(sender, new MessageValue("customdata", customData.getName()), new MessageValue("ore-config", oreConfig.getName()));
+                messages.COMMAND_SET_CUSTOMDATA_ORE_CONFIG_NOT_VALID.sendMessage(sender, new MessageValue("customdata", customData.getName()), new MessageValue("ore-config", oreConfig.getName()));
                 return;
             }
 
@@ -92,18 +95,18 @@ public class SetCustomDataCommand implements TabExecutor {
             try {
                 data = parse(customDataValue, customData.getCustomDataType());
             } catch (IllegalArgumentException e) {
-                COMMAND_SET_CUSTOMDATA_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", customDataValue));
+                messages.COMMAND_SET_CUSTOMDATA_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", customDataValue));
                 return;
             }
 
             if (!customData.isValidCustomData(data, oreConfig)) {
-                COMMAND_SET_CUSTOMDATA_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", data));
+                messages.COMMAND_SET_CUSTOMDATA_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", data));
                 return;
             }
 
             oreConfig.setCustomData(customData, data);
             service.saveWorldConfig(worldConfig);
-            COMMAND_SET_CUSTOMDATA_SUCCESS.sendMessage(sender);
+            messages.COMMAND_SET_CUSTOMDATA_SUCCESS.sendMessage(sender);
         });
 
         return true;

@@ -1,7 +1,6 @@
 package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.spigot.utils.ReloadAble;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -18,24 +17,26 @@ public class ReloadCommand implements TabExecutor {
 
     @NotNull
     private final JavaPlugin javaPlugin;
+    @NotNull
+    private final CustomOreGeneratorMessages messages;
 
-    public ReloadCommand(@NotNull final JavaPlugin javaPlugin) {
+
+    public ReloadCommand(@NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
 
         this.javaPlugin = javaPlugin;
+        this.messages = messages;
     }
 
     @Override
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (!Permissions.RELOAD_PERMISSION.hasPermission(sender))
-            return false;
-
         Bukkit.getScheduler().runTaskAsynchronously(javaPlugin, () -> {
-            CustomOreGeneratorMessages.COMMAND_RELOAD_BEGIN.sendMessage(sender);
+            messages.COMMAND_RELOAD_BEGIN.sendMessage(sender);
 
             ReloadAble.RELOAD_ABLES.forEach(ReloadAble::reload);
 
-            CustomOreGeneratorMessages.COMMAND_RELOAD_END.sendMessage(sender);
+            messages.COMMAND_RELOAD_END.sendMessage(sender);
         });
 
         return true;

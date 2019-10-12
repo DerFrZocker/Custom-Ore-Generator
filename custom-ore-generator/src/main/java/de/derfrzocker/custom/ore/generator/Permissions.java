@@ -1,18 +1,30 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.spigot.utils.Permission;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
+import org.apache.commons.lang.Validate;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public final class Permissions {
 
-    public final static Permission BASE_PERMISSION = new Permission(null, "custom.ore.gen", CustomOreGenerator.getInstance(), false);
-    public final static Permission RELOAD_PERMISSION = new Permission(BASE_PERMISSION, "reload", CustomOreGenerator.getInstance(), true);
-    public final static Permission CREATE_PERMISSION = new Permission(BASE_PERMISSION, "create", CustomOreGenerator.getInstance(), true);
-    public final static Permission SET_PERMISSION = new Permission(BASE_PERMISSION, "set", CustomOreGenerator.getInstance(), true);
-    public final static Permission SET_VALUE_PERMISSION = new Permission(SET_PERMISSION, "value", CustomOreGenerator.getInstance(), true);
-    public final static Permission SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", CustomOreGenerator.getInstance(), true);
-    public final static Permission SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", CustomOreGenerator.getInstance(), true);
+    public final Permission BASE_PERMISSION;
+    public final Permission RELOAD_PERMISSION;
+    public final Permission CREATE_PERMISSION;
+    public final Permission SET_PERMISSION;
+    public final Permission SET_VALUE_PERMISSION;
+    public final Permission SET_BIOME_PERMISSION;
+    public final Permission SET_CUSTOMDATA_PERMISSION;
+
+    Permissions(@NotNull final JavaPlugin javaPlugin) {
+        Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+
+        BASE_PERMISSION = new Permission(null, "custom.ore.gen", javaPlugin, false);
+        RELOAD_PERMISSION = new Permission(BASE_PERMISSION, "reload", javaPlugin, true);
+        CREATE_PERMISSION = new Permission(BASE_PERMISSION, "create", javaPlugin, true);
+        SET_PERMISSION = new Permission(BASE_PERMISSION, "set", javaPlugin, true);
+        SET_VALUE_PERMISSION = new Permission(SET_PERMISSION, "value", javaPlugin, true);
+        SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", javaPlugin, true);
+        SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", javaPlugin, true);
+    }
 
 }

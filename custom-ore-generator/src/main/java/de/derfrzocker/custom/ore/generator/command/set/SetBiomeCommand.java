@@ -1,6 +1,7 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
 import com.google.common.collect.Sets;
+import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
@@ -18,27 +19,29 @@ import org.jetbrains.annotations.NotNull;
 import java.util.*;
 import java.util.function.Supplier;
 
-import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
-
 public class SetBiomeCommand implements TabExecutor {
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
     @NotNull
     private final JavaPlugin javaPlugin;
+    @NotNull
+    private final CustomOreGeneratorMessages messages;
 
-    public SetBiomeCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+    public SetBiomeCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
 
         this.serviceSupplier = serviceSupplier;
         this.javaPlugin = javaPlugin;
+        this.messages = messages;
     }
 
     @Override //oregen set biome <world> <config_name> <biome> <biome> ...
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length < 3) {
-            COMMAND_SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
+            messages.COMMAND_SET_BIOME_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -49,7 +52,7 @@ public class SetBiomeCommand implements TabExecutor {
             final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
+                messages.COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
@@ -58,7 +61,7 @@ public class SetBiomeCommand implements TabExecutor {
             final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -67,7 +70,7 @@ public class SetBiomeCommand implements TabExecutor {
             final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -79,7 +82,7 @@ public class SetBiomeCommand implements TabExecutor {
                 try {
                     biomes.add(Biome.valueOf(args[i].toUpperCase()));
                 } catch (IllegalArgumentException e) {
-                    COMMAND_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", args[i]));
+                    messages.COMMAND_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", args[i]));
                     return;
                 }
             }
@@ -89,7 +92,7 @@ public class SetBiomeCommand implements TabExecutor {
             oreConfig.setGeneratedAll(false);
 
             service.saveWorldConfig(worldConfig);
-            COMMAND_SET_BIOME_SUCCESS.sendMessage(sender);
+            messages.COMMAND_SET_BIOME_SUCCESS.sendMessage(sender);
         });
 
         return true;

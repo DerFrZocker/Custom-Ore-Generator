@@ -3,7 +3,10 @@ package de.derfrzocker.custom.ore.generator;
 import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.custom.ore.generator.impl.*;
+import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
+import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.CountRangeBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.customdata.DirectionCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.FacingCustomData;
@@ -11,7 +14,6 @@ import de.derfrzocker.custom.ore.generator.impl.customdata.SkullTextureCustomDat
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
-import lombok.Getter;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
@@ -24,18 +26,19 @@ import java.util.function.Supplier;
 
 public class CustomOreGenerator extends JavaPlugin implements Listener {
 
-    @Getter
-    private static CustomOreGenerator instance;
-
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
     }
 
+    private CustomOreGeneratorMessages messages;
+    private Permissions permissions;
+
     @Override
     public void onLoad() {
-        instance = this;
+        messages = new CustomOreGeneratorMessages(this);
+        permissions = new Permissions(this);
 
         final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"));
 
@@ -65,7 +68,7 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     public void onEnable() {
         new VersionPicker(CustomOreGeneratorServiceSupplier.INSTANCE, this, Version.getCurrent()).init();
 
-        getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this));
+        getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
 
         new Metrics(this);

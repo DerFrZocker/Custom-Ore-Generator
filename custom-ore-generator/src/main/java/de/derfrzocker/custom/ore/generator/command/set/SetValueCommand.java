@@ -1,5 +1,6 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
+import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
@@ -16,27 +17,29 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages.*;
-
 public class SetValueCommand implements TabExecutor {
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
     @NotNull
     private final JavaPlugin javaPlugin;
+    @NotNull
+    private final CustomOreGeneratorMessages messages;
 
-    public SetValueCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin) {
+    public SetValueCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
+        Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
 
         this.serviceSupplier = serviceSupplier;
         this.javaPlugin = javaPlugin;
+        this.messages = messages;
     }
 
     @Override //oregen set value <world> <config_name> <setting> <amount>
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 4) {
-            COMMAND_SET_VALUE_NOT_ENOUGH_ARGS.sendMessage(sender);
+            messages.COMMAND_SET_VALUE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -49,7 +52,7 @@ public class SetValueCommand implements TabExecutor {
             final World world = Bukkit.getWorld(worldName);
 
             if (world == null) {
-                COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
+                messages.COMMAND_WORLD_NOT_FOUND.sendMessage(sender, new MessageValue("world", worldName));
                 return;
             }
 
@@ -58,7 +61,7 @@ public class SetValueCommand implements TabExecutor {
             final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
 
             if (!worldConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -67,7 +70,7 @@ public class SetValueCommand implements TabExecutor {
             final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(configName);
 
             if (!oreConfigOptional.isPresent()) {
-                COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
+                messages.COMMAND_ORE_CONFIG_NOT_FOUND.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -76,21 +79,21 @@ public class SetValueCommand implements TabExecutor {
             final OreSetting setting = OreSetting.getOreSetting(settingName.toUpperCase());
 
             if (setting == null) {
-                COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
+                messages.COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
                 return;
             }
 
             final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
 
             if (!optionalOreGenerator.isPresent()) {
-                COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", oreConfig.getOreGenerator()));
+                messages.COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", oreConfig.getOreGenerator()));
                 return;
             }
 
             final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
 
             if (!optionalBlockSelector.isPresent()) {
-                COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("block-selector", oreConfig.getBlockSelector()));
+                messages.COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("block-selector", oreConfig.getBlockSelector()));
                 return;
             }
 
@@ -98,7 +101,7 @@ public class SetValueCommand implements TabExecutor {
             final BlockSelector blockSelector = optionalBlockSelector.get();
 
             if (generator.getNeededOreSettings().stream().noneMatch(value -> value == setting) && blockSelector.getNeededOreSettings().stream().noneMatch(value -> value == setting)) {
-                COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender,
+                messages.COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender,
                         new MessageValue("setting", settingName),
                         new MessageValue("ore-generator", generator.getName()),
                         new MessageValue("block-selector", blockSelector.getName())
@@ -111,14 +114,14 @@ public class SetValueCommand implements TabExecutor {
             try {
                 value = Integer.parseInt(amount);
             } catch (NumberFormatException e) {
-                COMMAND_SET_VALUE_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
+                messages.COMMAND_SET_VALUE_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
                 return;
             }
 
             oreConfig.setValue(setting, value);
 
             service.saveWorldConfig(worldConfig);
-            COMMAND_SET_VALUE_SUCCESS.sendMessage(sender, new MessageValue("value", value));
+            messages.COMMAND_SET_VALUE_SUCCESS.sendMessage(sender, new MessageValue("value", value));
         });
 
         return true;
