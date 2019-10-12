@@ -1,0 +1,8 @@
+ore-config:
+  ==: CustomOreGenerator#OreConfig
+  material: EMERALD_ORE
+  ore_generator: vanilla_minable_generator
+  VEINS_PER_CHUNK: 15
+  MINIMUM_HEIGHT: 10
+  HEIGHT_RANGE: 20
+  VEIN_SIZE: 5

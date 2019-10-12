@@ -89,7 +89,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
             Validate.notNull(blockSelector, "Default BlockSelector is null");
 
-            oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), (String) map.get(ORE_GENERATOR_KEY_OLD), blockSelector.getName());
+            oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), ((String) map.get(ORE_GENERATOR_KEY_OLD)).toUpperCase(), blockSelector.getName());
 
             map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.lazyOreSettings.put(entry.getKey(), NumberConversions.toInt(entry.getValue())));
         } else {
@@ -107,7 +107,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
                 blockSelectorName = (String) map.get(BLOCK_SELECTOR_KEY);
             }
 
-            oreConfig = new OreConfigYamlImpl((String) map.get(NAME_KEY), Material.valueOf((String) map.get(MATERIAL_KEY)), (String) map.get(ORE_GENERATOR_KEY), blockSelectorName);
+            oreConfig = new OreConfigYamlImpl((String) map.get(NAME_KEY), Material.valueOf((String) map.get(MATERIAL_KEY)), ((String) map.get(ORE_GENERATOR_KEY)).toUpperCase(), blockSelectorName);
             oreConfig.setActivated((boolean) map.get(ACTIVATED_KEY));
             oreConfig.setGeneratedAll((boolean) map.get(GENERATED_ALL_KEY));
 
@@ -236,12 +236,16 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     public void setValue(@NotNull final OreSetting oreSetting, final int value) {
         Validate.notNull(oreSetting, "OreSetting can not be null");
 
+        checkLazyOreSettings();
+
         this.oreSettings.put(oreSetting, value);
     }
 
     @Override
     public boolean removeValue(@NotNull final OreSetting oreSetting) {
         Validate.notNull(oreSetting, "OreSetting can not be null");
+
+        checkLazyOreSettings();
 
         return this.oreSettings.remove(oreSetting) != null;
     }
@@ -273,6 +277,8 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     @Override
     public void setCustomData(@NotNull final CustomData customData, @Nullable final Object data) {
         Validate.notNull(customData, "CustomData can not be null");
+
+        checkLazyCustomData();
 
         if (data == null)
             this.customData.remove(customData);
@@ -312,7 +318,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         }
 
         final Map<OreSetting, Integer> oreSettingsMap = getOreSettings();
-        if (!oreSettingsMap.isEmpty()) {
+        if (!oreSettingsMap.isEmpty()|| !lazyOreSettings.isEmpty()) {
             final Map<String, Integer> data = new LinkedHashMap<>(lazyOreSettings);
 
             oreSettingsMap.forEach((key, value) -> data.put(key.getName(), value));

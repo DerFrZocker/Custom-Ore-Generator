@@ -1,0 +1,59 @@
+ore-config:
+  ==: CustomOreGenerator#OreConfig
+  name: test
+  material: EMERALD_BLOCK
+  ore-generator: VANILLA_MINABLE_GENERATOR
+  block-selector: COUNT_RANGE
+  activated: true
+  generated-all: false
+  biomes:
+    - FOREST
+    - DEEP_WARM_OCEAN
+  ore-settings:
+    VEINS_PER_CHUNK: 15
+    MINIMUM_HEIGHT: 10
+    HEIGHT_RANGE: 20
+    VEIN_SIZE: 5
+  custom-data:
+    '1': "Test_value_1"
+    '2': "Test_value_2"
+    '3': "Test_value_3"
+    '4': "Test_value_4"
+ore-config_2:
+  ==: CustomOreGenerator#OreConfig
+  name: test2
+  material: EMERALD_BLOCK
+  ore-generator: VANILLA_MINABLE_GENERATOR_2
+  block-selector: COUNT_RANGE_2
+  activated: false
+  generated-all: true
+  ore-settings:
+    VEINS_PER_CHUNK_: 15
+    MINIMUM_HEIGHT_: 10
+    HEIGHT_RANGE_: 20
+    VEIN_SIZE_: 5
+  custom-data:
+    '1_2': "Test_value_1"
+    '2_2': "Test_value_2"
+    '3_2': "Test_value_3"
+    '4_2': "Test_value_4"
+ore-config_3:
+  ==: CustomOreGenerator#OreConfig
+  name: test_3
+  material: EMERALD_BLOCK
+  ore-generator: vanilla_minable_generator
+  activated: true
+  generated-all: false
+  biomes:
+    - FOREST
+    - DEEP_WARM_OCEAN
+  ore-settings:
+    VEINS_PER_CHUNK: 15
+    MINIMUM_HEIGHT: 10
+    HEIGHT_RANGE: 20
+    VEIN_SIZE: 5
+  custom-data:
+    '1': "Test_value_1"
+    '2': "Test_value_2"
+    '3': "Test_value_3"
+    '4': "Test_value_4"
