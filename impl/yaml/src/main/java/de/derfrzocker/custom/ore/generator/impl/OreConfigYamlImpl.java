@@ -27,6 +27,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final static String ACTIVATED_KEY = "activated";
     private final static String GENERATED_ALL_KEY = "generated-all";
     private final static String BIOMES_KEY = "biomes";
+    private final static String REPLACE_MATERIALS_KEY = "replace-materials";
     private final static String CUSTOM_DATA_KEY = "custom-data";
     private final static String ORE_SETTINGS_KEY = "ore-settings";
 
@@ -36,6 +37,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     @NotNull
     private final Material material;
     private final Set<Biome> biomes = new HashSet<>();
+    private final Set<Material> materials = new HashSet<>();
     // We use a lazyOreSettings in case the OreSetting object is at the moment not created
     private final Map<String, Integer> lazyOreSettings = new HashMap<>();
     private final Map<OreSetting, Integer> oreSettings = new HashMap<>();
@@ -92,6 +94,9 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), ((String) map.get(ORE_GENERATOR_KEY_OLD)).toUpperCase(), blockSelector.getName());
 
             map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.lazyOreSettings.put(entry.getKey(), NumberConversions.toInt(entry.getValue())));
+
+            // add Default Materials
+            oreConfig.addReplaceMaterial(Material.STONE);
         } else {
             // new format version
             final String blockSelectorName;
@@ -113,6 +118,10 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
             if (map.containsKey(BIOMES_KEY)) {
                 ((List<String>) map.get(BIOMES_KEY)).forEach(biome -> oreConfig.addBiome(Biome.valueOf(biome)));
+            }
+
+            if (map.containsKey(REPLACE_MATERIALS_KEY)) {
+                ((List<String>) map.get(REPLACE_MATERIALS_KEY)).forEach(material -> oreConfig.addReplaceMaterial(Material.valueOf(material)));
             }
 
             if (map.containsKey(CUSTOM_DATA_KEY)) {
@@ -141,6 +150,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         target.getBiomes().forEach(target::addBiome);
         toCopy.getCustomData().forEach(target::setCustomData);
         toCopy.getOreSettings().forEach(target::setValue);
+        toCopy.getReplaceMaterials().forEach(target::addReplaceMaterial);
 
         target.lazyCustomData.putAll(toCopy.lazyCustomData);
         target.lazyOreSettings.putAll(toCopy.lazyOreSettings);
@@ -289,6 +299,26 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @NotNull
     @Override
+    public Set<Material> getReplaceMaterials() {
+        return new HashSet<>(materials);
+    }
+
+    @Override
+    public void addReplaceMaterial(@NotNull final Material material) {
+        Validate.notNull(material, "Material can not be null");
+
+        materials.add(material);
+    }
+
+    @Override
+    public void removeReplaceMaterial(@NotNull final Material material) {
+        Validate.notNull(material, "Material can not be null");
+
+        materials.remove(material);
+    }
+
+    @NotNull
+    @Override
     public Map<String, Object> serialize() {
         final Map<String, Object> serialize = new LinkedHashMap<>();
 
@@ -306,6 +336,15 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             biomesSet.forEach(biome -> data.add(biome.toString()));
 
             serialize.put(BIOMES_KEY, data);
+        }
+
+        final Set<Material> materialsSet = getReplaceMaterials();
+        if (!materialsSet.isEmpty()) {
+            final List<String> data = new ArrayList<>();
+
+            biomesSet.forEach(material -> data.add(material.toString()));
+
+            serialize.put(REPLACE_MATERIALS_KEY, data);
         }
 
         final Map<CustomData, Object> customDataMap = getCustomData();
