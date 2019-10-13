@@ -1,6 +1,5 @@
 package de.derfrzocker.custom.ore.generator;
 
-import com.mojang.brigadier.Message;
 import de.derfrzocker.spigot.utils.message.MessageKey;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -60,6 +59,12 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_SET_BIOME_DESCRIPTION;
     public final MessageKey COMMAND_SET_BIOME_NOT_ENOUGH_ARGS;
     public final MessageKey COMMAND_SET_BIOME_SUCCESS;
+
+    // set replacematerial command
+    public final MessageKey COMMAND_SET_REPLACEMATERIAL_USAGE;
+    public final MessageKey COMMAND_SET_REPLACEMATERIAL_DESCRIPTION;
+    public final MessageKey COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_REPLACEMATERIAL_SUCCESS;
 
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
@@ -128,6 +133,12 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_BIOME_DESCRIPTION = new MessageKey(javaPlugin, "command.set.biome.description");
         COMMAND_SET_BIOME_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.biome.not-enough-args");
         COMMAND_SET_BIOME_SUCCESS = new MessageKey(javaPlugin, "command.set.biome.success");
+
+        // set replacematerial command
+        COMMAND_SET_REPLACEMATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.replacematerial.usage");
+        COMMAND_SET_REPLACEMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.replacematerial.description");
+        COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.replacematerial.not-enough-args");
+        COMMAND_SET_REPLACEMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.replacematerial.success");
 
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");

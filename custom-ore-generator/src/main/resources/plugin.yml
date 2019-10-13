@@ -29,6 +29,7 @@ permissions:
       custom.ore.gen.set.value: true
       custom.ore.gen.set.biome: true
       custom.ore.gen.set.customdata: true
+      custom.ore.gen.set.replacematerial: true
   custom.ore.gen.set.value:
     description: "Gives access to the subcommand 'set value'"
     default: op
@@ -41,6 +42,11 @@ permissions:
       custom.ore.gen: true
   custom.ore.gen.set.customdata:
     description: "Gives access to the subcommand 'set customdata'"
+    default: op
+    children:
+      custom.ore.gen: true
+  custom.ore.gen.set.replacematerial:
+    description: "Gives access to the subcommand 'set replacematerial'"
     default: op
     children:
       custom.ore.gen: true

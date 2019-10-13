@@ -55,6 +55,14 @@ command:
         - "&cuse %%translation:[command.set.biome.usage]%"
       success: "&aThe biomes are set successfully!"
 
+    replacematerial:
+      usage: "&f/&doregen set replacematerial &f<&dworld&f> <&dore-config&f> <&dmaterial&f> &d..."
+      description: "Set the material on which the ore should be generate. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override."
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+      success: "&aThe materials are set successfully!"
+
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
 
