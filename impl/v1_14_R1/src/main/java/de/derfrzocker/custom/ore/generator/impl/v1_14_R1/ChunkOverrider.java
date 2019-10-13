@@ -5,6 +5,7 @@ import net.minecraft.server.v1_14_R1.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -34,14 +35,18 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
     @NotNull
     private final ChunkGenerator<C> parent;
+    @NotNull
+    private final WorldHandler_v1_14_R1 worldHandler;
 
-    public ChunkOverrider(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final ChunkGenerator<C> parent) {
+    public ChunkOverrider(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final ChunkGenerator<C> parent, @NotNull WorldHandler_v1_14_R1 worldHandler) {
         super(DummyGeneratorAccess.INSTANCE, null, null);
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
         Validate.notNull(parent, "Parent ChunkGenerator can not be null");
+        Validate.notNull(worldHandler, "WorldHandler can not be null");
 
         this.serviceSupplier = serviceSupplier;
         this.parent = parent;
+        this.worldHandler = worldHandler;
     }
 
     @Override
@@ -236,15 +241,22 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         final Set<Location> biomeLocations = new HashSet<>();
         final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
+        final Set<org.bukkit.Material> replaceMaterials = oreConfig.getReplaceMaterials();
+        final Set<Block> blocks = new HashSet<>();
 
+        replaceMaterials.forEach(material -> blocks.add(CraftMagicNumbers.getBlock(material)));
         locations.stream().filter(location -> access.getBiome(chunkPosition.b(location.getBlockX(), location.getBlockY(), location.getBlockZ())) == biomeBase).forEach(biomeLocations::add);
+
+        worldHandler.add(blocks);
 
         if (oreGenerator instanceof OreGenerator_v1_14_R1) {
             ((OreGenerator_v1_14_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), new GeneratorAccessOverrider(access, oreConfig, access.a(), access.b()), random, biome, biomeLocations);
+            worldHandler.remove();
             return;
         }
 
         oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), random, biome, biomeLocations);
+        worldHandler.remove();
     }
 
 }

@@ -342,7 +342,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         if (!materialsSet.isEmpty()) {
             final List<String> data = new ArrayList<>();
 
-            biomesSet.forEach(material -> data.add(material.toString()));
+            materialsSet.forEach(material -> data.add(material.toString()));
 
             serialize.put(REPLACE_MATERIALS_KEY, data);
         }
