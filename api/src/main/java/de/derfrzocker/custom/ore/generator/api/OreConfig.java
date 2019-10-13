@@ -198,4 +198,29 @@ public interface OreConfig {
      */
     void setCustomData(@NotNull CustomData customData, @Nullable Object data);
 
+    /**
+     * Return a new Set with contains al Materials with should get replaced
+     * by this OreConfig
+     *
+     * @return a set with Materials
+     */
+    @NotNull
+    Set<Material> getReplaceMaterials();
+
+    /**
+     * Add a material to this OreConfig
+     *
+     * @param material which should be added
+     * @throws IllegalArgumentException if material is null
+     */
+    void addReplaceMaterial(@NotNull Material material);
+
+    /**
+     * Remove a material from this OreConfig
+     *
+     * @param material which should be removed
+     * @throws IllegalArgumentException if material is null
+     */
+    void removeReplaceMaterial(@NotNull Material material);
+
 }
