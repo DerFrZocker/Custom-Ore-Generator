@@ -25,7 +25,7 @@ public class HighestBlockBlockSelector implements BlockSelector {
             final int x = random.nextInt(16);
             final int z = random.nextInt(16);
 
-            locations.add(new Location(null, x, chunkInfo.getHighestBlock(x, z), z));
+            locations.add(new Location(null, x, chunkInfo.getHighestBlock(x, z) - 1, z));
         }
 
         return locations;

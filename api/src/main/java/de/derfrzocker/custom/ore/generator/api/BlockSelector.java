@@ -17,8 +17,8 @@ public interface BlockSelector {
      * The y positions should be between 0 and 255
      *
      * @param chunkInfo the ChunkInfo of the chunk
-     * @param config which get generated
-     * @param random to use
+     * @param config    which get generated
+     * @param random    to use
      * @return a Set of Locations on which veins should get generated
      * @throws NullPointerException if chunkInfo, config, or random is null
      */
