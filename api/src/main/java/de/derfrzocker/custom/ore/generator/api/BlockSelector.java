@@ -16,13 +16,14 @@ public interface BlockSelector {
      * The x and z positions should be between 0 and 15
      * The y positions should be between 0 and 255
      *
+     * @param chunkInfo the ChunkInfo of the chunk
      * @param config which get generated
      * @param random to use
      * @return a Set of Locations on which veins should get generated
      * @throws NullPointerException if config, or random is null
      */
     @NotNull
-    Set<Location> selectBlocks(@NotNull OreConfig config, @NotNull Random random);
+    Set<Location> selectBlocks(@NotNull ChunkInfo chunkInfo, @NotNull OreConfig config, @NotNull Random random);
 
     /**
      * @return a set with all OreSettings which this BlockSelector needs
