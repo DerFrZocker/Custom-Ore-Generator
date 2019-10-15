@@ -20,7 +20,7 @@ public interface BlockSelector {
      * @param config which get generated
      * @param random to use
      * @return a Set of Locations on which veins should get generated
-     * @throws NullPointerException if config, or random is null
+     * @throws NullPointerException if chunkInfo, config, or random is null
      */
     @NotNull
     Set<Location> selectBlocks(@NotNull ChunkInfo chunkInfo, @NotNull OreConfig config, @NotNull Random random);

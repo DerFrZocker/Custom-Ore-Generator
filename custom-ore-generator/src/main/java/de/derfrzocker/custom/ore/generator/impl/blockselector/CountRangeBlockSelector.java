@@ -1,10 +1,7 @@
 package de.derfrzocker.custom.ore.generator.impl.blockselector;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.ore.generator.api.BlockSelector;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
-import de.derfrzocker.custom.ore.generator.api.OreSettings;
+import de.derfrzocker.custom.ore.generator.api.*;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +16,7 @@ public class CountRangeBlockSelector implements BlockSelector {
 
     @NotNull
     @Override
-    public Set<Location> selectBlocks(@NotNull final OreConfig config, @NotNull final Random random) {
+    public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
 
         final int heightRange = config.getValue(OreSettings.HEIGHT_RANGE).orElse(OreSettings.HEIGHT_RANGE.getSaveValue());

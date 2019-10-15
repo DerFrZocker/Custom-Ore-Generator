@@ -167,8 +167,9 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
         final OreGenerator oreGenerator = optionalOreGenerator.get();
         final BlockSelector blockSelector = optionalBlockSelector.get();
         final Random random = service.createRandom(access.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b());
+        final BlockPosition blockPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
 
-        final Set<Location> locations = blockSelector.selectBlocks(oreConfig, random);
+        final Set<Location> locations = blockSelector.selectBlocks((x, z) -> access.getHighestBlockYAt(HeightMap.Type.MOTION_BLOCKING, blockPosition.a(x, 0, z)).getY(), oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
         final BiomeBase biomeBase = BiomeBase.REGISTRY_ID.get(new MinecraftKey(biome.name().toLowerCase()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
