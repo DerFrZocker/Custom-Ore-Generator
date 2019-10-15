@@ -199,7 +199,7 @@ public interface OreConfig {
     void setCustomData(@NotNull CustomData customData, @Nullable Object data);
 
     /**
-     * Return a new Set with contains al Materials with should get replaced
+     * Return a new Set which contains all Materials which should get replaced
      * by this OreConfig
      *
      * @return a set with Materials
@@ -208,7 +208,7 @@ public interface OreConfig {
     Set<Material> getReplaceMaterials();
 
     /**
-     * Add a material to this OreConfig
+     * Add a replace material to this OreConfig
      *
      * @param material which should be added
      * @throws IllegalArgumentException if material is null
@@ -216,11 +216,35 @@ public interface OreConfig {
     void addReplaceMaterial(@NotNull Material material);
 
     /**
-     * Remove a material from this OreConfig
+     * Remove a replace material from this OreConfig
      *
      * @param material which should be removed
      * @throws IllegalArgumentException if material is null
      */
     void removeReplaceMaterial(@NotNull Material material);
+
+    /**
+     * Return a new Set which contains all Materials on which a vein should begin to generate
+     *
+     * @return a set with Materials
+     */
+    @NotNull
+    Set<Material> getSelectMaterials();
+
+    /**
+     * Add a select material to this OreConfig
+     *
+     * @param material which should be added
+     * @throws IllegalArgumentException if material is null
+     */
+    void addSelectMaterial(@NotNull Material material);
+
+    /**
+     * Remove a select material from this OreConfig
+     *
+     * @param material which should be removed
+     * @throws IllegalArgumentException if material is null
+     */
+    void removeSelectMaterial(@NotNull Material material);
 
 }
