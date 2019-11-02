@@ -86,7 +86,7 @@ public class SkullTextureCustomData implements CustomData {
 
         try {
             JsonElement jsonElement = new JsonParser().parse(new String(Base64.getDecoder().decode((String) customData)));
-            return jsonElement.getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString().startsWith("http://textures.minecraft.net/texture/");
+            return jsonElement.getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString().contains("minecraft.net");
         } catch (JsonParseException | IllegalStateException | IllegalArgumentException | NullPointerException e) {
             return false;
         }
