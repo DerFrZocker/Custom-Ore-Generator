@@ -243,12 +243,16 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
         final Set<org.bukkit.Material> replaceMaterials = oreConfig.getReplaceMaterials();
-        final Set<Block> blocks = new HashSet<>();
+        final Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
+        final Set<Block> replaceBlocks = new HashSet<>();
+        final Set<Block> selectBlocks = new HashSet<>();
 
-        replaceMaterials.forEach(material -> blocks.add(CraftMagicNumbers.getBlock(material)));
-        locations.stream().filter(location -> access.getBiome(chunkPosition.b(location.getBlockX(), location.getBlockY(), location.getBlockZ())) == biomeBase).forEach(biomeLocations::add);
+        replaceMaterials.forEach(material -> replaceBlocks.add(CraftMagicNumbers.getBlock(material)));
+        selectMaterials.forEach(material -> selectBlocks.add(CraftMagicNumbers.getBlock(material)));
+        locations.stream().filter(location -> checkBlockAndBiome(access, chunkPosition, location, biomeBase, selectBlocks))
+                .forEach(biomeLocations::add);
 
-        worldHandler.add(blocks);
+        worldHandler.add(replaceBlocks);
 
         if (oreGenerator instanceof OreGenerator_v1_14_R1) {
             ((OreGenerator_v1_14_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), new GeneratorAccessOverrider(access, oreConfig, access.a(), access.b()), random, biome, biomeLocations);
@@ -258,6 +262,17 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
 
         oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), random, biome, biomeLocations);
         worldHandler.remove();
+    }
+
+    private boolean checkBlockAndBiome(final RegionLimitedWorldAccess access, final BlockPosition chunkPosition, final Location location, final BiomeBase biomeBase, final Set<Block> blocks) {
+        final BlockPosition blockPosition = chunkPosition.b(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+
+        final boolean isBiome = access.getBiome(blockPosition) == biomeBase;
+
+        if (!isBiome)
+            return false;
+
+        return blocks.contains(access.getType(blockPosition).getBlock());
     }
 
 }
