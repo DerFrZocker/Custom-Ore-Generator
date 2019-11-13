@@ -15,6 +15,7 @@ public final class Permissions {
     public final Permission SET_BIOME_PERMISSION;
     public final Permission SET_CUSTOMDATA_PERMISSION;
     public final Permission SET_REPLACEMATERIAL_PERMISSION;
+    public final Permission SET_SELECTMATERIAL_PERMISSION;
 
     Permissions(@NotNull final JavaPlugin javaPlugin) {
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
@@ -27,6 +28,7 @@ public final class Permissions {
         SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", javaPlugin, true);
         SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", javaPlugin, true);
         SET_REPLACEMATERIAL_PERMISSION = new Permission(SET_PERMISSION, "replacematerial", javaPlugin, true);
+        SET_SELECTMATERIAL_PERMISSION = new Permission(SET_PERMISSION, "selectmaterial", javaPlugin, true);
     }
 
 }

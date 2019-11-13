@@ -66,6 +66,12 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS;
     public final MessageKey COMMAND_SET_REPLACEMATERIAL_SUCCESS;
 
+    // set selectmaterial command
+    public final MessageKey COMMAND_SET_SELECTMATERIAL_USAGE;
+    public final MessageKey COMMAND_SET_SELECTMATERIAL_DESCRIPTION;
+    public final MessageKey COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_SELECTMATERIAL_SUCCESS;
+
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
     public final MessageKey COMMAND_SET_HELP_USAGE;
@@ -139,6 +145,12 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_REPLACEMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.replacematerial.description");
         COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.replacematerial.not-enough-args");
         COMMAND_SET_REPLACEMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.replacematerial.success");
+
+        // set selectmaterial command
+        COMMAND_SET_SELECTMATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.selectmaterial.usage");
+        COMMAND_SET_SELECTMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.selectmaterial.description");
+        COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.selectmaterial.not-enough-args");
+        COMMAND_SET_SELECTMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.selectmaterial.success");
 
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");

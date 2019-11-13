@@ -25,6 +25,7 @@ public class SetCommand extends CommandSeparator {
         registerExecutor(new SetBiomeCommand(serviceSupplier, javaPlugin, messages), "biome", permissions.SET_BIOME_PERMISSION, messages.COMMAND_SET_BIOME_USAGE, messages.COMMAND_SET_BIOME_DESCRIPTION);
         registerExecutor(new SetCustomDataCommand(serviceSupplier, javaPlugin, messages), "customdata", permissions.SET_CUSTOMDATA_PERMISSION, messages.COMMAND_SET_CUSTOMDATA_USAGE, messages.COMMAND_SET_CUSTOMDATA_DESCRIPTION);
         registerExecutor(new SetReplaceMaterialCommand(serviceSupplier, javaPlugin, messages), "replacematerial", permissions.SET_REPLACEMATERIAL_PERMISSION, messages.COMMAND_SET_REPLACEMATERIAL_USAGE, messages.COMMAND_SET_REPLACEMATERIAL_DESCRIPTION);
+        registerExecutor(new SetSelectMaterialCommand(serviceSupplier, javaPlugin, messages), "selectmaterial", permissions.SET_SELECTMATERIAL_PERMISSION, messages.COMMAND_SET_SELECTMATERIAL_USAGE, messages.COMMAND_SET_SELECTMATERIAL_DESCRIPTION);
 
         final HelpCommand helpCommand = new HelpCommand(this, new HelpConfigImpl(messages));
         registerExecutor(helpCommand, "help", null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);

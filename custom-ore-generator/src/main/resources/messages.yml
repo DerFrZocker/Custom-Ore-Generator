@@ -62,6 +62,13 @@ command:
         - "&4Wrong amount of arguments!"
         - "&cuse %%translation:[command.set.replacmaterial.usage]%"
       success: "&aThe materials are set successfully!"
+    selectmaterial:
+      usage: "&f/&doregen set selectmaterial &f<&dworld&f> <&dore-config&f> <&dmaterial&f> &d..."
+      description: "Set the material which should be the start point for generation. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override. If no select Material is set, the replace material will be use instead "
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+      success: "&aThe materials are set successfully!"
 
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
