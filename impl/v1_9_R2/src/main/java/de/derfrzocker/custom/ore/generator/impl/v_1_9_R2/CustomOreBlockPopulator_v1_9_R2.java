@@ -13,7 +13,7 @@ import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.util.CraftMagicNumbers;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.generator.BlockPopulator;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
@@ -112,7 +112,7 @@ public class CustomOreBlockPopulator_v1_9_R2 extends BlockPopulator implements W
     }
 
     @EventHandler
-    public void onWorldLoad(@NotNull final WorldLoadEvent event) {
+    public void onWorldLoad(@NotNull final WorldInitEvent event) {
         if (event.getWorld().getPopulators().contains(this))
             return;
 

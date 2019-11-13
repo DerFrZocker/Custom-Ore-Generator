@@ -10,7 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.world.WorldLoadEvent;
+import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -32,7 +32,7 @@ public class WorldHandler_v1_13_R2_paper implements WorldHandler, Listener {
     }
 
     @EventHandler
-    public void onWorldLoad(final WorldLoadEvent event) {
+    public void onWorldLoad(final WorldInitEvent event) {
         // checking if the Bukkit world is an instance of CraftWorld, if not return
         if (!(event.getWorld() instanceof CraftWorld)) {
             return;
