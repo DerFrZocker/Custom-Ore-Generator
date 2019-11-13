@@ -1,8 +1,10 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1;
 
+import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import net.minecraft.server.v1_14_R1.*;
 import org.apache.commons.lang.Validate;
+import org.bukkit.craftbukkit.v1_14_R1.util.CraftMagicNumbers;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.jetbrains.annotations.NotNull;
 
@@ -14,31 +16,30 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
-public class GeneratorAccessOverrider implements GeneratorAccess {
+public class GeneratorAccessOverrider implements GeneratorAccess, ChunkAccess {
 
     @NotNull
     private final GeneratorAccess parent;
     @NotNull
     private final OreConfig oreConfig;
-    private final int x;
-    private final int z;
 
-    public GeneratorAccessOverrider(@NotNull final GeneratorAccess parent, @NotNull final OreConfig oreConfig, final int x, final int z) {
+    public GeneratorAccessOverrider(@NotNull final GeneratorAccess parent, @NotNull final OreConfig oreConfig) {
         Validate.notNull(parent, "Parent GeneratorAccess can not be null");
         Validate.notNull(oreConfig, "OreConfig can not be null");
 
         this.parent = parent;
         this.oreConfig = oreConfig;
-        this.x = x;
-        this.z = z;
     }
 
-    public int getX() {
-        return x;
+    @Override
+    public void setMaterial(@NotNull org.bukkit.Material material, final int x, final int y, final int z) {
+        parent.setTypeAndData(new BlockPosition(x, y, z), CraftMagicNumbers.getBlock(material).getBlockData(), 2);
     }
 
-    public int getZ() {
-        return z;
+    @NotNull
+    @Override
+    public org.bukkit.Material getMaterial(final int x, final int y, final int z) {
+        return CraftMagicNumbers.getMaterial(parent.getType(new BlockPosition(x, y, z)).getBlock());
     }
 
     @Override

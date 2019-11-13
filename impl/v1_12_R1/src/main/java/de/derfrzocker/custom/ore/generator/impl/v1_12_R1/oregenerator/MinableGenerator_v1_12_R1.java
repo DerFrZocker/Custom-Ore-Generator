@@ -1,18 +1,15 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_12_R1.oregenerator;
 
 import com.google.common.base.Predicate;
+import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSettings;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.AbstractMinableGenerator;
-import net.minecraft.server.v1_12_R1.Block;
-import net.minecraft.server.v1_12_R1.BlockPosition;
-import net.minecraft.server.v1_12_R1.IBlockData;
-import net.minecraft.server.v1_12_R1.WorldGenMinable;
+import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.ChunkAccessImpl;
+import net.minecraft.server.v1_12_R1.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
@@ -23,10 +20,10 @@ import java.util.Set;
 public class MinableGenerator_v1_12_R1 extends AbstractMinableGenerator {
 
     @Override
-    public void generate(@NotNull final OreConfig config, @NotNull final World world, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
+    public void generate(@NotNull final OreConfig config, @NotNull final ChunkAccess chunkAccess, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
         final int veinSize = config.getValue(OreSettings.VEIN_SIZE).orElse(OreSettings.VEIN_SIZE.getSaveValue());
 
-        final CraftWorld craftWorld = (CraftWorld) world;
+        final WorldServer worldServer = ((ChunkAccessImpl) chunkAccess).getWorldServer();
 
         final IBlockData blockData = CraftMagicNumbers.getBlock(config.getMaterial()).getBlockData();
         final Set<Material> replaceMaterials = config.getReplaceMaterials();
@@ -38,7 +35,7 @@ public class MinableGenerator_v1_12_R1 extends AbstractMinableGenerator {
 
 
         for (final Location location : locations) {
-            generator.generate(craftWorld.getHandle(), random, chunkPosition.a(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
+            generator.generate(worldServer, random, chunkPosition.a(location.getBlockX(), location.getBlockY(), location.getBlockZ()));
         }
 
     }

@@ -11,16 +11,12 @@ import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.CustomOreBlockPopulator
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.oregenerator.MinableGenerator_v1_12_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.WorldHandler_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.oregenerator.MinableGenerator_v1_13_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.oregenerator.SingleOreGenerator_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.WorldHandler_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.oregenerator.MinableGenerator_v1_13_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.oregenerator.SingleOreGenerator_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.WorldHandler_v1_13_R2_paper;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.oregenerator.MinableGenerator_v1_13_R2_paper;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.oregenerator.SingleOreGenerator_v1_13_R2_paper;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.WorldHandler_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.oregenerator.MinableGenerator_v1_14_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.oregenerator.SingleOreGenerator_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -64,6 +60,9 @@ public class VersionPicker {
         }
 
         init = true;
+
+        final CustomOreGeneratorService service = serviceSupplier.get();
+        service.registerOreGenerator(new SingleOreGenerator());
 
         switch (version) {
             case v1_14_R1:
@@ -115,7 +114,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_8_R2() {
@@ -126,7 +124,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_8_R3() {
@@ -137,7 +134,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_9_R1() {
@@ -148,7 +144,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_9_R2() {
@@ -159,7 +154,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_10_R1() {
@@ -170,7 +164,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_11_R1() {
@@ -181,7 +174,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_12_R1() {
@@ -192,7 +184,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator());
     }
 
     private void init_V1_13_R1() {
@@ -203,7 +194,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator_v1_13_R1());
     }
 
     private void init_V1_13_R2() {
@@ -214,7 +204,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator_v1_13_R2());
     }
 
     private void init_V1_13_R2_paper() {
@@ -225,7 +214,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator_v1_13_R2_paper());
     }
 
     private void init_V1_14_R1() {
@@ -236,7 +224,6 @@ public class VersionPicker {
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
-        service.registerOreGenerator(new SingleOreGenerator_v1_14_R1());
     }
 
 }

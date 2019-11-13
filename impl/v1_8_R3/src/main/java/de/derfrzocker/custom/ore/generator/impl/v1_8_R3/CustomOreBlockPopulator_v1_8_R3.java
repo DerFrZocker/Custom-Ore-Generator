@@ -93,7 +93,7 @@ public class CustomOreBlockPopulator_v1_8_R3 extends BlockPopulator implements W
         craftWorld.getHandle().captureTreeGeneration = true;
         craftWorld.getHandle().captureBlockStates = true;
 
-        oreGenerator.generate(oreConfig, craftWorld, chunk.getX(), chunk.getZ(), random, biome, biomeLocations);
+        oreGenerator.generate(oreConfig, new ChunkAccessImpl(craftWorld.getHandle()), chunk.getX(), chunk.getZ(), random, biome, biomeLocations);
 
         craftWorld.getHandle().captureTreeGeneration = false;
         craftWorld.getHandle().captureBlockStates = false;

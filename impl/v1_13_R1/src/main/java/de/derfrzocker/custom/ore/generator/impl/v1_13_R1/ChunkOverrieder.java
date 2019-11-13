@@ -176,12 +176,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
 
         locations.stream().filter(location -> access.getBiome(chunkPosition.a(location.getBlockX(), location.getBlockY(), location.getBlockZ())) == biomeBase).forEach(biomeLocations::add);
 
-        if (oreGenerator instanceof OreGenerator_v1_13_R1) {
-            ((OreGenerator_v1_13_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), new GeneratorAccessOverrider(access, oreConfig, access.a(), access.b()), random, biome, biomeLocations);
-            return;
-        }
-
-        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), random, biome, biomeLocations);
+        oreGenerator.generate(oreConfig, new GeneratorAccessOverrider(access, oreConfig), access.a(), access.b(), random, biome, biomeLocations);
     }
 
 }

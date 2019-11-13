@@ -244,7 +244,7 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
         final Set<org.bukkit.Material> replaceMaterials = oreConfig.getReplaceMaterials();
         Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
-        if(selectMaterials.isEmpty())
+        if (selectMaterials.isEmpty())
             selectMaterials = replaceMaterials;
 
         final Set<Block> replaceBlocks = new HashSet<>();
@@ -257,13 +257,7 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
 
         worldHandler.add(replaceBlocks);
 
-        if (oreGenerator instanceof OreGenerator_v1_14_R1) {
-            ((OreGenerator_v1_14_R1) oreGenerator).generate(oreConfig, parent.getWorld().getWorld(), new GeneratorAccessOverrider(access, oreConfig, access.a(), access.b()), random, biome, biomeLocations);
-            worldHandler.remove();
-            return;
-        }
-
-        oreGenerator.generate(oreConfig, parent.getWorld().getWorld(), access.a(), access.b(), random, biome, biomeLocations);
+        oreGenerator.generate(oreConfig, new GeneratorAccessOverrider(access, oreConfig), access.a(), access.b(), random, biome, biomeLocations);
         worldHandler.remove();
     }
 

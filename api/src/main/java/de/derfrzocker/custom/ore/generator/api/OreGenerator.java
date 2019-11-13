@@ -1,7 +1,6 @@
 package de.derfrzocker.custom.ore.generator.api;
 
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
 
@@ -15,19 +14,19 @@ public interface OreGenerator {
 
     /**
      * Generates veins of ores on the given Locations
-     * The Locations are relative from the chunk position,
+     * The given Locations are relative from the chunk position,
      * this means the x and z values of the locations have a range from 0 - 15
      *
-     * @param config    which get generated
-     * @param world     which get generated
-     * @param x         position of the chunk
-     * @param z         position of the chunk
-     * @param random    to use
-     * @param biome     which get generated
-     * @param locations where the veins should be generated
+     * @param config      which get generated
+     * @param chunkAccess to use
+     * @param x           position of the chunk
+     * @param z           position of the chunk
+     * @param random      to use
+     * @param biome       which get generated
+     * @param locations   where the veins should be generated
      * @throws IllegalArgumentException if config, world, random, biome or locations are null
      */
-    void generate(@NotNull OreConfig config, @NotNull World world, int x, int z, @NotNull Random random, @NotNull Biome biome, @NotNull Set<Location> locations);
+    void generate(@NotNull OreConfig config, @NotNull ChunkAccess chunkAccess, int x, int z, @NotNull Random random, @NotNull Biome biome, @NotNull Set<Location> locations);
 
     /**
      * @return a set with all OreSettings which this BlockSelector needs
