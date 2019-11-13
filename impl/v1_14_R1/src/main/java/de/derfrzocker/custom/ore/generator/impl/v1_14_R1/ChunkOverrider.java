@@ -243,7 +243,10 @@ public class ChunkOverrider<C extends GeneratorSettingsDefault> extends ChunkGen
         final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
         final Set<org.bukkit.Material> replaceMaterials = oreConfig.getReplaceMaterials();
-        final Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
+        Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
+        if(selectMaterials.isEmpty())
+            selectMaterials = replaceMaterials;
+
         final Set<Block> replaceBlocks = new HashSet<>();
         final Set<Block> selectBlocks = new HashSet<>();
 

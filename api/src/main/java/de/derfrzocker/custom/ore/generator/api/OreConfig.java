@@ -224,7 +224,9 @@ public interface OreConfig {
     void removeReplaceMaterial(@NotNull Material material);
 
     /**
-     * Return a new Set which contains all Materials on which a vein should begin to generate
+     * Return a new Set which contains all Materials on which a vein should begin to generate.
+     * If the returned set is empty, it will use the materials which getReplaceMaterials return as select
+     * materials.
      *
      * @return a set with Materials
      */
