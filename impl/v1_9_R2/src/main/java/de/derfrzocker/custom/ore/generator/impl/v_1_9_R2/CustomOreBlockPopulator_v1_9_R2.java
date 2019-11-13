@@ -4,11 +4,9 @@ import de.derfrzocker.custom.ore.generator.api.*;
 import net.minecraft.server.v1_9_R2.BlockPosition;
 import net.minecraft.server.v1_9_R2.IBlockData;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.Location;
-import org.bukkit.World;
+import org.bukkit.*;
 import org.bukkit.block.Biome;
+import org.bukkit.block.Block;
 import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
 import org.bukkit.craftbukkit.v1_9_R2.util.CraftMagicNumbers;
 import org.bukkit.event.EventHandler;
@@ -87,8 +85,14 @@ public class CustomOreBlockPopulator_v1_9_R2 extends BlockPopulator implements W
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> craftWorld.getHighestBlockYAt(chunkLocation.getBlockX() + x, chunkLocation.getBlockZ() + z), oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
+        final Set<org.bukkit.Material> selectMaterials;
+        if (oreConfig.getSelectMaterials().isEmpty())
+            selectMaterials = oreConfig.getReplaceMaterials();
+        else
+            selectMaterials = oreConfig.getSelectMaterials();
 
-        locations.stream().filter(location -> chunk.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ()).getBiome() == biome).forEach(biomeLocations::add);
+        locations.stream().filter(location -> checkBlockAndBiome(chunk, location, biome, selectMaterials))
+                .forEach(biomeLocations::add);
 
         craftWorld.getHandle().captureTreeGeneration = true;
         craftWorld.getHandle().captureBlockStates = true;
@@ -117,6 +121,17 @@ public class CustomOreBlockPopulator_v1_9_R2 extends BlockPopulator implements W
             return;
 
         event.getWorld().getPopulators().add(this);
+    }
+
+    private boolean checkBlockAndBiome(final Chunk chunk, final Location location, final Biome biome, final Set<Material> materials) {
+        final Block block = chunk.getBlock(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+
+        final boolean isBiome = block.getBiome() == biome;
+
+        if (!isBiome)
+            return false;
+
+        return materials.contains(block.getType());
     }
 
 }

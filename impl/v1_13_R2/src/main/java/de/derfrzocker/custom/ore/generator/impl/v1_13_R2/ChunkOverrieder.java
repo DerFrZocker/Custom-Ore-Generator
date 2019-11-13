@@ -7,6 +7,7 @@ import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 import org.bukkit.craftbukkit.libs.it.unimi.dsi.fastutil.longs.LongSet;
+import org.bukkit.craftbukkit.v1_13_R2.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -174,10 +175,27 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
         final Set<Location> biomeLocations = new HashSet<>();
         final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
+        Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
+        if (selectMaterials.isEmpty())
+            selectMaterials = oreConfig.getReplaceMaterials();
 
-        locations.stream().filter(location -> access.getBiome(chunkPosition.a(location.getBlockX(), location.getBlockY(), location.getBlockZ())) == biomeBase).forEach(biomeLocations::add);
+        final Set<Block> selectBlocks = new HashSet<>();
+        selectMaterials.forEach(material -> selectBlocks.add(CraftMagicNumbers.getBlock(material)));
+        locations.stream().filter(location -> checkBlockAndBiome(access, chunkPosition, location, biomeBase, selectBlocks))
+                .forEach(biomeLocations::add);
 
         oreGenerator.generate(oreConfig, new GeneratorAccessOverrider(access, oreConfig), access.a(), access.b(), random, biome, biomeLocations);
+    }
+
+    private boolean checkBlockAndBiome(final RegionLimitedWorldAccess access, final BlockPosition chunkPosition, final Location location, final BiomeBase biomeBase, final Set<Block> blocks) {
+        final BlockPosition blockPosition = chunkPosition.a(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+
+        final boolean isBiome = access.getBiome(blockPosition) == biomeBase;
+
+        if (!isBiome)
+            return false;
+
+        return blocks.contains(access.getType(blockPosition).getBlock());
     }
 
 }
