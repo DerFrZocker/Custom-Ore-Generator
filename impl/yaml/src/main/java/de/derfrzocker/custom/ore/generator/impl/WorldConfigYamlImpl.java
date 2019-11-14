@@ -17,29 +17,40 @@ import java.util.regex.Pattern;
 public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializable {
 
     private final static Pattern ORE_CONFIG_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
+    @Deprecated
     private final static String WORLD_KEY = "world";
+    private final static String NAME_KEY = "name";
     private final static String ORE_CONFIG_KEY = "ore-config";
 
     @NotNull
-    private final String worldName;
+    private final String name;
 
-    private final Map<String, OreConfig> oreConfigs = new HashMap<>();
+    private final Set<String> allOreConfigs = new LinkedHashSet<>();
+    private final Map<String, OreConfig> oreConfigs = new LinkedHashMap<>();
 
-    public WorldConfigYamlImpl(@NotNull final String worldName) {
-        Validate.notNull(worldName, "World name can not be null");
-        this.worldName = worldName;
+    public WorldConfigYamlImpl(@NotNull final String name) {
+        Validate.notNull(name, "Name can not be null");
+
+        this.name = name;
     }
 
     public static WorldConfigYamlImpl deserialize(@NotNull final Map<String, Object> map) {
         final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
-        final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(WORLD_KEY));
-
         Validate.notNull(service, "CustomOreGeneratorService can not be null");
 
-        // map.entrySet().stream().filter(WorldConfigYamlImpl::isOreConfig).map(entry -> (OreConfig) entry.getValue()).forEach(worldConfig::addOreConfig);
+        if (map.containsKey(NAME_KEY)) { //newest format
+            final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(NAME_KEY));
+            final List<?> oreConfigs = (List<?>) map.get(ORE_CONFIG_KEY);
+            oreConfigs.forEach(oreConfig -> worldConfig.allOreConfigs.add((String) oreConfig));
+
+            return worldConfig;
+        }
+
+        final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(WORLD_KEY));
+
         if (!map.containsKey(ORE_CONFIG_KEY)) {
             // old format version
-            service.getLogger().info("Found old WorldConfig format, replacing it with new one");
+            service.getLogger().info("Found very old WorldConfig format, replacing it with new one");
 
             for (Map.Entry<String, Object> entry : map.entrySet()) {
                 final Object value = entry.getValue();
@@ -61,7 +72,7 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
                     OreConfigYamlImpl.copyData(source, oreConfig);
 
                     worldConfig.addOreConfig(oreConfig);
-                } else if (ORE_CONFIG_NAME_PATTERN.matcher(worldConfig.getWorld()).matches()) {
+                } else if (ORE_CONFIG_NAME_PATTERN.matcher(worldConfig.getName()).matches()) {
                     worldConfig.addOreConfig((OreConfig) value);
                 } else {
                     // give it a new name, when it not match the name convention
@@ -90,12 +101,52 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
             }
 
         } else {
-            //new format version
+            //old format version
+            service.getLogger().info("Found old WorldConfig format, replacing it with new one");
             final List<?> oreConfigs = (List<?>) map.get(ORE_CONFIG_KEY);
             oreConfigs.forEach(oreConfig -> worldConfig.addOreConfig((OreConfig) oreConfig));
         }
 
+        for (final OreConfig oreConfig : worldConfig.getOreConfigs()) {
+            if (service.getOreConfig(oreConfig.getName()).isPresent()) {
+                int index = 0;
+
+                while (service.getOreConfig(oreConfig.getName() + "_" + index).isPresent()) {
+                    index++;
+                }
+
+                final OreConfigYamlImpl newOreConfig = new OreConfigYamlImpl(oreConfig.getName() + "_" + index, oreConfig.getMaterial(), oreConfig.getOreGenerator(), oreConfig.getBlockSelector());
+
+                OreConfigYamlImpl.copyData(oreConfig, newOreConfig);
+
+                service.saveOreConfig(newOreConfig);
+
+                continue;
+            }
+
+            service.saveOreConfig(oreConfig);
+        }
+
+        service.saveWorldConfig(worldConfig);
+
         return worldConfig;
+    }
+
+    /**
+     * Copy's all values from the given WorldConfig to the second given WorldConfig
+     *
+     * @param toCopy the source of the data
+     * @param target to which the data should be get copy
+     * @throws IllegalArgumentException if toCopy or target is null
+     */
+    public static void copyData(@NotNull final WorldConfig toCopy, @NotNull final WorldConfigYamlImpl target) {
+        Validate.notNull(toCopy, "ToCopy WorldConfig can not be null");
+        Validate.notNull(target, "Target WorldConfig can not be null");
+
+
+        target.allOreConfigs.clear();
+        target.oreConfigs.clear();
+        target.allOreConfigs.addAll(toCopy.getAllOreConfigs());
     }
 
     @Deprecated
@@ -105,8 +156,8 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
 
     @NotNull
     @Override
-    public String getWorld() {
-        return worldName;
+    public String getName() {
+        return name;
     }
 
     @NotNull
@@ -114,21 +165,31 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
     public Optional<OreConfig> getOreConfig(@NotNull final String name) {
         Validate.notNull(name, "World name can not be null");
 
+        checkOreConfigs();
+
         return Optional.ofNullable(this.oreConfigs.get(name));
     }
 
     @NotNull
     @Override
     public Set<OreConfig> getOreConfigs() {
-        return new HashSet<>(oreConfigs.values());
+        checkOreConfigs();
+
+        return new LinkedHashSet<>(oreConfigs.values());
     }
 
     @Override
     public void addOreConfig(@NotNull final OreConfig oreConfig) {
         Validate.notNull(oreConfig, "OreConfig can not be null");
-        Validate.isTrue(!this.oreConfigs.containsKey(oreConfig.getName()), "The OreConfig " + oreConfig.getName() + " is already added to the WorldConfig " + getWorld());
+        Validate.isTrue(!this.allOreConfigs.contains(oreConfig.getName()), "The OreConfig " + oreConfig.getName() + " is already added to the WorldConfig " + getName());
 
         this.oreConfigs.put(oreConfig.getName(), oreConfig);
+        this.allOreConfigs.add(oreConfig.getName());
+    }
+
+    @Override
+    public Set<String> getAllOreConfigs() {
+        return new LinkedHashSet<>(this.allOreConfigs);
     }
 
     @NotNull
@@ -136,34 +197,10 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
     public Map<String, Object> serialize() {
         final Map<String, Object> serialize = new LinkedHashMap<>();
 
-        serialize.put(WORLD_KEY, getWorld());
+        serialize.put(NAME_KEY, getName());
 
-        final Set<OreConfig> oreConfigSet = getOreConfigs();
-
-        if (!oreConfigSet.isEmpty()) {
-            final List<OreConfig> data = new LinkedList<>();
-
-            oreConfigSet.forEach(oreConfig -> {
-                // if the OreConfig is not an instance of ConfigurationSerializable,
-                // than we need to create a new OreConfigYamlImpl and copy all data from the original to the new one
-                // So that yaml can save it
-
-                if (oreConfig instanceof ConfigurationSerializable) {
-                    data.add(oreConfig);
-                    return;
-                }
-
-                final OreConfigYamlImpl oreConfigYaml = new OreConfigYamlImpl(oreConfig.getName(), oreConfig.getMaterial(), oreConfig.getOreGenerator(), oreConfig.getBlockSelector());
-                oreConfigYaml.setActivated(oreConfig.isActivated());
-                oreConfigYaml.setGeneratedAll(oreConfig.shouldGeneratedAll());
-                oreConfig.getBiomes().forEach(oreConfigYaml::addBiome);
-                oreConfig.getCustomData().forEach(oreConfigYaml::setCustomData);
-                oreConfig.getOreSettings().forEach(oreConfigYaml::setValue);
-
-                data.add(oreConfigYaml);
-            });
-
-            serialize.put(ORE_CONFIG_KEY, data);
+        if (!getAllOreConfigs().isEmpty()) {
+            serialize.put(ORE_CONFIG_KEY, new LinkedList<>(getAllOreConfigs()));
         }
 
         return serialize;
@@ -198,6 +235,35 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         }
 
         return oreConfigs;
+    }
+
+    /**
+     * Checks if some OreConfigs are now present
+     */
+    private void checkOreConfigs() {
+        if (allOreConfigs.size() == oreConfigs.size())
+            return;
+
+        final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+        final Map<String, OreConfig> map = new LinkedHashMap<>();
+
+
+        Validate.notNull(service, "CustomOreGeneratorService can not be null");
+
+        allOreConfigs.forEach((name) -> {
+            final OreConfig oreConfig = oreConfigs.get(name);
+
+            if (oreConfig != null)
+                map.put(name, oreConfig);
+
+            final Optional<OreConfig> optionalOreConfig = service.getOreConfig(name);
+
+            optionalOreConfig.ifPresent(config -> map.put(name, config));
+        });
+
+        oreConfigs.clear();
+        oreConfigs.putAll(map);
+
     }
 
 }

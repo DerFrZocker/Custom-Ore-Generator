@@ -12,7 +12,9 @@ import de.derfrzocker.custom.ore.generator.impl.blockselector.HighestBlockBlockS
 import de.derfrzocker.custom.ore.generator.impl.customdata.DirectionCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.FacingCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.SkullTextureCustomData;
+import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
+import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
@@ -41,9 +43,10 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         messages = new CustomOreGeneratorMessages(this);
         permissions = new Permissions(this);
 
-        final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world_configs.yml"));
+        final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world-config"));
+        final OreConfigYamlDao oreConfigYamlDao = new OreConfigYamlDao(new File(getDataFolder(), "data/ore-config"));
 
-        final CustomOreGeneratorService service = new CustomOreGeneratorServiceImpl(worldConfigYamlDao, getLogger());
+        final CustomOreGeneratorService service = new CustomOreGeneratorServiceImpl(worldConfigYamlDao, oreConfigYamlDao, getLogger());
 
         Bukkit.getServicesManager().register(CustomOreGeneratorService.class, service, this, ServicePriority.Normal);
 
@@ -63,7 +66,10 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         service.registerCustomData(DirectionCustomData.EAST);
         service.registerCustomData(DirectionCustomData.WEST);
 
+        oreConfigYamlDao.init();
         worldConfigYamlDao.init();
+
+        checkOldStorageType();
     }
 
     @Override
@@ -72,8 +78,30 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
-
         new Metrics(this);
+    }
+
+    @Deprecated
+    private void checkOldStorageType() {
+        final File file = new File(getDataFolder(), "data/world_configs.yml");
+
+        if (!file.exists())
+            return;
+
+        if (file.isDirectory()) {
+            getLogger().info("WTF?? why??");
+            return;
+        }
+
+        getLogger().info("Found old storage type, convert to new one");
+
+        final WorldConfigYamlDao_Old worldConfigYamlDao = new WorldConfigYamlDao_Old(new File(getDataFolder(), "data/world_configs.yml"));
+        worldConfigYamlDao.init();
+
+        if (!file.delete())
+            throw new RuntimeException("Can not delete File " + file);
+
+        getLogger().info("Finish converting old storage format to new one");
     }
 
     private static final class CustomOreGeneratorServiceSupplier implements Supplier<CustomOreGeneratorService> {

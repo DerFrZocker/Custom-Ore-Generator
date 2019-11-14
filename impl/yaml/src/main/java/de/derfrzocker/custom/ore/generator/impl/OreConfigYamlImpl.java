@@ -40,10 +40,8 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final Set<Biome> biomes = new HashSet<>();
     private final Set<Material> replaceMaterials = new HashSet<>();
     private final Set<Material> selectMaterials = new HashSet<>();
-    // We use a lazyOreSettings in case the OreSetting object is at the moment not created
     private final Map<String, Integer> lazyOreSettings = new HashMap<>();
     private final Map<OreSetting, Integer> oreSettings = new HashMap<>();
-    // We use a lazyCustomData in case the CustomData object was not registered jet
     private final Map<String, Object> lazyCustomData = new HashMap<>();
     private final Map<CustomData, Object> customData = new HashMap<>();
     @NotNull
@@ -144,22 +142,25 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     /**
      * Copy's all values from the given OreConfig to the second given OreConfig
-     * Only for backwards compatibility
      *
      * @param toCopy the source of the data
      * @param target to which the data should be get copy
+     * @throws IllegalArgumentException if toCopy or target is null
      */
-    @Deprecated
-    static void copyData(@NotNull final OreConfigYamlImpl toCopy, @NotNull final OreConfigYamlImpl target) {
+    public static void copyData(@NotNull final OreConfig toCopy, @NotNull final OreConfigYamlImpl target) {
+        Validate.notNull(toCopy, "ToCopy OreConfig can not be null");
+        Validate.notNull(target, "Target OreConfig can not be null");
+
         target.setActivated(toCopy.isActivated());
         target.setGeneratedAll(toCopy.shouldGeneratedAll());
         target.getBiomes().forEach(target::addBiome);
         toCopy.getCustomData().forEach(target::setCustomData);
         toCopy.getOreSettings().forEach(target::setValue);
         toCopy.getReplaceMaterials().forEach(target::addReplaceMaterial);
+        toCopy.getSelectMaterials().forEach(target::addSelectMaterial);
 
-        target.lazyCustomData.putAll(toCopy.lazyCustomData);
-        target.lazyOreSettings.putAll(toCopy.lazyOreSettings);
+        target.lazyCustomData.putAll(toCopy.getLazyCustomData());
+        target.lazyOreSettings.putAll(toCopy.getLazyOreSettings());
     }
 
     @NotNull
@@ -276,10 +277,26 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @NotNull
     @Override
+    public Map<String, Integer> getLazyOreSettings() {
+        checkLazyOreSettings();
+
+        return new HashMap<>(this.lazyOreSettings);
+    }
+
+    @NotNull
+    @Override
     public Map<CustomData, Object> getCustomData() {
         checkLazyCustomData();
 
         return new HashMap<>(this.customData);
+    }
+
+    @NotNull
+    @Override
+    public Map<String, Object> getLazyCustomData() {
+        checkLazyCustomData();
+
+        return new HashMap<>(this.lazyCustomData);
     }
 
     @NotNull

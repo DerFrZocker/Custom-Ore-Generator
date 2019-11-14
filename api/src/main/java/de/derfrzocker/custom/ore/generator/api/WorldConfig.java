@@ -14,7 +14,7 @@ public interface WorldConfig {
      * @return the name of the WorldConfig
      */
     @NotNull
-    String getWorld();
+    String getName();
 
     /**
      * If this WorldConfig have the OreConfig with the given name
@@ -30,6 +30,8 @@ public interface WorldConfig {
     Optional<OreConfig> getOreConfig(@NotNull String name);
 
     /**
+     * The returning Set is in order in which the OreConfig should get generated
+     *
      * @return a new Set with all OreConfigs this WorldConfig have
      */
     @NotNull
@@ -45,5 +47,14 @@ public interface WorldConfig {
      * @throws IllegalArgumentException if a OreConfig with the same name already exists
      */
     void addOreConfig(@NotNull OreConfig oreConfig);
+
+    /**
+     * Returns a set with all OreConfigs, this WorldConfig has.
+     * The returning Set contains Lazy and none Lazy OreConfigs
+     * The returning Set is in order in which the OreConfig should get generated
+     *
+     * @return a new set with all all OreConfigs
+     */
+    Set<String> getAllOreConfigs();
 
 }

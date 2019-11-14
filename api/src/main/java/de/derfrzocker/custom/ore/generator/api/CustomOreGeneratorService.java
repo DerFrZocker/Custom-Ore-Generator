@@ -142,17 +142,17 @@ public interface CustomOreGeneratorService {
     Set<CustomData> getCustomData();
 
     /**
-     * If the WorldConfig with the given worldName exist
+     * If the WorldConfig with the given name exist
      * it returns an Optional that contains the WorldConfig,
      * Otherwise it return an empty Optional
      *
-     * @param worldName the name of the world
+     * @param name the name of the world
      * @return an Optional that hold the value of the given name,
      * or an empty Optional if the WorldConfig doesn't exist
-     * @throws IllegalArgumentException if worldName is null
+     * @throws IllegalArgumentException if name is null
      */
     @NotNull
-    Optional<WorldConfig> getWorldConfig(@NotNull String worldName);
+    Optional<WorldConfig> getWorldConfig(@NotNull String name);
 
     /**
      * Creates a new WorldConfig for the given world.
@@ -168,24 +168,51 @@ public interface CustomOreGeneratorService {
 
     /**
      * Creates a new WorldConfig for the given worldName.
-     * If for the given worldName already a WorldConfig exist, then it returns the
+     * If for the given name already a WorldConfig exist, then it returns the
      * existing one.
-     * The worldName must match the following Regex: //TODO search name check regex
-     * The worldName can not be empty
+     * The name must match the following Regex: //TODO search name check regex
+     * The name can not be empty
      *
-     * @param worldName for which the WorldConfig is
+     * @param name for which the WorldConfig is
      * @return a new WorldConfig or if one already exists, the existing one.
-     * @throws IllegalArgumentException if worldName is null
-     * @throws IllegalArgumentException if the worldName doesn't match the Regex: //TODO search name check regex
-     * @throws IllegalArgumentException if the worldName is empty
+     * @throws IllegalArgumentException if name is null
+     * @throws IllegalArgumentException if the name doesn't match the Regex: //TODO search name check regex
+     * @throws IllegalArgumentException if the name is empty
      */
     @NotNull
-    WorldConfig createWorldConfig(@NotNull String worldName);
+    WorldConfig createWorldConfig(@NotNull String name);
+
+    /**
+     * Saves the given WorldOreConfig to disk
+     *
+     * @param config to save
+     */
+    void saveWorldConfig(@NotNull WorldConfig config);
+
+    /**
+     * @return a new set with all WorldConfig's
+     */
+    @NotNull
+    Set<WorldConfig> getWorldConfigs();
+
+    /**
+     * If the OreConfig with the given name exist
+     * it returns an Optional that contains the OreConfig,
+     * Otherwise it return an empty Optional
+     *
+     * @param name the name of the oreConfig
+     * @return an Optional that hold the value of the given name,
+     * or an empty Optional if the WorldConfig doesn't exist
+     * @throws IllegalArgumentException if name is null
+     */
+    @NotNull
+    Optional<OreConfig> getOreConfig(@NotNull String name);
 
     /**
      * Creates a new OreConfig with the given parameters.
      * The name must match the following Regex: ^[a-zA-Z0-9_-]*$
-     * The name can not be empty
+     * The name can not be empty.
+     * The returning OreConfig is not saved to disk, you must do it manuel with save saveOreConfig(OreConfig)
      *
      * @param name          of the OreConfig
      * @param material      of the OreConfig
@@ -203,17 +230,17 @@ public interface CustomOreGeneratorService {
     OreConfig createOreConfig(@NotNull String name, @NotNull Material material, @NotNull OreGenerator oreGenerator, @NotNull BlockSelector blockSelector);
 
     /**
-     * Saves the given WorldOreConfig to disk
+     * Saves the given OreConfig to disk
      *
      * @param config to save
      */
-    void saveWorldConfig(@NotNull WorldConfig config);
+    void saveOreConfig(@NotNull OreConfig config);
 
     /**
-     * @return a new set with all WorldConfig's
+     * @return a new set with all OreConfigs's
      */
     @NotNull
-    Set<WorldConfig> getWorldConfigs();
+    Set<OreConfig> getOreConfigs();
 
     /**
      * Returns a seeded random, which is based on a seed

@@ -163,6 +163,16 @@ public interface OreConfig {
     Map<OreSetting, Integer> getOreSettings();
 
     /**
+     * Returns a copy of all lazy OreSettings and it's values, which this OreConfig has.
+     * Lazy OreSettings are OreSetting, which can be loaded at the moment. Because their are not
+     * registered jet.
+     *
+     * @return a map with all lazy OreSetting and values
+     */
+    @NotNull
+    Map<String, Integer> getLazyOreSettings();
+
+    /**
      * Returns a copy of all CustomData and it's values, which this OreConfig has.
      * <p>
      * The map that get's returned is maybe immutable.
@@ -171,6 +181,16 @@ public interface OreConfig {
      */
     @NotNull
     Map<CustomData, Object> getCustomData();
+
+    /**
+     * Returns a copy of all lazy CustomData and it's values, which this OreConfig has.
+     * Lazy CustomData are CustomData, which can be loaded at the moment. Because their are not
+     * registered jet.
+     *
+     * @return a map with all lazy CustomData and values
+     */
+    @NotNull
+    Map<String, Object> getLazyCustomData();
 
     /**
      * If this OreConfig contains the value of the given CustomData,

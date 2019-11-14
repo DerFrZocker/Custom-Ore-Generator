@@ -1,6 +1,7 @@
 package de.derfrzocker.custom.ore.generator.impl;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.dao.OreConfigDao;
 import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
@@ -20,7 +21,9 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     private final static Pattern ORE_CONFIG_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
 
     @NotNull
-    private final WorldConfigDao dao;
+    private final WorldConfigDao worldConfigDao;
+    @NotNull
+    private final OreConfigDao oreConfigDao;
     @NotNull
     private final Logger logger;
     private final Map<String, BlockSelector> blockSelectors = new HashMap<>();
@@ -34,14 +37,16 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     /**
      * Creates a new CustomOreGeneratorServiceImpl
      *
-     * @param dao    to use
-     * @param logger to use
+     * @param worldConfigDao to use
+     * @param logger         to use
      */
-    public CustomOreGeneratorServiceImpl(@NotNull final WorldConfigDao dao, @NotNull final Logger logger) {
-        Validate.notNull(dao, "WorldConfigDao can not be null");
+    public CustomOreGeneratorServiceImpl(@NotNull final WorldConfigDao worldConfigDao, @NotNull final OreConfigDao oreConfigDao, @NotNull final Logger logger) {
+        Validate.notNull(worldConfigDao, "WorldConfigDao can not be null");
+        Validate.notNull(oreConfigDao, "OreConfigDao can not be null");
         Validate.notNull(logger, "Logger can not be null");
 
-        this.dao = dao;
+        this.worldConfigDao = worldConfigDao;
+        this.oreConfigDao = oreConfigDao;
         this.logger = logger;
     }
 
@@ -158,7 +163,7 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     public Optional<WorldConfig> getWorldConfig(@NotNull final String worldName) {
         Validate.notNull(worldName, "World name can not be null");
 
-        return this.dao.get(worldName);
+        return this.worldConfigDao.get(worldName);
     }
 
     @NotNull
@@ -196,16 +201,38 @@ public class CustomOreGeneratorServiceImpl implements CustomOreGeneratorService 
     }
 
     @Override
+    public void saveOreConfig(@NotNull final OreConfig config) {
+        Validate.notNull(config, "OreConfig can not be null");
+
+        oreConfigDao.save(config);
+    }
+
+    @NotNull
+    @Override
+    public Set<OreConfig> getOreConfigs() {
+        return oreConfigDao.getAll();
+    }
+
+    @Override
     public void saveWorldConfig(@NotNull final WorldConfig config) {
         Validate.notNull(config, "WorldConfig can not be null");
 
-        this.dao.save(config);
+        this.worldConfigDao.save(config);
     }
 
     @NotNull
     @Override
     public Set<WorldConfig> getWorldConfigs() {
-        return this.dao.getAll();
+        return this.worldConfigDao.getAll();
+    }
+
+    @NotNull
+    @Override
+    public Optional<OreConfig> getOreConfig(@NotNull final String name) {
+        Validate.notNull(name, "Name can not be null");
+        Validate.notEmpty(name, "Name can not be empty");
+
+        return oreConfigDao.get(name);
     }
 
     @NotNull
