@@ -83,4 +83,33 @@ public class OreGenCommand extends CommandSeparator {
         return new Pair<>(worldConfig, oreConfigOptional.get());
     }
 
+    /**
+     * return the OreConfig for the given name, it the OreConfig does not exists, it will throw a CommandException
+     * <p>
+     * When messageKey and commandSender are not null it also send a message to the given commandSender
+     * When it send the message, it gives the oreConfigName as "ore-config" placeholder
+     *
+     * @param oreConfigName the name the the OreConfig
+     * @param service       to use
+     * @param messageKey    the message to send when no OreConfig was found
+     * @param commandSender to send the message when no OreConfig was found
+     * @return the OreConfig with the given name
+     * @throws IllegalArgumentException oreConfigName or service is null
+     * @throws CommandException         when the OreConfig was not found
+     */
+    @NotNull
+    public static OreConfig getOreConfig(@NotNull final String oreConfigName, @NotNull final CustomOreGeneratorService service, @Nullable final MessageKey messageKey, @Nullable final CommandSender commandSender) {
+
+        final Optional<OreConfig> oreConfigOptional = service.getOreConfig(oreConfigName);
+
+        if (oreConfigOptional.isPresent())
+            return oreConfigOptional.get();
+
+        if (messageKey != null && commandSender != null) {
+            messageKey.sendMessage(commandSender, new MessageValue("ore-config", oreConfigName));
+        }
+
+        throw new CommandException("OreConfig " + oreConfigName + " not found");
+    }
+
 }

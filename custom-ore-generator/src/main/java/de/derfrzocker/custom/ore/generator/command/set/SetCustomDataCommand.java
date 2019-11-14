@@ -40,24 +40,20 @@ public class SetCustomDataCommand implements TabExecutor {
         this.messages = messages;
     }
 
-    @Override //oregen set customdata <world> <config_name> <customdata> <value>
+    @Override //oregen set customdata <config_name> <customdata> <value>
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (args.length != 4) {
+        if (args.length != 3) {
             messages.COMMAND_SET_CUSTOMDATA_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
         CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
-            final String worldName = args[0];
-            final String configName = args[1];
-            final String customDataName = args[2];
-            final String customDataValue = args[3];
+            final String configName = args[0];
+            final String customDataName = args[1];
+            final String customDataValue = args[2];
 
-            final World world = CommandUtil.getWorld(worldName, messages.COMMAND_WORLD_NOT_FOUND, sender);
             final CustomOreGeneratorService service = serviceSupplier.get();
-            final Pair<WorldConfig, OreConfig> pair = OreGenCommand.getWorldAndOreConfig(world, configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
-            final WorldConfig worldConfig = Objects.requireNonNull(pair.getFirst(), "This should never happen");
-            final OreConfig oreConfig = Objects.requireNonNull(pair.getSecond(), "This should never happen");
+            final OreConfig oreConfig = OreGenCommand.getOreConfig(configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
 
             final Optional<CustomData> customDataOptional = service.getCustomData(customDataName);
 
@@ -88,57 +84,31 @@ public class SetCustomDataCommand implements TabExecutor {
             }
 
             oreConfig.setCustomData(customData, data);
-            service.saveWorldConfig(worldConfig);
+            service.saveOreConfig(oreConfig);
             messages.COMMAND_SET_CUSTOMDATA_SUCCESS.sendMessage(sender);
         });
 
         return true;
     }
 
-    @Override
+    @Override //oregen set customdata <config_name> <customdata> <value>
     public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         if (args.length == 1) {
-            final String world_name = args[0].toLowerCase();
-            Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().contains(world_name)).forEach(list::add);
+            final String configName = args[0];
+            service.getOreConfigs().stream().map(OreConfig::getName).filter(name -> name.contains(configName)).forEach(list::add);
             return list;
         }
 
         if (args.length == 2) {
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
-
-            if (!world.isPresent())
-                return list;
-
-            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (!worldConfig.isPresent())
-                return list;
-
-            final String config_name = args[1];
-            worldConfig.get().getOreConfigs().stream().map(OreConfig::getName).filter(name -> name.contains(config_name)).forEach(list::add);
-            return list;
-        }
-
-        if (args.length == 3) {
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
-
-            if (!world.isPresent())
-                return list;
-
-            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (!worldConfig.isPresent())
-                return list;
-
-            final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
+            final Optional<OreConfig> oreConfig = service.getOreConfig(args[0]);
 
             if (!oreConfig.isPresent())
                 return list;
 
-            final String customDataName = args[2].toUpperCase();
+            final String customDataName = args[1].toUpperCase();
 
             service.getCustomData().stream().filter(customData -> customData.canApply(oreConfig.get())).map(CustomData::getName).filter(value -> value.contains(customDataName)).forEach(list::add);
 

@@ -8,7 +8,7 @@ command:
   biome-not-found: "&4The biome &f'&d%biome%&f' &4does not exist!"
 
   create:
-    usage: "&f/&doregen create &f<&dworld&f> <&dname&f> <&dmaterial&f> [<&dore-generator&f>] [<&dblock-selector&f>]"
+    usage: "&f/&doregen create <&dname&f> <&dmaterial&f> [<&dore-generator&f>] [<&dblock-selector&f>]"
     description: "Creates a new Ore-Config, in which you can set values"
     not-enough-args:
       - "&4Wrong amount of arguments!"
@@ -26,7 +26,7 @@ command:
     description: "Main command for different set subcommands"
 
     value:
-      usage: "&f/&doregen set value &f<&dworld&f> <&dore-config&f> <&dsetting&f> <&damount&f>"
+      usage: "&f/&doregen set value <&dore-config&f> <&dsetting&f> <&damount&f>"
       description: "Set a setting value to the ore config"
       not-enough-args:
         - "&4Wrong amount of arguments!"
@@ -37,7 +37,7 @@ command:
       success: "&aThe value has been updated successfully!"
 
     customdata:
-      usage: "&f/&doregen set customdata &f<&dworld&f> <&dore-config&f> <&dcustomdata&f> <&dvalue&f>"
+      usage: "&f/&doregen set customdata <&dore-config&f> <&dcustomdata&f> <&dvalue&f>"
       description: "Set a custom data to the ore config"
       not-enough-args:
         - "&4Wrong amount of arguments!"
@@ -48,7 +48,7 @@ command:
       success: "&aThe custom data was set successfully!"
 
     biome:
-      usage: "&f/&doregen set biome &f<&dworld&f> <&dore-config&f> <&dbiome&f> &d..."
+      usage: "&f/&doregen set biome <&dore-config&f> <&dbiome&f> &d..."
       description: "Set the biomes in which the ore should be generate. You can set multiple Biomes, by separate them with a space. Biomes that are already set to the ore config, gets override."
       not-enough-args:
         - "&4Wrong amount of arguments!"
@@ -56,14 +56,14 @@ command:
       success: "&aThe biomes are set successfully!"
 
     replacematerial:
-      usage: "&f/&doregen set replacematerial &f<&dworld&f> <&dore-config&f> <&dmaterial&f> &d..."
+      usage: "&f/&doregen set replacematerial <&dore-config&f> <&dmaterial&f> &d..."
       description: "Set the material on which the ore should be generate. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override."
       not-enough-args:
         - "&4Wrong amount of arguments!"
         - "&cuse %%translation:[command.set.replacmaterial.usage]%"
       success: "&aThe materials are set successfully!"
     selectmaterial:
-      usage: "&f/&doregen set selectmaterial &f<&dworld&f> <&dore-config&f> <&dmaterial&f> &d..."
+      usage: "&f/&doregen set selectmaterial <&dore-config&f> <&dmaterial&f> &d..."
       description: "Set the material which should be the start point for generation. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override. If no select Material is set, the replace material will be use instead "
       not-enough-args:
         - "&4Wrong amount of arguments!"

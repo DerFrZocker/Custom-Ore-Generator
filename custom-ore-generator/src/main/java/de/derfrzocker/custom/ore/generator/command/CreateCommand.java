@@ -1,13 +1,14 @@
 package de.derfrzocker.custom.ore.generator.command;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -42,35 +43,28 @@ public class CreateCommand implements TabExecutor {
         this.messages = messages;
     }
 
-    @Override //oregen create <world> <name> <material> [<ore-generator>] [<block-selector>]
+    @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (args.length < 3) {
+        if (args.length < 2) {
             messages.COMMAND_CREATE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
         CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
-            final String worldName = args[0];
-            final String oreConfigName = args[1];
-            final String materialName = args[2];
+            final String configName = args[0];
+            final String materialName = args[1];
 
-            final World world = CommandUtil.getWorld(worldName, messages.COMMAND_WORLD_NOT_FOUND, sender);
 
             final CustomOreGeneratorService service = serviceSupplier.get();
-
-            final Optional<WorldConfig> worldConfigOptional = service.getWorldConfig(world.getName());
-
-            final WorldConfig worldConfig = worldConfigOptional.orElseGet(() -> service.createWorldConfig(world));
-
-            final Optional<OreConfig> oreConfigOptional = worldConfig.getOreConfig(oreConfigName);
+            final Optional<OreConfig> oreConfigOptional = service.getOreConfig(configName);
 
             if (oreConfigOptional.isPresent()) {
                 messages.COMMAND_CREATE_ALREADY_EXISTS.sendMessage(sender, new MessageValue("ore-config", oreConfigOptional.get().getName()));
                 return;
             }
 
-            if (!ORE_CONFIG_NAME_PATTERN.matcher(oreConfigName).matches()) {
-                messages.COMMAND_CREATE_NAME_NOT_VALID.sendMessage(sender, new MessageValue("ore-config", oreConfigName));
+            if (!ORE_CONFIG_NAME_PATTERN.matcher(configName).matches()) {
+                messages.COMMAND_CREATE_NAME_NOT_VALID.sendMessage(sender, new MessageValue("ore-config", configName));
                 return;
             }
 
@@ -89,10 +83,10 @@ public class CreateCommand implements TabExecutor {
             }
 
             final OreGenerator oreGenerator;
-            if (args.length >= 4) {
-                final Optional<OreGenerator> oreGeneratorOptional = service.getOreGenerator(args[3]);
+            if (args.length >= 3) {
+                final Optional<OreGenerator> oreGeneratorOptional = service.getOreGenerator(args[2]);
                 if (!oreGeneratorOptional.isPresent()) {
-                    messages.COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[3]));
+                    messages.COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[2]));
                     return;
                 }
 
@@ -104,10 +98,10 @@ public class CreateCommand implements TabExecutor {
             }
 
             final BlockSelector blockSelector;
-            if (args.length >= 5) {
-                final Optional<BlockSelector> blockSelectorOptional = service.getBlockSelector(args[4]);
+            if (args.length >= 4) {
+                final Optional<BlockSelector> blockSelectorOptional = service.getBlockSelector(args[3]);
                 if (!blockSelectorOptional.isPresent()) {
-                    messages.COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[4]));
+                    messages.COMMAND_BLOCK_SELECTOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", args[3]));
                     return;
                 }
 
@@ -118,13 +112,11 @@ public class CreateCommand implements TabExecutor {
                 messages.COMMAND_CREATE_BLOCK_SELECTOR_NOT_SPECIFIED.sendMessage(sender, new MessageValue("block-selector", blockSelector.getName()));
             }
 
-            final OreConfig oreConfig = service.createOreConfig(oreConfigName, material, oreGenerator, blockSelector);
+            final OreConfig oreConfig = service.createOreConfig(configName, material, oreGenerator, blockSelector);
 
-            worldConfig.addOreConfig(oreConfig);
+            service.saveOreConfig(oreConfig);
 
-            service.saveWorldConfig(worldConfig);
             messages.COMMAND_CREATE_SUCCESS.sendMessage(sender,
-                    new MessageValue("world", world.getName()),
                     new MessageValue("material", material),
                     new MessageValue("ore-config", oreConfig.getName()),
                     new MessageValue("ore-generator", oreGenerator.getName()),
@@ -135,55 +127,33 @@ public class CreateCommand implements TabExecutor {
         return true;
     }
 
-    @Override //oregen create <world> <name> <material> [<ore-generator>] [<block-selector>]
+    @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
         final CustomOreGeneratorService service = serviceSupplier.get();
 
-        if (args.length == 1) {
-            final String world_name = args[0].toLowerCase();
-            Bukkit.getWorlds().stream().map(World::getName).filter(value -> value.toLowerCase().contains(world_name)).forEach(list::add);
-            return list;
-        }
+        if (args.length == 2) {
 
-        if (args.length == 3) {
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+            final Optional<OreConfig> oreConfig = service.getOreConfig(args[0]);
 
-            if (!world.isPresent())
+            if (oreConfig.isPresent())
                 return list;
 
-            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (worldConfig.isPresent()) {
-                final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
-
-                if (oreConfig.isPresent())
-                    return list;
-            }
-
-            final String materialName = args[2].toUpperCase();
+            final String materialName = args[1].toUpperCase();
 
             Stream.of(Material.values()).filter(Material::isBlock).map(Enum::toString).filter(value -> value.contains(materialName)).forEach(list::add);
 
             return list;
         }
 
-        if (args.length == 4) {
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+        if (args.length == 3) {
 
-            if (!world.isPresent())
+            final Optional<OreConfig> oreConfig = service.getOreConfig(args[0]);
+
+            if (oreConfig.isPresent())
                 return list;
 
-            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (worldConfig.isPresent()) {
-                final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
-
-                if (oreConfig.isPresent())
-                    return list;
-            }
-
-            final String materialName = args[2].toUpperCase();
+            final String materialName = args[1].toUpperCase();
 
             try {
                 final Material material = Material.valueOf(materialName);
@@ -195,28 +165,19 @@ public class CreateCommand implements TabExecutor {
                 return list;
             }
 
-            final String oreGeneratorName = args[3].toUpperCase();
+            final String oreGeneratorName = args[2].toUpperCase();
             service.getOreGenerators().stream().map(OreGenerator::getName).filter(name -> name.contains(oreGeneratorName)).forEach(list::add);
 
             return list;
         }
 
-        if (args.length == 5) {
-            final Optional<World> world = Bukkit.getWorlds().stream().filter(value -> value.getName().equalsIgnoreCase(args[0])).findAny();
+        if (args.length == 4) {
+            final Optional<OreConfig> oreConfig = service.getOreConfig(args[0]);
 
-            if (!world.isPresent())
+            if (oreConfig.isPresent())
                 return list;
 
-            final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (worldConfig.isPresent()) {
-                final Optional<OreConfig> oreConfig = worldConfig.get().getOreConfig(args[1]);
-
-                if (oreConfig.isPresent())
-                    return list;
-            }
-
-            final String materialName = args[2].toUpperCase();
+            final String materialName = args[1].toUpperCase();
 
             try {
                 final Material material = Material.valueOf(materialName);
@@ -228,12 +189,12 @@ public class CreateCommand implements TabExecutor {
                 return list;
             }
 
-            final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(args[3].toUpperCase());
+            final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(args[2].toUpperCase());
 
             if (!optionalOreGenerator.isPresent())
                 return list;
 
-            final String blockSelectorName = args[4].toUpperCase();
+            final String blockSelectorName = args[3].toUpperCase();
             service.getBlockSelectors().stream().map(BlockSelector::getName).filter(name -> name.contains(blockSelectorName)).forEach(list::add);
 
             return list;
