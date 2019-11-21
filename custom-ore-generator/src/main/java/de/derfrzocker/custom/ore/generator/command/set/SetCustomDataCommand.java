@@ -1,14 +1,14 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.CustomData;
+import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.spigot.utils.Pair;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -17,7 +17,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Supplier;
 

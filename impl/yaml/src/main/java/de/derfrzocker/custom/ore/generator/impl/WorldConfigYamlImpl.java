@@ -4,6 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.BiomeConfig;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import de.derfrzocker.spigot.utils.ReloadAble;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -14,7 +15,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 @SerializableAs(value = "CustomOreGenerator#WorldConfig")
-public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializable {
+public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializable, ReloadAble {
 
     private final static Pattern ORE_CONFIG_NAME_PATTERN = Pattern.compile("^[a-zA-Z0-9_-]*$");
     @Deprecated
@@ -188,6 +189,34 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
     }
 
     @Override
+    public void addOreConfig(@NotNull final OreConfig oreConfig, int position) {
+        final Set<String> allOreConfigs = getAllOreConfigs();
+        this.allOreConfigs.clear();
+        this.oreConfigs.clear();
+
+        if (position < 0)
+            position = 0;
+
+        int current = 0;
+        String storage = oreConfig.getName();
+
+        allOreConfigs.remove(storage);
+
+        for (final String oreConfigName : allOreConfigs) {
+            if (current >= position) {
+                this.allOreConfigs.add(storage);
+                storage = oreConfigName;
+            } else {
+                this.allOreConfigs.add(oreConfigName);
+            }
+
+            current++;
+        }
+
+        allOreConfigs.add(storage);
+    }
+
+    @Override
     public Set<String> getAllOreConfigs() {
         return new LinkedHashSet<>(this.allOreConfigs);
     }
@@ -204,6 +233,11 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         }
 
         return serialize;
+    }
+
+    @Override
+    public void reload() {
+        this.oreConfigs.clear();
     }
 
     /**

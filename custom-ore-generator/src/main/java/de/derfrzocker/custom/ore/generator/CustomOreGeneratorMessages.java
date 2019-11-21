@@ -72,6 +72,13 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS;
     public final MessageKey COMMAND_SET_SELECTMATERIAL_SUCCESS;
 
+    // set position command
+    public final MessageKey COMMAND_SET_POSITION_USAGE;
+    public final MessageKey COMMAND_SET_POSITION_DESCRIPTION;
+    public final MessageKey COMMAND_SET_POSITION_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_POSITION_VALUE_NOT_VALID;
+    public final MessageKey COMMAND_SET_POSITION_SUCCESS;
+    
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
     public final MessageKey COMMAND_SET_HELP_USAGE;
@@ -151,6 +158,13 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_SELECTMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.selectmaterial.description");
         COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.selectmaterial.not-enough-args");
         COMMAND_SET_SELECTMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.selectmaterial.success");
+
+        // set position command
+        COMMAND_SET_POSITION_USAGE = new MessageKey(javaPlugin, "command.set.position.usage");
+        COMMAND_SET_POSITION_DESCRIPTION = new MessageKey(javaPlugin, "command.set.position.description");
+        COMMAND_SET_POSITION_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.position.not-enough-args");
+        COMMAND_SET_POSITION_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.set.position.value-not-valid");
+        COMMAND_SET_POSITION_SUCCESS = new MessageKey(javaPlugin, "command.set.position.success");
 
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");

@@ -69,6 +69,14 @@ command:
         - "&4Wrong amount of arguments!"
         - "&cuse %%translation:[command.set.replacmaterial.usage]%"
       success: "&aThe materials are set successfully!"
+    position:
+      usage: "&f/&doregen set position <&dworld&f> <&dore-config&f> <&dposition&f>"
+      description: "Change the order in which the Ore Config's should get generated"
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+      value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
+      success: "&aThe position was change successfully!"
 
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"

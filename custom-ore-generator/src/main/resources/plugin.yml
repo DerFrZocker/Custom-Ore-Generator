@@ -8,6 +8,7 @@ load: STARTUP
 commands:
   oregen:
     permission: "custom.ore.gen"
+    description: "Main command of Custom-Ore-Generator plugin"
 
 permissions:
   custom.ore.gen:
@@ -22,40 +23,51 @@ permissions:
       custom.ore.gen.reload: true
       custom.ore.gen.create: true
   custom.ore.gen.set.*:
-    description: "Gives access to the subcommand 'set value', 'set biome' and 'set customdata'"
+    description: "Gives access to all 'set' subcommands"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
       custom.ore.gen.set.value: true
       custom.ore.gen.set.biome: true
       custom.ore.gen.set.customdata: true
       custom.ore.gen.set.replacematerial: true
       custom.ore.gen.set.selectmaterial: true
+      custom.ore.gen.set.position: true
+  custom.ore.gen.set:
+    description: "Base permission of the 'set' subcommand"
+    default: op
+    children:
+      custom.ore.gen: true
   custom.ore.gen.set.value:
     description: "Gives access to the subcommand 'set value'"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
   custom.ore.gen.set.biome:
     description: "Gives access to the subcommand 'set biome'"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
   custom.ore.gen.set.customdata:
     description: "Gives access to the subcommand 'set customdata'"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
   custom.ore.gen.set.replacematerial:
     description: "Gives access to the subcommand 'set replacematerial'"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
   custom.ore.gen.set.selectmaterial:
     description: "Gives access to the subcommand 'set selectmaterial'"
     default: op
     children:
-      custom.ore.gen: true
+      custom.ore.gen.set: true
+  custom.ore.gen.set.position:
+    description: "Gives access to the subcommand 'set position'"
+    default: op
+    children:
+      custom.ore.gen.set: true
   custom.ore.gen.reload:
     description: "Gives access to the subcommand 'reload'"
     default: op

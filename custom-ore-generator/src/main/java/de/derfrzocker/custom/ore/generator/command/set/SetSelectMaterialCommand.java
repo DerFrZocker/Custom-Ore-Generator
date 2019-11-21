@@ -4,15 +4,11 @@ import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.WorldConfig;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.spigot.utils.Pair;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.World;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -75,7 +71,7 @@ public class SetSelectMaterialCommand implements TabExecutor {
             materials.forEach(oreConfig::addSelectMaterial);
 
             service.saveOreConfig(oreConfig);
-            messages.COMMAND_SET_SELECTMATERIAL_SUCCESS.sendMessage(sender); //TODO message
+            messages.COMMAND_SET_SELECTMATERIAL_SUCCESS.sendMessage(sender);
         });
 
         return true;
