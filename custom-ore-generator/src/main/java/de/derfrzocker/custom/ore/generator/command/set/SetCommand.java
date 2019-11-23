@@ -29,8 +29,8 @@ public class SetCommand extends CommandSeparator {
         registerExecutor(new SetPositionCommand(serviceSupplier, javaPlugin, messages), "position", permissions.SET_POSITION_PERMISSION, messages.COMMAND_SET_POSITION_USAGE, messages.COMMAND_SET_POSITION_DESCRIPTION);
 
         final HelpCommand helpCommand = new HelpCommand(this, new HelpConfigImpl(messages));
-        registerExecutor(helpCommand, "help", null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
-        registerExecutor(helpCommand, null, null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
+        registerExecutor(helpCommand, "help", null, messages.COMMAND_SET_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
+        registerExecutor(helpCommand, null, null, messages.COMMAND_SET_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
     }
 
 }

@@ -23,7 +23,7 @@ command:
 
   set:
     usage: "&f/&doregen set &f<&dsubcommand&f>"
-    description: "Main command for different set subcommands"
+    description: "Main command for different 'set' subcommands"
 
     value:
       usage: "&f/&doregen set value <&dore-config&f> <&dsetting&f> <&damount&f>"
@@ -67,19 +67,36 @@ command:
       description: "Set the material which should be the start point for generation. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override. If no select Material is set, the replace material will be use instead "
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+        - "&cuse %%translation:[command.set.selectmaterial.usage]%"
       success: "&aThe materials are set successfully!"
     position:
       usage: "&f/&doregen set position <&dworld&f> <&dore-config&f> <&dposition&f>"
       description: "Change the order in which the Ore Config's should get generated"
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+        - "&cuse %%translation:[command.set.position.usage]%"
       value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
       success: "&aThe position was change successfully!"
 
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
+
+    add:
+      usage: "&f/&doregen add &f<&dsubcommand&f>"
+      description: "Main command for different 'add' subcommands"
+
+      ore-config:
+        usage: "&f/&doregen add ore-config <&dworld&f> <&dore-config&f> [<&dposition&f>]"
+        description: "Add a Ore-Config to a world"
+        not-enough-args:
+          - "&4Wrong amount of arguments!"
+          - "&cuse %%translation:[command.add.ore-config.usage]%"
+        value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
+        present: "&4The Ore-Config &f'&d%ore-config%&f' &4 is already present in the world!"
+        success: "&aThe Ore-Config was add successfully!"
+
+      help:
+        usage: "&f/&doregen add help &f(<&dsubcommand&f>)"
 
   reload:
     usage: "&f/&9oregen reload"

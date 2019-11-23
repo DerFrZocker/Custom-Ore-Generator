@@ -78,10 +78,23 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_SET_POSITION_NOT_ENOUGH_ARGS;
     public final MessageKey COMMAND_SET_POSITION_VALUE_NOT_VALID;
     public final MessageKey COMMAND_SET_POSITION_SUCCESS;
-    
+
+    // add command
+    public final MessageKey COMMAND_ADD_USAGE;
+    public final MessageKey COMMAND_ADD_DESCRIPTION;
+
+    // add ore-config command
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_USAGE;
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_DESCRIPTION;
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_VALUE_NOT_VALID;
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_PRESENT;
+    public final MessageKey COMMAND_ADD_ORE_CONFIG_SUCCESS;
+
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
     public final MessageKey COMMAND_SET_HELP_USAGE;
+    public final MessageKey COMMAND_ADD_HELP_USAGE;
     public final MessageKey COMMAND_HELP_DESCRIPTION;
     public final MessageKey COMMAND_HELP_HEADER_FORMAT;
     public final MessageKey COMMAND_HELP_FOOTER_FORMAT;
@@ -166,9 +179,22 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_POSITION_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.set.position.value-not-valid");
         COMMAND_SET_POSITION_SUCCESS = new MessageKey(javaPlugin, "command.set.position.success");
 
+        // add command
+        COMMAND_ADD_USAGE = new MessageKey(javaPlugin, "command.add.usage");
+        COMMAND_ADD_DESCRIPTION = new MessageKey(javaPlugin, "command.add.description");
+
+        // add ore-config command
+        COMMAND_ADD_ORE_CONFIG_USAGE = new MessageKey(javaPlugin, "command.add.ore-config.usage");
+        COMMAND_ADD_ORE_CONFIG_DESCRIPTION = new MessageKey(javaPlugin, "command.add.ore-config.description");
+        COMMAND_ADD_ORE_CONFIG_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.add.ore-config.not-enough-args");
+        COMMAND_ADD_ORE_CONFIG_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.add.ore-config.value-not-valid");
+        COMMAND_ADD_ORE_CONFIG_PRESENT = new MessageKey(javaPlugin, "command.add.ore-config.present");
+        COMMAND_ADD_ORE_CONFIG_SUCCESS = new MessageKey(javaPlugin, "command.add.ore-config.success");
+
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");
         COMMAND_SET_HELP_USAGE = new MessageKey(javaPlugin, "command.set.help.usage");
+        COMMAND_ADD_HELP_USAGE = new MessageKey(javaPlugin, "command.add.help.usage");
         COMMAND_HELP_DESCRIPTION = new MessageKey(javaPlugin, "command.help.description");
         COMMAND_HELP_HEADER_FORMAT = new MessageKey(javaPlugin, "command.help.header-format");
         COMMAND_HELP_FOOTER_FORMAT = new MessageKey(javaPlugin, "command.help.footer-format");

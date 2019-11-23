@@ -5,6 +5,7 @@ import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import de.derfrzocker.custom.ore.generator.command.add.AddCommand;
 import de.derfrzocker.custom.ore.generator.command.set.SetCommand;
 import de.derfrzocker.spigot.utils.Pair;
 import de.derfrzocker.spigot.utils.command.CommandException;
@@ -32,6 +33,7 @@ public class OreGenCommand extends CommandSeparator {
         Validate.notNull(permissions, "Permissions can not be null");
 
         registerExecutor(new SetCommand(serviceSupplier, javaPlugin, messages, permissions), "set", permissions.SET_PERMISSION, messages.COMMAND_SET_USAGE, messages.COMMAND_SET_DESCRIPTION);
+        registerExecutor(new AddCommand(serviceSupplier, javaPlugin, messages, permissions), "add", permissions.ADD_PERMISSION, messages.COMMAND_ADD_USAGE, messages.COMMAND_ADD_DESCRIPTION);
         registerExecutor(new ReloadCommand(javaPlugin, messages), "reload", permissions.RELOAD_PERMISSION, messages.COMMAND_RELOAD_USAGE, messages.COMMAND_RELOAD_DESCRIPTION);
         registerExecutor(new CreateCommand(serviceSupplier, javaPlugin, messages), "create", permissions.CREATE_PERMISSION, messages.COMMAND_CREATE_USAGE, messages.COMMAND_CREATE_DESCRIPTION);
 

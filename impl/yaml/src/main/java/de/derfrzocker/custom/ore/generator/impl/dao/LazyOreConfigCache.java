@@ -117,5 +117,4 @@ public class LazyOreConfigCache implements ReloadAble {
         oreConfig = null;
     }
 
-
 }

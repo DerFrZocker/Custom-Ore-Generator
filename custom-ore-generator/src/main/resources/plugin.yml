@@ -20,6 +20,7 @@ permissions:
     children:
       custom.ore.gen: true
       custom.ore.gen.set.*: true
+      custom.ore.gen.add.*: true
       custom.ore.gen.reload: true
       custom.ore.gen.create: true
   custom.ore.gen.set.*:
@@ -68,6 +69,22 @@ permissions:
     default: op
     children:
       custom.ore.gen.set: true
+  custom.ore.gen.add.*:
+    description: "Gives access to all 'add' subcommands"
+    default: op
+    children:
+      custom.ore.gen.add: true
+      custom.ore.gen.add.ore-config: true
+  custom.ore.gen.add:
+    description: "Base permission of the 'add' subcommand"
+    default: op
+    children:
+      custom.ore.gen: true
+  custom.ore.gen.add.ore-config:
+    description: "Base permission of the 'add ore-config' subcommand"
+    default: op
+    children:
+      custom.ore.gen.add: true
   custom.ore.gen.reload:
     description: "Gives access to the subcommand 'reload'"
     default: op
