@@ -81,22 +81,22 @@ command:
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
 
-    add:
-      usage: "&f/&doregen add &f<&dsubcommand&f>"
-      description: "Main command for different 'add' subcommands"
+  add:
+    usage: "&f/&doregen add &f<&dsubcommand&f>"
+    description: "Main command for different 'add' subcommands"
 
-      ore-config:
-        usage: "&f/&doregen add ore-config <&dworld&f> <&dore-config&f> [<&dposition&f>]"
-        description: "Add a Ore-Config to a world"
-        not-enough-args:
-          - "&4Wrong amount of arguments!"
-          - "&cuse %%translation:[command.add.ore-config.usage]%"
-        value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
-        present: "&4The Ore-Config &f'&d%ore-config%&f' &4 is already present in the world!"
-        success: "&aThe Ore-Config was add successfully!"
+    ore-config:
+      usage: "&f/&doregen add ore-config <&dworld&f> <&dore-config&f> [<&dposition&f>]"
+      description: "Add a Ore-Config to a world"
+      not-enough-args:
+        - "&4Wrong amount of arguments!"
+        - "&cuse %%translation:[command.add.ore-config.usage]%"
+      value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
+      present: "&4The Ore-Config &f'&d%ore-config%&f' &4 is already present in the world!"
+      success: "&aThe Ore-Config was add successfully!"
 
-      help:
-        usage: "&f/&doregen add help &f(<&dsubcommand&f>)"
+    help:
+      usage: "&f/&doregen add help &f(<&dsubcommand&f>)"
 
   reload:
     usage: "&f/&9oregen reload"
