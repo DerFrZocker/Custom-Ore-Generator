@@ -9,10 +9,7 @@ import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.CountRangeBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.HighestBlockBlockSelector;
-import de.derfrzocker.custom.ore.generator.impl.customdata.CommandCustomData;
-import de.derfrzocker.custom.ore.generator.impl.customdata.DirectionCustomData;
-import de.derfrzocker.custom.ore.generator.impl.customdata.FacingCustomData;
-import de.derfrzocker.custom.ore.generator.impl.customdata.SkullTextureCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.*;
 import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
@@ -61,6 +58,10 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         service.registerCustomData(SkullTextureCustomData.INSTANCE);
         service.registerCustomData(FacingCustomData.INSTANCE);
         service.registerCustomData(CommandCustomData.INSTANCE);
+
+        if (Version.getCurrent().isNewerOrSameVersion(Version.v1_9_R1))
+            service.registerCustomData(AutoCustomData.INSTANCE);
+
         service.registerCustomData(DirectionCustomData.DOWN);
         service.registerCustomData(DirectionCustomData.UP);
         service.registerCustomData(DirectionCustomData.NORTH);
