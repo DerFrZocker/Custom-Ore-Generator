@@ -52,7 +52,7 @@ public class SetSelectMaterialCommand implements TabExecutor {
             final OreConfig oreConfig = OreGenCommand.getOreConfig(configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
             final Set<Material> materials = new HashSet<>();
 
-            for (int i = 2; i < args.length; i++) {
+            for (int i = 1; i < args.length; i++) {
                 try {
                     final Material material = Material.valueOf(args[i].toUpperCase());
                     if (!material.isBlock()) {
