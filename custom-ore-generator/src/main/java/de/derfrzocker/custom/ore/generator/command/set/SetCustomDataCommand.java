@@ -41,7 +41,7 @@ public class SetCustomDataCommand implements TabExecutor {
 
     @Override //oregen set customdata <config_name> <customdata> <value>
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (args.length != 3) {
+        if (args.length < 3) {
             messages.COMMAND_SET_CUSTOMDATA_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
@@ -49,7 +49,7 @@ public class SetCustomDataCommand implements TabExecutor {
         CommandUtil.runAsynchronously(sender, javaPlugin, () -> {
             final String configName = args[0];
             final String customDataName = args[1];
-            final String customDataValue = args[2];
+            final String customDataValue = buildStrings(args);
 
             final CustomOreGeneratorService service = serviceSupplier.get();
             final OreConfig oreConfig = OreGenCommand.getOreConfig(configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
@@ -130,6 +130,20 @@ public class SetCustomDataCommand implements TabExecutor {
         }
 
         throw new IllegalArgumentException();
+    }
+
+    private String buildStrings(final String[] args) {
+        final StringBuilder stringBuilder = new StringBuilder();
+
+        for (int i = 2; i < args.length; i++) {
+            if (i != 2) {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append(args[i]);
+        }
+
+        return stringBuilder.toString();
     }
 
 }
