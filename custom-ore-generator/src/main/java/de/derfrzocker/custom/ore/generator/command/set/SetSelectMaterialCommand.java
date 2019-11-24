@@ -38,10 +38,10 @@ public class SetSelectMaterialCommand implements TabExecutor {
         this.messages = messages;
     }
 
-    @Override //oregen set replacematerial <config_name> <material> <material> ...
+    @Override //oregen set select-material <config_name> <material> <material> ...
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length < 2) {
-            messages.COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS.sendMessage(sender);
+            messages.COMMAND_SET_REPLACE_MATERIAL_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -71,14 +71,14 @@ public class SetSelectMaterialCommand implements TabExecutor {
             materials.forEach(oreConfig::addSelectMaterial);
 
             service.saveOreConfig(oreConfig);
-            messages.COMMAND_SET_SELECTMATERIAL_SUCCESS.sendMessage(sender);
+            messages.COMMAND_SET_SELECT_MATERIAL_SUCCESS.sendMessage(sender);
         });
 
         return true;
     }
 
     @Nullable
-    @Override //oregen set material <config_name> <material> <material> ...
+    @Override //oregen set select-material <config_name> <material> <material> ...
     public List<String> onTabComplete(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String alias, @NotNull final String[] args) {
         final List<String> list = new ArrayList<>();
         final CustomOreGeneratorService service = serviceSupplier.get();

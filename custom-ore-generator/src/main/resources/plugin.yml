@@ -31,8 +31,8 @@ permissions:
       custom.ore.gen.set.value: true
       custom.ore.gen.set.biome: true
       custom.ore.gen.set.customdata: true
-      custom.ore.gen.set.replacematerial: true
-      custom.ore.gen.set.selectmaterial: true
+      custom.ore.gen.set.replace-material: true
+      custom.ore.gen.set.select-material: true
       custom.ore.gen.set.position: true
   custom.ore.gen.set:
     description: "Base permission of the 'set' subcommand"
@@ -54,12 +54,12 @@ permissions:
     default: op
     children:
       custom.ore.gen.set: true
-  custom.ore.gen.set.replacematerial:
+  custom.ore.gen.set.replace-material:
     description: "Gives access to the subcommand 'set replacematerial'"
     default: op
     children:
       custom.ore.gen.set: true
-  custom.ore.gen.set.selectmaterial:
+  custom.ore.gen.set.select-material:
     description: "Gives access to the subcommand 'set selectmaterial'"
     default: op
     children:

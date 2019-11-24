@@ -14,8 +14,8 @@ public final class Permissions {
     public final Permission SET_VALUE_PERMISSION;
     public final Permission SET_BIOME_PERMISSION;
     public final Permission SET_CUSTOMDATA_PERMISSION;
-    public final Permission SET_REPLACEMATERIAL_PERMISSION;
-    public final Permission SET_SELECTMATERIAL_PERMISSION;
+    public final Permission SET_REPLACE_MATERIAL_PERMISSION;
+    public final Permission SET_SELECT_MATERIAL_PERMISSION;
     public final Permission SET_POSITION_PERMISSION;
     public final Permission ADD_PERMISSION;
     public final Permission ADD_ORE_CONFIG_PERMISSION;
@@ -31,8 +31,8 @@ public final class Permissions {
         SET_VALUE_PERMISSION = new Permission(SET_PERMISSION, "value", javaPlugin, true);
         SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", javaPlugin, true);
         SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", javaPlugin, true);
-        SET_REPLACEMATERIAL_PERMISSION = new Permission(SET_PERMISSION, "replacematerial", javaPlugin, true);
-        SET_SELECTMATERIAL_PERMISSION = new Permission(SET_PERMISSION, "selectmaterial", javaPlugin, true);
+        SET_REPLACE_MATERIAL_PERMISSION = new Permission(SET_PERMISSION, "replace-material", javaPlugin, true);
+        SET_SELECT_MATERIAL_PERMISSION = new Permission(SET_PERMISSION, "select-material", javaPlugin, true);
         SET_POSITION_PERMISSION = new Permission(SET_PERMISSION, "position", javaPlugin, true);
 
         ADD_PERMISSION = new Permission(BASE_PERMISSION, "add", javaPlugin, true);

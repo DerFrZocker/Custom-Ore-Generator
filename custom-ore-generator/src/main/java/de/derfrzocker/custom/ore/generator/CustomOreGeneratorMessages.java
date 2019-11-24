@@ -61,16 +61,16 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_SET_BIOME_SUCCESS;
 
     // set replacematerial command
-    public final MessageKey COMMAND_SET_REPLACEMATERIAL_USAGE;
-    public final MessageKey COMMAND_SET_REPLACEMATERIAL_DESCRIPTION;
-    public final MessageKey COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS;
-    public final MessageKey COMMAND_SET_REPLACEMATERIAL_SUCCESS;
+    public final MessageKey COMMAND_SET_REPLACE_MATERIAL_USAGE;
+    public final MessageKey COMMAND_SET_REPLACE_MATERIAL_DESCRIPTION;
+    public final MessageKey COMMAND_SET_REPLACE_MATERIAL_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_REPLACE_MATERIAL_SUCCESS;
 
     // set selectmaterial command
-    public final MessageKey COMMAND_SET_SELECTMATERIAL_USAGE;
-    public final MessageKey COMMAND_SET_SELECTMATERIAL_DESCRIPTION;
-    public final MessageKey COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS;
-    public final MessageKey COMMAND_SET_SELECTMATERIAL_SUCCESS;
+    public final MessageKey COMMAND_SET_SELECT_MATERIAL_USAGE;
+    public final MessageKey COMMAND_SET_SELECT_MATERIAL_DESCRIPTION;
+    public final MessageKey COMMAND_SET_SELECT_MATERIAL_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_SELECT_MATERIAL_SUCCESS;
 
     // set position command
     public final MessageKey COMMAND_SET_POSITION_USAGE;
@@ -161,16 +161,16 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_BIOME_SUCCESS = new MessageKey(javaPlugin, "command.set.biome.success");
 
         // set replacematerial command
-        COMMAND_SET_REPLACEMATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.replacematerial.usage");
-        COMMAND_SET_REPLACEMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.replacematerial.description");
-        COMMAND_SET_REPLACEMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.replacematerial.not-enough-args");
-        COMMAND_SET_REPLACEMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.replacematerial.success");
+        COMMAND_SET_REPLACE_MATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.replace-material.usage");
+        COMMAND_SET_REPLACE_MATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.replace-material.description");
+        COMMAND_SET_REPLACE_MATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.replace-material.not-enough-args");
+        COMMAND_SET_REPLACE_MATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.replace-material.success");
 
         // set selectmaterial command
-        COMMAND_SET_SELECTMATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.selectmaterial.usage");
-        COMMAND_SET_SELECTMATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.selectmaterial.description");
-        COMMAND_SET_SELECTMATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.selectmaterial.not-enough-args");
-        COMMAND_SET_SELECTMATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.selectmaterial.success");
+        COMMAND_SET_SELECT_MATERIAL_USAGE = new MessageKey(javaPlugin, "command.set.select-material.usage");
+        COMMAND_SET_SELECT_MATERIAL_DESCRIPTION = new MessageKey(javaPlugin, "command.set.select-material.description");
+        COMMAND_SET_SELECT_MATERIAL_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.select-material.not-enough-args");
+        COMMAND_SET_SELECT_MATERIAL_SUCCESS = new MessageKey(javaPlugin, "command.set.select-material.success");
 
         // set position command
         COMMAND_SET_POSITION_USAGE = new MessageKey(javaPlugin, "command.set.position.usage");
