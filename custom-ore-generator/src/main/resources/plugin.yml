@@ -5,6 +5,8 @@ author: ${project.author}
 main: de.derfrzocker.custom.ore.generator.CustomOreGenerator
 api-version: 1.13
 load: STARTUP
+softdepend:
+  - ItemMods
 commands:
   oregen:
     permission: "custom.ore.gen"

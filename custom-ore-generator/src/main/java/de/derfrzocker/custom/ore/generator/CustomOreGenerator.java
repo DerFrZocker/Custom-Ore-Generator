@@ -84,6 +84,10 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
 
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
+        if(getServer().getPluginManager().getPlugin("ItemMods") != null){
+            CustomOreGeneratorServiceSupplier.INSTANCE.get().registerCustomData(ItemModsCustomData.INSTANCE);
+        }
+
         new Metrics(this);
     }
 
