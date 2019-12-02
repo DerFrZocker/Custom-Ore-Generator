@@ -1,10 +1,10 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
 
+import com.gitlab.codedoctorde.itemmods.config.BlockConfig;
+import com.gitlab.codedoctorde.itemmods.main.Main;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import eu.vangora.itemmods.config.BlockConfig;
-import eu.vangora.itemmods.main.Main;
 import net.minecraft.server.v1_14_R1.BlockPosition;
 import net.minecraft.server.v1_14_R1.EntityArmorStand;
 import net.minecraft.server.v1_14_R1.EnumItemSlot;

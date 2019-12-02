@@ -1,5 +1,8 @@
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
+import com.gitlab.codedoctorde.itemmods.config.BlockConfig;
+import com.gitlab.codedoctorde.itemmods.main.CustomBlockManager;
+import com.gitlab.codedoctorde.itemmods.main.Main;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
@@ -8,9 +11,6 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.ItemModsApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.ItemModsApplier_v1_14_R1;
 import de.derfrzocker.spigot.utils.Version;
-import eu.vangora.itemmods.config.BlockConfig;
-import eu.vangora.itemmods.main.CustomBlockManager;
-import eu.vangora.itemmods.main.Main;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
