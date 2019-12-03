@@ -33,7 +33,7 @@ public class TickBlockApplier_v1_14_R1 implements CustomDataApplier {
 
         final boolean tickBlock = (boolean) objectOptional.get();
 
-        if(!tickBlock)
+        if (!tickBlock)
             return;
 
         generatorAccess.w(blockPosition).n().a(blockPosition, null, -1, null);
