@@ -40,8 +40,8 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final Set<Biome> biomes = new HashSet<>();
     private final Set<Material> replaceMaterials = new HashSet<>();
     private final Set<Material> selectMaterials = new HashSet<>();
-    private final Map<String, Integer> lazyOreSettings = new HashMap<>();
-    private final Map<OreSetting, Integer> oreSettings = new HashMap<>();
+    private final Map<String, Double> lazyOreSettings = new HashMap<>();
+    private final Map<OreSetting, Double> oreSettings = new HashMap<>();
     private final Map<String, Object> lazyCustomData = new HashMap<>();
     private final Map<CustomData, Object> customData = new HashMap<>();
     @NotNull
@@ -93,7 +93,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
             oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), ((String) map.get(ORE_GENERATOR_KEY_OLD)).toUpperCase(), blockSelector.getName());
 
-            map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.lazyOreSettings.put(entry.getKey(), NumberConversions.toInt(entry.getValue())));
+            map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.lazyOreSettings.put(entry.getKey(), NumberConversions.toDouble(entry.getValue())));
 
             // add Default Materials
             oreConfig.addReplaceMaterial(Material.STONE);
@@ -133,7 +133,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             }
 
             if (map.containsKey(ORE_SETTINGS_KEY)) {
-                oreConfig.lazyOreSettings.putAll((Map<String, Integer>) map.get(ORE_SETTINGS_KEY));
+                ((Map<String, Object>) map.get(ORE_SETTINGS_KEY)).forEach((setting, value) -> oreConfig.lazyOreSettings.put(setting, NumberConversions.toDouble(value)));
             }
         }
 
@@ -243,14 +243,14 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @NotNull
     @Override
-    public Optional<Integer> getValue(@NotNull final OreSetting oreSetting) {
+    public Optional<Double> getValue(@NotNull final OreSetting oreSetting) {
         Validate.notNull(oreSetting, "OreSetting can not be null");
 
         return Optional.ofNullable(getOreSettings().get(oreSetting));
     }
 
     @Override
-    public void setValue(@NotNull final OreSetting oreSetting, final int value) {
+    public void setValue(@NotNull final OreSetting oreSetting, final double value) {
         Validate.notNull(oreSetting, "OreSetting can not be null");
 
         checkLazyOreSettings();
@@ -269,7 +269,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @NotNull
     @Override
-    public Map<OreSetting, Integer> getOreSettings() {
+    public Map<OreSetting, Double> getOreSettings() {
         checkLazyOreSettings();
 
         return new HashMap<>(this.oreSettings);
@@ -277,7 +277,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
     @NotNull
     @Override
-    public Map<String, Integer> getLazyOreSettings() {
+    public Map<String, Double> getLazyOreSettings() {
         checkLazyOreSettings();
 
         return new HashMap<>(this.lazyOreSettings);
@@ -408,9 +408,9 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             serialize.put(CUSTOM_DATA_KEY, data);
         }
 
-        final Map<OreSetting, Integer> oreSettingsMap = getOreSettings();
+        final Map<OreSetting, Double> oreSettingsMap = getOreSettings();
         if (!oreSettingsMap.isEmpty() || !lazyOreSettings.isEmpty()) {
-            final Map<String, Integer> data = new LinkedHashMap<>(lazyOreSettings);
+            final Map<String, Double> data = new LinkedHashMap<>(lazyOreSettings);
 
             oreSettingsMap.forEach((key, value) -> data.put(key.getName(), value));
 

@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.impl.blockselector;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,7 +20,7 @@ public class HighestBlockBlockSelector implements BlockSelector {
     public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
 
-        final int veinsPerChunk = config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue());
+        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue()), random);
 
         for (int i = 0; i < veinsPerChunk; i++) {
             final int x = random.nextInt(16);

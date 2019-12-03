@@ -241,7 +241,7 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
     public void GetValue_When_OreConfigDontHaveOreSetting_Expect_ReturnEmptyOptional() {
         final OreConfigYamlImpl oreConfigYaml = new OreConfigYamlImpl("some-name", Material.PLAYER_HEAD, "some-ore-generator", "some-block-selector");
 
-        final Optional<Integer> optionalInteger = oreConfigYaml.getValue(OreSettings.HEIGHT_RANGE);
+        final Optional<Double> optionalInteger = oreConfigYaml.getValue(OreSettings.HEIGHT_RANGE);
 
         assertNotNull(optionalInteger);
         assertFalse(optionalInteger.isPresent());
@@ -256,11 +256,11 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
 
             oreConfigYaml.setValue(oreSetting, value);
 
-            final Optional<Integer> optionalInteger = oreConfigYaml.getValue(oreSetting);
+            final Optional<Double> optionalInteger = oreConfigYaml.getValue(oreSetting);
 
             assertNotNull(optionalInteger);
             assertTrue(optionalInteger.isPresent());
-            assertEquals(value, (int) optionalInteger.get());
+            assertEquals(value, (double) optionalInteger.get());
         }
     }
 
@@ -281,11 +281,11 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
 
             oreConfigYaml.setValue(oreSetting, value);
 
-            final Optional<Integer> optionalInteger = oreConfigYaml.getValue(oreSetting);
+            final Optional<Double> optionalInteger = oreConfigYaml.getValue(oreSetting);
 
             assertNotNull(optionalInteger);
             assertTrue(optionalInteger.isPresent());
-            assertEquals(value, (int) optionalInteger.get());
+            assertEquals(value, (double) optionalInteger.get());
         }
     }
 
@@ -457,12 +457,12 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
                 assertEquals(2, biomes.size());
                 assertTrue(biomes.contains(Biome.FOREST));
                 assertTrue(biomes.contains(Biome.DEEP_WARM_OCEAN));
-                final Map<OreSetting, Integer> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
+                final Map<OreSetting, Double> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
                 assertEquals(4, oreSettingIntegerMap.size());
-                assertEquals(15, (int) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
-                assertEquals(10, (int) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
-                assertEquals(20, (int) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
-                assertEquals(5, (int) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
+                assertEquals(15, (double) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
+                assertEquals(10, (double) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
+                assertEquals(20, (double) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
+                assertEquals(5, (double) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
 
                 final Map<CustomData, Object> customDataObjectMap = oreConfigYaml.getCustomData();
                 assertEquals(4, customDataObjectMap.size());
@@ -492,12 +492,12 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
                 assertEquals(2, biomes.size());
                 assertTrue(biomes.contains(Biome.FOREST));
                 assertTrue(biomes.contains(Biome.DEEP_WARM_OCEAN));
-                final Map<OreSetting, Integer> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
+                final Map<OreSetting, Double> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
                 assertEquals(4, oreSettingIntegerMap.size());
-                assertEquals(15, (int) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
-                assertEquals(10, (int) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
-                assertEquals(20, (int) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
-                assertEquals(5, (int) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
+                assertEquals(15, (double) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
+                assertEquals(10, (double) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
+                assertEquals(20, (double) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
+                assertEquals(5, (double) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
 
                 final Map<CustomData, Object> customDataObjectMap = oreConfigYaml.getCustomData();
                 assertEquals(4, customDataObjectMap.size());
@@ -525,7 +525,7 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
                 assertTrue(oreConfigYaml.shouldGeneratedAll());
                 final Set<Biome> biomes = oreConfigYaml.getBiomes();
                 assertEquals(0, biomes.size());
-                final Map<OreSetting, Integer> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
+                final Map<OreSetting, Double> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
                 assertEquals(0, oreSettingIntegerMap.size());
                 final Map<CustomData, Object> customDataObjectMap = oreConfigYaml.getCustomData();
                 assertEquals(0, customDataObjectMap.size());
@@ -541,10 +541,10 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
 
                 //test again
                 {
-                    final Map<OreSetting, Integer> oreSettingIntegerMap2 = oreConfigYaml.getOreSettings();
+                    final Map<OreSetting, Double> oreSettingIntegerMap2 = oreConfigYaml.getOreSettings();
                     assertEquals(2, oreSettingIntegerMap2.size());
-                    assertEquals(15, (int) oreSettingIntegerMap2.get(VEINS_PER_CHUNK_));
-                    assertEquals(10, (int) oreSettingIntegerMap2.get(MINIMUM_HEIGHT_));
+                    assertEquals(15, (double) oreSettingIntegerMap2.get(VEINS_PER_CHUNK_));
+                    assertEquals(10, (double) oreSettingIntegerMap2.get(MINIMUM_HEIGHT_));
                     final Map<CustomData, Object> customDataObjectMap2 = oreConfigYaml.getCustomData();
                     assertEquals(2, customDataObjectMap2.size());
                     assertEquals("Test_value_1", customDataObjectMap2.get(customData1));
@@ -579,12 +579,12 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
                 assertTrue(oreConfigYaml.shouldGeneratedAll());
                 final Set<Biome> biomes = oreConfigYaml.getBiomes();
                 assertEquals(0, biomes.size());
-                final Map<OreSetting, Integer> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
+                final Map<OreSetting, Double> oreSettingIntegerMap = oreConfigYaml.getOreSettings();
                 assertEquals(4, oreSettingIntegerMap.size());
-                assertEquals(15, (int) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
-                assertEquals(10, (int) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
-                assertEquals(20, (int) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
-                assertEquals(5, (int) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
+                assertEquals(15, (double) oreSettingIntegerMap.get(OreSettings.VEINS_PER_CHUNK));
+                assertEquals(10, (double) oreSettingIntegerMap.get(OreSettings.MINIMUM_HEIGHT));
+                assertEquals(20, (double) oreSettingIntegerMap.get(OreSettings.HEIGHT_RANGE));
+                assertEquals(5, (double) oreSettingIntegerMap.get(OreSettings.VEIN_SIZE));
                 final Map<CustomData, Object> customDataObjectMap = oreConfigYaml.getCustomData();
                 assertEquals(0, customDataObjectMap.size());
             }
@@ -647,9 +647,9 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
         final Map<?, ?> oreSettingsMap = (Map<?, ?>) oreSettings;
         assertEquals(2, oreSettingsMap.size());
         assertTrue(oreSettingsMap.containsKey("HEIGHT_RANGE"));
-        assertEquals(20, oreSettingsMap.get("HEIGHT_RANGE"));
+        assertEquals(20d, oreSettingsMap.get("HEIGHT_RANGE"));
         assertTrue(oreSettingsMap.containsKey("MINIMUM_HEIGHT"));
-        assertEquals(10, oreSettingsMap.get("MINIMUM_HEIGHT"));
+        assertEquals(10d, oreSettingsMap.get("MINIMUM_HEIGHT"));
         final Object customData = serialize.get("custom-data");
         assertNotNull(customData);
         assertTrue(customData instanceof Map);

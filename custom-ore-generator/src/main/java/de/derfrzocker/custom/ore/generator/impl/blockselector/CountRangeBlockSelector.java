@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.impl.blockselector;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,9 +20,9 @@ public class CountRangeBlockSelector implements BlockSelector {
     public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
 
-        final int heightRange = config.getValue(OreSettings.HEIGHT_RANGE).orElse(OreSettings.HEIGHT_RANGE.getSaveValue());
-        final int minimumHeight = config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(OreSettings.MINIMUM_HEIGHT.getSaveValue());
-        final int veinsPerChunk = config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue());
+        final int heightRange = NumberUtil.getInt(config.getValue(OreSettings.HEIGHT_RANGE).orElse(OreSettings.HEIGHT_RANGE.getSaveValue()), random);
+        final int minimumHeight = NumberUtil.getInt(config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(OreSettings.MINIMUM_HEIGHT.getSaveValue()), random);
+        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue()), random);
 
         for (int i = 0; i < veinsPerChunk; i++) {
             final int x = random.nextInt(16);

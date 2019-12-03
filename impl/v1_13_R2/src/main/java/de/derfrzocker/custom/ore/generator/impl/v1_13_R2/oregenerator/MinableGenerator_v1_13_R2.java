@@ -4,6 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSettings;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.AbstractMinableGenerator;
+import de.derfrzocker.spigot.utils.NumberUtil;
 import net.minecraft.server.v1_13_R2.*;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -22,7 +23,7 @@ public class MinableGenerator_v1_13_R2 extends AbstractMinableGenerator {
 
     @Override
     public void generate(@NotNull final OreConfig config, @NotNull final ChunkAccess chunkAccess, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
-        final int veinSize = config.getValue(OreSettings.VEIN_SIZE).orElse(OreSettings.VEIN_SIZE.getSaveValue());
+        final int veinSize = NumberUtil.getInt(config.getValue(OreSettings.VEIN_SIZE).orElse(OreSettings.VEIN_SIZE.getSaveValue()), random);
         final BlockPosition chunkPosition = new BlockPosition(x << 4, 0, z << 4);
         final GeneratorAccess generatorAccess = (GeneratorAccess) chunkAccess;
         final ChunkGenerator<?> chunkGenerator = generatorAccess.getChunkProvider().getChunkGenerator();

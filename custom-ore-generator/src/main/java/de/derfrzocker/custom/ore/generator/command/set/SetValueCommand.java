@@ -84,10 +84,10 @@ public class SetValueCommand implements TabExecutor {
                 return;
             }
 
-            final int value;
+            final double value;
 
             try {
-                value = Integer.parseInt(amount);
+                value = Double.parseDouble(amount);
             } catch (NumberFormatException e) {
                 messages.COMMAND_SET_VALUE_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
                 return;

@@ -39,7 +39,7 @@ public final class OreSetting {
      * @throws IllegalArgumentException if the name doesn't match the following Regex: ^[A-Z_]*$
      */
     @NotNull
-    public static OreSetting createOreSetting(@NotNull final String name, final int saveValue) {
+    public static OreSetting createOreSetting(@NotNull final String name, final double saveValue) {
         Validate.notNull(name, "Name can't be null");
 
         return ORE_SETTINGS.computeIfAbsent(name, name2 -> new OreSetting(name, saveValue));
@@ -54,9 +54,9 @@ public final class OreSetting {
 
     @NotNull
     private final String name;
-    private final int saveValue;
+    private final double saveValue;
 
-    private OreSetting(@NotNull final String name, final int saveValue) {
+    private OreSetting(@NotNull final String name, final double saveValue) {
         Validate.notNull(name, "Name can't be null");
         Validate.notEmpty(name, "Name can't be empty");
         Validate.isTrue(NAME_PATTER.matcher(name).matches(), "Name " + name + " doesn't match the regex: ^[A-Z_]*$");
@@ -79,7 +79,7 @@ public final class OreSetting {
     /**
      * @return the save value of this OreSetting
      */
-    public int getSaveValue() {
+    public double getSaveValue() {
         return saveValue;
     }
 

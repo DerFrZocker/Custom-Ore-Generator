@@ -129,7 +129,7 @@ public interface OreConfig {
      * @throws IllegalArgumentException if oreSetting is null
      */
     @NotNull
-    Optional<Integer> getValue(@NotNull OreSetting oreSetting);
+    Optional<Double> getValue(@NotNull OreSetting oreSetting);
 
     /**
      * This sets the given OreSetting with the given value, to this
@@ -140,7 +140,7 @@ public interface OreConfig {
      * @param value      for the given setting
      * @throws IllegalArgumentException if oreSetting is null
      */
-    void setValue(@NotNull OreSetting oreSetting, int value);
+    void setValue(@NotNull OreSetting oreSetting, double value);
 
     /**
      * Removes the value of the given OreSetting from this OreConfig.
@@ -160,7 +160,7 @@ public interface OreConfig {
      * @return a map with all OreSetting and values
      */
     @NotNull
-    Map<OreSetting, Integer> getOreSettings();
+    Map<OreSetting, Double> getOreSettings();
 
     /**
      * Returns a copy of all lazy OreSettings and it's values, which this OreConfig has.
@@ -170,7 +170,7 @@ public interface OreConfig {
      * @return a map with all lazy OreSetting and values
      */
     @NotNull
-    Map<String, Integer> getLazyOreSettings();
+    Map<String, Double> getLazyOreSettings();
 
     /**
      * Returns a copy of all CustomData and it's values, which this OreConfig has.
