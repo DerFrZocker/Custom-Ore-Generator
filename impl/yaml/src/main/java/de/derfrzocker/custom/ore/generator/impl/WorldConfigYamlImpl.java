@@ -41,8 +41,10 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
 
         if (map.containsKey(NAME_KEY)) { //newest format
             final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(NAME_KEY));
-            final List<?> oreConfigs = (List<?>) map.get(ORE_CONFIG_KEY);
-            oreConfigs.forEach(oreConfig -> worldConfig.allOreConfigs.add((String) oreConfig));
+            final Object oreConfigs = map.get(ORE_CONFIG_KEY);
+
+            if (oreConfigs != null)
+                ((List<?>) oreConfigs).forEach(oreConfig -> worldConfig.allOreConfigs.add((String) oreConfig));
 
             return worldConfig;
         }
