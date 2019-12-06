@@ -25,24 +25,23 @@ public final class OreSetting {
     }
 
     /**
-     * Create a new OreSetting with the given name and save value
+     * Create a new OreSetting with the given name.
      * If a OreSetting with the same name already exist, it return's the already
      * existing one
      * The name of the OreSetting must match the following Regex: ^[A-Z_]*$
      * The name can be empty
      *
-     * @param name      of the OreSetting
-     * @param saveValue the minimum value which the OreSetting can have
+     * @param name of the OreSetting
      * @return a new OreSetting with the given name and save value, or an already existing one
      * @throws IllegalArgumentException if name is null
      * @throws IllegalArgumentException if name is empty
      * @throws IllegalArgumentException if the name doesn't match the following Regex: ^[A-Z_]*$
      */
     @NotNull
-    public static OreSetting createOreSetting(@NotNull final String name, final double saveValue) {
+    public static OreSetting createOreSetting(@NotNull final String name) {
         Validate.notNull(name, "Name can't be null");
 
-        return ORE_SETTINGS.computeIfAbsent(name, name2 -> new OreSetting(name, saveValue));
+        return ORE_SETTINGS.computeIfAbsent(name, name2 -> new OreSetting(name));
     }
 
     /**
@@ -54,15 +53,13 @@ public final class OreSetting {
 
     @NotNull
     private final String name;
-    private final double saveValue;
 
-    private OreSetting(@NotNull final String name, final double saveValue) {
+    private OreSetting(@NotNull final String name) {
         Validate.notNull(name, "Name can't be null");
         Validate.notEmpty(name, "Name can't be empty");
         Validate.isTrue(NAME_PATTER.matcher(name).matches(), "Name " + name + " doesn't match the regex: ^[A-Z_]*$");
 
         this.name = name;
-        this.saveValue = saveValue;
     }
 
     /**
@@ -76,13 +73,6 @@ public final class OreSetting {
         return name;
     }
 
-    /**
-     * @return the save value of this OreSetting
-     */
-    public double getSaveValue() {
-        return saveValue;
-    }
-
     @Override
     public boolean equals(@Nullable final Object obj) {
         if (!(obj instanceof OreSetting))
@@ -93,12 +83,12 @@ public final class OreSetting {
 
         final OreSetting other = (OreSetting) obj;
 
-        return other.getName().equals(getName()) && other.getSaveValue() == getSaveValue();
+        return other.getName().equals(getName());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(name, saveValue);
+        return Objects.hash(name);
     }
 
 }

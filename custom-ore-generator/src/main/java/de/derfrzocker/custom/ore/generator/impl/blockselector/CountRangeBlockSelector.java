@@ -3,6 +3,7 @@ package de.derfrzocker.custom.ore.generator.impl.blockselector;
 import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.NumberUtil;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.jetbrains.annotations.NotNull;
 
@@ -20,9 +21,12 @@ public class CountRangeBlockSelector implements BlockSelector {
     public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
 
-        final int heightRange = NumberUtil.getInt(config.getValue(OreSettings.HEIGHT_RANGE).orElse(OreSettings.HEIGHT_RANGE.getSaveValue()), random);
-        final int minimumHeight = NumberUtil.getInt(config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(OreSettings.MINIMUM_HEIGHT.getSaveValue()), random);
-        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(OreSettings.VEINS_PER_CHUNK.getSaveValue()), random);
+        final int heightRange = NumberUtil.getInt(config.getValue(OreSettings.HEIGHT_RANGE).orElse(0d), random);
+        final int minimumHeight = NumberUtil.getInt(config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(0d), random);
+        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(0d), random);
+
+        if(heightRange == 0)
+            return locations;
 
         for (int i = 0; i < veinsPerChunk; i++) {
             final int x = random.nextInt(16);
@@ -45,6 +49,24 @@ public class CountRangeBlockSelector implements BlockSelector {
     @Override
     public String getName() {
         return "COUNT_RANGE";
+    }
+
+    @Override
+    public boolean isSaveValue(@NotNull final OreSetting oreSetting, final double value, @NotNull final OreConfig oreConfig) {
+        Validate.notNull(oreSetting, "OreSetting can not be null");
+        Validate.notNull(oreConfig, "OreConfig can not be null");
+        Validate.isTrue(neededOreSettings.contains(oreSetting), "The BlockSelector '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
+
+        if(oreSetting == OreSettings.HEIGHT_RANGE)
+            return value >= 0;
+
+        if(oreSetting == OreSettings.MINIMUM_HEIGHT)
+            return value >= 0;
+
+        if(oreSetting == OreSettings.VEINS_PER_CHUNK)
+            return value >= 0;
+
+        throw new RuntimeException("Wtf?");
     }
 
 }

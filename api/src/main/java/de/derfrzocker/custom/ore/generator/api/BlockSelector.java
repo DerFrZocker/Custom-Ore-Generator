@@ -41,4 +41,19 @@ public interface BlockSelector {
      */
     @NotNull
     String getName();
+
+    /**
+     * Checks if the given value for the given oreSetting is save or not.
+     * Save means, that passing an ore config with the given oreSetting and value to the selectBlocks method,
+     * will not cause definitely an error.
+     *
+     * @param oreSetting to check
+     * @param value      to check
+     * @param oreConfig  which gets the setting set
+     * @return true if the given value is save, otherwise return false
+     * @throws IllegalArgumentException if oreSetting or oreConfig is null
+     * @throws IllegalArgumentException if the BlockSelector does not need the given oreSetting
+     */
+    boolean isSaveValue(@NotNull OreSetting oreSetting, double value, @NotNull OreConfig oreConfig);
+
 }

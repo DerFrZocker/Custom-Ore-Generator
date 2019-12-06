@@ -532,8 +532,8 @@ public class OreConfigYamlImplTest { //TODO use a standard name convention / met
 
 
                 //register some of the non existing OreSettings and CustomData
-                final OreSetting VEINS_PER_CHUNK_ = OreSetting.createOreSetting("VEINS_PER_CHUNK_", -1);
-                final OreSetting MINIMUM_HEIGHT_ = OreSetting.createOreSetting("MINIMUM_HEIGHT_", -1);
+                final OreSetting VEINS_PER_CHUNK_ = OreSetting.createOreSetting("VEINS_PER_CHUNK_");
+                final OreSetting MINIMUM_HEIGHT_ = OreSetting.createOreSetting("MINIMUM_HEIGHT_");
                 final CustomData customData1 = new TestCustomData("1_2");
                 final CustomData customData2 = new TestCustomData("1_2");
                 when(service.getCustomData("1_2")).thenReturn(Optional.of(customData1));
