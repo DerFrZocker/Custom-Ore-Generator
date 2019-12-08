@@ -122,15 +122,10 @@ public class AddOreConfigCommand implements TabExecutor {
                 return list;
 
             final Optional<WorldConfig> worldConfig = service.getWorldConfig(world.get().getName());
-
-            if (!worldConfig.isPresent())
-                return list;
-
+            final Set<OreConfig> oreConfigs = new HashSet<>(service.getOreConfigs());
             final String configName = args[1];
 
-            final Set<OreConfig> oreConfigs = new HashSet<>(service.getOreConfigs());
-
-            oreConfigs.removeAll(worldConfig.get().getOreConfigs());
+            worldConfig.ifPresent(worldConfig1 -> oreConfigs.removeAll(worldConfig1.getOreConfigs()));
 
             oreConfigs.stream().map(OreConfig::getName).filter(name -> name.contains(configName)).forEach(list::add);
 
