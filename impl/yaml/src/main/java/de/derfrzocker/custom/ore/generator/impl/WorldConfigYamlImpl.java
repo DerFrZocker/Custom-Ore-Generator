@@ -215,7 +215,7 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
             current++;
         }
 
-        allOreConfigs.add(storage);
+        this.allOreConfigs.add(storage);
     }
 
     @Override
