@@ -32,7 +32,7 @@ public class GeneratorAccessOverrider implements GeneratorAccess, ChunkAccess {
 
     @Override
     public void setMaterial(@NotNull org.bukkit.Material material, final int x, final int y, final int z) {
-        parent.setTypeAndData(new BlockPosition(x, y, z), CraftMagicNumbers.getBlock(material).getBlockData(), 2);
+        setTypeAndData(new BlockPosition(x, y, z), CraftMagicNumbers.getBlock(material).getBlockData(), 2);
     }
 
     @NotNull
