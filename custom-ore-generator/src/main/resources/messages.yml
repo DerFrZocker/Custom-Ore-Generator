@@ -114,3 +114,19 @@ command:
     description-format: "-> &9description&f: %description%"
     usage-format: "&9usage&f: %usage%"
     short-format: "&9%command%&f: %description%"
+
+ore-config:
+  factory:
+    name:
+      text:
+        - "Choose a Name for your ore-config, the name can only contains the letter A-Z, a-z, _ and -"
+        - "Type /exit to go back to normal game play, Type /menu to go to the ore-config creating menu"
+      invalid:
+        - "The name %value% is not valid, try again"
+    material:
+      text:
+        - "Left Click on the Block you want to generated"
+        - "Type /exit to go back to normal game play, Type /menu to go to the ore-config creating menu"
+      set:
+        - "You selected the material %material%, to change the material simple left click another one"
+        - "To continue type /next"
