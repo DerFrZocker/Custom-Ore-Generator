@@ -17,6 +17,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.WorldHandler_v1_1
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.oregenerator.MinableGenerator_v1_13_R2_paper;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.WorldHandler_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.oregenerator.MinableGenerator_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.WorldHandler_v1_15_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.oregenerator.MinableGenerator_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -65,6 +67,9 @@ public class VersionPicker {
         service.registerOreGenerator(new SingleOreGenerator());
 
         switch (version) {
+            case v1_15_R1:
+                init_V1_15_R1();
+                return;
             case v1_14_R1:
                 init_V1_14_R1();
                 return;
@@ -221,6 +226,17 @@ public class VersionPicker {
 
         new WorldHandler_v1_14_R1(javaPlugin, serviceSupplier);
         final OreGenerator oreGenerator = new MinableGenerator_v1_14_R1();
+
+        service.registerOreGenerator(oreGenerator);
+        service.setDefaultOreGenerator(oreGenerator);
+    }
+
+
+    private void init_V1_15_R1() {
+        final CustomOreGeneratorService service = serviceSupplier.get();
+
+        new WorldHandler_v1_15_R1(javaPlugin, serviceSupplier);
+        final OreGenerator oreGenerator = new MinableGenerator_v1_15_R1();
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);

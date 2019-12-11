@@ -10,6 +10,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.AutoApplier_
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.AutoApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.AutoApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.AutoApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.AutoApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.AutoApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.AutoApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
@@ -27,6 +28,7 @@ public class AutoCustomData implements CustomData {
 
     static {
         switch (Version.getCurrent()) {
+            case v1_15_R1:
             case v1_14_R1:
             case v1_13_R2:
             case v1_13_R1:
@@ -85,6 +87,8 @@ public class AutoCustomData implements CustomData {
 
     private CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_15_R1:
+                return new AutoApplier_v1_15_R1(this);
             case v1_14_R1:
                 return new AutoApplier_v1_14_R1(this);
             case v1_13_R2:

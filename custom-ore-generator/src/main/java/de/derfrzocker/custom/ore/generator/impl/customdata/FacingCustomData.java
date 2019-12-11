@@ -10,6 +10,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.FacingApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.FacingApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.FacingApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.FacingApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.FacingApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.FacingApplier_v1_18_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.FacingApplier_v1_18_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.FacingApplier_v1_18_R3;
@@ -74,6 +75,8 @@ public class FacingCustomData implements CustomData {
 
     private CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_15_R1:
+                return new FacingApplier_v1_15_R1(this);
             case v1_14_R1:
                 return new FacingApplier_v1_14_R1(this);
             case v1_13_R2:

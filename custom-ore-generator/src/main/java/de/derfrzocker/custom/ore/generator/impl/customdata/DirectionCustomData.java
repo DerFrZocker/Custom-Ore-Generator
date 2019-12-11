@@ -10,6 +10,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.DirectionApp
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.DirectionApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.DirectionApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.DirectionApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.DirectionApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.DirectionApplier_v1_18_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.DirectionApplier_v1_18_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.DirectionApplier_v1_18_R3;
@@ -82,6 +83,8 @@ public class DirectionCustomData implements CustomData {
 
     private CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_15_R1:
+                return new DirectionApplier_v1_15_R1(this, blockFace);
             case v1_14_R1:
                 return new DirectionApplier_v1_14_R1(this, blockFace);
             case v1_13_R2:

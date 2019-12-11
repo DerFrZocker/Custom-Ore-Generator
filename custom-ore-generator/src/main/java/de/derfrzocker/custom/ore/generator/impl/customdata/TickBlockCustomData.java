@@ -7,6 +7,7 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.TickBlockApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.TickBlockApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.TickBlockApplier_v1_14_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.TickBlockApplier_v1_15_R1;
 import de.derfrzocker.spigot.utils.Version;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -54,6 +55,8 @@ public class TickBlockCustomData implements CustomData {
 
     private CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_15_R1:
+                return new TickBlockApplier_v1_15_R1(this);
             case v1_14_R1:
                 return new TickBlockApplier_v1_14_R1(this);
             case v1_13_R2:
