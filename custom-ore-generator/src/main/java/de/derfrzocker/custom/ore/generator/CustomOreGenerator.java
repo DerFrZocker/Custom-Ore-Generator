@@ -3,6 +3,7 @@ package de.derfrzocker.custom.ore.generator;
 import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
+import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
@@ -18,7 +19,9 @@ import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -89,6 +92,20 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         }
 
         new Metrics(this);
+
+        getServer().getPluginManager().registerEvents(this, this);// TODO remove
+    }
+
+    @EventHandler // TODO remove
+    public void onPlayerChat(AsyncPlayerChatEvent event){
+        if(!event.getMessage().equals("test"))
+            return;
+
+
+        OreConfigFactory oreConfigFactory = new OreConfigFactory(this, event.getPlayer());
+
+        oreConfigFactory.setName(factory -> factory.setMaterial(factory2 -> event.getPlayer().sendMessage("ping")));
+
     }
 
     @Deprecated

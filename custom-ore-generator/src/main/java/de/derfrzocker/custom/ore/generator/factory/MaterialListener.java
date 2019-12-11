@@ -64,8 +64,6 @@ public class MaterialListener implements Listener {
 
             return;
         }
-
-        destroy();
     }
 
     public void onBlockLeftClick(@NotNull final Block block) {

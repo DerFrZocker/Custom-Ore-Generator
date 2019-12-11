@@ -1,5 +1,5 @@
 inventory:
-  name: #TODO set name
+  name:
   rows: 3
   world-config:
     item-stack:

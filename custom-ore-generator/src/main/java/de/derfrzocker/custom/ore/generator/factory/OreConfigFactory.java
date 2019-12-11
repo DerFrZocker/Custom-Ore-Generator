@@ -40,8 +40,8 @@ public class OreConfigFactory implements Listener {
         running = true;
 
         final Conversation conversation = new ConversationFactory(javaPlugin)
-                .withEscapeSequence("/exit")
-                .withEscapeSequence("/menu")
+                .withEscapeSequence("!exit")
+                .withEscapeSequence("!menu")
                 .addConversationAbandonedListener(event -> {
                     running = false;
                     if (event.gracefulExit()) {
@@ -50,7 +50,7 @@ public class OreConfigFactory implements Listener {
 
                     final ConversationCanceller canceller = event.getCanceller();
 
-                    if (canceller instanceof ExactMatchConversationCanceller && canceller.cancelBasedOnInput(null, "/menu")) {
+                    if (canceller instanceof ExactMatchConversationCanceller && canceller.cancelBasedOnInput(null, "!menu")) {
                         //TODO open menu
                     }
 
@@ -76,6 +76,7 @@ public class OreConfigFactory implements Listener {
                 .buildConversation(player);
 
         player.beginConversation(conversation);
+        new CommandListener(javaPlugin, player, conversation);
 
         return true;
     }
@@ -87,8 +88,9 @@ public class OreConfigFactory implements Listener {
         running = true;
 
         final Conversation conversation = new ConversationFactory(javaPlugin)
-                .withEscapeSequence("/exit")
-                .withEscapeSequence("/menu")
+                .withModality(false)
+                .withEscapeSequence("!exit")
+                .withEscapeSequence("!menu")
                 .addConversationAbandonedListener(event -> {
                     running = false;
                     if (event.gracefulExit()) {
@@ -97,7 +99,7 @@ public class OreConfigFactory implements Listener {
 
                     final ConversationCanceller canceller = event.getCanceller();
 
-                    if (canceller instanceof ExactMatchConversationCanceller && canceller.cancelBasedOnInput(null, "/menu")) {
+                    if (canceller instanceof ExactMatchConversationCanceller && canceller.cancelBasedOnInput(null, "!menu")) {
                         //TODO open menu
                     }
 
@@ -105,7 +107,7 @@ public class OreConfigFactory implements Listener {
                 .withFirstPrompt(new ValidatingPrompt() {
                     @Override
                     protected boolean isInputValid(@NotNull ConversationContext conversationContext, @NotNull String text) {
-                        return text.equals("/next");
+                        return text.equals("!next");
                     }
 
                     @Override
@@ -124,6 +126,7 @@ public class OreConfigFactory implements Listener {
         player.beginConversation(conversation);
 
         new MainMaterialListener(javaPlugin, player, oreConfigBuilder, conversation);
+        new CommandListener(javaPlugin, player, conversation);
 
         return true;
     }
@@ -135,11 +138,11 @@ public class OreConfigFactory implements Listener {
         running = true;
 
         final Conversation conversation = new ConversationFactory(javaPlugin)
-                .withEscapeSequence("/exit")
+                .withEscapeSequence("!exit")
                 .withFirstPrompt(new ValidatingPrompt() {
                     @Override
                     protected boolean isInputValid(@NotNull ConversationContext conversationContext, @NotNull String text) {
-                        return text.equals("/menu");
+                        return text.equals("!menu");
                     }
 
                     @Override

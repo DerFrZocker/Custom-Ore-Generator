@@ -3,6 +3,7 @@ package de.derfrzocker.custom.ore.generator.factory;
 import de.derfrzocker.spigot.utils.message.MessageKey;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.conversations.Conversation;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -21,4 +22,10 @@ public class MainMaterialListener extends MaterialListener {
         new MessageKey(getPlugin(), "ore-config.factory.material.set").sendMessage(getPlayer(), new MessageValue("material", Material.AIR));
     }
 
+    @Override
+    public void onBlockLeftClick(@NotNull Block block) {
+        getOreConfigBuilder().material(block.getType());
+        //TODO check for custom data
+        new MessageKey(getPlugin(), "ore-config.factory.material.set").sendMessage(getPlayer(), new MessageValue("material", block.getType()));
+    }
 }
