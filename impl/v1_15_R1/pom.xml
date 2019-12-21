@@ -37,6 +37,7 @@
             <artifactId>spigot</artifactId>
             <version>1.15-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>

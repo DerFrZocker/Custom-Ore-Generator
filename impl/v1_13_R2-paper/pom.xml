@@ -25,6 +25,7 @@
             <version>1.13.2-R0.1-SNAPSHOT</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/patched_1.13.2.jar</systemPath>
+            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
