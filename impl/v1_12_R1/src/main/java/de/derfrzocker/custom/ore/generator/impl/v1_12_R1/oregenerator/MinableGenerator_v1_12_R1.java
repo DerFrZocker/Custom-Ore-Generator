@@ -49,7 +49,7 @@ public class MinableGenerator_v1_12_R1 extends AbstractMinableGenerator {
     public void generate(@NotNull final OreConfig config, @NotNull final ChunkAccess chunkAccess, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
         final int veinSize = NumberUtil.getInt(config.getValue(OreSettings.VEIN_SIZE).orElse(0d), random);
 
-        if(veinSize == 0)
+        if (veinSize == 0)
             return;
 
         final WorldServer worldServer = ((ChunkAccessImpl) chunkAccess).getWorldServer();

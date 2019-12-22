@@ -50,7 +50,7 @@ public class CountRangeBlockSelector implements BlockSelector {
         final int minimumHeight = NumberUtil.getInt(config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(0d), random);
         final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(0d), random);
 
-        if(heightRange == 0)
+        if (heightRange == 0)
             return locations;
 
         for (int i = 0; i < veinsPerChunk; i++) {
@@ -82,13 +82,13 @@ public class CountRangeBlockSelector implements BlockSelector {
         Validate.notNull(oreConfig, "OreConfig can not be null");
         Validate.isTrue(neededOreSettings.contains(oreSetting), "The BlockSelector '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
 
-        if(oreSetting == OreSettings.HEIGHT_RANGE)
+        if (oreSetting == OreSettings.HEIGHT_RANGE)
             return value >= 0;
 
-        if(oreSetting == OreSettings.MINIMUM_HEIGHT)
+        if (oreSetting == OreSettings.MINIMUM_HEIGHT)
             return value >= 0;
 
-        if(oreSetting == OreSettings.VEINS_PER_CHUNK)
+        if (oreSetting == OreSettings.VEINS_PER_CHUNK)
             return value >= 0;
 
         throw new RuntimeException("Wtf?");

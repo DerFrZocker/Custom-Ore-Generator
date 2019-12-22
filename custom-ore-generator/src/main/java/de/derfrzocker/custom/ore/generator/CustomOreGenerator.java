@@ -90,6 +90,9 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         if (Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent()))
             service.registerCustomData(TickBlockCustomData.INSTANCE);
 
+        if(Version.v1_12_R1.isOlderOrSameVersion(Version.getCurrent()))
+            service.registerCustomData(VariantCustomData.INSTANCE);
+
         service.registerCustomData(DirectionCustomData.DOWN);
         service.registerCustomData(DirectionCustomData.UP);
         service.registerCustomData(DirectionCustomData.NORTH);

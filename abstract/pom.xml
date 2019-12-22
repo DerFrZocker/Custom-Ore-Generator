@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>custom-ore-generator-impl</artifactId>
+        <artifactId>custom-ore-generator-parent</artifactId>
         <groupId>de.derfrzocker</groupId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>custom-ore-generator-impl-ore-generators</artifactId>
+    <artifactId>custom-ore-generator-impl-abstract</artifactId>
 
     <dependencies>
         <dependency>

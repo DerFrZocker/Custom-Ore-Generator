@@ -26,15 +26,19 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import net.minecraft.server.v1_12_R1.*;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractVariantCustomData;
+import net.minecraft.server.v1_12_R1.BlockPosition;
+import net.minecraft.server.v1_12_R1.IBlockData;
+import net.minecraft.server.v1_12_R1.IBlockState;
+import net.minecraft.server.v1_12_R1.World;
 import org.apache.commons.lang.Validate;
+import org.bukkit.craftbukkit.v1_12_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class VariantApplier_v1_12_R1 implements CustomDataApplier {
+public class VariantApplier_v1_12_R1 implements AbstractVariantCustomData.VariantApplier {
 
     @NotNull
     private final CustomData customData;
@@ -61,6 +65,16 @@ public class VariantApplier_v1_12_R1 implements CustomDataApplier {
         final IBlockState variant = newIBlockData.getBlock().s().a("variant");
 
         world.setTypeAndData(blockPosition, oldIBlockData.set(variant, newIBlockData.get(variant)), 2);
+    }
+
+    @Override
+    public boolean canApply(@NotNull final OreConfig oreConfig) {
+        return CraftMagicNumbers.getBlock(oreConfig.getMaterial()).s().a("variant") != null;
+    }
+
+    @Override
+    public boolean isValidCustomData(@NotNull final Integer customData, @NotNull final OreConfig oreConfig) {
+        return CraftMagicNumbers.getBlock(oreConfig.getMaterial()).s().a("variant").c().size() > customData;
     }
 
 }

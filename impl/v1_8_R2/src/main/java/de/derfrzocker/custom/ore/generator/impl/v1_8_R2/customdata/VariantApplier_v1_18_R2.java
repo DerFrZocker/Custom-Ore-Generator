@@ -26,18 +26,19 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractVariantCustomData;
 import net.minecraft.server.v1_8_R2.BlockPosition;
 import net.minecraft.server.v1_8_R2.IBlockData;
 import net.minecraft.server.v1_8_R2.IBlockState;
 import net.minecraft.server.v1_8_R2.World;
 import org.apache.commons.lang.Validate;
+import org.bukkit.craftbukkit.v1_8_R2.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class VariantApplier_v1_18_R2 implements CustomDataApplier {
+public class VariantApplier_v1_18_R2 implements AbstractVariantCustomData.VariantApplier {
 
     @NotNull
     private final CustomData customData;
@@ -72,6 +73,36 @@ public class VariantApplier_v1_18_R2 implements CustomDataApplier {
         }
 
         world.setTypeAndData(blockPosition, oldIBlockData.set(variant, newIBlockData.get(variant)), 2);
+    }
+
+    @Override
+    public boolean canApply(@NotNull final OreConfig oreConfig) {
+        IBlockState variant = null;
+
+        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).P().d()) {
+            if (iBlockState.a().equals("variant")) {
+                variant = iBlockState;
+                break;
+            }
+        }
+        return variant != null;
+    }
+
+    @Override
+    public boolean isValidCustomData(@NotNull final Integer customData, @NotNull final OreConfig oreConfig) {
+        IBlockState variant = null;
+
+        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).P().d()) {
+            if (iBlockState.a().equals("variant")) {
+                variant = iBlockState;
+                break;
+            }
+        }
+
+        if (variant == null)
+            return false;
+
+        return variant.c().size() > customData;
     }
 
 }
