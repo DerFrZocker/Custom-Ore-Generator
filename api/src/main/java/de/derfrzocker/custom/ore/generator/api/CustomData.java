@@ -70,6 +70,17 @@ public interface CustomData {
     boolean isValidCustomData(@NotNull Object customData, @NotNull OreConfig oreConfig);
 
     /**
+     * Normalize the customData before it gets set to the customData
+     *
+     * @param customData to normalize
+     * @param oreConfig which get's the customData
+     * @return the normalized custom data
+     * @throws IllegalArgumentException if customData or OreConfig is null
+     */
+    @NotNull
+    Object normalize(@NotNull Object customData, @NotNull OreConfig oreConfig);
+
+    /**
      * @return the CustomDataApplier of this CustomData
      */
     @NotNull

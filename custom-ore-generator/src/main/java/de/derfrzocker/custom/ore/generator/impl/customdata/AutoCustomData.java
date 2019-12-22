@@ -103,6 +103,12 @@ public class AutoCustomData implements CustomData {
 
     @NotNull
     @Override
+    public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
+        return customData;
+    }
+
+    @NotNull
+    @Override
     public CustomDataApplier getCustomDataApplier() {
         if (customDataApplier == null)
             customDataApplier = getCustomDataApplier0();
