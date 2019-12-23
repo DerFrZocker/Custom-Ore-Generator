@@ -83,6 +83,7 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         service.registerCustomData(SkullTextureCustomData.INSTANCE);
         service.registerCustomData(FacingCustomData.INSTANCE);
         service.registerCustomData(CommandCustomData.INSTANCE);
+        service.registerCustomData(NBTTagCustomData.INSTANCE);
 
         if (Version.v1_9_R1.isNewerOrSameVersion(Version.getCurrent()))
             service.registerCustomData(AutoCustomData.INSTANCE);
