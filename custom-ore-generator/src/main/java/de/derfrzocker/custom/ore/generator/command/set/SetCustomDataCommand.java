@@ -107,7 +107,7 @@ public class SetCustomDataCommand implements TabExecutor {
                 return;
             }
 
-            oreConfig.setCustomData(customData, data);
+            oreConfig.setCustomData(customData, customData.normalize(data, oreConfig));
             service.saveOreConfig(oreConfig);
             messages.COMMAND_SET_CUSTOMDATA_SUCCESS.sendMessage(sender);
         });
