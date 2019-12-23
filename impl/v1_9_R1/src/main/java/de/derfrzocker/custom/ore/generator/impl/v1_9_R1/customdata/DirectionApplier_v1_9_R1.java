@@ -23,20 +23,20 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_8_R2.*;
+import net.minecraft.server.v1_9_R1.*;
 import org.bukkit.block.BlockFace;
 
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class DirectionApplier_v1_18_R2 implements CustomDataApplier {
+public class DirectionApplier_v1_9_R1 implements CustomDataApplier {
 
     @NonNull
     private final CustomData customData;
@@ -51,7 +51,7 @@ public class DirectionApplier_v1_18_R2 implements CustomDataApplier {
 
         BlockStateBoolean blockStateBoolean = null;
 
-        for (final IBlockState<?> iBlockState : iBlockData.getBlock().P().d()) {
+        for (final IBlockState<?> iBlockState : iBlockData.getBlock().t().d()) {
             if (iBlockState.a().equals(blockFace.name().toLowerCase())) {
                 blockStateBoolean = (BlockStateBoolean) iBlockState;
                 break;

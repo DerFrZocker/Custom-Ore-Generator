@@ -29,11 +29,11 @@ import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.VariantApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.VariantApplier_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.VariantApplier_v1_12_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.VariantApplier_v1_18_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.VariantApplier_v1_18_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.VariantApplier_v1_18_R3;
-import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.VariantApplier_v1_19_R1;
-import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.VariantApplier_v1_19_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.VariantApplier_v1_8_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.VariantApplier_v1_8_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.VariantApplier_v1_8_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.VariantApplier_v1_9_R1;
+import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.VariantApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
 import org.jetbrains.annotations.NotNull;
 
@@ -60,15 +60,15 @@ public class VariantCustomData extends AbstractVariantCustomData {
             case v1_10_R1:
                 return new VariantApplier_v1_10_R1(this);
             case v1_9_R2:
-                return new VariantApplier_v1_19_R2(this);
+                return new VariantApplier_v1_9_R2(this);
             case v1_9_R1:
-                return new VariantApplier_v1_19_R1(this);
+                return new VariantApplier_v1_9_R1(this);
             case v1_8_R3:
-                return new VariantApplier_v1_18_R3(this);
+                return new VariantApplier_v1_8_R3(this);
             case v1_8_R2:
-                return new VariantApplier_v1_18_R2(this);
+                return new VariantApplier_v1_8_R2(this);
             case v1_8_R1:
-                return new VariantApplier_v1_18_R1(this);
+                return new VariantApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

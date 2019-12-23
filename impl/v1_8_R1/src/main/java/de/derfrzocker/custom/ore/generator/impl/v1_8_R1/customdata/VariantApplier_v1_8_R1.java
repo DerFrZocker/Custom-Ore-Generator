@@ -38,12 +38,12 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class VariantApplier_v1_18_R1 implements AbstractVariantCustomData.VariantApplier {
+public class VariantApplier_v1_8_R1 implements AbstractVariantCustomData.VariantApplier {
 
     @NotNull
     private final CustomData customData;
 
-    public VariantApplier_v1_18_R1(@NotNull final CustomData data) {
+    public VariantApplier_v1_8_R1(@NotNull final CustomData data) {
         Validate.notNull(data, "CustomData can not be null");
 
         customData = data;

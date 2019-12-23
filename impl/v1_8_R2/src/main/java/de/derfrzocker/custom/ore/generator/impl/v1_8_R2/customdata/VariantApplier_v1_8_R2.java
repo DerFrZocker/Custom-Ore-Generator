@@ -23,27 +23,27 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractVariantCustomData;
-import net.minecraft.server.v1_9_R1.BlockPosition;
-import net.minecraft.server.v1_9_R1.IBlockData;
-import net.minecraft.server.v1_9_R1.IBlockState;
-import net.minecraft.server.v1_9_R1.World;
+import net.minecraft.server.v1_8_R2.BlockPosition;
+import net.minecraft.server.v1_8_R2.IBlockData;
+import net.minecraft.server.v1_8_R2.IBlockState;
+import net.minecraft.server.v1_8_R2.World;
 import org.apache.commons.lang.Validate;
-import org.bukkit.craftbukkit.v1_9_R1.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_8_R2.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class VariantApplier_v1_19_R1 implements AbstractVariantCustomData.VariantApplier {
+public class VariantApplier_v1_8_R2 implements AbstractVariantCustomData.VariantApplier {
 
     @NotNull
     private final CustomData customData;
 
-    public VariantApplier_v1_19_R1(@NotNull final CustomData data) {
+    public VariantApplier_v1_8_R2(@NotNull final CustomData data) {
         Validate.notNull(data, "CustomData can not be null");
 
         customData = data;
@@ -65,7 +65,7 @@ public class VariantApplier_v1_19_R1 implements AbstractVariantCustomData.Varian
 
         IBlockState variant = null;
 
-        for (final IBlockState<?> iBlockState : oldIBlockData.getBlock().t().d()) {
+        for (final IBlockState<?> iBlockState : oldIBlockData.getBlock().P().d()) {
             if (iBlockState.a().equals("variant")) {
                 variant = iBlockState;
                 break;
@@ -79,7 +79,7 @@ public class VariantApplier_v1_19_R1 implements AbstractVariantCustomData.Varian
     public boolean canApply(@NotNull final OreConfig oreConfig) {
         IBlockState variant = null;
 
-        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).t().d()) {
+        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).P().d()) {
             if (iBlockState.a().equals("variant")) {
                 variant = iBlockState;
                 break;
@@ -92,7 +92,7 @@ public class VariantApplier_v1_19_R1 implements AbstractVariantCustomData.Varian
     public boolean isValidCustomData(@NotNull final Integer customData, @NotNull final OreConfig oreConfig) {
         IBlockState variant = null;
 
-        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).t().d()) {
+        for (final IBlockState<?> iBlockState : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).P().d()) {
             if (iBlockState.a().equals("variant")) {
                 variant = iBlockState;
                 break;

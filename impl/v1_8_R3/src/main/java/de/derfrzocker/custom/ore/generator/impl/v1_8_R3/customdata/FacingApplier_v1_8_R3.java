@@ -23,21 +23,21 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
-import net.minecraft.server.v1_9_R1.*;
+import net.minecraft.server.v1_8_R3.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
 @RequiredArgsConstructor
-public class FacingApplier_v1_19_R1 implements CustomDataApplier {
+public class FacingApplier_v1_8_R3 implements CustomDataApplier {
 
     private final static Map<String, EnumDirection> DIRECTION_MAP = new HashMap<>(6);
 
@@ -61,7 +61,7 @@ public class FacingApplier_v1_19_R1 implements CustomDataApplier {
 
         BlockStateDirection blockStateDirection = null;
 
-        for (final IBlockState<?> iBlockState : iBlockData.getBlock().t().d()) {
+        for (final IBlockState<?> iBlockState : iBlockData.getBlock().P().d()) {
             if (iBlockState.a().equals("facing")) {
                 blockStateDirection = (BlockStateDirection) iBlockState;
                 break;
