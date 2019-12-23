@@ -66,6 +66,12 @@ public class TestCustomData implements CustomData {
 
     @NotNull
     @Override
+    public Object normalize(@NotNull Object customData, @NotNull OreConfig oreConfig) {
+        return customData;
+    }
+
+    @NotNull
+    @Override
     public CustomDataApplier getCustomDataApplier() {
         return null;
     }
