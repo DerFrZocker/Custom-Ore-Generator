@@ -67,9 +67,9 @@ public class NBTTagApplier_v1_15_R1 implements AbstractNBTTagCustomData.NBTTagAp
         tileEntity.save(nbtTagCompound);
 
         try {
-           final NBTTagCompound nbtTagCompound1  = MojangsonParser.parse(nbtTag);
+            final NBTTagCompound nbtTagCompound1 = MojangsonParser.parse(nbtTag);
 
-           nbtTagCompound.a(nbtTagCompound1);
+            nbtTagCompound.a(nbtTagCompound1);
         } catch (final CommandSyntaxException e) {
             throw new RuntimeException("Error while parsing String to NBTTagCompound", e);
         }

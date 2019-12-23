@@ -73,7 +73,7 @@ public interface CustomData {
      * Normalize the customData before it gets set to the customData
      *
      * @param customData to normalize
-     * @param oreConfig which get's the customData
+     * @param oreConfig  which get's the customData
      * @return the normalized custom data
      * @throws IllegalArgumentException if customData or OreConfig is null
      */
