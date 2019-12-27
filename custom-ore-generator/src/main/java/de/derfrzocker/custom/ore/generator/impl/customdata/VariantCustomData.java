@@ -25,7 +25,6 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.VariantApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.VariantApplier_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.VariantApplier_v1_12_R1;
@@ -35,19 +34,12 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.VariantApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.VariantApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.VariantApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
-import org.jetbrains.annotations.NotNull;
 
 public class VariantCustomData extends AbstractVariantCustomData {
 
     public static final VariantCustomData INSTANCE = new VariantCustomData();
 
     private VariantCustomData() {
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.INTEGER;
     }
 
     @Override
