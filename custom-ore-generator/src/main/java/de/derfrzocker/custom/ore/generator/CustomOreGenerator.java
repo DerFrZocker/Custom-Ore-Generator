@@ -38,6 +38,7 @@ import de.derfrzocker.custom.ore.generator.impl.customdata.*;
 import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
+import de.derfrzocker.custom.ore.generator.impl.oregenerator.GlowStoneGenerator;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
@@ -78,6 +79,7 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         service.registerBlockSelector(blockSelector);
         service.setDefaultBlockSelector(blockSelector);
         service.registerBlockSelector(new HighestBlockBlockSelector());
+        service.registerOreGenerator(new GlowStoneGenerator());
 
         // register CustomData
         service.registerCustomData(SkullTextureCustomData.INSTANCE);
