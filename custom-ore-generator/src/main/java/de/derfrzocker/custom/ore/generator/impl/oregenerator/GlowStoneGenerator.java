@@ -49,7 +49,7 @@ public class GlowStoneGenerator implements OreGenerator {
     private final static OreSetting HORIZONTAL_SCOPE = OreSetting.createOreSetting("HORIZONTAL_SCOPE");
     private final static OreSetting POSITIVE_TRIES = OreSetting.createOreSetting("POSITIVE_TRIES");
     private final static OreSetting NEGATIVE_TRIES = OreSetting.createOreSetting("NEGATIVE_TRIES");
-    private final static OreSetting CONNECTIONS = OreSetting.createOreSetting("HORIZONTAL_SCOPE");
+    private final static OreSetting CONNECTIONS = OreSetting.createOreSetting("CONNECTIONS");
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(POSITIVE_VERTICAL_SCOPE, NEGATIVE_VERTICAL_SCOPE, HORIZONTAL_SCOPE, POSITIVE_TRIES, NEGATIVE_TRIES, CONNECTIONS));
     private final static BlockFace[] BLOCK_FACES = new BlockFace[]{BlockFace.UP, BlockFace.DOWN, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH};
 
@@ -115,7 +115,7 @@ public class GlowStoneGenerator implements OreGenerator {
                 break;
         }
 
-        if (counter == connections) {
+        if (counter <= connections) {
             chunkAccess.setMaterial(material, xLocation, yLocation, zLocation);
         }
     }
