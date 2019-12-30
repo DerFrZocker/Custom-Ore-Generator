@@ -115,7 +115,9 @@ public class GlowStoneGenerator implements OreGenerator {
                 break;
         }
 
-        if (counter <= connections) {
+        if (connections == 0 && counter == 0) {
+            chunkAccess.setMaterial(material, xLocation, yLocation, zLocation);
+        } else if (counter <= connections && counter != 0) {
             chunkAccess.setMaterial(material, xLocation, yLocation, zLocation);
         }
     }
