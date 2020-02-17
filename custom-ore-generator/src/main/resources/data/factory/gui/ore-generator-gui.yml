@@ -1,0 +1,101 @@
+ore-generator:
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: GRASS_BLOCK
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.ore-generator.ore-generator.name]%'
+      lore:
+        - '%%translation:[ore-config.factory.gui.ore-generator.ore-generator.description]%'
+name: '%%translation:[ore-config.factory.gui.ore-generator.name]%'
+rows: 5
+gap: 1
+empty-rows:
+  up: 1
+  below: 1
+next-page:
+  slot: 8
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: OAK_SIGN
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '%%translation:[ore-config.factory.gui.general.next]%'
+      blockMaterial: OAK_SIGN
+previous-page:
+  slot: 0
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: OAK_SIGN
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '%%translation:[ore-config.factory.gui.general.previous]%'
+      blockMaterial: OAK_SIGN
+menu:
+  slot: 4
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: COMPARATOR
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '%%translation:[ore-config.factory.gui.general.menu]%'
+      blockMaterial: COMPARATOR
+abort:
+  slot: 5
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.general.abort]%'
+default-ore-generator:
+  slot: 3
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: GRASS_BLOCK
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: Default Ore Generator
+      lore:
+        - '%%no-split%%%translation:[ore-config.factory.gui.ore-generator.ore-generator.name]%'
+        - '%%translation:[ore-config.factory.gui.ore-generator.ore-generator.description]%'
+decorations:
+  '0':
+    slot:
+      - 0
+      - 1
+      - 7
+      - 8
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1976
+      type: RED_STAINED_GLASS_PANE
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: ' '
+  '1':
+    slot:
+      - 2
+      - 4
+      - 6
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 1976
+      type: BLACK_STAINED_GLASS_PANE
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: ' '

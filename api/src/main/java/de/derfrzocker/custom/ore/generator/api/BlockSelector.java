@@ -9,7 +9,7 @@ import java.util.Set;
 /**
  * A BlockSelector select location's on which a vein should get generated
  */
-public interface BlockSelector {
+public interface BlockSelector extends InfoAble {
 
     /**
      * Returns a Set of Locations on which veins should get generated

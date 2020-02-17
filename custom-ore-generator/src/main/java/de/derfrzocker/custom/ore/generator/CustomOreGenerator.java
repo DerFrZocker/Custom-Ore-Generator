@@ -4,6 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
+import de.derfrzocker.custom.ore.generator.factory.gui.MenuGui;
 import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
@@ -101,10 +102,20 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         if(!event.getMessage().equals("test"))
             return;
 
+        OreConfigFactory oreConfigFactory = new OreConfigFactory(this, CustomOreGeneratorServiceSupplier.INSTANCE, event.getPlayer());
 
-        OreConfigFactory oreConfigFactory = new OreConfigFactory(this, event.getPlayer());
-
-        oreConfigFactory.setName(factory -> factory.setMaterial(factory2 -> event.getPlayer().sendMessage("ping")));
+        oreConfigFactory.
+                setName(factory ->
+                        factory.setMaterial(factory2 ->
+                                factory2.setReplaceMaterials(factory3 ->
+                                        factory3.setSelectMaterials(factory4 ->
+                                                factory4.setOreGenerator(factory5 ->
+                                                        factory5.setBlockSelector(factory6 ->
+                                                             factory6.setBiomes(factory7 ->
+                                                                     factory7.setOreSettings(factory8 ->
+                                                                             factory8.setWorlds(factory9 ->
+                                                                                     new MenuGui(this, CustomOreGeneratorServiceSupplier.INSTANCE, factory9).openSync(event.getPlayer())
+                                                                                     )))))))));
 
     }
 

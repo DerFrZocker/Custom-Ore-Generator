@@ -16,7 +16,7 @@ public class OreConfigsGui extends PageGui<OreConfig> {
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
 
     public OreConfigsGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigsGuiSettings settings) {
-        super(plugin);
+        super(plugin, settings);
         Validate.notNull(serviceSupplier, "Supplier can not be null");
 
         this.serviceSupplier = serviceSupplier;
@@ -25,9 +25,7 @@ public class OreConfigsGui extends PageGui<OreConfig> {
         addItem(settings.getBackSlot(), settings.getBackItemStack(), event -> {
 
         });
-        init(serviceSupplier.get().getOreConfigs().toArray(new OreConfig[0]), OreConfig[]::new, settings, oreConfig -> settings.getOreConfigItemStack(), (oreConfig, event) -> {
-
-
+        init(serviceSupplier.get().getOreConfigs().toArray(new OreConfig[0]), OreConfig[]::new, oreConfig -> settings.getOreConfigItemStack(), (oreConfig, event) -> {
 
         });
 

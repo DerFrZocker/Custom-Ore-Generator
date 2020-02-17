@@ -1,0 +1,282 @@
+/*
+ * MIT License
+ *
+ * Copyright (c) 2019 Marvin (DerFrZocker)
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ *
+ */
+
+package de.derfrzocker.custom.ore.generator.factory.gui;
+
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
+import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
+import de.derfrzocker.custom.ore.generator.factory.gui.settings.MenuGuiSettings;
+import de.derfrzocker.spigot.utils.gui.BasicGui;
+import de.derfrzocker.spigot.utils.message.MessageUtil;
+import de.derfrzocker.spigot.utils.message.MessageValue;
+import org.bukkit.Material;
+import org.bukkit.World;
+import org.bukkit.block.Biome;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.function.Supplier;
+
+public class MenuGui extends BasicGui {
+
+    private static MenuGuiSettings menuGuiSettings;
+    private boolean ready = true;
+
+    public MenuGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory) {
+        super(plugin, checkSettings(plugin));
+
+        addDecorations();
+
+        final OreConfigBuilder oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
+
+        {
+            final String name = oreConfigBuilder.name();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "name"));
+
+            if (name != null) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+                messageValues.add(new MessageValue("name", name));
+            } else {
+                ready = false;
+                itemStack = menuGuiSettings.getStatusNeededItemStack();
+            }
+
+            addItem(menuGuiSettings.getStepNameSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> {
+                        closeSync(inventoryClickEvent.getWhoClicked());
+                        oreConfigFactory.setName(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer()));
+                    });
+        }
+
+        {
+            final Material material = oreConfigBuilder.material();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "material"));
+
+            if (material != null) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+                messageValues.add(new MessageValue("material", material));
+            } else {
+                ready = false;
+                itemStack = menuGuiSettings.getStatusNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepMaterialSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> {
+                        closeSync(inventoryClickEvent.getWhoClicked());
+                        oreConfigFactory.setMaterial(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer()));
+                    });
+        }
+
+        {
+            final Set<Material> replaceMaterial = oreConfigBuilder.replaceMaterial();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "replace-material"));
+
+            if (!replaceMaterial.isEmpty()) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+            } else {
+                ready = false;
+                itemStack = menuGuiSettings.getStatusNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepReplaceMaterialsSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> {
+                        closeSync(inventoryClickEvent.getWhoClicked());
+                        oreConfigFactory.setReplaceMaterials(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer()));
+                    });
+        }
+
+        {
+            final Set<Material> selectMaterial = oreConfigBuilder.selectMaterial();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "select-material"));
+
+            if (!selectMaterial.isEmpty()) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+            } else {
+                itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepSelectMaterialsSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> {
+                        closeSync(inventoryClickEvent.getWhoClicked());
+                        oreConfigFactory.setSelectMaterials(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer()));
+                    });
+        }
+
+        {
+            final OreGenerator oreGenerator = oreConfigBuilder.oreGenerator();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "ore-generator"));
+
+            if (oreGenerator != null) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+                messageValues.add(new MessageValue("ore-generator", oreGenerator.getName()));
+            } else {
+                ready = false;
+                itemStack = menuGuiSettings.getStatusNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepOreGeneratorSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> oreConfigFactory.setOreGenerator(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+        }
+
+        {
+            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "block-selector"));
+
+            if (blockSelector != null) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+                messageValues.add(new MessageValue("block-selector", blockSelector.getName()));
+            } else {
+                ready = false;
+                itemStack = menuGuiSettings.getStatusNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepBlockSelectorSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> oreConfigFactory.setBlockSelector(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+        }
+
+        {
+            final Set<Biome> biomes = oreConfigBuilder.biomes();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "biome"));
+
+            if (!biomes.isEmpty()) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+            } else {
+                itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepBiomeSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> oreConfigFactory.setBiomes(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+        }
+
+        {
+            final Map<OreSetting, Double> oreSettings = oreConfigBuilder.oreSettings();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+            boolean setAction = true;
+
+            messageValues.add(new MessageValue("step", "ore-setting"));
+
+            final OreGenerator oreGenerator = oreConfigBuilder.oreGenerator();
+            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
+
+            if (oreGenerator == null && blockSelector == null) {
+                itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                setAction = false;
+            } else if (oreGenerator != null && !oreGenerator.getNeededOreSettings().isEmpty()) {
+                if (oreSettings.isEmpty()) {
+                    itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+                } else {
+                    itemStack = menuGuiSettings.getStatusPresentItemStack();
+                }
+            } else if (blockSelector != null && !blockSelector.getNeededOreSettings().isEmpty()) {
+                if (oreSettings.isEmpty()) {
+                    itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+                } else {
+                    itemStack = menuGuiSettings.getStatusPresentItemStack();
+                }
+            } else {
+                itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                setAction = false;
+            }
+
+            if (setAction) {
+                addItem(menuGuiSettings.getStepOreSettingsSlot(),
+                        MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                        inventoryClickEvent -> oreConfigFactory.setOreSettings(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+            } else {
+                addItem(menuGuiSettings.getStepOreSettingsSlot(),
+                        MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])));
+            }
+        }
+
+        /*{ //TODO check for customData needed
+            final Map<CustomData, Object> customDatas = oreConfigBuilder.customDatas();
+            final ItemStack itemStack;
+            if (!customDatas.isEmpty()) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+            } else {
+                itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepCustomDatasSlot(), itemStack, inventoryClickEvent -> oreConfigFactory.(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+        }*/
+
+        {
+            final Set<World> worlds = oreConfigBuilder.worlds();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+
+            messageValues.add(new MessageValue("step", "world"));
+
+            if (!worlds.isEmpty()) {
+                itemStack = menuGuiSettings.getStatusPresentItemStack();
+            } else {
+                itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+            }
+            addItem(menuGuiSettings.getStepWorldSlot(),
+                    MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                    inventoryClickEvent -> oreConfigFactory.setWorlds(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+        }
+
+
+    }
+
+    private static MenuGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+        if (menuGuiSettings == null)
+            menuGuiSettings = new MenuGuiSettings(javaPlugin, "data/factory/gui/menu-gui.yml", true);
+
+        return menuGuiSettings;
+    }
+
+}
