@@ -76,7 +76,7 @@ public class SetBiomeCommand implements TabExecutor {
             final OreConfig oreConfig = OreGenCommand.getOreConfig(configName, service, messages.COMMAND_ORE_CONFIG_NOT_FOUND, sender);
             final Set<Biome> biomes = new HashSet<>();
 
-            for (int i = 2; i < args.length; i++) {
+            for (int i = 1; i < args.length; i++) {
                 try {
                     biomes.add(Biome.valueOf(args[i].toUpperCase()));
                 } catch (IllegalArgumentException e) {
