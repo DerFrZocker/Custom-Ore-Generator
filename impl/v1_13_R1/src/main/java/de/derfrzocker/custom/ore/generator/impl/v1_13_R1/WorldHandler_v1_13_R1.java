@@ -34,6 +34,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.generator.InternalChunkGenerator;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.world.WorldInitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,7 +57,7 @@ public class WorldHandler_v1_13_R1 implements WorldHandler, Listener {
         Bukkit.getPluginManager().registerEvents(this, javaPlugin);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.HIGH)
     public void onWorldLoad(@NotNull final WorldInitEvent event) {
         if (!(event.getWorld() instanceof CraftWorld)) {
             return;
