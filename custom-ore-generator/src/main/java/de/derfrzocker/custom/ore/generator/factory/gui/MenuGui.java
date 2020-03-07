@@ -25,14 +25,12 @@
 
 package de.derfrzocker.custom.ore.generator.factory.gui;
 
-import de.derfrzocker.custom.ore.generator.api.BlockSelector;
-import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.MenuGuiSettings;
 import de.derfrzocker.spigot.utils.gui.BasicGui;
+import de.derfrzocker.spigot.utils.message.MessageKey;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.Material;
@@ -269,7 +267,45 @@ public class MenuGui extends BasicGui {
                     inventoryClickEvent -> oreConfigFactory.setWorlds(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
         }
 
+        {
+            if (ready) {
+                addItem(menuGuiSettings.getOreConfigItemStackSlot(),
+                        MessageUtil.replaceItemStack(plugin, menuGuiSettings.getOreConfigReadyItemStack()),
+                        inventoryClickEvent -> {
+                            final CustomOreGeneratorService service = serviceSupplier.get();
+                            final OreConfig oreConfig = service.createOreConfig(oreConfigBuilder.name(), oreConfigBuilder.material(), oreConfigBuilder.oreGenerator(), oreConfigBuilder.blockSelector());
 
+                            oreConfigBuilder.replaceMaterial().forEach(oreConfig::addReplaceMaterial);
+                            oreConfigBuilder.selectMaterial().forEach(oreConfig::addSelectMaterial);
+                            oreConfigBuilder.biomes().forEach(oreConfig::addBiome);
+
+                            if (oreConfigBuilder.biomes().size() != 0) {
+                                oreConfig.setGeneratedAll(false);
+                            }
+
+                            oreConfigBuilder.oreSettings().forEach(oreConfig::setValue);
+                            oreConfigBuilder.customDatas().forEach(oreConfig::setCustomData);
+
+                            service.saveOreConfig(oreConfig);
+
+                            for (final World world : oreConfigBuilder.worlds()) {
+                                final WorldConfig worldConfig = service.createWorldConfig(world);
+
+                                worldConfig.addOreConfig(oreConfig);
+
+                                service.saveWorldConfig(worldConfig);
+                            }
+                            closeSync(inventoryClickEvent.getWhoClicked());
+                            oreConfigFactory.setRunning(false);
+                            new MessageKey(getPlugin(), "ore-config.factory.success").sendMessage(inventoryClickEvent.getWhoClicked());
+                        });
+            } else {
+                addItem(menuGuiSettings.getOreConfigItemStackSlot(),
+                        MessageUtil.replaceItemStack(plugin, menuGuiSettings.getOreConfigNotReadyItemStack()));
+            }
+        }
+
+        addItem(menuGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(plugin, menuGuiSettings.getAbortItemStack()), inventoryClickEvent -> closeSync(inventoryClickEvent.getWhoClicked()));
     }
 
     private static MenuGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {

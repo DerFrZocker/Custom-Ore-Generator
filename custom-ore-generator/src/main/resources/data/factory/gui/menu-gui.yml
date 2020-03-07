@@ -1,5 +1,33 @@
 name: '%%translation:[ore-config.factory.gui.menu.name]%'
 rows: 5
+abort:
+  slot: 3
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 1976
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.general.abort]%'
+ore-config:
+  slot: 5
+  ready:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: GREEN_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.menu.ready]%'
+  not-ready:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: CYAN_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.menu.not-ready]%'
 status:
   needed:
     ==: org.bukkit.inventory.ItemStack

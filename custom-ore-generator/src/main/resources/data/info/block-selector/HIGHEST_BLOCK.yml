@@ -1,3 +1,3 @@
 display-name: "%%translation:[info.block-selector.HIGHEST_BLOCK.display-name]%"
-material: GRASS
+material: GRASS_BLOCK
 description: "%%translation:[info.block-selector.HIGHEST_BLOCK.description]%"

@@ -1,5 +1,7 @@
 ore-config:
   factory:
+    success: '&2The ore-config was created successfully'
+    canceled: '&cThe ore-config creating was canceled'
     command-blocked:
       - ' '
       - '&cWhile you are creating an ore-config you can not use any command!'
@@ -12,6 +14,8 @@ ore-config:
         back: Back
       menu:
         name: Menu
+        ready: Click to create the ore-config
+        not-ready: Not available at the moment
         status:
           present: 'Status: &r&aPresent'
           needed: 'Status: &r&cNeeded'
@@ -55,6 +59,7 @@ ore-config:
         &r''&d!exit&r''&2 to go back to normal game play                          &2Type
         &r''&d!menu&r''&2 to go to the ore-config creating menu'
       invalid: '&cThe name &r''&d%value%&r'' &cis not valid, try again!'
+      already-exists: "&4The Ore-Config &f'&d%ore-config%&f' &4already exists!"
       success:
         - ' '
         - '&2You choosed the name &r''&d%value%&r'''

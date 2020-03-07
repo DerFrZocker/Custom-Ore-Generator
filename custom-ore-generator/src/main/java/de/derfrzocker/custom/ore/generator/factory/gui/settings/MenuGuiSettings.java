@@ -47,6 +47,24 @@ public class MenuGuiSettings extends BasicSettings {
         super(plugin, configurationSectionSupplier);
     }
 
+    @NotNull
+    public ItemStack getAbortItemStack() {
+        return getSection().getItemStack("abort.item-stack").clone();
+    }
+
+    public int getAbortSlot() {
+        return getSection().getInt("abort.slot");
+    }
+
+    @NotNull
+    public ItemStack getOreConfigReadyItemStack() {
+        return getSection().getItemStack("ore-config.ready").clone();
+    }
+
+    @NotNull
+    public ItemStack getOreConfigNotReadyItemStack() {
+        return getSection().getItemStack("ore-config.not-ready").clone();
+    }
 
     @NotNull
     public ItemStack getStatusNeededItemStack() {
@@ -66,6 +84,10 @@ public class MenuGuiSettings extends BasicSettings {
     @NotNull
     public ItemStack getStatusNotSetAbleItemStack() {
         return getSection().getItemStack("status.not-set-able").clone();
+    }
+
+    public int getOreConfigItemStackSlot() {
+        return getSection().getInt("ore-config.slot");
     }
 
     public int getStepNameSlot() {

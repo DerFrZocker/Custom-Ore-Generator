@@ -88,6 +88,23 @@ public class OreConfigFactory implements Listener {
 
                 })
                 .withFirstPrompt(new RegexPrompt(ORE_CONFIG_NAME_PATTERN) {
+
+                    @Override
+                    protected boolean isInputValid(@NotNull final ConversationContext context, @NotNull final String input) {
+                        if (super.isInputValid(context, input)) {
+                            final CustomOreGeneratorService service = serviceSupplier.get();
+
+                            if (service.getOreConfig(input).isPresent()) {
+                                new MessageKey(javaPlugin, "ore-config.factory.name.already-exists").sendMessage(player, new MessageValue("ore-config", input));
+                                return false;
+                            }
+
+                            return true;
+                        }
+
+                        return false;
+                    }
+
                     @Override
                     protected @Nullable Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
                         oreConfigBuilder.name(name);
