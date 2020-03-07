@@ -28,8 +28,6 @@ package de.derfrzocker.custom.ore.generator;
 import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
-import de.derfrzocker.custom.ore.generator.factory.gui.MenuGui;
 import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
 import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
@@ -47,16 +45,13 @@ import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.util.function.Supplier;
 
-public class CustomOreGenerator extends JavaPlugin implements Listener {
+public class CustomOreGenerator extends JavaPlugin {
 
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
@@ -125,30 +120,6 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         }
 
         new Metrics(this);
-
-        getServer().getPluginManager().registerEvents(this, this);// TODO remove
-    }
-
-    @EventHandler // TODO remove
-    public void onPlayerChat(AsyncPlayerChatEvent event) {
-        if (!event.getMessage().equals("test"))
-            return;
-
-        OreConfigFactory oreConfigFactory = new OreConfigFactory(this, CustomOreGeneratorServiceSupplier.INSTANCE, event.getPlayer());
-
-        oreConfigFactory.
-                setName(factory ->
-                        factory.setMaterial(factory2 ->
-                                factory2.setReplaceMaterials(factory3 ->
-                                        factory3.setSelectMaterials(factory4 ->
-                                                factory4.setOreGenerator(factory5 ->
-                                                        factory5.setBlockSelector(factory6 ->
-                                                                factory6.setBiomes(factory7 ->
-                                                                        factory7.setOreSettings(factory8 ->
-                                                                                factory8.setWorlds(factory9 ->
-                                                                                        new MenuGui(this, CustomOreGeneratorServiceSupplier.INSTANCE, factory9).openSync(event.getPlayer())
-                                                                                )))))))));
-
     }
 
     @Deprecated

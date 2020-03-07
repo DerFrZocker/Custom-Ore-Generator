@@ -30,6 +30,8 @@ import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
+import de.derfrzocker.custom.ore.generator.factory.gui.MenuGui;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
@@ -37,6 +39,7 @@ import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
@@ -70,6 +73,25 @@ public class CreateCommand implements TabExecutor {
 
     @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
+        if (args.length == 0 && sender instanceof Player) {
+            final OreConfigFactory oreConfigFactory = new OreConfigFactory(this.javaPlugin, this.serviceSupplier, (Player) sender);
+
+            oreConfigFactory.
+                    setName(factory ->
+                            factory.setMaterial(factory2 ->
+                                    factory2.setReplaceMaterials(factory3 ->
+                                            factory3.setSelectMaterials(factory4 ->
+                                                    factory4.setOreGenerator(factory5 ->
+                                                            factory5.setBlockSelector(factory6 ->
+                                                                    factory6.setBiomes(factory7 ->
+                                                                            factory7.setOreSettings(factory8 ->
+                                                                                    factory8.setWorlds(factory9 ->
+                                                                                            new MenuGui(this.javaPlugin, this.serviceSupplier, factory9).openSync((Player) sender)
+                                                                                    )))))))));
+
+            return true;
+        }
+
         if (args.length < 2) {
             messages.COMMAND_CREATE_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
