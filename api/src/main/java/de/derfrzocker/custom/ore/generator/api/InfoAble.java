@@ -35,26 +35,6 @@ public interface InfoAble {
      * @return the Info of this Object
      */
     @NotNull
-    default Info getInfo(){
-        return new Info() { //TODO remove
-            @NotNull
-            @Override
-            public String getDisplayName() {
-                return "Name";
-            }
-
-            @NotNull
-            @Override
-            public Material getMaterial() {
-                return Material.ANDESITE;
-            }
-
-            @NotNull
-            @Override
-            public String getDescription() {
-                return "test";
-            }
-        };
-    }
+    Info getInfo();
 
 }
