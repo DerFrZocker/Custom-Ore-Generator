@@ -12,6 +12,7 @@
         <module>custom-ore-generator</module>
         <module>impl</module>
         <module>api</module>
+        <module>abstract</module>
     </modules>
 
     <packaging>pom</packaging>
