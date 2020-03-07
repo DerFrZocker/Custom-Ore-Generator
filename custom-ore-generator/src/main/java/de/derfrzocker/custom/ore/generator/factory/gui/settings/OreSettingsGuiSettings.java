@@ -48,34 +48,34 @@ public class OreSettingsGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getMenuItemStack(){
+    public ItemStack getMenuItemStack() {
         return getSection().getItemStack("menu.item-stack").clone();
     }
 
-    public int getMenuSlot(){
+    public int getMenuSlot() {
         return getSection().getInt("menu.slot");
     }
 
     @NotNull
-    public ItemStack getAbortItemStack(){
+    public ItemStack getAbortItemStack() {
         return getSection().getItemStack("abort.item-stack").clone();
     }
 
-    public int getAbortSlot(){
+    public int getAbortSlot() {
         return getSection().getInt("abort.slot");
     }
 
     @NotNull
-    public ItemStack getNextItemStack(){
+    public ItemStack getNextItemStack() {
         return getSection().getItemStack("next.item-stack").clone();
     }
 
-    public int getNextSlot(){
+    public int getNextSlot() {
         return getSection().getInt("next.slot");
     }
 
     @NotNull
-    public ItemStack getOreSettingItemStack(){
+    public ItemStack getOreSettingItemStack() {
         return getSection().getItemStack("ore-setting.item-stack").clone();
     }
 

@@ -30,7 +30,6 @@ public class OreConfigsGui extends PageGui<OreConfig> {
         });
 
 
-
     }
 
 }

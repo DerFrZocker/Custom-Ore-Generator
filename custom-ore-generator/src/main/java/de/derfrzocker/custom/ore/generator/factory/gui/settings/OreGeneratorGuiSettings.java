@@ -48,34 +48,34 @@ public class OreGeneratorGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getMenuItemStack(){
+    public ItemStack getMenuItemStack() {
         return getSection().getItemStack("menu.item-stack").clone();
     }
 
-    public int getMenuSlot(){
+    public int getMenuSlot() {
         return getSection().getInt("menu.slot");
     }
 
     @NotNull
-    public ItemStack getAbortItemStack(){
+    public ItemStack getAbortItemStack() {
         return getSection().getItemStack("abort.item-stack").clone();
     }
 
-    public int getAbortSlot(){
+    public int getAbortSlot() {
         return getSection().getInt("abort.slot");
     }
 
     @NotNull
-    public ItemStack getDefaultOreGeneratorItemStack(){
+    public ItemStack getDefaultOreGeneratorItemStack() {
         return getSection().getItemStack("default-ore-generator.item-stack").clone();
     }
 
-    public int getDefaultOreGeneratorSlot(){
+    public int getDefaultOreGeneratorSlot() {
         return getSection().getInt("default-ore-generator.slot");
     }
 
     @NotNull
-    public ItemStack getOreGeneratorItemStack(){
+    public ItemStack getOreGeneratorItemStack() {
         return getSection().getItemStack("ore-generator.item-stack").clone();
     }
 

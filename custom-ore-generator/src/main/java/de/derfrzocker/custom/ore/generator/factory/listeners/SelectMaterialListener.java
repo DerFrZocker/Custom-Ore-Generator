@@ -55,7 +55,7 @@ public class SelectMaterialListener extends MaterialListener {
     public void onAirLeftClick() {
         final OreConfigBuilder oreConfigBuilder = getOreConfigBuilder();
 
-        if(oreConfigBuilder.containsSelectMaterial(Material.AIR)){
+        if (oreConfigBuilder.containsSelectMaterial(Material.AIR)) {
             alreadyAdd.sendMessage(getPlayer(), new MessageValue("material", Material.AIR));
             return;
         }
@@ -68,7 +68,7 @@ public class SelectMaterialListener extends MaterialListener {
     public void onAirShiftLeftClick() {
         final OreConfigBuilder oreConfigBuilder = getOreConfigBuilder();
 
-        if(!oreConfigBuilder.containsSelectMaterial(Material.AIR)){
+        if (!oreConfigBuilder.containsSelectMaterial(Material.AIR)) {
             notAdd.sendMessage(getPlayer(), new MessageValue("material", Material.AIR));
             return;
         }
@@ -82,7 +82,7 @@ public class SelectMaterialListener extends MaterialListener {
         final Material material = block.getType();
         final OreConfigBuilder oreConfigBuilder = getOreConfigBuilder();
 
-        if(oreConfigBuilder.containsSelectMaterial(material)){
+        if (oreConfigBuilder.containsSelectMaterial(material)) {
             alreadyAdd.sendMessage(getPlayer(), new MessageValue("material", material));
             return;
         }
@@ -96,7 +96,7 @@ public class SelectMaterialListener extends MaterialListener {
         final Material material = block.getType();
         final OreConfigBuilder oreConfigBuilder = getOreConfigBuilder();
 
-        if(!oreConfigBuilder.containsSelectMaterial(material)){
+        if (!oreConfigBuilder.containsSelectMaterial(material)) {
             notAdd.sendMessage(getPlayer(), new MessageValue("material", material));
             return;
         }

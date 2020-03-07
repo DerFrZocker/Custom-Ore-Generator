@@ -48,30 +48,30 @@ public class BiomeGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getMenuItemStack(){
+    public ItemStack getMenuItemStack() {
         return getSection().getItemStack("menu.item-stack").clone();
     }
 
-    public int getMenuSlot(){
+    public int getMenuSlot() {
         return getSection().getInt("menu.slot");
     }
 
     @NotNull
-    public ItemStack getAbortItemStack(){
+    public ItemStack getAbortItemStack() {
         return getSection().getItemStack("abort.item-stack").clone();
     }
 
-    public int getAbortSlot(){
+    public int getAbortSlot() {
         return getSection().getInt("abort.slot");
     }
 
     @NotNull
-    public ItemStack getDeactivatedItemStack(){
+    public ItemStack getDeactivatedItemStack() {
         return getSection().getItemStack("deactivate.item-stack").clone();
     }
 
     @NotNull
-    public ItemStack getActivatedItemStack(){
+    public ItemStack getActivatedItemStack() {
         return getSection().getItemStack("activate.item-stack").clone();
     }
 
@@ -81,11 +81,11 @@ public class BiomeGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getNextItemStack(){
+    public ItemStack getNextItemStack() {
         return getSection().getItemStack("next.item-stack").clone();
     }
 
-    public int getNextSlot(){
+    public int getNextSlot() {
         return getSection().getInt("next.slot");
     }
 

@@ -23,29 +23,23 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.api;
+package de.derfrzocker.custom.ore.generator.utils;
 
-import org.bukkit.Material;
+import de.derfrzocker.custom.ore.generator.api.Info;
+import de.derfrzocker.custom.ore.generator.impl.InfoImpl;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-public interface Info {
+public class InfoUtil {
 
-    /**
-     * @return a fancy name of the the holder of this Info
-     */
     @NotNull
-    String getDisplayName();
+    public static Info getBlockSelectorInfo(@NotNull final JavaPlugin javaPlugin, @NotNull final String name) {
+        return new InfoImpl(javaPlugin, "data/info/block-selector/" + name + ".yml");
+    }
 
-    /**
-     * @return the Material which represent the holder of this Info
-     */
     @NotNull
-    Material getMaterial();
-
-    /**
-     * @return the Description of the holder of this Info
-     */
-    @NotNull
-    String getDescription();
+    public static Info getOreGenerator(@NotNull final JavaPlugin javaPlugin, @NotNull final String name) {
+        return new InfoImpl(javaPlugin, "data/info/ore-generator/" + name + ".yml");
+    }
 
 }

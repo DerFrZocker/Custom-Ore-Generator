@@ -27,8 +27,8 @@ package de.derfrzocker.custom.ore.generator.impl.oregenerator;
 
 import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
@@ -41,8 +41,9 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 
-public class GlowStoneGenerator implements OreGenerator {
+public class GlowStoneGenerator extends AbstractOreGenerator {
 
     private final static OreSetting POSITIVE_VERTICAL_SCOPE = OreSetting.createOreSetting("POSITIVE_VERTICAL_SCOPE");
     private final static OreSetting NEGATIVE_VERTICAL_SCOPE = OreSetting.createOreSetting("NEGATIVE_VERTICAL_SCOPE");
@@ -53,16 +54,12 @@ public class GlowStoneGenerator implements OreGenerator {
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(POSITIVE_VERTICAL_SCOPE, NEGATIVE_VERTICAL_SCOPE, HORIZONTAL_SCOPE, POSITIVE_TRIES, NEGATIVE_TRIES, CONNECTIONS));
     private final static BlockFace[] BLOCK_FACES = new BlockFace[]{BlockFace.UP, BlockFace.DOWN, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH};
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "GLOW_STONE_GENERATOR";
+    public GlowStoneGenerator(@NotNull final Info info) {
+        super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, info);
     }
 
-    @NotNull
-    @Override
-    public Set<OreSetting> getNeededOreSettings() {
-        return NEEDED_ORE_SETTINGS;
+    public GlowStoneGenerator(@NotNull final Function<String, Info> infoFunction) {
+        super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
     }
 
     @Override

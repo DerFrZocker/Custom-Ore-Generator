@@ -1,6 +1,5 @@
 package de.derfrzocker.custom.ore.generator.gui.settings;
 
-import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.gui.PageSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
@@ -25,16 +24,16 @@ public class OreConfigsGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getOreConfigItemStack(){
+    public ItemStack getOreConfigItemStack() {
         return getSection().getItemStack("ore-config.item-stack").clone();
     }
 
     @NotNull
-    public ItemStack getBackItemStack(){
+    public ItemStack getBackItemStack() {
         return getSection().getItemStack("back.item-stack").clone();
     }
 
-    public int getBackSlot(){
+    public int getBackSlot() {
         return getSection().getInt("back.slot");
     }
 

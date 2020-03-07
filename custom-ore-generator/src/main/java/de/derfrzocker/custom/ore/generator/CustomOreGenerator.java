@@ -41,6 +41,7 @@ import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.GlowStoneGenerator;
+import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
@@ -79,11 +80,11 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
         Bukkit.getServicesManager().register(CustomOreGeneratorService.class, service, this, ServicePriority.Normal);
 
         //register BlockSelector
-        final BlockSelector blockSelector = new CountRangeBlockSelector();
+        final BlockSelector blockSelector = new CountRangeBlockSelector(name -> InfoUtil.getBlockSelectorInfo(this, name));
         service.registerBlockSelector(blockSelector);
         service.setDefaultBlockSelector(blockSelector);
-        service.registerBlockSelector(new HighestBlockBlockSelector());
-        service.registerOreGenerator(new GlowStoneGenerator());
+        service.registerBlockSelector(new HighestBlockBlockSelector(name -> InfoUtil.getBlockSelectorInfo(this, name)));
+        service.registerOreGenerator(new GlowStoneGenerator(name -> InfoUtil.getOreGenerator(this, name)));
 
         // register CustomData
         service.registerCustomData(SkullTextureCustomData.INSTANCE);
@@ -129,8 +130,8 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
     }
 
     @EventHandler // TODO remove
-    public void onPlayerChat(AsyncPlayerChatEvent event){
-        if(!event.getMessage().equals("test"))
+    public void onPlayerChat(AsyncPlayerChatEvent event) {
+        if (!event.getMessage().equals("test"))
             return;
 
         OreConfigFactory oreConfigFactory = new OreConfigFactory(this, CustomOreGeneratorServiceSupplier.INSTANCE, event.getPlayer());
@@ -142,11 +143,11 @@ public class CustomOreGenerator extends JavaPlugin implements Listener {
                                         factory3.setSelectMaterials(factory4 ->
                                                 factory4.setOreGenerator(factory5 ->
                                                         factory5.setBlockSelector(factory6 ->
-                                                             factory6.setBiomes(factory7 ->
-                                                                     factory7.setOreSettings(factory8 ->
-                                                                             factory8.setWorlds(factory9 ->
-                                                                                     new MenuGui(this, CustomOreGeneratorServiceSupplier.INSTANCE, factory9).openSync(event.getPlayer())
-                                                                                     )))))))));
+                                                                factory6.setBiomes(factory7 ->
+                                                                        factory7.setOreSettings(factory8 ->
+                                                                                factory8.setWorlds(factory9 ->
+                                                                                        new MenuGui(this, CustomOreGeneratorServiceSupplier.INSTANCE, factory9).openSync(event.getPlayer())
+                                                                                )))))))));
 
     }
 

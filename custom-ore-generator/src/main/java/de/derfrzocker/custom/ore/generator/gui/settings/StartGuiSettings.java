@@ -23,20 +23,20 @@ public class StartGuiSettings extends BasicSettings {
     }
 
     @NotNull
-    public ItemStack getWorldConfigItemStack(){
+    public ItemStack getWorldConfigItemStack() {
         return getSection().getItemStack("world-config.item-stack").clone();
     }
 
-    public int getWorldConfigSlot(){
+    public int getWorldConfigSlot() {
         return getSection().getInt("world-config.slot");
     }
 
     @NotNull
-    public ItemStack getOreConfigItemStack(){
+    public ItemStack getOreConfigItemStack() {
         return getSection().getItemStack("ore-config.item-stack").clone();
     }
 
-    public int getOreConfigSlot(){
+    public int getOreConfigSlot() {
         return getSection().getInt("ore-config.slot");
     }
 

@@ -89,7 +89,7 @@ public class VersionPicker {
         init = true;
 
         final CustomOreGeneratorService service = serviceSupplier.get();
-        service.registerOreGenerator(new SingleOreGenerator());
+        service.registerOreGenerator(new SingleOreGenerator(name -> InfoUtil.getOreGenerator(javaPlugin, name)));
 
         switch (version) {
             case v1_15_R1:
@@ -140,7 +140,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_8_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -150,7 +150,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_8_R2(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R2();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R2(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -160,7 +160,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_8_R3(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R3();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_8_R3(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -170,7 +170,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_9_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -180,7 +180,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_9_R2(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R2();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_9_R2(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -190,7 +190,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_10_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_10_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_10_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -200,7 +200,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_11_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_11_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_11_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -210,7 +210,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new CustomOreBlockPopulator_v1_12_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_12_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_12_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -220,7 +220,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new WorldHandler_v1_13_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -230,7 +230,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new WorldHandler_v1_13_R2(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -240,7 +240,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new WorldHandler_v1_13_R2_paper(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2_paper();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_13_R2_paper(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -250,7 +250,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new WorldHandler_v1_14_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_14_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_14_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);
@@ -261,7 +261,7 @@ public class VersionPicker {
         final CustomOreGeneratorService service = serviceSupplier.get();
 
         new WorldHandler_v1_15_R1(javaPlugin, serviceSupplier);
-        final OreGenerator oreGenerator = new MinableGenerator_v1_15_R1();
+        final OreGenerator oreGenerator = new MinableGenerator_v1_15_R1(name -> InfoUtil.getOreGenerator(javaPlugin, name));
 
         service.registerOreGenerator(oreGenerator);
         service.setDefaultOreGenerator(oreGenerator);

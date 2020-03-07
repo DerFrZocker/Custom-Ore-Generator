@@ -26,35 +26,59 @@
 package de.derfrzocker.custom.ore.generator.impl.oregenerator;
 
 import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
-public abstract class AbstractSingleOreGenerator extends AbstractOreGenerator {
+public abstract class AbstractOreGenerator implements OreGenerator {
 
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(new HashSet<>());
+    @NotNull
+    private final String name;
+    @NotNull
+    private final Set<OreSetting> neededOreSettings;
+    @NotNull
+    private final Info info;
 
-    public AbstractSingleOreGenerator(@NotNull final Info info) {
-        super("SINGLE_ORE_GENERATOR", NEEDED_ORE_SETTINGS, info);
+    public AbstractOreGenerator(@NotNull final String name, @NotNull final Set<OreSetting> neededOreSettings, @NotNull final Info info) {
+        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(neededOreSettings, "OreSettings can not be null");
+        Validate.notNull(info, "Info can not be null");
+
+        this.name = name;
+        this.neededOreSettings = neededOreSettings;
+        this.info = info;
     }
 
-    public AbstractSingleOreGenerator(@NotNull final Function<String, Info> infoFunction) {
-        super("SINGLE_ORE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
+    public AbstractOreGenerator(@NotNull final String name, @NotNull final Set<OreSetting> neededOreSettings, @NotNull final Function<String, Info> infoFunction) {
+        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(neededOreSettings, "OreSettings can not be null");
+        Validate.notNull(infoFunction, "InfoFunction can not be null");
+
+        this.name = name;
+        this.neededOreSettings = neededOreSettings;
+        this.info = infoFunction.apply(getName());
     }
 
+    @NotNull
     @Override
-    public boolean isSaveValue(@NotNull final OreSetting oreSetting, final double value, @NotNull final OreConfig oreConfig) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-        Validate.notNull(oreConfig, "OreConfig can not be null");
-        Validate.isTrue(getNeededOreSettings().contains(oreSetting), "The OreGenerator '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
+    public Set<OreSetting> getNeededOreSettings() {
+        return this.neededOreSettings;
+    }
 
-        throw new IllegalArgumentException("The OreGenerator '" + getName() + "' does not need any OreSetting");
+    @NotNull
+    @Override
+    public String getName() {
+        return this.name;
+    }
+
+    @NotNull
+    @Override
+    public Info getInfo() {
+        return this.info;
     }
 
 }

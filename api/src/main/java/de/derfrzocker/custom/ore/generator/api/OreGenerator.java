@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * A OreGenerator generate veins of ores on the given locations
  */
-public interface OreGenerator extends InfoAble{
+public interface OreGenerator extends InfoAble {
 
     /**
      * Generates veins of ores on the given Locations

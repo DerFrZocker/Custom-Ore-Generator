@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.ore-generator.SINGLE_ORE_GENERATOR.display-name]%"
+material: EMERALD_BLOCK
+description: "%%translation:[info.ore-generator.SINGLE_ORE_GENERATOR.description]%"

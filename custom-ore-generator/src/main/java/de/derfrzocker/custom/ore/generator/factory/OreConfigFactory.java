@@ -50,15 +50,15 @@ public class OreConfigFactory implements Listener {
     }
 
     @NotNull
-    public Player getPlayer(){
+    public Player getPlayer() {
         return this.player;
     }
 
-    public boolean isRunning(){
+    public boolean isRunning() {
         return this.running;
     }
 
-    public void setRunning(final boolean running){
+    public void setRunning(final boolean running) {
         this.running = running;
     }
 

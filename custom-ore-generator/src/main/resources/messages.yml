@@ -1,3 +1,129 @@
+ore-config:
+  factory:
+    command-blocked:
+      - ' '
+      - '&cWhile you are creating an ore-config you can not use any command!'
+    gui:
+      general:
+        next: Next
+        previous: Previous
+        menu: Menu
+        abort: Abort
+        back: Back
+      menu:
+        name: Menu
+        status:
+          present: 'Status: &r&aPresent'
+          needed: 'Status: &r&cNeeded'
+          not-present-not-needed: 'Status: &r&eNeeded &r(&dOptional&r)'
+          not-set-able: 'Status: &r&eNot set able at the moment'
+        step:
+          name: 'Step: Name'
+          material: 'Step: Material'
+          replace-material: 'Step: Replace Material'
+          select-material: 'Step: Select Material'
+          ore-generator: 'Step: Ore Generator'
+          block-selector: 'Step: Block Selector'
+          biome: 'Step: Biome'
+          ore-setting: 'Step: Ore Setting'
+          custom-data: 'Step: Custom Data'
+          world: 'Step: World'
+      ore-generator:
+        name: Select a Ore-Generator
+        default-ore-generator: Default Ore Generator
+        ore-generator:
+          name: 'Name: &r%display-name%'
+          description: 'Description: &r%description%'
+      block-selector:
+        name: Select a Block-Selector
+        default-block-selector: Default Ore Selector
+        block-selector:
+          name: 'Name: &r%display-name%'
+          description: 'Description: &r%description%'
+      biome:
+        name: Select Biomes
+      ore-settings:
+        name: Set Settings
+      ore-setting:
+        name: Set the Setting
+        lore: 'Current value: %value%'
+      world:
+        name: Select World
+    name:
+      text: '&2Type a Name for your ore-config in the chat, the name can only contains
+        the letter &da&f-&dz &dA&f-&dZ &d0&f-&d9 &d- &2and &d_&2                     &2Type
+        &r''&d!exit&r''&2 to go back to normal game play                          &2Type
+        &r''&d!menu&r''&2 to go to the ore-config creating menu'
+      invalid: '&cThe name &r''&d%value%&r'' &cis not valid, try again!'
+      success:
+        - ' '
+        - '&2You choosed the name &r''&d%value%&r'''
+    material:
+      text: '&2Left Click on the Block you want to generated                     &2Type
+        &r''&d!exit&r''&2 to go back to normal game play                          &2Type
+        &r''&d!menu&r''&2 to go to the ore-config creating menu'
+      set:
+        - ' '
+        - '&2You selected the material &r''&d%material%&r''&2, to change the material
+        simple left click another one'
+        - '&2To continue type &r''&d!next&r'''
+    replace-material:
+      text: '&2Left Click the Block''s you want to get replaced with the new one                                                                          &2Type
+        &r''&d!exit&r''&2 to go back to normal game play                          &2Type
+        &r''&d!menu&r''&2 to go to the ore-config creating menu'
+      add:
+        - ' '
+        - '&2You &aadded &r''&d%material%&r''&2 to the replace materials'
+        - '&2To &cremove&2 it from the list &dshift&2 + &dleftclick &2the block again'
+        - '&2To continue type &r''&d!next&r'''
+      already-add:
+        - ' '
+        - '&r''&d%material%&r''&c is already added to the replace material list'
+      remove:
+        - ' '
+        - '&2You have &cremoved &r''&d%material%&r''&2 from the replace materials'
+      not-add:
+        - ' '
+        - '&cThe material &r''&d%material%&r''&c is not added as replace material'
+    select-material:
+      text: '&2Left Click the Block''s you want as select material                 &2This
+        step is optional type ''&d!next&r''&2 to skip this part                  &2Type
+        &r''&d!exit&r''&2 to go back to normal game play                          &2Type
+        &r''&d!menu&r''&2 to go to the ore-config creating menu'
+      add:
+        - ' '
+        - '&2You &aadded &r''&d%material%&r''&2 to the select materials'
+        - '&2To &cremove&2 it from the list &dshift&2 + &dleftclick &2the block again'
+        - '&2To continue type &r''&d!next&r'''
+      already-add:
+        - ' '
+        - '&r''&d%material%&r''&c is already added to the select material list'
+      remove:
+        - ' '
+        - '&2You have &cremoved &r''&d%material%&r''&2 from the select materials'
+      not-add:
+        - ' '
+        - '&cThe material &r''&d%material%&r''&c is not added as select material'
+
+info:
+  block-selector:
+    COUNT_RANGE:
+      display-name: "Count Range"
+      description: "Minecraft's Block Selector for ores"
+    HIGHEST_BLOCK:
+      display-name: "Highest Block"
+      description: "Selects the highest Air block on a random x and z location"
+  ore-generator:
+    GLOW_STONE_GENERATOR:
+      display-name: "Glow Stone Generator"
+      description: "Minecraft's generator for generation glowstone"
+    SINGLE_ORE_GENERATOR:
+      display-name: "Single Ore Generator"
+      description: "Generate a single block on the given location"
+    VANILLA_MINABLE_GENERATOR:
+      display-name: "Vanilla Minable Generator"
+      description: "Minecraft's generator for ores"
+
 command:
   world-not-found: "&4The world &f'&d%world%&f' &4does not exist!"
   ore-generator-not-found: "&4The ore generator &f'&d%ore-generator%&f' &4does not exist!"
@@ -114,19 +240,3 @@ command:
     description-format: "-> &9description&f: %description%"
     usage-format: "&9usage&f: %usage%"
     short-format: "&9%command%&f: %description%"
-
-ore-config:
-  factory:
-    name:
-      text:
-        - "Choose a Name for your ore-config, the name can only contains the letter A-Z, a-z, _ and -"
-        - "Type !exit to go back to normal game play, Type !menu to go to the ore-config creating menu"
-      invalid:
-        - "The name %value% is not valid, try again"
-    material:
-      text:
-        - "Left Click on the Block you want to generated"
-        - "Type !exit to go back to normal game play, Type !menu to go to the ore-config creating menu"
-      set:
-        - "You selected the material %material%, to change the material simple left click another one"
-        - "To continue type !next"

@@ -36,10 +36,19 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 
-public class HighestBlockBlockSelector implements BlockSelector {
+public class HighestBlockBlockSelector extends AbstractBlockSelector {
 
-    private final Set<OreSetting> neededOreSettings = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEINS_PER_CHUNK));
+    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEINS_PER_CHUNK));
+
+    public HighestBlockBlockSelector(@NotNull Info info) {
+        super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, info);
+    }
+
+    public HighestBlockBlockSelector(@NotNull Function<String, Info> infoFunction) {
+        super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, infoFunction);
+    }
 
     @NotNull
     @Override
@@ -58,23 +67,11 @@ public class HighestBlockBlockSelector implements BlockSelector {
         return locations;
     }
 
-    @NotNull
-    @Override
-    public Set<OreSetting> getNeededOreSettings() {
-        return neededOreSettings;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "HIGHEST_BLOCK";
-    }
-
     @Override
     public boolean isSaveValue(@NotNull final OreSetting oreSetting, final double value, @NotNull final OreConfig oreConfig) {
         Validate.notNull(oreSetting, "OreSetting can not be null");
         Validate.notNull(oreConfig, "OreConfig can not be null");
-        Validate.isTrue(neededOreSettings.contains(oreSetting), "The BlockSelector '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
+        Validate.isTrue(getNeededOreSettings().contains(oreSetting), "The BlockSelector '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
 
         return value >= 0;
     }

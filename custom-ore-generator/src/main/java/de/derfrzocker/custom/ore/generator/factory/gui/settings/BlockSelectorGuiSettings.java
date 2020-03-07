@@ -48,34 +48,34 @@ public class BlockSelectorGuiSettings extends PageSettings {
     }
 
     @NotNull
-    public ItemStack getMenuItemStack(){
+    public ItemStack getMenuItemStack() {
         return getSection().getItemStack("menu.item-stack").clone();
     }
 
-    public int getMenuSlot(){
+    public int getMenuSlot() {
         return getSection().getInt("menu.slot");
     }
 
     @NotNull
-    public ItemStack getAbortItemStack(){
+    public ItemStack getAbortItemStack() {
         return getSection().getItemStack("abort.item-stack").clone();
     }
 
-    public int getAbortSlot(){
+    public int getAbortSlot() {
         return getSection().getInt("abort.slot");
     }
 
     @NotNull
-    public ItemStack getDefaultBlockSelectorItemStack(){
+    public ItemStack getDefaultBlockSelectorItemStack() {
         return getSection().getItemStack("default-block-selector.item-stack").clone();
     }
 
-    public int getDefaultBlockSelectorSlot(){
+    public int getDefaultBlockSelectorSlot() {
         return getSection().getInt("default-block-selector.slot");
     }
 
     @NotNull
-    public ItemStack getBlockSelectorItemStack(){
+    public ItemStack getBlockSelectorItemStack() {
         return getSection().getItemStack("block-selector.item-stack").clone();
     }
 

@@ -92,9 +92,9 @@ public class BiomeGui extends PageGui<Biome> {
     private void handleNormalClick(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {
         final OreConfigBuilder oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
 
-        if(oreConfigBuilder.containsBiome(biome)){
+        if (oreConfigBuilder.containsBiome(biome)) {
             oreConfigBuilder.removeBiome(biome);
-        }else{
+        } else {
             oreConfigBuilder.addBiome(biome);
         }
 

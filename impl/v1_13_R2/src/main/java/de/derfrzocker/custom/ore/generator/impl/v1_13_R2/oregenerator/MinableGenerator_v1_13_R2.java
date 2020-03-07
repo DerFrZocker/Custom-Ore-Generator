@@ -26,6 +26,7 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.oregenerator;
 
 import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSettings;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.AbstractMinableGenerator;
@@ -40,11 +41,20 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.function.Predicate;
 
 public class MinableGenerator_v1_13_R2 extends AbstractMinableGenerator {
 
     private final WorldGenMinable generator = new WorldGenMinable();
+
+    public MinableGenerator_v1_13_R2(@NotNull final Info info) {
+        super(info);
+    }
+
+    public MinableGenerator_v1_13_R2(@NotNull final Function<String, Info> infoFunction) {
+        super(infoFunction);
+    }
 
     @Override
     public void generate(@NotNull final OreConfig config, @NotNull final ChunkAccess chunkAccess, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {

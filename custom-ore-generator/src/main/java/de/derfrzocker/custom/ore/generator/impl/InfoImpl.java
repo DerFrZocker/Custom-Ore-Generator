@@ -65,8 +65,6 @@ public class InfoImpl implements Info, ReloadAble {
         reload();
     }
 
-
-
     @NotNull
     @Override
     public String getDisplayName() {

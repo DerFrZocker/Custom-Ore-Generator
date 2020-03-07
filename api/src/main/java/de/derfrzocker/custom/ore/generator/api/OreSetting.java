@@ -27,7 +27,6 @@ package de.derfrzocker.custom.ore.generator.api;
 
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -101,11 +100,10 @@ public final class OreSetting {
     }
 
     /**
-     *
      * @return a copy of the OreGenerator Icon
      */
     @NotNull
-    public Material getMaterial(){ //TODO read from OreSetting info / add Info
+    public Material getMaterial() { //TODO read from OreSetting info / add Info
         return Material.COAL;
     }
 

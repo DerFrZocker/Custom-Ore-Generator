@@ -27,7 +27,6 @@ package de.derfrzocker.custom.ore.generator.factory.gui;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
-import de.derfrzocker.custom.ore.generator.factory.gui.settings.BiomeGuiSettings;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.WorldGuiSettings;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
@@ -35,7 +34,6 @@ import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.World;
-import org.bukkit.block.Biome;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -91,9 +89,9 @@ public class WorldGui extends PageGui<World> {
     private void handleNormalClick(@NotNull final World world, @NotNull final InventoryClickEvent event) {
         final OreConfigBuilder oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
 
-        if(oreConfigBuilder.containsWorld(world)){
+        if (oreConfigBuilder.containsWorld(world)) {
             oreConfigBuilder.removeWorld(world);
-        }else{
+        } else {
             oreConfigBuilder.addWorld(world);
         }
 
