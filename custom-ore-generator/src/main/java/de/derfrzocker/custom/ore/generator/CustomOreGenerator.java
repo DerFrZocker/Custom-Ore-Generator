@@ -83,28 +83,29 @@ public class CustomOreGenerator extends JavaPlugin {
 
         // register CustomData
         service.registerCustomData(SkullTextureCustomData.INSTANCE);
-        service.registerCustomData(FacingCustomData.INSTANCE);
+
         service.registerCustomData(CommandCustomData.INSTANCE);
         service.registerCustomData(NBTTagCustomData.INSTANCE);
 
         if (Version.v1_9_R1.isNewerOrSameVersion(Version.getCurrent()))
             service.registerCustomData(AutoCustomData.INSTANCE);
 
-        if (Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent()))
+        if (Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent())) {
             service.registerCustomData(TickBlockCustomData.INSTANCE);
+            service.registerCustomData(FacingCustomData.INSTANCE);
+            service.registerCustomData(DirectionCustomData.DOWN);
+            service.registerCustomData(DirectionCustomData.UP);
+            service.registerCustomData(DirectionCustomData.NORTH);
+            service.registerCustomData(DirectionCustomData.SOUTH);
+            service.registerCustomData(DirectionCustomData.EAST);
+            service.registerCustomData(DirectionCustomData.WEST);
+        }
 
         if (Version.v1_10_R1.isNewerOrSameVersion(Version.getCurrent()))
             service.registerCustomData(new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE));
 
         if (Version.v1_12_R1.isOlderOrSameVersion(Version.getCurrent()))
             service.registerCustomData(VariantCustomData.INSTANCE);
-
-        service.registerCustomData(DirectionCustomData.DOWN);
-        service.registerCustomData(DirectionCustomData.UP);
-        service.registerCustomData(DirectionCustomData.NORTH);
-        service.registerCustomData(DirectionCustomData.SOUTH);
-        service.registerCustomData(DirectionCustomData.EAST);
-        service.registerCustomData(DirectionCustomData.WEST);
 
         oreConfigYamlDao.init();
         worldConfigYamlDao.init();
@@ -118,7 +119,7 @@ public class CustomOreGenerator extends JavaPlugin {
 
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
-        if (getServer().getPluginManager().getPlugin("ItemMods") != null) {
+        if (getServer().getPluginManager().getPlugin("ItemMods") != null && Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent())) {
             CustomOreGeneratorServiceSupplier.INSTANCE.get().registerCustomData(ItemModsCustomData.INSTANCE);
         }
 
