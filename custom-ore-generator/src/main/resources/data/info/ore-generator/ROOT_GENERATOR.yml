@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.ore-generator.ROOT_GENERATOR.display-name]%"
+material: OAK_LOG
+description: "%%translation:[info.ore-generator.ROOT_GENERATOR.description]%"

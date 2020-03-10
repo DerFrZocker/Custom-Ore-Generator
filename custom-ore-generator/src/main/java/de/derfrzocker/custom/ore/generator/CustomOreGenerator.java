@@ -39,6 +39,7 @@ import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.GlowStoneGenerator;
+import de.derfrzocker.custom.ore.generator.impl.oregenerator.RootGenerator;
 import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
@@ -80,6 +81,7 @@ public class CustomOreGenerator extends JavaPlugin {
         service.setDefaultBlockSelector(blockSelector);
         service.registerBlockSelector(new HighestBlockBlockSelector(name -> InfoUtil.getBlockSelectorInfo(this, name)));
         service.registerOreGenerator(new GlowStoneGenerator(name -> InfoUtil.getOreGenerator(this, name)));
+        service.registerOreGenerator(new RootGenerator(name -> InfoUtil.getOreGenerator(this, name)));
 
         // register CustomData
         service.registerCustomData(SkullTextureCustomData.INSTANCE);

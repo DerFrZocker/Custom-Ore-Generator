@@ -128,6 +128,9 @@ info:
     VANILLA_MINABLE_GENERATOR:
       display-name: "Vanilla Minable Generator"
       description: "Minecraft's generator for ores"
+    ROOT_GENERATOR:
+      display-name: "Root Generator"
+      description: "A generator which is based on root growth"
 
 command:
   world-not-found: "&4The world &f'&d%world%&f' &4does not exist!"
