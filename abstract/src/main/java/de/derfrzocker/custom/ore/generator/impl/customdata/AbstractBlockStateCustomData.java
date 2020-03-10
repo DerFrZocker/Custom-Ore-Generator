@@ -44,7 +44,7 @@ public abstract class AbstractBlockStateCustomData implements CustomData {
     @NotNull
     @Override
     public String getName() {
-        return "NBT_TAG";
+        return "BLOCK_STATE";
     }
 
     @NotNull
