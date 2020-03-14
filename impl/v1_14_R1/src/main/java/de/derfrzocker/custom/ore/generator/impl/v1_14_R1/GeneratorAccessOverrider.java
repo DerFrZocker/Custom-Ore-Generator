@@ -69,6 +69,9 @@ public class GeneratorAccessOverrider implements GeneratorAccess, ChunkAccess {
 
     @Override
     public boolean setTypeAndData(final BlockPosition blockPosition, final IBlockData iBlockData, final int i) {
+        if (w(blockPosition) instanceof ProtoChunkExtension)
+            return false;
+
         final boolean success = parent.setTypeAndData(blockPosition, iBlockData, i);
 
         if (!success)
