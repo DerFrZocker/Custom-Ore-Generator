@@ -45,6 +45,7 @@ import de.derfrzocker.custom.ore.generator.utils.VersionPicker;
 import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
+import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -84,30 +85,30 @@ public class CustomOreGenerator extends JavaPlugin {
         service.registerOreGenerator(new RootGenerator(name -> InfoUtil.getOreGenerator(this, name)));
 
         // register CustomData
-        service.registerCustomData(SkullTextureCustomData.INSTANCE);
+        service.registerCustomData(new SkullTextureCustomData(name -> InfoUtil.getCustomData(this, name)));
 
-        service.registerCustomData(CommandCustomData.INSTANCE);
-        service.registerCustomData(NBTTagCustomData.INSTANCE);
+        service.registerCustomData(new CommandCustomData(name -> InfoUtil.getCustomData(this, name)));
+        service.registerCustomData(new NBTTagCustomData(name -> InfoUtil.getCustomData(this, name)));
 
         if (Version.v1_9_R1.isNewerOrSameVersion(Version.getCurrent()))
-            service.registerCustomData(AutoCustomData.INSTANCE);
+            service.registerCustomData(new AutoCustomData(name -> InfoUtil.getCustomData(this, name)));
 
         if (Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent())) {
-            service.registerCustomData(TickBlockCustomData.INSTANCE);
-            service.registerCustomData(FacingCustomData.INSTANCE);
-            service.registerCustomData(DirectionCustomData.DOWN);
-            service.registerCustomData(DirectionCustomData.UP);
-            service.registerCustomData(DirectionCustomData.NORTH);
-            service.registerCustomData(DirectionCustomData.SOUTH);
-            service.registerCustomData(DirectionCustomData.EAST);
-            service.registerCustomData(DirectionCustomData.WEST);
+            service.registerCustomData(new TickBlockCustomData(name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new FacingCustomData(name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.DOWN, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.UP, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.NORTH, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.SOUTH, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.EAST, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new DirectionCustomData(BlockFace.WEST, name -> InfoUtil.getCustomData(this, name)));
         }
 
         if (Version.v1_10_R1.isNewerOrSameVersion(Version.getCurrent()))
-            service.registerCustomData(new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE));
+            service.registerCustomData(new BlockStateCustomData(name -> InfoUtil.getCustomData(this, name)));
 
         if (Version.v1_12_R1.isOlderOrSameVersion(Version.getCurrent()))
-            service.registerCustomData(VariantCustomData.INSTANCE);
+            service.registerCustomData(new VariantCustomData(name -> InfoUtil.getCustomData(this, name)));
 
         oreConfigYamlDao.init();
         worldConfigYamlDao.init();
@@ -122,7 +123,7 @@ public class CustomOreGenerator extends JavaPlugin {
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
         if (getServer().getPluginManager().getPlugin("ItemMods") != null && Version.v1_13_R1.isNewerOrSameVersion(Version.getCurrent())) {
-            CustomOreGeneratorServiceSupplier.INSTANCE.get().registerCustomData(ItemModsCustomData.INSTANCE);
+            CustomOreGeneratorServiceSupplier.INSTANCE.get().registerCustomData(new ItemModsCustomData(name -> InfoUtil.getCustomData(this, name)));
         }
 
         new Metrics(this);

@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.custom-data.VARIANT.display-name]%"
+material: GRANITE
+description: "%%translation:[info.custom-data.VARIANT.description]%"

@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.DirectionApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.DirectionApplier_v1_13_R2;
@@ -41,39 +41,27 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class DirectionCustomData implements CustomData {
+import java.util.function.Function;
 
-    public static final DirectionCustomData DOWN = new DirectionCustomData("DOWN", BlockFace.DOWN);
-    public static final DirectionCustomData UP = new DirectionCustomData("UP", BlockFace.UP);
-    public static final DirectionCustomData NORTH = new DirectionCustomData("NORTH", BlockFace.NORTH);
-    public static final DirectionCustomData SOUTH = new DirectionCustomData("SOUTH", BlockFace.SOUTH);
-    public static final DirectionCustomData WEST = new DirectionCustomData("WEST", BlockFace.WEST);
-    public static final DirectionCustomData EAST = new DirectionCustomData("EAST", BlockFace.EAST);
+public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> {
 
-    @NotNull
-    private final String name;
+    /**
+     * public static final DirectionCustomData DOWN = new DirectionCustomData("DOWN", BlockFace.DOWN);
+     * public static final DirectionCustomData UP = new DirectionCustomData("UP", BlockFace.UP);
+     * public static final DirectionCustomData NORTH = new DirectionCustomData("NORTH", BlockFace.NORTH);
+     * public static final DirectionCustomData SOUTH = new DirectionCustomData("SOUTH", BlockFace.SOUTH);
+     * public static final DirectionCustomData WEST = new DirectionCustomData("WEST", BlockFace.WEST);
+     * public static final DirectionCustomData EAST = new DirectionCustomData("EAST", BlockFace.EAST);
+     */
+
     @NotNull
     private final BlockFace blockFace;
-    @Nullable
-    private CustomDataApplier customDataApplier;
 
-    private DirectionCustomData(@NotNull final String name, @NotNull final BlockFace blockFace) {
-        this.name = name;
+    public DirectionCustomData(@NotNull final BlockFace blockFace, @NotNull final Function<String, Info> infoFunction) {
+        super(blockFace.name(), CustomDataType.BOOLEAN, infoFunction);
+
         this.blockFace = blockFace;
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.BOOLEAN;
     }
 
     @Override
@@ -123,14 +111,7 @@ public class DirectionCustomData implements CustomData {
 
     @NotNull
     @Override
-    public CustomDataApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    private CustomDataApplier getCustomDataApplier0() {
+    protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:
                 return new DirectionApplier_v1_15_R1(this, blockFace);

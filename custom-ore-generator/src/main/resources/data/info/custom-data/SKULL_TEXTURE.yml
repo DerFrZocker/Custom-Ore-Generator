@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.custom-data.SKULL_TEXTURE.display-name]%"
+material: PLAYER_HEAD
+description: "%%translation:[info.custom-data.SKULL_TEXTURE.description]%"

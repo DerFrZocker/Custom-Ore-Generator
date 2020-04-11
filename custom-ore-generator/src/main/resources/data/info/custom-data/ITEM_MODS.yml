@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.custom-data.ITEM_MODS.display-name]%"
+material: REDSTONE_ORE
+description: "%%translation:[info.custom-data.ITEM_MODS.description]%"

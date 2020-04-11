@@ -25,7 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.AutoApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.AutoApplier_v1_11_R1;
@@ -41,14 +41,13 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 public class AutoCustomData extends AbstractAutoCustomData {
 
-    public static final AutoCustomData INSTANCE = new AutoCustomData();
     private static final Set<Material> MATERIALS = new HashSet<>();
 
     static {
@@ -73,10 +72,8 @@ public class AutoCustomData extends AbstractAutoCustomData {
         }
     }
 
-    @Nullable
-    private CustomDataApplier customDataApplier;
-
-    private AutoCustomData() {
+    public AutoCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super(infoFunction);
     }
 
     @Override
@@ -91,6 +88,8 @@ public class AutoCustomData extends AbstractAutoCustomData {
         return MATERIALS.contains(blockState.getType());
     }
 
+    @NotNull
+    @Override
     protected AutoApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:

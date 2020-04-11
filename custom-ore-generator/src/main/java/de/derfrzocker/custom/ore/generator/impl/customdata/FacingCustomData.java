@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.FacingApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.FacingApplier_v1_13_R2;
@@ -40,28 +40,13 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public class FacingCustomData implements CustomData {
+import java.util.function.Function;
 
-    public static final FacingCustomData INSTANCE = new FacingCustomData();
+public class FacingCustomData extends AbstractCustomData<CustomDataApplier> {
 
-    @Nullable
-    private CustomDataApplier customDataApplier;
-
-    private FacingCustomData() {
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "FACING";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.STRING;
+    public FacingCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super("FACING", CustomDataType.STRING, infoFunction);
     }
 
     @Override
@@ -108,14 +93,7 @@ public class FacingCustomData implements CustomData {
 
     @NotNull
     @Override
-    public CustomDataApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    private CustomDataApplier getCustomDataApplier0() {
+    protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:
                 return new FacingApplier_v1_15_R1(this);

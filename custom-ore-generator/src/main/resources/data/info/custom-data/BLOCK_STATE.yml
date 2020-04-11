@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.custom-data.BLOCK_STATE.display-name]%"
+material: STONE_STAIRS
+description: "%%translation:[info.custom-data.BLOCK_STATE.description]%"

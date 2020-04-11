@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.CommandApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.CommandApplier_v1_11_R1;
@@ -47,14 +47,13 @@ import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.CommandBlock;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
-public class CommandCustomData implements CustomData {
+public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
 
-    public static final CommandCustomData INSTANCE = new CommandCustomData();
     private static final Set<Material> MATERIALS = new HashSet<>();
 
     static {
@@ -84,22 +83,8 @@ public class CommandCustomData implements CustomData {
         }
     }
 
-    @Nullable
-    private CustomDataApplier customDataApplier;
-
-    private CommandCustomData() {
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "COMMAND";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.STRING;
+    public CommandCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super("COMMAND", CustomDataType.STRING, infoFunction);
     }
 
     @Override
@@ -135,14 +120,7 @@ public class CommandCustomData implements CustomData {
 
     @NotNull
     @Override
-    public CustomDataApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    private CustomDataApplier getCustomDataApplier0() {
+    protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:
                 return new CommandApplier_v1_15_R1(this);

@@ -25,30 +25,20 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractVariantCustomData implements CustomData {
+import java.util.function.Function;
 
-    @Nullable
-    private VariantApplier customDataApplier;
+public abstract class AbstractVariantCustomData extends AbstractCustomData<AbstractVariantCustomData.VariantApplier> {
 
-    @NotNull
-    @Override
-    public String getName() {
-        return "VARIANT";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.INTEGER;
+    public AbstractVariantCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super("VARIANT", CustomDataType.INTEGER, infoFunction);
     }
 
     @Override
@@ -84,17 +74,6 @@ public abstract class AbstractVariantCustomData implements CustomData {
 
         return getCustomDataApplier().getCustomData(blockState);
     }
-
-    @NotNull
-    @Override
-    public VariantApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    protected abstract VariantApplier getCustomDataApplier0();
 
     public interface VariantApplier extends CustomDataApplier {
 

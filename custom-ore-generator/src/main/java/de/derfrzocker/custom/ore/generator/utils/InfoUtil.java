@@ -42,4 +42,9 @@ public class InfoUtil {
         return new InfoImpl(javaPlugin, "data/info/ore-generator/" + name + ".yml");
     }
 
+    @NotNull
+    public static Info getCustomData(@NotNull final JavaPlugin javaPlugin, @NotNull final String name) {
+        return new InfoImpl(javaPlugin, "data/info/custom-data/" + name + ".yml");
+    }
+
 }

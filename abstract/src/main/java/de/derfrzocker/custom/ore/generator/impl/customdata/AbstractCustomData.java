@@ -25,50 +25,66 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
+import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
-import org.bukkit.block.BlockState;
-import org.bukkit.block.CommandBlock;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
-public abstract class AbstractAutoCustomData extends AbstractCustomData<AbstractAutoCustomData.AutoApplier> {
+public abstract class AbstractCustomData<T extends CustomDataApplier> implements CustomData {
 
-    public AbstractAutoCustomData(@NotNull final Function<String, Info> infoFunction) {
-        super("AUTO", CustomDataType.BOOLEAN, infoFunction);
-    }
+    @NotNull
+    private final String name;
+    @NotNull
+    private final CustomDataType customDataType;
+    @NotNull
+    private final Info info;
 
-    @Override
-    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        return customData instanceof Boolean;
+    @Nullable
+    private T customDataApplier;
+
+    public AbstractCustomData(@NotNull final String name, @NotNull final CustomDataType customDataType, @NotNull final Function<String, Info> infoFunction) {
+        Validate.notNull(name, "Name can not be null");
+        Validate.notNull(customDataType, "CustomDataType can not be null");
+        Validate.notNull(infoFunction, "InfoFunction can not be null");
+
+        this.name = name;
+        this.customDataType = customDataType;
+        this.info = infoFunction.apply(getName());
     }
 
     @NotNull
     @Override
-    public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        return customData;
+    public String getName() {
+        return this.name;
     }
 
     @NotNull
     @Override
-    public Boolean getCustomData(@NotNull BlockState blockState) {
-        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
-
-        return getCustomDataApplier().getCustomData((CommandBlock) blockState);
+    public CustomDataType getCustomDataType() {
+        return this.customDataType;
     }
 
-    public interface AutoApplier extends CustomDataApplier {
+    @NotNull
+    @Override
+    public T getCustomDataApplier() {
+        if (this.customDataApplier == null)
+            this.customDataApplier = getCustomDataApplier0();
 
-        /**
-         * @param commandBlock to get the data from
-         * @return true if auto is activated
-         */
-        boolean getCustomData(@NotNull CommandBlock commandBlock);
+        return this.customDataApplier;
+    }
 
+    @NotNull
+    protected abstract T getCustomDataApplier0();
+
+    @NotNull
+    @Override
+    public Info getInfo() {
+        return this.info;
     }
 
 }

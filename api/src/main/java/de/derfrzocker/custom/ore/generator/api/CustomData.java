@@ -32,7 +32,7 @@ import org.jetbrains.annotations.NotNull;
  * A CustomData get's applied to every Block, which get's generated from an OreConfig,
  * which have the CustomData
  */
-public interface CustomData {
+public interface CustomData extends InfoAble {
 
     /**
      * The name is used to identify the CustomData,

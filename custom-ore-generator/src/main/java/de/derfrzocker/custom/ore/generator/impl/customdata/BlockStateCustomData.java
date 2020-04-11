@@ -26,6 +26,7 @@
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.BlockStateApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.BlockStateApplier_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.BlockStateApplier_v1_12_R1;
@@ -37,6 +38,7 @@ import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class BlockStateCustomData extends AbstractBlockStateCustomData {
@@ -44,14 +46,15 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
 
-
-    public BlockStateCustomData(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier) {
+    public BlockStateCustomData(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull Function<String, Info> infoFunction) {
+        super(infoFunction);
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
 
         this.serviceSupplier = serviceSupplier;
     }
 
     @NotNull
+    @Override
     protected AbstractBlockStateCustomData.BlockStateApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:

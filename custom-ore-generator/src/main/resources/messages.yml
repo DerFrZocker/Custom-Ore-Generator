@@ -131,6 +131,52 @@ info:
     ROOT_GENERATOR:
       display-name: "Root Generator"
       description: "A generator which is based on root growth"
+  custom-data:
+    AUTO:
+      display-name: "Auto"
+      description: "Allows you to set a command block to auto mode"
+    BLOCK_STATE:
+      display-name: "Block State"
+      description: "Allows you to set different block states to a block"
+    COMMAND:
+      display-name: "Command"
+      description: "Allows you to add a command to a command block"
+    DOWN:
+      display-name: "Down"
+      description: "Correspond to the 'down' block state"
+    EAST:
+      display-name: "East"
+      description: "Correspond to the 'east' block state"
+    FACING:
+      display-name: "Facing"
+      description: "Correspond to the 'facing' block state"
+    ITEM_MODS:
+      display-name: "Item Mods"
+      description: "Add support for the plugin ItemMods"
+    NBT_TAG:
+      display-name: "NBT Tag"
+      description: "Allows you to add NBT Tags to tile entity"
+    NORTH:
+      display-name: "North"
+      description: "Correspond to the 'north' block state"
+    SKULL_TEXTURE:
+      display-name: "Skull Texture"
+      description: "Allows you to add custom textures to a skull"
+    SOUTH:
+      display-name: "South"
+      description: "Correspond to the 'south' block state"
+    TICK_BLOCK:
+      display-name: "Tick Block"
+      description: "Allow you to let the block get a block update after the generation"
+    UP:
+      display-name: "Up"
+      description: "Correspond to the 'up' block state"
+    VARIANT:
+      display-name: "Variant"
+      description: "Correspond to the 'variant' block state"
+    WEST:
+      display-name: "West"
+      description: "Correspond to the 'west' block state"
 
 command:
   world-not-found: "&4The world &f'&d%world%&f' &4does not exist!"

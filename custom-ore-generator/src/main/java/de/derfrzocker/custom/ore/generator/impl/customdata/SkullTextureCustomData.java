@@ -25,6 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.SkullTextureApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.SkullTextureApplier_v1_11_R1;
@@ -44,12 +45,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Function;
 
 public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
 
-    public static final SkullTextureCustomData INSTANCE = new SkullTextureCustomData();
-
-    private static Set<Material> materials = new HashSet<>();
+    private final static Set<Material> MATERIALS = new HashSet<>();
 
     static {
         switch (Version.getCurrent()) {
@@ -57,8 +57,8 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
             case v1_14_R1:
             case v1_13_R2:
             case v1_13_R1:
-                materials.add(Material.valueOf("PLAYER_HEAD"));
-                materials.add(Material.valueOf("PLAYER_WALL_HEAD"));
+                MATERIALS.add(Material.valueOf("PLAYER_HEAD"));
+                MATERIALS.add(Material.valueOf("PLAYER_WALL_HEAD"));
                 break;
             case v1_12_R1:
             case v1_11_R1:
@@ -68,20 +68,23 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
             case v1_8_R3:
             case v1_8_R2:
             case v1_8_R1:
-                materials.add(Material.valueOf("SKULL"));
+                MATERIALS.add(Material.valueOf("SKULL"));
                 break;
         }
 
     }
 
-    private SkullTextureCustomData() {
+    public SkullTextureCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super(infoFunction);
     }
 
     @Override
     public boolean canApply(@NotNull final OreConfig oreConfig) {
-        return materials.contains(oreConfig.getMaterial());
+        return MATERIALS.contains(oreConfig.getMaterial());
     }
 
+    @NotNull
+    @Override
     protected SkullTextureApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:

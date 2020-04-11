@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.custom-data.COMMAND.display-name]%"
+material: COMMAND_BLOCK
+description: "%%translation:[info.custom-data.COMMAND.description]%"

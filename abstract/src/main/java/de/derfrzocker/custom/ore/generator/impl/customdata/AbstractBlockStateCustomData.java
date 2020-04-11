@@ -25,34 +25,23 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.function.Function;
 
-public abstract class AbstractBlockStateCustomData implements CustomData {
+public abstract class AbstractBlockStateCustomData extends AbstractCustomData<AbstractBlockStateCustomData.BlockStateApplier> {
 
-    @Nullable
-    private BlockStateApplier customDataApplier;
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "BLOCK_STATE";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.STRING;
+    public AbstractBlockStateCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super("BLOCK_STATE", CustomDataType.STRING, infoFunction);
     }
 
     @Override
@@ -111,18 +100,6 @@ public abstract class AbstractBlockStateCustomData implements CustomData {
 
         return getCustomDataApplier().getCustomData(blockState);
     }
-
-    @NotNull
-    @Override
-    public BlockStateApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    @NotNull
-    protected abstract BlockStateApplier getCustomDataApplier0();
 
     public interface BlockStateApplier extends CustomDataApplier {
 

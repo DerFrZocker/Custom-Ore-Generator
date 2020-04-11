@@ -28,33 +28,22 @@ package de.derfrzocker.custom.ore.generator.impl.customdata;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Skull;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.Base64;
+import java.util.function.Function;
 
-public abstract class AbstractSkullTextureCustomData implements CustomData {
+public abstract class AbstractSkullTextureCustomData extends AbstractCustomData<AbstractSkullTextureCustomData.SkullTextureApplier> {
 
-    @Nullable
-    private SkullTextureApplier customDataApplier;
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "SKULL_TEXTURE";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.STRING;
+    public AbstractSkullTextureCustomData(@NotNull final Function<String, Info> infoFunction) {
+        super("SKULL_TEXTURE", CustomDataType.STRING, infoFunction);
     }
 
     @Override
@@ -94,17 +83,6 @@ public abstract class AbstractSkullTextureCustomData implements CustomData {
 
         return getCustomDataApplier().getCustomData((Skull) blockState);
     }
-
-    @NotNull
-    @Override
-    public SkullTextureApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    protected abstract SkullTextureApplier getCustomDataApplier0();
 
     public interface SkullTextureApplier extends CustomDataApplier {
 
