@@ -25,10 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.impl;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -85,6 +82,12 @@ public class TestCustomData implements CustomData {
     @NotNull
     @Override
     public CustomDataApplier getCustomDataApplier() {
+        return null;
+    }
+
+    @NotNull
+    @Override
+    public Info getInfo() {
         return null;
     }
 }
