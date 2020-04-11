@@ -25,10 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
-import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.FacingApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.FacingApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.FacingApplier_v1_14_R1;
@@ -36,14 +33,19 @@ import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.FacingApplie
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Function;
 
-public class FacingCustomData extends AbstractCustomData<CustomDataApplier> {
+public class FacingCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
     public FacingCustomData(@NotNull final Function<String, Info> infoFunction) {
         super("FACING", CustomDataType.STRING, infoFunction);
@@ -106,6 +108,22 @@ public class FacingCustomData extends AbstractCustomData<CustomDataApplier> {
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");
+    }
+
+    @NotNull
+    @Override
+    public Set<Object> getPossibleValues(@NotNull final Material material) {
+        Validate.notNull(material, "Material can not be null");
+
+        final BlockData blockData = material.createBlockData();
+
+        Validate.isTrue(material.createBlockData() instanceof Directional, "The given Material '" + material + "' can not have the CustomData '" + getName() + "'");
+
+        final Set<Object> set = new HashSet<>();
+
+        ((Directional) blockData).getFaces().forEach(blockFace -> set.add(blockFace.name()));
+
+        return Collections.unmodifiableSet(set);
     }
 
 }

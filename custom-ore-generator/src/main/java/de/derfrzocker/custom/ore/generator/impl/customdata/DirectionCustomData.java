@@ -25,10 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
-import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.DirectionApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.DirectionApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.DirectionApplier_v1_14_R1;
@@ -36,15 +33,17 @@ import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.DirectionApp
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
 import java.util.function.Function;
 
-public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> {
+public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
     /**
      * public static final DirectionCustomData DOWN = new DirectionCustomData("DOWN", BlockFace.DOWN);
@@ -124,6 +123,12 @@ public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> {
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");
+    }
+
+    @NotNull
+    @Override
+    public Set<Object> getPossibleValues(@NotNull final Material material) {
+        return BOOLEAN_VALUE;
     }
 
 }

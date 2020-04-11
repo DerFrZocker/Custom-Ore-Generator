@@ -25,21 +25,20 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
-import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.TickBlockApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.TickBlockApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.TickBlockApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.TickBlockApplier_v1_15_R1;
 import de.derfrzocker.spigot.utils.Version;
+import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Set;
 import java.util.function.Function;
 
-public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> {
+public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
     public TickBlockCustomData(@NotNull final Function<String, Info> infoFunction) {
         super("TICK_BLOCK", CustomDataType.BOOLEAN, infoFunction);
@@ -87,6 +86,12 @@ public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> {
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");
+    }
+
+    @NotNull
+    @Override
+    public Set<Object> getPossibleValues(@NotNull final Material material) {
+        return BOOLEAN_VALUE;
     }
 
 }
