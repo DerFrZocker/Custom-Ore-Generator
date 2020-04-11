@@ -26,15 +26,17 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractAutoCustomData;
 import net.minecraft.server.v1_13_R2.*;
 import org.apache.commons.lang.Validate;
+import org.bukkit.block.CommandBlock;
+import org.bukkit.craftbukkit.v1_13_R2.CraftWorld;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class AutoApplier_v1_13_R2 implements CustomDataApplier {
+public class AutoApplier_v1_13_R2 implements AbstractAutoCustomData.AutoApplier {
 
     @NotNull
     private final CustomData customData;
@@ -72,6 +74,25 @@ public class AutoApplier_v1_13_R2 implements CustomDataApplier {
 
         generatorAccess.y(blockPosition).d(blockPosition);
         generatorAccess.y(blockPosition).a(nbtTagCompound);
+    }
+
+    @Override
+    public boolean getCustomData(@NotNull final CommandBlock commandBlock) {
+        final WorldServer worldServer = ((CraftWorld) commandBlock.getWorld()).getHandle();
+        final BlockPosition blockPosition = new BlockPosition(commandBlock.getX(), commandBlock.getY(), commandBlock.getZ());
+
+        final TileEntity tileEntity = worldServer.getTileEntity(blockPosition);
+
+        if (tileEntity == null) {
+            return false;
+        }
+
+        if (!(tileEntity instanceof TileEntityCommand))
+            return false;
+
+        final TileEntityCommand tileEntityCommand = (TileEntityCommand) tileEntity;
+
+        return tileEntityCommand.e();
     }
 
 }

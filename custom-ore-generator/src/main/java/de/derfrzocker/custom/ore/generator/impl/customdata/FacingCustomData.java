@@ -34,8 +34,10 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.FacingApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.FacingApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.FacingApplier_v1_15_R1;
 import de.derfrzocker.spigot.utils.Version;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.Directional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -85,6 +87,23 @@ public class FacingCustomData implements CustomData {
     @Override
     public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         return customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        Validate.notNull(blockState, "BlockState can not be null");
+
+        return blockState.getBlockData() instanceof Directional;
+    }
+
+    @NotNull
+    @Override
+    public BlockFace getCustomData(@NotNull final BlockState blockState) {
+        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
+
+        final Directional directional = (Directional) blockState.getBlockData();
+
+        return directional.getFacing();
     }
 
     @NotNull

@@ -32,6 +32,7 @@ import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractBlockStateCus
 import net.minecraft.server.v1_13_R1.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_13_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_13_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
@@ -138,6 +139,38 @@ public class BlockStateApplier_v1_13_R1 implements AbstractBlockStateCustomData.
         }
 
         return true;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final org.bukkit.block.BlockState blockState) {
+        final IBlockData iBlockData = ((CraftWorld) blockState.getWorld()).getHandle().getType(new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ()));
+
+        return iBlockData.getBlock().getStates().d().size() != 0;
+    }
+
+    @NotNull
+    @Override
+    public String getCustomData(@NotNull final org.bukkit.block.BlockState blockState) {
+        final IBlockData iBlockData = ((CraftWorld) blockState.getWorld()).getHandle().getType(new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ()));
+
+        final StringBuilder stringBuilder = new StringBuilder("[");
+        boolean first = true;
+
+        for (final IBlockState iBlockState : iBlockData.getBlock().getStates().d()) {
+            if (!first) {
+                stringBuilder.append(",");
+            } else {
+                first = false;
+            }
+
+            stringBuilder.append(iBlockState.a());
+            stringBuilder.append(",");
+            stringBuilder.append(iBlockState.a(iBlockData.get(iBlockState)));
+        }
+
+        stringBuilder.append("]");
+
+        return stringBuilder.toString();
     }
 
     @NotNull

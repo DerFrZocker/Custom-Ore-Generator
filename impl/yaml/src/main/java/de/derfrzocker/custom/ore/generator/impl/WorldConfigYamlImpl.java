@@ -308,7 +308,7 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
         final Map<String, OreConfig> map = new LinkedHashMap<>();
 
-        if(service == null)
+        if (service == null)
             return;
 
         allOreConfigs.forEach((name) -> {

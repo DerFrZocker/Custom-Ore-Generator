@@ -34,6 +34,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.TickBlockApp
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.TickBlockApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.TickBlockApplier_v1_15_R1;
 import de.derfrzocker.spigot.utils.Version;
+import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -73,6 +74,17 @@ public class TickBlockCustomData implements CustomData {
     @Override
     public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         return customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public Boolean getCustomData(@NotNull final BlockState blockState) {
+        return false;
     }
 
     @NotNull

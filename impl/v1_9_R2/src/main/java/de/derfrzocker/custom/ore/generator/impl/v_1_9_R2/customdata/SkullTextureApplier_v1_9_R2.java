@@ -28,20 +28,24 @@ package de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata;
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractSkullTextureCustomData;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_9_R2.BlockPosition;
 import net.minecraft.server.v1_9_R2.TileEntity;
 import net.minecraft.server.v1_9_R2.TileEntitySkull;
 import net.minecraft.server.v1_9_R2.World;
+import org.bukkit.block.Skull;
+import org.bukkit.craftbukkit.v1_9_R2.CraftWorld;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
 @RequiredArgsConstructor
-public class SkullTextureApplier_v1_9_R2 implements CustomDataApplier {
+public class SkullTextureApplier_v1_9_R2 implements AbstractSkullTextureCustomData.SkullTextureApplier {
 
     @NonNull
     private final CustomData customData;
@@ -71,6 +75,48 @@ public class SkullTextureApplier_v1_9_R2 implements CustomDataApplier {
         gameProfile.getProperties().put("textures", new Property("textures", texture));
 
         skull.setGameProfile(gameProfile);
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final Skull skull) {
+        final TileEntity tileEntity = ((CraftWorld) skull.getWorld()).getHandle().getTileEntity(new BlockPosition(skull.getX(), skull.getY(), skull.getZ()));
+
+        if (tileEntity == null)
+            return false;
+
+        if (!(tileEntity instanceof TileEntitySkull))
+            return false;
+
+        final GameProfile gameProfile = ((TileEntitySkull) tileEntity).getGameProfile();
+
+        if (gameProfile == null)
+            return false;
+
+        final Collection<Property> propertyCollection = gameProfile.getProperties().get("textures");
+
+        if (propertyCollection == null || propertyCollection.isEmpty())
+            return false;
+
+        for (final Property property : propertyCollection) {
+            if (property.getName().equals("textures"))
+                return true;
+        }
+
+        return false;
+    }
+
+    @Override
+    public String getCustomData(@NotNull final Skull skull) {
+        final TileEntitySkull tileEntitySkull = (TileEntitySkull) ((CraftWorld) skull.getWorld()).getHandle().getTileEntity(new BlockPosition(skull.getX(), skull.getY(), skull.getZ()));
+
+        final GameProfile gameProfile = tileEntitySkull.getGameProfile();
+
+        for (final Property property : gameProfile.getProperties().get("textures")) {
+            if (property.getName().equals("textures"))
+                return property.getValue();
+        }
+
+        throw new RuntimeException("TileEntitySkull on Location " + tileEntitySkull.getPosition() + " dont have the property 'textures' in its GameProfile " + gameProfile);
     }
 
 }

@@ -42,7 +42,10 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.CommandApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.CommandApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.CommandApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.block.CommandBlock;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -113,6 +116,21 @@ public class CommandCustomData implements CustomData {
     @Override
     public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         return customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        Validate.notNull(blockState, "BlockState can not be null");
+
+        return MATERIALS.contains(blockState.getType());
+    }
+
+    @NotNull
+    @Override
+    public String getCustomData(@NotNull final BlockState blockState) {
+        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
+
+        return ((CommandBlock) blockState).getCommand();
     }
 
     @NotNull

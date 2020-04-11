@@ -29,6 +29,8 @@ import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import org.apache.commons.lang.Validate;
+import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -95,6 +97,21 @@ public abstract class AbstractBlockStateCustomData implements CustomData {
         }
     }
 
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        Validate.notNull(blockState, "BlockState can not be null");
+
+        return getCustomDataApplier().hasCustomData(blockState);
+    }
+
+    @NotNull
+    @Override
+    public String getCustomData(@NotNull final BlockState blockState) {
+        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
+
+        return getCustomDataApplier().getCustomData(blockState);
+    }
+
     @NotNull
     @Override
     public BlockStateApplier getCustomDataApplier() {
@@ -127,6 +144,19 @@ public abstract class AbstractBlockStateCustomData implements CustomData {
          * @throws IllegalArgumentException if customData or OreConfig is null
          */
         boolean isValidCustomData(@NotNull String customData, @NotNull OreConfig oreConfig);
+
+        /**
+         * @param blockState to check
+         * @return true if the blockState has additional BlockStates
+         */
+        boolean hasCustomData(@NotNull BlockState blockState);
+
+        /**
+         * @param blockState to get the data from
+         * @return all customDatas as String
+         */
+        @NotNull
+        String getCustomData(@NotNull BlockState blockState);
 
     }
 

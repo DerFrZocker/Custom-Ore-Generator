@@ -25,6 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.api;
 
+import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -79,6 +80,24 @@ public interface CustomData {
      */
     @NotNull
     Object normalize(@NotNull Object customData, @NotNull OreConfig oreConfig);
+
+    /**
+     * Checks, if the given BlockState has the CustomData for this CustomData Object
+     *
+     * @param blockState to check
+     * @return true if a CustomData is present, otherwise false
+     * @throws IllegalArgumentException if blockState is null
+     */
+    boolean hasCustomData(@NotNull BlockState blockState);
+
+    /**
+     * @param blockState to get the data from
+     * @return the customData object of the given BlockState
+     * @throws IllegalArgumentException if blockState is null
+     * @throws IllegalArgumentException if the blockState dont have a customData
+     */
+    @NotNull
+    Object getCustomData(@NotNull BlockState blockState);
 
     /**
      * @return the CustomDataApplier of this CustomData

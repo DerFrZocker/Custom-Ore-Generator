@@ -25,43 +25,50 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
+import com.google.gson.JsonParser;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
+import org.bukkit.block.Skull;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public abstract class AbstractVariantCustomData implements CustomData {
+import java.util.Base64;
+
+public abstract class AbstractSkullTextureCustomData implements CustomData {
 
     @Nullable
-    private VariantApplier customDataApplier;
+    private SkullTextureApplier customDataApplier;
 
     @NotNull
     @Override
     public String getName() {
-        return "VARIANT";
+        return "SKULL_TEXTURE";
     }
 
     @NotNull
     @Override
     public CustomDataType getCustomDataType() {
-        return CustomDataType.INTEGER;
+        return CustomDataType.STRING;
     }
 
     @Override
-    public boolean canApply(@NotNull final OreConfig oreConfig) {
-        return getCustomDataApplier().canApply(oreConfig);
-    }
-
-    @Override
+    // example decoded Base64 String: {"textures":{"SKIN":{"url":"http://textures.minecraft.net/texture/59ac16f296b461d05ea0785d477033e527358b4f30c266aa02f020157ffca736"}}}
     public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        if (!(customData instanceof Integer))
+        if (!(customData instanceof String))
             return false;
 
-        return getCustomDataApplier().isValidCustomData((Integer) customData, oreConfig);
+        try {
+            JsonElement jsonElement = new JsonParser().parse(new String(Base64.getDecoder().decode((String) customData)));
+            return jsonElement.getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString().contains("minecraft.net");
+        } catch (JsonParseException | IllegalStateException | IllegalArgumentException | NullPointerException e) {
+            return false;
+        }
     }
 
     @NotNull
@@ -74,60 +81,44 @@ public abstract class AbstractVariantCustomData implements CustomData {
     public boolean hasCustomData(@NotNull final BlockState blockState) {
         Validate.notNull(blockState, "BlockState can not be null");
 
-        return getCustomDataApplier().hasCustomData(blockState);
+        if (!(blockState instanceof Skull))
+            return false;
+
+        return getCustomDataApplier().hasCustomData((Skull) blockState);
     }
 
     @NotNull
     @Override
-    public Integer getCustomData(@NotNull final BlockState blockState) {
+    public String getCustomData(@NotNull final BlockState blockState) {
         Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
 
-        return getCustomDataApplier().getCustomData(blockState);
+        return getCustomDataApplier().getCustomData((Skull) blockState);
     }
 
     @NotNull
     @Override
-    public VariantApplier getCustomDataApplier() {
+    public SkullTextureApplier getCustomDataApplier() {
         if (customDataApplier == null)
             customDataApplier = getCustomDataApplier0();
 
         return customDataApplier;
     }
 
-    protected abstract VariantApplier getCustomDataApplier0();
+    protected abstract SkullTextureApplier getCustomDataApplier0();
 
-    public interface VariantApplier extends CustomDataApplier {
-
-        /**
-         * Checks, if the given OreConfig can use this CustomData
-         *
-         * @param oreConfig that get's checked
-         * @return true if this OreConfig can apply the CustomData
-         * @throws IllegalArgumentException if oreConfig is null
-         */
-        boolean canApply(@NotNull OreConfig oreConfig);
+    public interface SkullTextureApplier extends CustomDataApplier {
 
         /**
-         * Checks, if the given customData value is valid or not
-         *
-         * @param customData to check
-         * @param oreConfig  which get's the customData
-         * @return true if valid other wise false
-         * @throws IllegalArgumentException if customData or OreConfig is null
+         * @param skull to check
+         * @return true if the blockState has a custom texture
          */
-        boolean isValidCustomData(@NotNull Integer customData, @NotNull OreConfig oreConfig);
+        boolean hasCustomData(@NotNull Skull skull);
 
         /**
-         * @param blockState to check
-         * @return true if the blockState has a Variant
+         * @param skull to get the data from
+         * @return the skull texture link as Base64 encoded
          */
-        boolean hasCustomData(@NotNull BlockState blockState);
-
-        /**
-         * @param blockState to get the data from
-         * @return the Variant as number
-         */
-        int getCustomData(@NotNull BlockState blockState);
+        String getCustomData(@NotNull Skull skull);
 
     }
 

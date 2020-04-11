@@ -33,8 +33,12 @@ import net.minecraft.server.v1_8_R1.IBlockData;
 import net.minecraft.server.v1_8_R1.IBlockState;
 import net.minecraft.server.v1_8_R1.World;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Material;
+import org.bukkit.block.BlockState;
+import org.bukkit.craftbukkit.v1_8_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_8_R1.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
@@ -62,47 +66,60 @@ public class VariantApplier_v1_8_R1 implements AbstractVariantCustomData.Variant
             return; //TODO maybe throw exception?
 
         final IBlockData newIBlockData = oldIBlockData.getBlock().fromLegacyData((Integer) objectOptional.get());
+        final IBlockState variant = getVariantBlockState(oreConfig.getMaterial());
 
-        IBlockState variant = null;
-
-        for (final Object object : oldIBlockData.getBlock().O().d()) {
-            if (((IBlockState) object).a().equals("variant")) {
-                variant = (IBlockState) object;
-                break;
-            }
-        }
+        if (variant == null)
+            return; //TODO maybe throw exception?
 
         world.setTypeAndData(blockPosition, oldIBlockData.set(variant, newIBlockData.get(variant)), 2);
     }
 
     @Override
     public boolean canApply(@NotNull final OreConfig oreConfig) {
-        IBlockState variant = null;
-
-        for (final Object object : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).O().d()) {
-            if (((IBlockState) object).a().equals("variant")) {
-                variant = (IBlockState) object;
-                break;
-            }
-        }
-        return variant != null;
+        return getVariantBlockState(oreConfig.getMaterial()) != null;
     }
 
     @Override
     public boolean isValidCustomData(@NotNull final Integer customData, @NotNull final OreConfig oreConfig) {
-        IBlockState variant = null;
-
-        for (final Object object : CraftMagicNumbers.getBlock(oreConfig.getMaterial()).O().d()) {
-            if (((IBlockState) object).a().equals("variant")) {
-                variant = (IBlockState) object;
-                break;
-            }
-        }
+        final IBlockState variant = getVariantBlockState(oreConfig.getMaterial());
 
         if (variant == null)
             return false;
 
         return variant.c().size() > customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        final IBlockState variant = getVariantBlockState(blockState.getType());
+
+        if (variant == null)
+            return false;
+
+        final IBlockData iBlockData = ((CraftWorld) blockState.getWorld()).getHandle().getType(new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ()));
+
+        return iBlockData.getBlock().toLegacyData(iBlockData) != 0;
+    }
+
+    @Override
+    public int getCustomData(@NotNull final BlockState blockState) {
+        final IBlockData iBlockData = ((CraftWorld) blockState.getWorld()).getHandle().getType(new BlockPosition(blockState.getX(), blockState.getY(), blockState.getZ()));
+
+        return iBlockData.getBlock().toLegacyData(iBlockData);
+    }
+
+    @Nullable
+    private IBlockState getVariantBlockState(@NotNull final Material material) {
+        IBlockState variant = null;
+
+        for (final Object object : CraftMagicNumbers.getBlock(material).O().d()) {
+            if (((IBlockState) object).a().equals("variant")) {
+                variant = (IBlockState) object;
+                break;
+            }
+        }
+
+        return variant;
     }
 
 }

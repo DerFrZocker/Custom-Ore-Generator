@@ -30,6 +30,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
+import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 public class TestCustomData implements CustomData {
@@ -68,6 +69,17 @@ public class TestCustomData implements CustomData {
     @Override
     public Object normalize(@NotNull Object customData, @NotNull OreConfig oreConfig) {
         return customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull BlockState blockState) {
+        return false;
+    }
+
+    @NotNull
+    @Override
+    public Object getCustomData(@NotNull BlockState blockState) {
+        return new Object();
     }
 
     @NotNull

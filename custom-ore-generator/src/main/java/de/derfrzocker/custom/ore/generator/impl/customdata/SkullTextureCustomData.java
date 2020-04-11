@@ -25,12 +25,6 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParseException;
-import com.google.gson.JsonParser;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.SkullTextureApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.SkullTextureApplier_v1_11_R1;
@@ -47,13 +41,11 @@ import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.SkullTexture
 import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.util.Base64;
 import java.util.HashSet;
 import java.util.Set;
 
-public class SkullTextureCustomData implements CustomData {
+public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
 
     public static final SkullTextureCustomData INSTANCE = new SkullTextureCustomData();
 
@@ -82,22 +74,7 @@ public class SkullTextureCustomData implements CustomData {
 
     }
 
-    @Nullable
-    private CustomDataApplier customDataApplier;
-
     private SkullTextureCustomData() {
-    }
-
-    @NotNull
-    @Override
-    public String getName() {
-        return "SKULL_TEXTURE";
-    }
-
-    @NotNull
-    @Override
-    public CustomDataType getCustomDataType() {
-        return CustomDataType.STRING;
     }
 
     @Override
@@ -105,36 +82,7 @@ public class SkullTextureCustomData implements CustomData {
         return materials.contains(oreConfig.getMaterial());
     }
 
-    @Override
-    // example decoded Base64 String: {"textures":{"SKIN":{"url":"http://textures.minecraft.net/texture/59ac16f296b461d05ea0785d477033e527358b4f30c266aa02f020157ffca736"}}}
-    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) { // TODO test method
-        if (!(customData instanceof String))
-            return false;
-
-        try {
-            JsonElement jsonElement = new JsonParser().parse(new String(Base64.getDecoder().decode((String) customData)));
-            return jsonElement.getAsJsonObject().get("textures").getAsJsonObject().get("SKIN").getAsJsonObject().get("url").getAsString().contains("minecraft.net");
-        } catch (JsonParseException | IllegalStateException | IllegalArgumentException | NullPointerException e) {
-            return false;
-        }
-    }
-
-    @NotNull
-    @Override
-    public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        return customData;
-    }
-
-    @NotNull
-    @Override
-    public CustomDataApplier getCustomDataApplier() {
-        if (customDataApplier == null)
-            customDataApplier = getCustomDataApplier0();
-
-        return customDataApplier;
-    }
-
-    private CustomDataApplier getCustomDataApplier0() {
+    protected SkullTextureApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
             case v1_15_R1:
                 return new SkullTextureApplier_v1_15_R1(this);

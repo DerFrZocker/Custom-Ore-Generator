@@ -476,7 +476,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         final CustomOreGeneratorService customOreGeneratorService = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
         final Set<String> toRemove = new HashSet<>();
 
-        if(customOreGeneratorService == null)
+        if (customOreGeneratorService == null)
             return;
 
         lazyCustomData.forEach((name, value) -> {

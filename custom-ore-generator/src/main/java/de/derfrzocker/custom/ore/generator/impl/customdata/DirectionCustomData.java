@@ -34,8 +34,10 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.DirectionApp
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.DirectionApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.DirectionApplier_v1_15_R1;
 import de.derfrzocker.spigot.utils.Version;
+import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.jetbrains.annotations.NotNull;
@@ -93,6 +95,30 @@ public class DirectionCustomData implements CustomData {
     @Override
     public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
         return customData;
+    }
+
+    @Override
+    public boolean hasCustomData(@NotNull final BlockState blockState) {
+        Validate.notNull(blockState, "BlockState can not be null");
+
+        final BlockData blockData = blockState.getBlockData();
+
+        if (!(blockData instanceof MultipleFacing))
+            return false;
+
+        final MultipleFacing multipleFacing = (MultipleFacing) blockData;
+
+        return multipleFacing.getAllowedFaces().contains(blockFace);
+    }
+
+    @NotNull
+    @Override
+    public Boolean getCustomData(@NotNull final BlockState blockState) {
+        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
+
+        final MultipleFacing multipleFacing = (MultipleFacing) blockState.getBlockData();
+
+        return multipleFacing.hasFace(blockFace);
     }
 
     @NotNull
