@@ -54,10 +54,6 @@ public class GlowStoneGenerator extends AbstractOreGenerator {
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(POSITIVE_VERTICAL_SCOPE, NEGATIVE_VERTICAL_SCOPE, HORIZONTAL_SCOPE, POSITIVE_TRIES, NEGATIVE_TRIES, CONNECTIONS));
     private final static BlockFace[] BLOCK_FACES = new BlockFace[]{BlockFace.UP, BlockFace.DOWN, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH};
 
-    public GlowStoneGenerator(@NotNull final Info info) {
-        super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, info);
-    }
-
     public GlowStoneGenerator(@NotNull final Function<String, Info> infoFunction) {
         super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
     }

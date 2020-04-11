@@ -47,10 +47,6 @@ import java.util.function.Function;
 
 public class MinableGenerator_v1_8_R3 extends AbstractMinableGenerator {
 
-    public MinableGenerator_v1_8_R3(@NotNull final Info info) {
-        super(info);
-    }
-
     public MinableGenerator_v1_8_R3(@NotNull final Function<String, Info> infoFunction) {
         super(infoFunction);
     }

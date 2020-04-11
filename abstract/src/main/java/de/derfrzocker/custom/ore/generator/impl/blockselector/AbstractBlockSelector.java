@@ -43,16 +43,6 @@ public abstract class AbstractBlockSelector implements BlockSelector {
     @NotNull
     private final Info info;
 
-    public AbstractBlockSelector(@NotNull final String name, @NotNull final Set<OreSetting> neededOreSettings, @NotNull final Info info) {
-        Validate.notNull(name, "Name can not be null");
-        Validate.notNull(neededOreSettings, "OreSettings can not be null");
-        Validate.notNull(info, "Info can not be null");
-
-        this.name = name;
-        this.neededOreSettings = neededOreSettings;
-        this.info = info;
-    }
-
     public AbstractBlockSelector(@NotNull final String name, @NotNull final Set<OreSetting> neededOreSettings, @NotNull final Function<String, Info> infoFunction) {
         Validate.notNull(name, "Name can not be null");
         Validate.notNull(neededOreSettings, "OreSettings can not be null");

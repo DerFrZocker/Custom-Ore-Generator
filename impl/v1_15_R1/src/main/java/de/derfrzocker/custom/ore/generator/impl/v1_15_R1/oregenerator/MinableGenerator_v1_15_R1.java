@@ -45,10 +45,6 @@ public class MinableGenerator_v1_15_R1 extends AbstractMinableGenerator {
 
     private final WorldGenMinable generator = new WorldGenMinable(null);
 
-    public MinableGenerator_v1_15_R1(@NotNull final Info info) {
-        super(info);
-    }
-
     public MinableGenerator_v1_15_R1(@NotNull final Function<String, Info> infoFunction) {
         super(infoFunction);
     }

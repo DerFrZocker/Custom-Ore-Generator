@@ -48,10 +48,6 @@ public class MinableGenerator_v1_13_R2_paper extends AbstractMinableGenerator {
 
     private final WorldGenMinable generator = new WorldGenMinable();
 
-    public MinableGenerator_v1_13_R2_paper(@NotNull final Info info) {
-        super(info);
-    }
-
     public MinableGenerator_v1_13_R2_paper(@NotNull final Function<String, Info> infoFunction) {
         super(infoFunction);
     }

@@ -71,10 +71,6 @@ public class RootGenerator extends AbstractOreGenerator {
         DIRECTIONS = Collections.unmodifiableMap(blockFaces);
     }
 
-    public RootGenerator(@NotNull final Info info) {
-        super("ROOT_GENERATOR", NEEDED_ORE_SETTINGS, info);
-    }
-
     public RootGenerator(@NotNull final Function<String, Info> infoFunction) {
         super("ROOT_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
     }

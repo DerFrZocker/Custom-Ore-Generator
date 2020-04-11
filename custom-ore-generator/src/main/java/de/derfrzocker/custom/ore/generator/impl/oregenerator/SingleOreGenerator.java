@@ -39,10 +39,6 @@ import java.util.function.Function;
 
 public class SingleOreGenerator extends AbstractSingleOreGenerator {
 
-    public SingleOreGenerator(@NotNull final Info info) {
-        super(info);
-    }
-
     public SingleOreGenerator(@NotNull final Function<String, Info> infoFunction) {
         super(infoFunction);
     }

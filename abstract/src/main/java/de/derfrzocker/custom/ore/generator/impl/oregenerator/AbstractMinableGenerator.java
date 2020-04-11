@@ -41,10 +41,6 @@ public abstract class AbstractMinableGenerator extends AbstractOreGenerator {
 
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEIN_SIZE));
 
-    public AbstractMinableGenerator(@NotNull final Info info) {
-        super("VANILLA_MINABLE_GENERATOR", NEEDED_ORE_SETTINGS, info);
-    }
-
     public AbstractMinableGenerator(@NotNull final Function<String, Info> infoFunction) {
         super("VANILLA_MINABLE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
     }

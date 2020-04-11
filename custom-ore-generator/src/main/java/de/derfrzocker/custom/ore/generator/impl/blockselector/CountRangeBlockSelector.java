@@ -42,10 +42,6 @@ public class CountRangeBlockSelector extends AbstractBlockSelector {
 
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.HEIGHT_RANGE, OreSettings.MINIMUM_HEIGHT, OreSettings.VEINS_PER_CHUNK));
 
-    public CountRangeBlockSelector(@NotNull final Info info) {
-        super("COUNT_RANGE", NEEDED_ORE_SETTINGS, info);
-    }
-
     public CountRangeBlockSelector(@NotNull final Function<String, Info> infoFunction) {
         super("COUNT_RANGE", NEEDED_ORE_SETTINGS, infoFunction);
     }

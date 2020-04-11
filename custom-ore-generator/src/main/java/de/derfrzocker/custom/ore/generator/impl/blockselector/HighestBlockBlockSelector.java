@@ -42,10 +42,6 @@ public class HighestBlockBlockSelector extends AbstractBlockSelector {
 
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEINS_PER_CHUNK));
 
-    public HighestBlockBlockSelector(@NotNull Info info) {
-        super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, info);
-    }
-
     public HighestBlockBlockSelector(@NotNull Function<String, Info> infoFunction) {
         super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, infoFunction);
     }

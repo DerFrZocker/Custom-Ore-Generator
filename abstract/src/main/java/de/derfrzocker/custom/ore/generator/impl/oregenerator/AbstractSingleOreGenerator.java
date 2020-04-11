@@ -40,10 +40,6 @@ public abstract class AbstractSingleOreGenerator extends AbstractOreGenerator {
 
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(new HashSet<>());
 
-    public AbstractSingleOreGenerator(@NotNull final Info info) {
-        super("SINGLE_ORE_GENERATOR", NEEDED_ORE_SETTINGS, info);
-    }
-
     public AbstractSingleOreGenerator(@NotNull final Function<String, Info> infoFunction) {
         super("SINGLE_ORE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
     }
