@@ -61,9 +61,6 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
     }
 
     public static WorldConfigYamlImpl deserialize(@NotNull final Map<String, Object> map) {
-        final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
-        Validate.notNull(service, "CustomOreGeneratorService can not be null");
-
         if (map.containsKey(NAME_KEY)) { //newest format
             final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(NAME_KEY));
             final Object oreConfigs = map.get(ORE_CONFIG_KEY);
@@ -75,6 +72,9 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         }
 
         final WorldConfigYamlImpl worldConfig = new WorldConfigYamlImpl((String) map.get(WORLD_KEY));
+        final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+
+        Validate.notNull(service, "CustomOreGeneratorService can not be null");
 
         if (!map.containsKey(ORE_CONFIG_KEY)) {
             // old format version
