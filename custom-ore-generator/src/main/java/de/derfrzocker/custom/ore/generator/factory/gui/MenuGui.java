@@ -239,16 +239,63 @@ public class MenuGui extends BasicGui {
             }
         }
 
-        /*{ //TODO check for customData needed
+        {
             final Map<CustomData, Object> customDatas = oreConfigBuilder.customDatas();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
             final ItemStack itemStack;
+            boolean customDataReady = true;
+
+            messageValues.add(new MessageValue("step", "custom-data"));
+
             if (!customDatas.isEmpty()) {
                 itemStack = menuGuiSettings.getStatusPresentItemStack();
-            } else {
+            } else check:{
+                if (oreConfigBuilder.foundCustomDatas().isEmpty()) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
+                if (oreConfigBuilder.name() == null) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
+                if (oreConfigBuilder.material() == null) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
+                if (oreConfigBuilder.replaceMaterial().isEmpty()) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
+                if (oreConfigBuilder.oreGenerator() == null) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
+                if (oreConfigBuilder.blockSelector() == null) {
+                    itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                    customDataReady = false;
+                    break check;
+                }
+
                 itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
             }
-            addItem(menuGuiSettings.getStepCustomDatasSlot(), itemStack, inventoryClickEvent -> oreConfigFactory.(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
-        }*/
+
+            if (customDataReady) {
+                addItem(menuGuiSettings.getStepCustomDatasSlot(), MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                        inventoryClickEvent -> oreConfigFactory.setCustomDatas(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+            } else {
+                addItem(menuGuiSettings.getStepCustomDatasSlot(), MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])));
+            }
+        }
 
         {
             final Set<World> worlds = oreConfigBuilder.worlds();

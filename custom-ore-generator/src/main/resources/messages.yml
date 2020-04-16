@@ -51,6 +51,36 @@ ore-config:
       ore-setting:
         name: Set the Setting
         lore: 'Current value: %value%'
+      custom-datas:
+        name: Select Custom Datas
+      custom-data:
+        name: Change the Custom Data
+        set: Set a new Custom Data value
+        found: Click to set the found Custom Data
+        current: The currently set value
+        value: 'value: %value%'
+        remove: Remove the custom data
+        set-value:
+          STRING:
+            begin: '&2Type the value (String) of your custom data in the chat'
+            not-valid: '&cThe value %value% can not apply to the custom data, try
+              again!'
+          INTEGER:
+            begin: '&2Type the value (Integer) of your custom data in the chat'
+            not-valid: '&cThe value %value% can not apply to the custom data, try
+              again!'
+          DOUBLE:
+            begin: '&2Type the value (Double) of your custom data in the chat'
+            not-valid: '&cThe value %value% can not apply to the custom data, try
+              again!'
+          BOOLEAN:
+            begin: '&2Type the value (Boolean) of your custom data in the chat'
+            not-valid: '&cThe value %value% can not apply to the custom data, try
+              again!'
+      boolean:
+        name: Select true or false
+        'true': 'true'
+        'false': 'false'
       world:
         name: Select World
     name:

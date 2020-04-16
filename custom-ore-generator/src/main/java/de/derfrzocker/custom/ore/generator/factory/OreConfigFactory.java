@@ -177,7 +177,7 @@ public class OreConfigFactory implements Listener {
 
         player.beginConversation(conversation);
 
-        new MainMaterialListener(javaPlugin, player, oreConfigBuilder, conversation);
+        new MainMaterialListener(javaPlugin, serviceSupplier, player, oreConfigBuilder, conversation);
         new CommandListener(javaPlugin, player, conversation);
 
         return true;
@@ -229,7 +229,7 @@ public class OreConfigFactory implements Listener {
 
         player.beginConversation(conversation);
 
-        new ReplaceMaterialListener(javaPlugin, player, oreConfigBuilder, conversation);
+        new ReplaceMaterialListener(javaPlugin, serviceSupplier, player, oreConfigBuilder, conversation);
         new CommandListener(javaPlugin, player, conversation);
 
         return true;
@@ -281,7 +281,7 @@ public class OreConfigFactory implements Listener {
 
         player.beginConversation(conversation);
 
-        new SelectMaterialListener(javaPlugin, player, oreConfigBuilder, conversation);
+        new SelectMaterialListener(javaPlugin, serviceSupplier, player, oreConfigBuilder, conversation);
         new CommandListener(javaPlugin, player, conversation);
 
         return true;
@@ -336,6 +336,20 @@ public class OreConfigFactory implements Listener {
         running = true;
 
         new OreSettingsGui(javaPlugin, serviceSupplier, this, oreConfigFactory -> {
+            running = false;
+            consumer.accept(oreConfigFactory);
+        }).openSync(player);
+
+        return true;
+    }
+
+    public boolean setCustomDatas(@NotNull final Consumer<OreConfigFactory> consumer) {
+        if (running)
+            return false;
+
+        running = true;
+
+        new CustomDatasGui(javaPlugin, serviceSupplier, this, oreConfigFactory -> {
             running = false;
             consumer.accept(oreConfigFactory);
         }).openSync(player);

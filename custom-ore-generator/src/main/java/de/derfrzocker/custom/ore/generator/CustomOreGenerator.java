@@ -105,7 +105,7 @@ public class CustomOreGenerator extends JavaPlugin {
         }
 
         if (Version.v1_10_R1.isNewerOrSameVersion(Version.getCurrent()))
-            service.registerCustomData(new BlockStateCustomData(name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, name -> InfoUtil.getCustomData(this, name)));
 
         if (Version.v1_12_R1.isOlderOrSameVersion(Version.getCurrent()))
             service.registerCustomData(new VariantCustomData(name -> InfoUtil.getCustomData(this, name)));

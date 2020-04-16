@@ -78,7 +78,7 @@ step:
   block-selector: 24
   biome: 25
   ore-settings: 28
-  custom-data: 29
+  custom-datas: 29
   world: 30
 decorations:
   '0':

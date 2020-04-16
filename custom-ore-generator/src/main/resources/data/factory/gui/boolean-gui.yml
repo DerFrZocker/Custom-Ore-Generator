@@ -1,0 +1,22 @@
+name: '%%translation:[ore-config.factory.gui.boolean.name]%'
+rows: 3
+'true':
+  slot: 12
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: GREEN_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.boolean.true]%'
+'false':
+  slot: 14
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: RED_TERRACOTTA
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.boolean.false]%'

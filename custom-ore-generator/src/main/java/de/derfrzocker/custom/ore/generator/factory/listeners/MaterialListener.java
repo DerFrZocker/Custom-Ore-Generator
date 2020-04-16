@@ -25,6 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.factory.listeners;
 
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.Block;
@@ -38,10 +39,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.function.Supplier;
+
 public class MaterialListener implements Listener {
 
     @NotNull
     private final JavaPlugin plugin;
+    @NotNull
+    private final Supplier<CustomOreGeneratorService> serviceSupplier;
     @NotNull
     private final Player player;
     @NotNull
@@ -49,13 +54,15 @@ public class MaterialListener implements Listener {
     @NotNull
     private final Conversation conversation;
 
-    public MaterialListener(@NotNull final JavaPlugin plugin, @NotNull final Player player, @NotNull final OreConfigBuilder oreConfigBuilder, @NotNull final Conversation conversation) {
+    public MaterialListener(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final Player player, @NotNull final OreConfigBuilder oreConfigBuilder, @NotNull final Conversation conversation) {
         Validate.notNull(plugin, "JavaPlugin can not be null");
+        Validate.notNull(serviceSupplier, "Service Supplier can not be null");
         Validate.notNull(player, "Player can not be null");
         Validate.notNull(oreConfigBuilder, "OreConfigBuilder can not be null");
         Validate.notNull(conversation, "Conversation can not be null");
 
         this.plugin = plugin;
+        this.serviceSupplier = serviceSupplier;
         this.player = player;
         this.oreConfigBuilder = oreConfigBuilder;
         this.conversation = conversation;
@@ -132,6 +139,10 @@ public class MaterialListener implements Listener {
 
     public JavaPlugin getPlugin() {
         return plugin;
+    }
+
+    public Supplier<CustomOreGeneratorService> getServiceSupplier() {
+        return serviceSupplier;
     }
 
 }

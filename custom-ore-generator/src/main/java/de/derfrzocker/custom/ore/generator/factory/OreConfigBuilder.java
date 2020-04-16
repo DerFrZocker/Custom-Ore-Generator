@@ -38,6 +38,9 @@ public class OreConfigBuilder {
     private Set<Biome> biomes = new LinkedHashSet<>();
     @NotNull
     private Set<World> worlds = new LinkedHashSet<>();
+    @NotNull
+    private Map<CustomData, Object> foundCustomData = new LinkedHashMap<>();
+
 
     public static OreConfigBuilder newBuilder() {
         return new OreConfigBuilder();
@@ -181,6 +184,14 @@ public class OreConfigBuilder {
         return this.customDatas.get(customData);
     }
 
+    @Nullable
+    public OreConfigBuilder removeCustomData(@NotNull final CustomData customData) {
+        Validate.notNull(customData, "CustomData can not be null");
+
+        this.customDatas.remove(customData);
+        return this;
+    }
+
     @NotNull
     public Map<CustomData, Object> customDatas() {
         return this.customDatas;
@@ -238,6 +249,28 @@ public class OreConfigBuilder {
     @NotNull
     public Set<World> worlds() {
         return this.worlds;
+    }
+
+    @NotNull
+    public OreConfigBuilder setFoundCustomData(@NotNull final CustomData customData, @NotNull final Object value) {
+        Validate.notNull(customData, "CustomData can not be null");
+        Validate.notNull(value, "CustomData value can not be null");
+
+        this.foundCustomData.put(customData, value);
+
+        return this;
+    }
+
+    @Nullable
+    public Object getFoundCustomData(@NotNull final CustomData customData) {
+        Validate.notNull(customData, "CustomData can not be null");
+
+        return this.foundCustomData.get(customData);
+    }
+
+    @NotNull
+    public Map<CustomData, Object> foundCustomDatas() {
+        return this.foundCustomData;
     }
 
 }

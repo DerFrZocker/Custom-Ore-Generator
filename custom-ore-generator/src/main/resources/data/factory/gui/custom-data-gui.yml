@@ -1,0 +1,105 @@
+name: '%%translation:[ore-config.factory.gui.custom-data.name]%'
+rows: 4
+menu:
+  slot: 4
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: COMPARATOR
+    meta:
+      ==: ItemMeta
+      meta-type: TILE_ENTITY
+      display-name: '%%translation:[ore-config.factory.gui.general.menu]%'
+      blockMaterial: COMPARATOR
+abort:
+  slot: 5
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: BARRIER
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.general.abort]%'
+back:
+  slot: 3
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: IRON_DOOR
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.general.back]%'
+value:
+  current:
+    slot: 22
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2230
+      type: PAPER
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: '%%translation:[ore-config.factory.gui.custom-data.current]%'
+        lore:
+          - '%%translation:[ore-config.factory.gui.custom-data.value]%'
+  found:
+    slot: 20
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2230
+      type: ENCHANTED_BOOK
+      meta:
+        ==: ItemMeta
+        meta-type: ENCHANTED
+        display-name: '%%translation:[ore-config.factory.gui.custom-data.found]%'
+        lore:
+          - '%%translation:[ore-config.factory.gui.custom-data.value]%'
+  set:
+    slot: 24
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2230
+      type: WRITABLE_BOOK
+      meta:
+        ==: ItemMeta
+        meta-type: BOOK
+        display-name: '%%translation:[ore-config.factory.gui.custom-data.set]%'
+remove:
+  slot: 14
+  item-stack:
+    ==: org.bukkit.inventory.ItemStack
+    v: 2230
+    type: TNT
+    meta:
+      ==: ItemMeta
+      meta-type: UNSPECIFIC
+      display-name: '%%translation:[ore-config.factory.gui.custom-data.remove]%'
+decorations:
+  '0':
+    slot:
+      - 0
+      - 1
+      - 7
+      - 8
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2230
+      type: RED_STAINED_GLASS_PANE
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: ' '
+  '1':
+    slot:
+      - 2
+      - 6
+    item-stack:
+      ==: org.bukkit.inventory.ItemStack
+      v: 2230
+      type: BLACK_STAINED_GLASS_PANE
+      meta:
+        ==: ItemMeta
+        meta-type: UNSPECIFIC
+        display-name: ' '
