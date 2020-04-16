@@ -62,7 +62,7 @@ public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> i
 
     @Override
     public boolean hasCustomData(@NotNull final BlockState blockState) {
-        return false;
+        return true;
     }
 
     @NotNull
