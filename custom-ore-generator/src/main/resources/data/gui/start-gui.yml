@@ -1,8 +1,0 @@
-inventory:
-  name:
-  rows: 3
-  world-config:
-    item-stack:
-
-  ore-config:
-    item-stack:
