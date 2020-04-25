@@ -196,7 +196,8 @@ public class CustomDataGui extends BasicGui {
                     }
 
                     @Override
-                    protected @Nullable Prompt acceptValidatedInput(
+                    protected @Nullable
+                    Prompt acceptValidatedInput(
                             @NotNull final ConversationContext conversationContext, @NotNull final String value) {
 
                         final Object parsedValue;
@@ -234,7 +235,8 @@ public class CustomDataGui extends BasicGui {
                     }
 
                     @Override
-                    public @NotNull String getPromptText(@NotNull final ConversationContext conversationContext) {
+                    public @NotNull
+                    String getPromptText(@NotNull final ConversationContext conversationContext) {
                         return new MessageKey(getPlugin(), "ore-config.factory.gui.custom-data.set-value." + customData.getCustomDataType() + ".begin").getMessage();
                     }
                 }).buildConversation(player);

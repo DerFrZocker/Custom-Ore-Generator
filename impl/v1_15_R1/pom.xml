@@ -14,16 +14,16 @@
 
     <repositories>
         <repository>
-            <id>itemmods</id>
-            <url>https://gitlab.com/api/v4/projects/15122206/packages/maven</url>
+            <id>github</id>
+            <url>https://maven.pkg.github.com/CodeDoctorDE/ItemMods</url>
         </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>com.gitlab.codedoctorde</groupId>
+            <groupId>com.github.codedoctorde</groupId>
             <artifactId>ItemMods</artifactId>
-            <version>1.1.6-SNAPSHOT</version>
+            <version>1.2.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>

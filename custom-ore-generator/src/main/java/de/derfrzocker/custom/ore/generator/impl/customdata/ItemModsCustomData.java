@@ -25,10 +25,10 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.gitlab.codedoctorde.itemmods.api.CustomBlock;
-import com.gitlab.codedoctorde.itemmods.api.CustomBlockManager;
-import com.gitlab.codedoctorde.itemmods.config.BlockConfig;
-import com.gitlab.codedoctorde.itemmods.main.Main;
+import com.github.codedoctorde.itemmods.Main;
+import com.github.codedoctorde.itemmods.api.CustomBlock;
+import com.github.codedoctorde.itemmods.api.CustomBlockManager;
+import com.github.codedoctorde.itemmods.config.BlockConfig;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.ItemModsApplier_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.ItemModsApplier_v1_13_R2;

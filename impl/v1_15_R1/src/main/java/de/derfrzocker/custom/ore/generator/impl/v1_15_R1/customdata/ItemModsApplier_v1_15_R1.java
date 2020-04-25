@@ -25,8 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata;
 
-import com.gitlab.codedoctorde.itemmods.config.BlockConfig;
-import com.gitlab.codedoctorde.itemmods.main.Main;
+import com.github.codedoctorde.itemmods.Main;
+import com.github.codedoctorde.itemmods.config.ArmorStandBlockConfig;
+import com.github.codedoctorde.itemmods.config.BlockConfig;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
@@ -69,24 +70,30 @@ public class ItemModsApplier_v1_15_R1 implements CustomDataApplier {
             return; //TODO maybe throw exception?
 
         final BlockConfig blockConfig = blockConfigOptional.get();
+        final ArmorStandBlockConfig armorStandBlockConfig = blockConfig.getArmorStand();
+
+        if (armorStandBlockConfig == null)
+            return; //TODO maybe throw exception?
+
         final EntityArmorStand entityArmorStand = new EntityArmorStand(generatorAccess.getMinecraftWorld(), blockPosition.getX() + 0.5, blockPosition.getY(), blockPosition.getZ() + 0.5);
 
-        entityArmorStand.setSmall(blockConfig.isSmall());
-        entityArmorStand.setMarker(blockConfig.isMarker());
-        entityArmorStand.setInvulnerable(blockConfig.isInvulnerable());
-        entityArmorStand.setCustomNameVisible(blockConfig.isCustomNameVisible());
-        entityArmorStand.setCustomName(CraftChatMessage.fromStringOrNull(blockConfig.getCustomName()));
-        entityArmorStand.setInvisible(blockConfig.isInvisible());
+        entityArmorStand.setSmall(armorStandBlockConfig.isSmall());
+        entityArmorStand.setMarker(armorStandBlockConfig.isMarker());
+        entityArmorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
+        entityArmorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
+        entityArmorStand.setCustomName(CraftChatMessage.fromStringOrNull(armorStandBlockConfig.getCustomName()));
+        entityArmorStand.setInvisible(armorStandBlockConfig.isInvisible());
         entityArmorStand.getScoreboardTags().add(blockConfig.getTag());
         entityArmorStand.setNoGravity(true);
-        entityArmorStand.setBasePlate(blockConfig.isBasePlate());
-        entityArmorStand.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(blockConfig.getHelmet()));
-        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(blockConfig.getChestplate()));
-        entityArmorStand.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(blockConfig.getChestplate()));
-        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(blockConfig.getLeggings()));
-        entityArmorStand.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(blockConfig.getBoots()));
-        entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(blockConfig.getMainHand()));
-        entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(blockConfig.getOffHand()));
+        entityArmorStand.setSilent(true);
+        entityArmorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
+        entityArmorStand.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(armorStandBlockConfig.getHelmet()));
+        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
+        entityArmorStand.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
+        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getLeggings()));
+        entityArmorStand.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(armorStandBlockConfig.getBoots()));
+        entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getMainHand()));
+        entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getOffHand()));
 
         generatorAccess.addEntity(entityArmorStand);
     }

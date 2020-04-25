@@ -106,7 +106,8 @@ public class OreConfigFactory implements Listener {
                     }
 
                     @Override
-                    protected @Nullable Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
+                    protected @Nullable
+                    Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
                         oreConfigBuilder.name(name);
                         running = false;
                         new MessageKey(javaPlugin, "ore-config.factory.name.success").sendMessage(getPlayer(), new MessageValue("value", name));
@@ -114,12 +115,14 @@ public class OreConfigFactory implements Listener {
                     }
 
                     @Override
-                    public @NotNull String getPromptText(@NotNull final ConversationContext conversationContext) {
+                    public @NotNull
+                    String getPromptText(@NotNull final ConversationContext conversationContext) {
                         return new MessageKey(javaPlugin, "ore-config.factory.name.text").getMessage();
                     }
 
                     @Override
-                    protected @Nullable String getFailedValidationText(@NotNull final ConversationContext context, @NotNull final String invalidInput) {
+                    protected @Nullable
+                    String getFailedValidationText(@NotNull final ConversationContext context, @NotNull final String invalidInput) {
                         return new MessageKey(javaPlugin, "ore-config.factory.name.invalid").getMessage(new MessageValue("value", invalidInput));
                     }
                 })
@@ -163,13 +166,15 @@ public class OreConfigFactory implements Listener {
                     }
 
                     @Override
-                    protected @Nullable Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
+                    protected @Nullable
+                    Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
                         running = false;
                         return END_OF_CONVERSATION;
                     }
 
                     @Override
-                    public @NotNull String getPromptText(@NotNull final ConversationContext conversationContext) {
+                    public @NotNull
+                    String getPromptText(@NotNull final ConversationContext conversationContext) {
                         return new MessageKey(javaPlugin, "ore-config.factory.material.text").getMessage();
                     }
                 })
@@ -215,13 +220,15 @@ public class OreConfigFactory implements Listener {
                     }
 
                     @Override
-                    protected @Nullable Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
+                    protected @Nullable
+                    Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
                         running = false;
                         return END_OF_CONVERSATION;
                     }
 
                     @Override
-                    public @NotNull String getPromptText(@NotNull final ConversationContext conversationContext) {
+                    public @NotNull
+                    String getPromptText(@NotNull final ConversationContext conversationContext) {
                         return new MessageKey(javaPlugin, "ore-config.factory.replace-material.text").getMessage();
                     }
                 })
@@ -267,13 +274,15 @@ public class OreConfigFactory implements Listener {
                     }
 
                     @Override
-                    protected @Nullable Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
+                    protected @Nullable
+                    Prompt acceptValidatedInput(@NotNull final ConversationContext conversationContext, @NotNull final String name) {
                         running = false;
                         return END_OF_CONVERSATION;
                     }
 
                     @Override
-                    public @NotNull String getPromptText(@NotNull final ConversationContext conversationContext) {
+                    public @NotNull
+                    String getPromptText(@NotNull final ConversationContext conversationContext) {
                         return new MessageKey(javaPlugin, "ore-config.factory.select-material.text").getMessage();
                     }
                 })
