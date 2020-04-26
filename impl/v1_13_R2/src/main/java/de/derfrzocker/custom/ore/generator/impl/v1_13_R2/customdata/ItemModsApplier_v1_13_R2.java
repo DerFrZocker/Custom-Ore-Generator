@@ -95,6 +95,13 @@ public class ItemModsApplier_v1_13_R2 implements CustomDataApplier {
         entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getMainHand()));
         entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getOffHand()));
 
+        // Fixing ArmorStand rotating issue, I have now idea why the yaw and/or pitch is another value than 0.
+        // That needs a more detailed investigation, which of the above methods changes the yaw and/or pitch,
+        // but for now it works.
+        entityArmorStand.yaw = 0;
+        entityArmorStand.pitch = 0;
+
+
         generatorAccess.addEntity(entityArmorStand);
     }
 
