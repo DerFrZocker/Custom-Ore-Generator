@@ -71,8 +71,8 @@ public class CustomOreGenerator extends JavaPlugin {
 
         final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world-config"));
         final OreConfigYamlDao oreConfigYamlDao = new OreConfigYamlDao(new File(getDataFolder(), "data/ore-config"));
-
         final CustomOreGeneratorService service = new CustomOreGeneratorServiceImpl(worldConfigYamlDao, oreConfigYamlDao, getLogger());
+        final File fileFolder = new File(getDataFolder(), "files");
 
         Bukkit.getServicesManager().register(CustomOreGeneratorService.class, service, this, ServicePriority.Normal);
 
@@ -88,7 +88,7 @@ public class CustomOreGenerator extends JavaPlugin {
         service.registerCustomData(new SkullTextureCustomData(name -> InfoUtil.getCustomData(this, name)));
 
         service.registerCustomData(new CommandCustomData(name -> InfoUtil.getCustomData(this, name)));
-        service.registerCustomData(new NBTTagCustomData(name -> InfoUtil.getCustomData(this, name)));
+        service.registerCustomData(new NBTTagCustomData(name -> InfoUtil.getCustomData(this, name), fileFolder));
 
         if (Version.v1_9_R1.isNewerOrSameVersion(Version.getCurrent()))
             service.registerCustomData(new AutoCustomData(name -> InfoUtil.getCustomData(this, name)));
@@ -105,7 +105,7 @@ public class CustomOreGenerator extends JavaPlugin {
         }
 
         if (Version.v1_10_R1.isNewerOrSameVersion(Version.getCurrent()))
-            service.registerCustomData(new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, name -> InfoUtil.getCustomData(this, name)));
+            service.registerCustomData(new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, name -> InfoUtil.getCustomData(this, name), fileFolder));
 
         if (Version.v1_12_R1.isOlderOrSameVersion(Version.getCurrent()))
             service.registerCustomData(new VariantCustomData(name -> InfoUtil.getCustomData(this, name)));

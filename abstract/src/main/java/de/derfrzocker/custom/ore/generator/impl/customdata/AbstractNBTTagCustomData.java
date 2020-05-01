@@ -25,11 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.google.gson.JsonIOException;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
@@ -37,17 +35,12 @@ import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.function.Function;
 
-public abstract class AbstractNBTTagCustomData extends AbstractCustomData<AbstractNBTTagCustomData.NBTTagApplier> {
+public abstract class AbstractNBTTagCustomData extends FileReadAbleCustomData<AbstractNBTTagCustomData.NBTTagApplier> {
 
-    public AbstractNBTTagCustomData(@NotNull final Function<String, Info> infoFunction) {
-        super("NBT_TAG", CustomDataType.STRING, infoFunction);
+    public AbstractNBTTagCustomData(@NotNull final Function<String, Info> infoFunction, @NotNull final File fileFolder) {
+        super("NBT_TAG", infoFunction, fileFolder);
     }
 
     @Override
@@ -56,45 +49,13 @@ public abstract class AbstractNBTTagCustomData extends AbstractCustomData<Abstra
     }
 
     @Override
-    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        if (!(customData instanceof String))
-            return false;
-
-        final String data = (String) customData;
-
-        if (data.startsWith("file:")) {
-            try {
-                new JsonParser().parse(new FileReader(new File(data.replace("file:", ""))));
-                return true;
-            } catch (final FileNotFoundException | JsonIOException | JsonSyntaxException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-
+    protected boolean isValidCustomData0(@NotNull final String customData, @NotNull final OreConfig oreConfig) {
         try {
-            new JsonParser().parse(data);
+            new JsonParser().parse(customData);
             return true;
         } catch (final JsonSyntaxException e) {
             e.printStackTrace();
             return false;
-        }
-    }
-
-    @NotNull
-    @Override
-    public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        final String data = (String) customData;
-
-        if (!data.startsWith("file:")) {
-            return customData;
-        }
-
-        try {
-            final byte[] encoded = Files.readAllBytes(Paths.get(data.replace("file:", "")));
-            return new String(encoded);
-        } catch (final IOException e) {
-            throw new RuntimeException("Unexpected error while reading String from " + data, e);
         }
     }
 

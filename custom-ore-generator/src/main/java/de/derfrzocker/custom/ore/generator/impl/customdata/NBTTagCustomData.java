@@ -41,12 +41,13 @@ import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.NBTTagApplie
 import de.derfrzocker.spigot.utils.Version;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.function.Function;
 
 public class NBTTagCustomData extends AbstractNBTTagCustomData {
 
-    public NBTTagCustomData(@NotNull final Function<String, Info> infoFunction) {
-        super(infoFunction);
+    public NBTTagCustomData(@NotNull final Function<String, Info> infoFunction, @NotNull final File fileFolder) {
+        super(infoFunction, fileFolder);
     }
 
     @NotNull

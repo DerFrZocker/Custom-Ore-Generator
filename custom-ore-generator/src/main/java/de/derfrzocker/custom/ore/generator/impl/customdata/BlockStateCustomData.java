@@ -38,6 +38,7 @@ import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
+import java.io.File;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -46,8 +47,8 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
 
-    public BlockStateCustomData(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull Function<String, Info> infoFunction) {
-        super(infoFunction);
+    public BlockStateCustomData(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull Function<String, Info> infoFunction, @NotNull final File fileFolder) {
+        super(infoFunction, fileFolder);
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
 
         this.serviceSupplier = serviceSupplier;

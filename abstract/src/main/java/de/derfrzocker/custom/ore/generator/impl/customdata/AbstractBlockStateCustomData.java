@@ -26,22 +26,19 @@
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.File;
 import java.util.function.Function;
 
-public abstract class AbstractBlockStateCustomData extends AbstractCustomData<AbstractBlockStateCustomData.BlockStateApplier> {
+public abstract class AbstractBlockStateCustomData extends FileReadAbleCustomData<AbstractBlockStateCustomData.BlockStateApplier> {
 
-    public AbstractBlockStateCustomData(@NotNull final Function<String, Info> infoFunction) {
-        super("BLOCK_STATE", CustomDataType.STRING, infoFunction);
+    public AbstractBlockStateCustomData(@NotNull final Function<String, Info> infoFunction, @NotNull final File fileFolder) {
+        super("BLOCK_STATE", infoFunction, fileFolder);
     }
 
     @Override
@@ -50,40 +47,8 @@ public abstract class AbstractBlockStateCustomData extends AbstractCustomData<Ab
     }
 
     @Override
-    public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        if (!(customData instanceof String))
-            return false;
-
-        String data = (String) customData;
-
-        if (data.startsWith("file:")) {
-
-            try {
-                final byte[] encoded = Files.readAllBytes(Paths.get(data.replace("file:", "")));
-                data = new String(encoded);
-            } catch (final IOException e) {
-                return false;
-            }
-        }
-
-        return getCustomDataApplier().isValidCustomData(data, oreConfig);
-    }
-
-    @NotNull
-    @Override
-    public Object normalize(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        final String data = (String) customData;
-
-        if (!data.startsWith("file:")) {
-            return customData;
-        }
-
-        try {
-            final byte[] encoded = Files.readAllBytes(Paths.get(data.replace("file:", "")));
-            return new String(encoded);
-        } catch (final IOException e) {
-            throw new RuntimeException("Unexpected error while reading String from " + data, e);
-        }
+    public boolean isValidCustomData0(@NotNull final String customData, @NotNull final OreConfig oreConfig) {
+        return getCustomDataApplier().isValidCustomData(customData, oreConfig);
     }
 
     @Override
