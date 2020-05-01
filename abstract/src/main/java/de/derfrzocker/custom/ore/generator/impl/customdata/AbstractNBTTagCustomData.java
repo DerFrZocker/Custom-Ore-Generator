@@ -25,8 +25,6 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.google.gson.JsonParser;
-import com.google.gson.JsonSyntaxException;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
@@ -50,13 +48,7 @@ public abstract class AbstractNBTTagCustomData extends FileReadAbleCustomData<Ab
 
     @Override
     protected boolean isValidCustomData0(@NotNull final String customData, @NotNull final OreConfig oreConfig) {
-        try {
-            new JsonParser().parse(customData);
-            return true;
-        } catch (final JsonSyntaxException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return getCustomDataApplier().isValidCustomData(customData, oreConfig);
     }
 
     @Override
@@ -75,6 +67,16 @@ public abstract class AbstractNBTTagCustomData extends FileReadAbleCustomData<Ab
     }
 
     public interface NBTTagApplier extends CustomDataApplier {
+
+        /**
+         * Checks, if the given customData string is a valid NBT tag
+         *
+         * @param customData to check
+         * @param oreConfig  which get's the customData
+         * @return true if valid other wise false
+         * @throws IllegalArgumentException if customData or OreConfig is null
+         */
+        boolean isValidCustomData(@NotNull final String customData, @NotNull final OreConfig oreConfig);
 
         /**
          * Checks, if the given OreConfig can use this CustomData

@@ -79,6 +79,17 @@ public class NBTTagApplier_v1_11_R1 implements AbstractNBTTagCustomData.NBTTagAp
     }
 
     @Override
+    public boolean isValidCustomData(@NotNull final String customData, @NotNull final OreConfig oreConfig) {
+        try {
+            MojangsonParser.parse(customData);
+        } catch (final MojangsonParseException e) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
     public boolean canApply(@NotNull final OreConfig oreConfig) {
         return CraftMagicNumbers.getBlock(oreConfig.getMaterial()).isTileEntity();
     }
