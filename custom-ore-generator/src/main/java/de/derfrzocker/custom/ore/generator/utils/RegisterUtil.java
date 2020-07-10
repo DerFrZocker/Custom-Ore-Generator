@@ -131,12 +131,14 @@ public class RegisterUtil {
 
     // Supplier
 
+    @FunctionalInterface
     public interface OreGeneratorSupplier {
 
         OreGenerator get();
 
     }
 
+    @FunctionalInterface
     public interface CustomDataSupplier {
 
         CustomData get();

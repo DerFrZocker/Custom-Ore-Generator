@@ -145,7 +145,8 @@ public class CustomDataGui extends BasicGui {
             oreConfig.setGeneratedAll(false);
         }
 
-        oreConfigBuilder.oreSettings().forEach(oreConfig::setValue);
+        oreConfigBuilder.getOreGeneratorOreSettings().getValues().forEach((oreSetting, aDouble) -> oreConfig.getOreGeneratorOreSettings().setValue(oreSetting, aDouble));
+        oreConfigBuilder.getBlockSelectorOreSettings().getValues().forEach((oreSetting, aDouble) -> oreConfig.getBlockSelectorOreSettings().setValue(oreSetting, aDouble));
         oreConfigBuilder.customDatas().forEach(oreConfig::setCustomData);
 
         closeSync(player);

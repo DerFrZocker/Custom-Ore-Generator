@@ -30,9 +30,7 @@ import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
-import de.derfrzocker.custom.ore.generator.factory.gui.MenuGui;
 import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -52,7 +50,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
@@ -109,55 +106,7 @@ public class CreateCommand implements TabExecutor {
 
             final OreConfigFactory oreConfigFactory = new OreConfigFactory(this.javaPlugin, this.serviceSupplier, (Player) sender);
 
-            oreConfigFactory. //TODO clean up
-                    setName(factory ->
-                    factory.setMaterial(factory2 ->
-                            factory2.setReplaceMaterials(factory3 ->
-                                    factory3.setSelectMaterials(factory4 ->
-                                            factory4.setOreGenerator(factory5 ->
-                                                    factory5.setBlockSelector(factory6 ->
-                                                            factory6.setBiomes(factory7 ->
-                                                                    factory7.setOreSettings(factory8 ->
-                                                                            {
-                                                                                final OreConfigBuilder oreConfigBuilder = factory8.getOreConfigBuilder();
-                                                                                final Consumer<OreConfigFactory> setWorldConsumer =
-                                                                                        factory9 ->
-                                                                                                factory9.setWorlds(factory10 ->
-                                                                                                        new MenuGui(this.javaPlugin, this.serviceSupplier, factory9).openSync((Player) sender));
-
-                                                                                if (oreConfigBuilder.foundCustomDatas().isEmpty()) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                if (oreConfigBuilder.name() == null) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                if (oreConfigBuilder.material() == null) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                if (oreConfigBuilder.replaceMaterial().isEmpty()) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                if (oreConfigBuilder.oreGenerator() == null) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                if (oreConfigBuilder.blockSelector() == null) {
-                                                                                    setWorldConsumer.accept(factory8);
-                                                                                    return;
-                                                                                }
-
-                                                                                factory8.setCustomDatas(setWorldConsumer);
-                                                                            }
-                                                                    ))))))));
+            oreConfigFactory.setName();
 
             return true;
         }

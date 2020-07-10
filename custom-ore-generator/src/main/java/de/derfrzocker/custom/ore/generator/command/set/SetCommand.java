@@ -29,6 +29,7 @@ import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.Permissions;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.command.HelpConfigImpl;
+import de.derfrzocker.custom.ore.generator.command.set.value.SetValueCommand;
 import de.derfrzocker.spigot.utils.command.CommandSeparator;
 import de.derfrzocker.spigot.utils.command.HelpCommand;
 import org.apache.commons.lang.Validate;
@@ -46,7 +47,7 @@ public class SetCommand extends CommandSeparator {
         Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
         Validate.notNull(permissions, "Permissions can not be null");
 
-        registerExecutor(new SetValueCommand(serviceSupplier, javaPlugin, messages), "value", permissions.SET_VALUE_PERMISSION, messages.COMMAND_SET_VALUE_USAGE, messages.COMMAND_SET_VALUE_DESCRIPTION);
+        registerExecutor(new SetValueCommand(serviceSupplier, javaPlugin, messages, permissions), "value", permissions.SET_VALUE_PERMISSION, messages.COMMAND_SET_VALUE_USAGE, messages.COMMAND_SET_VALUE_DESCRIPTION);
         registerExecutor(new SetBiomeCommand(serviceSupplier, javaPlugin, messages), "biome", permissions.SET_BIOME_PERMISSION, messages.COMMAND_SET_BIOME_USAGE, messages.COMMAND_SET_BIOME_DESCRIPTION);
         registerExecutor(new SetCustomDataCommand(serviceSupplier, javaPlugin, messages), "customdata", permissions.SET_CUSTOMDATA_PERMISSION, messages.COMMAND_SET_CUSTOMDATA_USAGE, messages.COMMAND_SET_CUSTOMDATA_DESCRIPTION);
         registerExecutor(new SetReplaceMaterialCommand(serviceSupplier, javaPlugin, messages), "replace-material", permissions.SET_REPLACE_MATERIAL_PERMISSION, messages.COMMAND_SET_REPLACE_MATERIAL_USAGE, messages.COMMAND_SET_REPLACE_MATERIAL_DESCRIPTION);

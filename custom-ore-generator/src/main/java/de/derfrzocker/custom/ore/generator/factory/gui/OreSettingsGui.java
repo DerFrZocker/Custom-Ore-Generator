@@ -25,10 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.factory.gui;
 
-import de.derfrzocker.custom.ore.generator.api.BlockSelector;
-import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.OreSettingsGuiSettings;
@@ -39,7 +36,6 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -48,28 +44,30 @@ public class OreSettingsGui extends PageGui<OreSetting> {
 
     private static OreSettingsGuiSettings oreSettingsGuiSettings;
 
-    public OreSettingsGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    @NotNull
+    private final OreSettingsAble oreSettingsAble;
+
+    public OreSettingsGui(@NotNull final JavaPlugin plugin,
+                          @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
+                          @NotNull final OreConfigFactory oreConfigFactory,
+                          @NotNull final Consumer<OreConfigFactory> consumer,
+                          @NotNull final OreSettingsAble oreSettingsAble,
+                          @NotNull final OreSettingContainer oreSettingContainer) {
         super(plugin, checkSettings(plugin));
+
+        this.oreSettingsAble = oreSettingsAble;
 
         final OreConfigBuilder oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
         final OreGenerator oreGenerator = oreConfigBuilder.oreGenerator();
         final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
-        final Set<OreSetting> settings = new LinkedHashSet<>();
-
-        if (oreGenerator != null) {
-            settings.addAll(oreGenerator.getNeededOreSettings());
-        }
-
-        if (blockSelector != null) {
-            settings.addAll(blockSelector.getNeededOreSettings());
-        }
+        final Set<OreSetting> settings = oreSettingsAble.getNeededOreSettings();
 
         if (settings.isEmpty())
             throw new IllegalStateException("Cant create OreSettingsGui with out settings");
 
         addDecorations();
         init(settings.toArray(new OreSetting[0]), OreSetting[]::new, this::getItemStack, (oreSetting, inventoryClickEvent) ->
-                new OreSettingGui(getPlugin(), serviceSupplier, oreConfigFactory, consumer, oreSetting).openSync(inventoryClickEvent.getWhoClicked())
+                new OreSettingGui(getPlugin(), serviceSupplier, oreConfigFactory, consumer, oreSetting, oreSettingsAble, oreSettingContainer).openSync(inventoryClickEvent.getWhoClicked())
         );
 
         addItem(oreSettingsGuiSettings.getMenuSlot(), MessageUtil.replaceItemStack(plugin, oreSettingsGuiSettings.getMenuItemStack()), inventoryClickEvent -> {
@@ -86,9 +84,9 @@ public class OreSettingsGui extends PageGui<OreSetting> {
     private ItemStack getItemStack(@NotNull final OreSetting oreSetting) {
         final ItemStack itemStack = oreSettingsGuiSettings.getOreSettingItemStack();
 
-        itemStack.setType(oreSetting.getMaterial());
+        itemStack.setType(this.oreSettingsAble.getOreSettingInfo(oreSetting).getMaterial());
 
-        return MessageUtil.replaceItemStack(getPlugin(), itemStack, new MessageValue("name", oreSetting.getName()));
+        return MessageUtil.replaceItemStack(getPlugin(), itemStack, new MessageValue("name", oreSettingsAble.getOreSettingInfo(oreSetting).getDisplayName()));
     }
 
     private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {

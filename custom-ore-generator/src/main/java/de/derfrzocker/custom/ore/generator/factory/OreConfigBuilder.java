@@ -1,9 +1,6 @@
 package de.derfrzocker.custom.ore.generator.factory;
 
-import de.derfrzocker.custom.ore.generator.api.BlockSelector;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.OreGenerator;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -11,10 +8,7 @@ import org.bukkit.block.Biome;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 public class OreConfigBuilder {
 
@@ -27,19 +21,21 @@ public class OreConfigBuilder {
     @Nullable
     private BlockSelector blockSelector;
     @NotNull
-    private Set<Material> replaceMaterial = new LinkedHashSet<>();
+    private final Set<Material> replaceMaterial = new LinkedHashSet<>();
     @NotNull
-    private Set<Material> selectMaterial = new LinkedHashSet<>();
+    private final Set<Material> selectMaterial = new LinkedHashSet<>();
     @NotNull
-    private Map<OreSetting, Double> oreSettings = new LinkedHashMap<>();
+    private final OreSettingContainer oreGeneratorOreSettings = new SimpleOreSettingsContainer();
     @NotNull
-    private Map<CustomData, Object> customDatas = new LinkedHashMap<>();
+    private final OreSettingContainer blockSelectorOreSettings = new SimpleOreSettingsContainer();
     @NotNull
-    private Set<Biome> biomes = new LinkedHashSet<>();
+    private final Map<CustomData, Object> customDatas = new LinkedHashMap<>();
     @NotNull
-    private Set<World> worlds = new LinkedHashSet<>();
+    private final Set<Biome> biomes = new LinkedHashSet<>();
     @NotNull
-    private Map<CustomData, Object> foundCustomData = new LinkedHashMap<>();
+    private final Set<World> worlds = new LinkedHashSet<>();
+    @NotNull
+    private final Map<CustomData, Object> foundCustomData = new LinkedHashMap<>();
 
 
     public static OreConfigBuilder newBuilder() {
@@ -147,24 +143,13 @@ public class OreConfigBuilder {
     }
 
     @NotNull
-    public OreConfigBuilder setOreSetting(@NotNull final OreSetting oreSetting, double value) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-
-        this.oreSettings.put(oreSetting, value);
-
-        return this;
-    }
-
-    @Nullable
-    public Double getOreSetting(@NotNull final OreSetting oreSetting) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-
-        return this.oreSettings.get(oreSetting);
+    public OreSettingContainer getOreGeneratorOreSettings() {
+        return this.oreGeneratorOreSettings;
     }
 
     @NotNull
-    public Map<OreSetting, Double> oreSettings() {
-        return this.oreSettings;
+    public OreSettingContainer getBlockSelectorOreSettings() {
+        return this.blockSelectorOreSettings;
     }
 
     @NotNull
@@ -271,6 +256,40 @@ public class OreConfigBuilder {
     @NotNull
     public Map<CustomData, Object> foundCustomDatas() {
         return this.foundCustomData;
+    }
+
+    private final class SimpleOreSettingsContainer implements OreSettingContainer {
+
+        private final Map<OreSetting, Double> oreSettings = new LinkedHashMap<>();
+
+        @Override
+        public void setValue(@NotNull final OreSetting oreSetting, final double value) {
+            Validate.notNull(oreSetting, "OreSetting can not be null");
+
+            this.oreSettings.put(oreSetting, value);
+        }
+
+        @NotNull
+        @Override
+        public Optional<Double> getValue(@NotNull final OreSetting oreSetting) {
+            Validate.notNull(oreSetting, "OreSetting can not be null");
+
+            return Optional.ofNullable(this.oreSettings.get(oreSetting));
+        }
+
+        @Override
+        public boolean removeValue(@NotNull final OreSetting oreSetting) {
+            Validate.notNull(oreSetting, "OreSetting can not be null");
+
+            return this.oreSettings.remove(oreSetting) != null;
+        }
+
+        @NotNull
+        @Override
+        public Map<OreSetting, Double> getValues() {
+            return new LinkedHashMap<>(this.oreSettings);
+        }
+
     }
 
 }

@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.block-selector.HIGHEST_BLOCK.ore-setting.VEINS_PER_CHUNK.display-name]%"
+material: COAL
+description: "%%translation:[info.block-selector.HIGHEST_BLOCK.ore-setting.VEINS_PER_CHUNK.description]%"

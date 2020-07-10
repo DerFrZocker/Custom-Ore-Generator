@@ -23,10 +23,13 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.command.set;
+package de.derfrzocker.custom.ore.generator.command.set.value;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -42,7 +45,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-public class SetValueCommand implements TabExecutor {
+public class SetValueBlockSelectorCommand implements TabExecutor {
 
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
@@ -51,7 +54,7 @@ public class SetValueCommand implements TabExecutor {
     @NotNull
     private final CustomOreGeneratorMessages messages;
 
-    public SetValueCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
+    public SetValueBlockSelectorCommand(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final JavaPlugin javaPlugin, @NotNull final CustomOreGeneratorMessages messages) {
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
         Validate.notNull(javaPlugin, "JavaPlugin can not be null");
         Validate.notNull(messages, "CustomOreGeneratorMessages can not be null");
@@ -64,7 +67,7 @@ public class SetValueCommand implements TabExecutor {
     @Override //oregen set value <config_name> <setting> <amount>
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length != 3) {
-            messages.COMMAND_SET_VALUE_NOT_ENOUGH_ARGS.sendMessage(sender);
+            messages.COMMAND_SET_VALUE_BLOCK_SELECTOR_NOT_ENOUGH_ARGS.sendMessage(sender);
             return true;
         }
 
@@ -79,14 +82,7 @@ public class SetValueCommand implements TabExecutor {
             final OreSetting setting = OreSetting.getOreSetting(settingName.toUpperCase());
 
             if (setting == null) {
-                messages.COMMAND_SET_VALUE_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
-                return;
-            }
-
-            final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
-
-            if (!optionalOreGenerator.isPresent()) {
-                messages.COMMAND_ORE_GENERATOR_NOT_FOUND.sendMessage(sender, new MessageValue("ore-generator", oreConfig.getOreGenerator()));
+                messages.COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_FOUND.sendMessage(sender, new MessageValue("setting", settingName));
                 return;
             }
 
@@ -97,13 +93,11 @@ public class SetValueCommand implements TabExecutor {
                 return;
             }
 
-            final OreGenerator generator = optionalOreGenerator.get();
             final BlockSelector blockSelector = optionalBlockSelector.get();
 
-            if (generator.getNeededOreSettings().stream().noneMatch(value -> value == setting) && blockSelector.getNeededOreSettings().stream().noneMatch(value -> value == setting)) {
-                messages.COMMAND_SET_VALUE_SETTING_NOT_VALID.sendMessage(sender,
+            if (blockSelector.getNeededOreSettings().stream().noneMatch(value -> value == setting)) {
+                messages.COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_VALID.sendMessage(sender,
                         new MessageValue("setting", settingName),
-                        new MessageValue("ore-generator", generator.getName()),
                         new MessageValue("block-selector", blockSelector.getName())
                 );
                 return;
@@ -114,14 +108,14 @@ public class SetValueCommand implements TabExecutor {
             try {
                 value = Double.parseDouble(amount);
             } catch (NumberFormatException e) {
-                messages.COMMAND_SET_VALUE_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
+                messages.COMMAND_SET_VALUE_BLOCK_SELECTOR_VALUE_NOT_VALID.sendMessage(sender, new MessageValue("value", amount));
                 return;
             }
 
-            oreConfig.setValue(setting, value);
+            oreConfig.getBlockSelectorOreSettings().setValue(setting, value);
 
             service.saveOreConfig(oreConfig);
-            messages.COMMAND_SET_VALUE_SUCCESS.sendMessage(sender, new MessageValue("value", value));
+            messages.COMMAND_SET_VALUE_BLOCK_SELECTOR_SUCCESS.sendMessage(sender, new MessageValue("value", value));
         });
 
         return true;
@@ -146,8 +140,6 @@ public class SetValueCommand implements TabExecutor {
 
             final String settingName = args[1].toUpperCase();
 
-            final Optional<OreGenerator> oreGenerator = service.getOreGenerator(oreConfig.get().getOreGenerator());
-            oreGenerator.ifPresent(generator -> generator.getNeededOreSettings().stream().map(OreSetting::getName).filter(value -> value.contains(settingName)).forEach(list::add));
             final Optional<BlockSelector> blockSelector = service.getBlockSelector(oreConfig.get().getBlockSelector());
             blockSelector.ifPresent(selector -> selector.getNeededOreSettings().stream().map(OreSetting::getName).filter(value -> value.contains(settingName)).forEach(list::add));
 

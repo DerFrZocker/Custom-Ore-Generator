@@ -1,6 +1,8 @@
 package de.derfrzocker.custom.ore.generator.factory;
 
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.factory.gui.*;
 import de.derfrzocker.custom.ore.generator.factory.listeners.CommandListener;
 import de.derfrzocker.custom.ore.generator.factory.listeners.MainMaterialListener;
@@ -338,7 +340,7 @@ public class OreConfigFactory implements Listener {
         return true;
     }
 
-    public boolean setOreSettings(@NotNull final Consumer<OreConfigFactory> consumer) {
+    public boolean setOreGeneratorOreSettings(@NotNull final Consumer<OreConfigFactory> consumer) {
         if (running)
             return false;
 
@@ -347,7 +349,23 @@ public class OreConfigFactory implements Listener {
         new OreSettingsGui(javaPlugin, serviceSupplier, this, oreConfigFactory -> {
             running = false;
             consumer.accept(oreConfigFactory);
-        }).openSync(player);
+        }, oreConfigBuilder.oreGenerator(), oreConfigBuilder.getOreGeneratorOreSettings()
+        ).openSync(player);
+
+        return true;
+    }
+
+    public boolean setBlockSelectorOreSettings(@NotNull final Consumer<OreConfigFactory> consumer) {
+        if (running)
+            return false;
+
+        running = true;
+
+        new OreSettingsGui(javaPlugin, serviceSupplier, this, oreConfigFactory -> {
+            running = false;
+            consumer.accept(oreConfigFactory);
+        }, oreConfigBuilder.blockSelector(), oreConfigBuilder.getBlockSelectorOreSettings()
+        ).openSync(player);
 
         return true;
     }
@@ -378,6 +396,119 @@ public class OreConfigFactory implements Listener {
         }).openSync(player);
 
         return true;
+    }
+
+    public boolean setName() {
+        return setName(OreConfigFactory::setMaterial);
+    }
+
+    public boolean setMaterial() {
+        return setMaterial(OreConfigFactory::setReplaceMaterials);
+    }
+
+    public boolean setReplaceMaterials() {
+        return setReplaceMaterials(OreConfigFactory::setSelectMaterials);
+    }
+
+    public boolean setSelectMaterials() {
+        return setSelectMaterials(OreConfigFactory::setOreGenerator);
+    }
+
+    public boolean setOreGenerator() {
+        return setOreGenerator(OreConfigFactory::setBlockSelector);
+    }
+
+    public boolean setBlockSelector() {
+        return setBlockSelector(OreConfigFactory::setBiomes);
+    }
+
+    public boolean setBiomes() {
+        return setBiomes(factory -> {
+            final OreConfigBuilder oreConfigBuilder = factory.getOreConfigBuilder();
+            final OreGenerator oreGenerator = oreConfigBuilder.oreGenerator();
+
+            if (oreGenerator != null) {
+                if (!oreGenerator.getNeededOreSettings().isEmpty()) {
+                    setOreGeneratorOreSettings();
+                    return;
+                }
+            }
+
+            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
+
+            if (blockSelector != null) {
+                if (!blockSelector.getNeededOreSettings().isEmpty()) {
+                    setBlockSelectorOreSettings();
+                    return;
+                }
+            }
+
+            checkCustomDatas(oreConfigBuilder);
+        });
+    }
+
+    public boolean setOreGeneratorOreSettings() {
+        return setOreGeneratorOreSettings(factory -> {
+            final OreConfigBuilder oreConfigBuilder = factory.getOreConfigBuilder();
+            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
+
+            if (blockSelector != null) {
+                if (!blockSelector.getNeededOreSettings().isEmpty()) {
+                    setBlockSelectorOreSettings();
+                    return;
+                }
+            }
+
+            checkCustomDatas(oreConfigBuilder);
+        });
+    }
+
+    public boolean setBlockSelectorOreSettings() {
+        return setBlockSelectorOreSettings(factory -> checkCustomDatas(factory.getOreConfigBuilder()));
+    }
+
+    public boolean setCustomDatas() {
+        return setCustomDatas(OreConfigFactory::setWorlds);
+    }
+
+    public boolean setWorlds() {
+        return setWorlds(factory -> {
+            new MenuGui(this.javaPlugin, this.serviceSupplier, factory).openSync(factory.getPlayer());
+        });
+    }
+
+    private void checkCustomDatas(OreConfigBuilder oreConfigBuilder) {
+        if (oreConfigBuilder.foundCustomDatas().isEmpty()) {
+            setWorlds();
+            return;
+        }
+
+        if (oreConfigBuilder.name() == null) {
+            setWorlds();
+            return;
+        }
+
+        if (oreConfigBuilder.material() == null) {
+            setWorlds();
+            return;
+        }
+
+        if (oreConfigBuilder.replaceMaterial().isEmpty()) {
+            setWorlds();
+            return;
+        }
+
+        if (oreConfigBuilder.oreGenerator() == null) {
+            setWorlds();
+            return;
+        }
+
+        if (oreConfigBuilder.blockSelector() == null) {
+            setWorlds();
+            return;
+        }
+
+        setCustomDatas();
     }
 
 }

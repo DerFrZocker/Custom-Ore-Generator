@@ -64,11 +64,24 @@ public final class CustomOreGeneratorMessages {
     // set value command
     public final MessageKey COMMAND_SET_VALUE_USAGE;
     public final MessageKey COMMAND_SET_VALUE_DESCRIPTION;
-    public final MessageKey COMMAND_SET_VALUE_NOT_ENOUGH_ARGS;
-    public final MessageKey COMMAND_SET_VALUE_SETTING_NOT_FOUND;
-    public final MessageKey COMMAND_SET_VALUE_SETTING_NOT_VALID;
-    public final MessageKey COMMAND_SET_VALUE_VALUE_NOT_VALID;
-    public final MessageKey COMMAND_SET_VALUE_SUCCESS;
+
+    // set value ore-generator command
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_USAGE;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_DESCRIPTION;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_SETTING_NOT_FOUND;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_SETTING_NOT_VALID;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_VALUE_NOT_VALID;
+    public final MessageKey COMMAND_SET_VALUE_ORE_GENERATOR_SUCCESS;
+
+    // set value block-selector command
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_USAGE;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_DESCRIPTION;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_NOT_ENOUGH_ARGS;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_FOUND;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_VALID;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_VALUE_NOT_VALID;
+    public final MessageKey COMMAND_SET_VALUE_BLOCK_SELECTOR_SUCCESS;
 
     // set customdata command
     public final MessageKey COMMAND_SET_CUSTOMDATA_USAGE;
@@ -119,6 +132,7 @@ public final class CustomOreGeneratorMessages {
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
     public final MessageKey COMMAND_SET_HELP_USAGE;
+    public final MessageKey COMMAND_SET_VALUE_HELP_USAGE;
     public final MessageKey COMMAND_ADD_HELP_USAGE;
     public final MessageKey COMMAND_HELP_DESCRIPTION;
     public final MessageKey COMMAND_HELP_HEADER_FORMAT;
@@ -161,14 +175,27 @@ public final class CustomOreGeneratorMessages {
         COMMAND_SET_USAGE = new MessageKey(javaPlugin, "command.set.usage");
         COMMAND_SET_DESCRIPTION = new MessageKey(javaPlugin, "command.set.description");
 
-        // set value command
-        COMMAND_SET_VALUE_USAGE = new MessageKey(javaPlugin, "command.set.value.usage");
+        // set value
+        COMMAND_SET_VALUE_USAGE = new MessageKey(javaPlugin, "command.set.value..usage");
         COMMAND_SET_VALUE_DESCRIPTION = new MessageKey(javaPlugin, "command.set.value.description");
-        COMMAND_SET_VALUE_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.value.not-enough-args");
-        COMMAND_SET_VALUE_SETTING_NOT_FOUND = new MessageKey(javaPlugin, "command.set.value.setting-not-found");
-        COMMAND_SET_VALUE_SETTING_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.setting-not-valid");
-        COMMAND_SET_VALUE_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.value-not-valid");
-        COMMAND_SET_VALUE_SUCCESS = new MessageKey(javaPlugin, "command.set.value.success");
+
+        // set value ore-generator command
+        COMMAND_SET_VALUE_ORE_GENERATOR_USAGE = new MessageKey(javaPlugin, "command.set.value.ore-generator.usage");
+        COMMAND_SET_VALUE_ORE_GENERATOR_DESCRIPTION = new MessageKey(javaPlugin, "command.set.value.ore-generator.description");
+        COMMAND_SET_VALUE_ORE_GENERATOR_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.value.ore-generator.not-enough-args");
+        COMMAND_SET_VALUE_ORE_GENERATOR_SETTING_NOT_FOUND = new MessageKey(javaPlugin, "command.set.value.ore-generator.setting-not-found");
+        COMMAND_SET_VALUE_ORE_GENERATOR_SETTING_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.ore-generator.setting-not-valid");
+        COMMAND_SET_VALUE_ORE_GENERATOR_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.ore-generator.value-not-valid");
+        COMMAND_SET_VALUE_ORE_GENERATOR_SUCCESS = new MessageKey(javaPlugin, "command.set.value.ore-generator.success");
+
+        // set value block-selector command
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_USAGE = new MessageKey(javaPlugin, "command.set.value.block-selector.usage");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_DESCRIPTION = new MessageKey(javaPlugin, "command.set.value.block-selector.description");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_NOT_ENOUGH_ARGS = new MessageKey(javaPlugin, "command.set.value.block-selector.not-enough-args");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_FOUND = new MessageKey(javaPlugin, "command.set.value.block-selector.setting-not-found");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_SETTING_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.block-selector.setting-not-valid");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.set.value.block-selector.value-not-valid");
+        COMMAND_SET_VALUE_BLOCK_SELECTOR_SUCCESS = new MessageKey(javaPlugin, "command.set.value.block-selector.success");
 
         // set customdata command
         COMMAND_SET_CUSTOMDATA_USAGE = new MessageKey(javaPlugin, "command.set.customdata.usage");
@@ -219,6 +246,7 @@ public final class CustomOreGeneratorMessages {
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");
         COMMAND_SET_HELP_USAGE = new MessageKey(javaPlugin, "command.set.help.usage");
+        COMMAND_SET_VALUE_HELP_USAGE = new MessageKey(javaPlugin, "command.set.value.help.usage");
         COMMAND_ADD_HELP_USAGE = new MessageKey(javaPlugin, "command.add.help.usage");
         COMMAND_HELP_DESCRIPTION = new MessageKey(javaPlugin, "command.help.description");
         COMMAND_HELP_HEADER_FORMAT = new MessageKey(javaPlugin, "command.help.header-format");

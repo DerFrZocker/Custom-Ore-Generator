@@ -26,11 +26,10 @@
 package de.derfrzocker.custom.ore.generator;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.Info;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
-import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
-import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
-import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.*;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.CountRangeBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.HighestBlockBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.customdata.*;
@@ -68,16 +67,20 @@ import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.CustomOreBlockPopulator
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.oregenerator.MinableGenerator_v1_9_R2;
 import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.RegisterUtil;
+import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Version;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.configuration.serialization.ConfigurationSerialization;
 import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
+import java.util.function.BiFunction;
+import java.util.function.Function;
 import java.util.function.Supplier;
 
 public class CustomOreGenerator extends JavaPlugin {
@@ -86,6 +89,7 @@ public class CustomOreGenerator extends JavaPlugin {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(OreConfigYamlImpl.class);
         ConfigurationSerialization.registerClass(WorldConfigYamlImpl.class);
+        ConfigurationSerialization.registerClass(OreSettingsContainerYamlImpl.class);
     }
 
     private CustomOreGeneratorMessages messages;
@@ -112,6 +116,10 @@ public class CustomOreGenerator extends JavaPlugin {
     public void onEnable() {
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
+        if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent())) {
+            checkFile("data/factory/gui/menu-gui.yml");
+        }
+
         final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), Version.getCurrent());
 
         initWorldHandler();
@@ -123,47 +131,54 @@ public class CustomOreGenerator extends JavaPlugin {
     }
 
     private void registerStandardOreGenerators(@NotNull final RegisterUtil registerUtil) {
-        registerUtil.register(new GlowStoneGenerator(name -> InfoUtil.getOreGenerator(this, name)));
-        registerUtil.register(new RootGenerator(name -> InfoUtil.getOreGenerator(this, name)));
-        registerUtil.register(new SingleOreGenerator(name -> InfoUtil.getOreGenerator(this, name)));
-        registerUtil.register(Version.v1_8_R1, Version.v1_8_R1, () -> new MinableGenerator_v1_8_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_8_R2, Version.v1_8_R2, () -> new MinableGenerator_v1_8_R2(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_8_R3, Version.v1_8_R3, () -> new MinableGenerator_v1_8_R3(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_9_R1, Version.v1_9_R1, () -> new MinableGenerator_v1_9_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_9_R2, Version.v1_9_R2, () -> new MinableGenerator_v1_9_R2(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_10_R1, Version.v1_10_R1, () -> new MinableGenerator_v1_10_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_11_R1, Version.v1_11_R1, () -> new MinableGenerator_v1_11_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_12_R1, Version.v1_12_R1, () -> new MinableGenerator_v1_12_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_13_R1, Version.v1_13_R1, () -> new MinableGenerator_v1_13_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, () -> new MinableGenerator_v1_13_R2(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, true, () -> new MinableGenerator_v1_13_R2_paper(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
-        registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(name -> InfoUtil.getOreGenerator(this, name)), true);
+        final Function<String, Info> infoFunction = name -> InfoUtil.getOreGeneratorInfo(this, name);
+        final BiFunction<String, OreSetting, Info> oreSettingInfoBiFunction = (name, oreSetting) -> InfoUtil.getOreGeneratorOreSettingInfo(this, name, oreSetting);
+
+        registerUtil.register(new GlowStoneGenerator(infoFunction, oreSettingInfoBiFunction));
+        registerUtil.register(new RootGenerator(infoFunction, oreSettingInfoBiFunction));
+        registerUtil.register(new SingleOreGenerator(infoFunction, oreSettingInfoBiFunction));
+        registerUtil.register(Version.v1_8_R1, Version.v1_8_R1, () -> new MinableGenerator_v1_8_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_8_R2, Version.v1_8_R2, () -> new MinableGenerator_v1_8_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_8_R3, Version.v1_8_R3, () -> new MinableGenerator_v1_8_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_9_R1, Version.v1_9_R1, () -> new MinableGenerator_v1_9_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_9_R2, Version.v1_9_R2, () -> new MinableGenerator_v1_9_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_10_R1, Version.v1_10_R1, () -> new MinableGenerator_v1_10_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_11_R1, Version.v1_11_R1, () -> new MinableGenerator_v1_11_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_12_R1, Version.v1_12_R1, () -> new MinableGenerator_v1_12_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_13_R1, Version.v1_13_R1, () -> new MinableGenerator_v1_13_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, true, () -> new MinableGenerator_v1_13_R2_paper(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
-        registerUtil.register(new HighestBlockBlockSelector(name -> InfoUtil.getBlockSelectorInfo(this, name)));
-        registerUtil.register(new CountRangeBlockSelector(name -> InfoUtil.getBlockSelectorInfo(this, name)), true);
+        final Function<String, Info> infoFunction = name -> InfoUtil.getBlockSelectorInfo(this, name);
+        final BiFunction<String, OreSetting, Info> oreSettingInfoBiFunction = (name, oreSetting) -> InfoUtil.getBlockSelectorOreSettingInfo(this, name, oreSetting);
+
+        registerUtil.register(new HighestBlockBlockSelector(infoFunction, oreSettingInfoBiFunction));
+        registerUtil.register(new CountRangeBlockSelector(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardCustomDatas(@NotNull final RegisterUtil registerUtil) {
+        final Function<String, Info> infoFunction = name -> InfoUtil.getCustomDataInfo(this, name);
         final File fileFolder = new File(getDataFolder(), "files");
 
-        registerUtil.register(new SkullTextureCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(new CommandCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(new NBTTagCustomData(name -> InfoUtil.getCustomData(this, name), fileFolder));
-        registerUtil.register(Version.v1_9_R1, () -> new AutoCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_10_R1, () -> new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, name -> InfoUtil.getCustomData(this, name), fileFolder));
-        registerUtil.register(Version.v1_8_R1, Version.v1_12_R1, () -> new VariantCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new TickBlockCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new FacingCustomData(name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.DOWN, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.UP, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.NORTH, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, name -> InfoUtil.getCustomData(this, name)));
-        registerUtil.register(Version.v1_13_R1, "ItemMods", () -> new ItemModsCustomData(name -> InfoUtil.getCustomData(this, name)));
+        registerUtil.register(new SkullTextureCustomData(infoFunction));
+        registerUtil.register(new CommandCustomData(infoFunction));
+        registerUtil.register(new NBTTagCustomData(infoFunction, fileFolder));
+        registerUtil.register(Version.v1_9_R1, () -> new AutoCustomData(infoFunction));
+        registerUtil.register(Version.v1_10_R1, () -> new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, infoFunction, fileFolder));
+        registerUtil.register(Version.v1_8_R1, Version.v1_12_R1, () -> new VariantCustomData(infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new TickBlockCustomData(infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new FacingCustomData(infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.DOWN, infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.UP, infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.NORTH, infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
+        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
+        registerUtil.register(Version.v1_13_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
     }
 
     private void initWorldHandler() {
@@ -231,6 +246,27 @@ public class CustomOreGenerator extends JavaPlugin {
             throw new RuntimeException("Can not delete File " + file);
 
         getLogger().info("Finish converting old storage format to new one");
+    }
+
+    private void checkFile(@NotNull final String name) {
+        final File file = new File(getDataFolder(), name);
+
+        if (!file.exists())
+            return;
+
+        final YamlConfiguration configuration = new Config(file);
+
+        final YamlConfiguration configuration2 = new Config(getResource(name));
+
+        if (configuration.getInt("version") == configuration2.getInt("version"))
+            return;
+
+        getLogger().warning("File " + name + " has an outdated / new version, replacing it!");
+
+        if (!file.delete())
+            throw new RuntimeException("can't delete file " + name + " stop plugin start!");
+
+        saveResource(name, true);
     }
 
     private static final class CustomOreGeneratorServiceSupplier implements Supplier<CustomOreGeneratorService> {

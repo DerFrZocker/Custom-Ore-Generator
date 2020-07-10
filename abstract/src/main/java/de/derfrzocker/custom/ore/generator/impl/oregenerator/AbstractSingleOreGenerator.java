@@ -31,17 +31,21 @@ import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractSingleOreGenerator extends AbstractOreGenerator {
 
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(new HashSet<>());
-
-    public AbstractSingleOreGenerator(@NotNull final Function<String, Info> infoFunction) {
-        super("SINGLE_ORE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the OreGenerator as value.
+     * The oreSettingInfo gives the name of the OreGenerator and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this OreGenerator
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public AbstractSingleOreGenerator(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("SINGLE_ORE_GENERATOR", EMPTY, infoFunction, oreSettingInfo);
     }
 
     @Override

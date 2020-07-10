@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.ore-generator.VANILLA_MINABLE_GENERATOR.ore-setting.VEIN_SIZE.display-name]%"
+material: COAL
+description: "%%translation:[info.ore-generator.VANILLA_MINABLE_GENERATOR.ore-setting.VEIN_SIZE.description]%"

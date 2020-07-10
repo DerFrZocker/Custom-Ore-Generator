@@ -36,24 +36,37 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class CountRangeBlockSelector extends AbstractBlockSelector {
 
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.HEIGHT_RANGE, OreSettings.MINIMUM_HEIGHT, OreSettings.VEINS_PER_CHUNK));
+    private final static OreSetting HEIGHT_RANGE = OreSetting.createOreSetting("HEIGHT_RANGE");
+    private final static OreSetting MINIMUM_HEIGHT = OreSetting.createOreSetting("MINIMUM_HEIGHT");
+    private final static OreSetting VEINS_PER_CHUNK = OreSetting.createOreSetting("VEINS_PER_CHUNK");
+    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(HEIGHT_RANGE, MINIMUM_HEIGHT, VEINS_PER_CHUNK));
 
-    public CountRangeBlockSelector(@NotNull final Function<String, Info> infoFunction) {
-        super("COUNT_RANGE", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the BlockSelector as value.
+     * The oreSettingInfo gives the name of the BlockSelector and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this BlockSelector
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public CountRangeBlockSelector(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("COUNT_RANGE", NEEDED_ORE_SETTINGS, infoFunction, oreSettingInfo);
     }
 
     @NotNull
     @Override
     public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
+        final OreSettingContainer oreSettingContainer = config.getBlockSelectorOreSettings();
 
-        final int heightRange = NumberUtil.getInt(config.getValue(OreSettings.HEIGHT_RANGE).orElse(0d), random);
-        final int minimumHeight = NumberUtil.getInt(config.getValue(OreSettings.MINIMUM_HEIGHT).orElse(0d), random);
-        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(0d), random);
+        final int heightRange = NumberUtil.getInt(oreSettingContainer.getValue(HEIGHT_RANGE).orElse(0d), random);
+        final int minimumHeight = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_HEIGHT).orElse(0d), random);
+        final int veinsPerChunk = NumberUtil.getInt(oreSettingContainer.getValue(VEINS_PER_CHUNK).orElse(0d), random);
 
         if (heightRange == 0)
             return locations;
@@ -75,13 +88,13 @@ public class CountRangeBlockSelector extends AbstractBlockSelector {
         Validate.notNull(oreConfig, "OreConfig can not be null");
         Validate.isTrue(getNeededOreSettings().contains(oreSetting), "The BlockSelector '" + getName() + "' does not need the OreSetting '" + oreSetting.getName() + "'");
 
-        if (oreSetting == OreSettings.HEIGHT_RANGE)
+        if (oreSetting == HEIGHT_RANGE)
             return value >= 0;
 
-        if (oreSetting == OreSettings.MINIMUM_HEIGHT)
+        if (oreSetting == MINIMUM_HEIGHT)
             return value >= 0;
 
-        if (oreSetting == OreSettings.VEINS_PER_CHUNK)
+        if (oreSetting == VEINS_PER_CHUNK)
             return value >= 0;
 
         throw new RuntimeException("Wtf?");

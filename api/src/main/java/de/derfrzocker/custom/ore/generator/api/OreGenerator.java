@@ -35,7 +35,7 @@ import java.util.Set;
 /**
  * A OreGenerator generate veins of ores on the given locations
  */
-public interface OreGenerator extends InfoAble {
+public interface OreGenerator extends InfoAble, OreSettingsAble {
 
     /**
      * Generates veins of ores on the given Locations
@@ -54,12 +54,6 @@ public interface OreGenerator extends InfoAble {
     void generate(@NotNull OreConfig config, @NotNull ChunkAccess chunkAccess, int x, int z, @NotNull Random random, @NotNull Biome biome, @NotNull Set<Location> locations);
 
     /**
-     * @return a set with all OreSettings which this BlockSelector needs
-     */
-    @NotNull
-    Set<OreSetting> getNeededOreSettings();
-
-    /**
      * The name is used to identify the OreGenerator,
      * each OreGenerator should have a unique name.
      * The name must match the following Regex: ^[A-Z_]*$
@@ -69,19 +63,5 @@ public interface OreGenerator extends InfoAble {
      */
     @NotNull
     String getName();
-
-    /**
-     * Checks if the given value for the given oreSetting is save or not.
-     * Save means, that passing an ore config with the given oreSetting and value to the generate method,
-     * will not cause definitely an error.
-     *
-     * @param oreSetting to check
-     * @param value      to check
-     * @param oreConfig  which gets the setting set
-     * @return true if the given value is save, otherwise return false
-     * @throws IllegalArgumentException if oreSetting or oreConfig is null
-     * @throws IllegalArgumentException if the OreGenerator does not need the given oreSetting
-     */
-    boolean isSaveValue(@NotNull OreSetting oreSetting, double value, @NotNull OreConfig oreConfig);
 
 }

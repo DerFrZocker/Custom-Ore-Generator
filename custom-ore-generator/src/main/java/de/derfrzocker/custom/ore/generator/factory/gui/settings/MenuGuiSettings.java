@@ -118,8 +118,12 @@ public class MenuGuiSettings extends BasicSettings {
         return getSection().getInt("step.biome");
     }
 
-    public int getStepOreSettingsSlot() {
-        return getSection().getInt("step.ore-settings");
+    public int getStepOreGeneratorOreSettingsSlot() {
+        return getSection().getInt("step.ore-generator-ore-settings");
+    }
+
+    public int getStepBlockSelectorOreSettingsSlot() {
+        return getSection().getInt("step.block-selector-ore-settings");
     }
 
     public int getStepCustomDatasSlot() {

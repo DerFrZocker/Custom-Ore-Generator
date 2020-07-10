@@ -198,27 +198,20 @@ public class MenuGui extends BasicGui {
                     inventoryClickEvent -> oreConfigFactory.setBiomes(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
         }
 
-        {
-            final Map<OreSetting, Double> oreSettings = oreConfigBuilder.oreSettings();
+        {//Ore Generator ore settings
+            final Map<OreSetting, Double> oreSettings = oreConfigBuilder.getOreGeneratorOreSettings().getValues();
             final Set<MessageValue> messageValues = new LinkedHashSet<>();
             final ItemStack itemStack;
             boolean setAction = true;
 
-            messageValues.add(new MessageValue("step", "ore-setting"));
+            messageValues.add(new MessageValue("step", "ore-generator-ore-setting"));
 
             final OreGenerator oreGenerator = oreConfigBuilder.oreGenerator();
-            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
 
-            if (oreGenerator == null && blockSelector == null) {
+            if (oreGenerator == null) {
                 itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
                 setAction = false;
-            } else if (oreGenerator != null && !oreGenerator.getNeededOreSettings().isEmpty()) {
-                if (oreSettings.isEmpty()) {
-                    itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
-                } else {
-                    itemStack = menuGuiSettings.getStatusPresentItemStack();
-                }
-            } else if (blockSelector != null && !blockSelector.getNeededOreSettings().isEmpty()) {
+            } else if (!oreGenerator.getNeededOreSettings().isEmpty()) {
                 if (oreSettings.isEmpty()) {
                     itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
                 } else {
@@ -230,11 +223,45 @@ public class MenuGui extends BasicGui {
             }
 
             if (setAction) {
-                addItem(menuGuiSettings.getStepOreSettingsSlot(),
+                addItem(menuGuiSettings.getStepOreGeneratorOreSettingsSlot(),
                         MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
-                        inventoryClickEvent -> oreConfigFactory.setOreSettings(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+                        inventoryClickEvent -> oreConfigFactory.setOreGeneratorOreSettings(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
             } else {
-                addItem(menuGuiSettings.getStepOreSettingsSlot(),
+                addItem(menuGuiSettings.getStepOreGeneratorOreSettingsSlot(),
+                        MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])));
+            }
+        }
+
+        {//Block Selector ore settings
+            final Map<OreSetting, Double> oreSettings = oreConfigBuilder.getBlockSelectorOreSettings().getValues();
+            final Set<MessageValue> messageValues = new LinkedHashSet<>();
+            final ItemStack itemStack;
+            boolean setAction = true;
+
+            messageValues.add(new MessageValue("step", "block-selector-ore-setting"));
+
+            final BlockSelector blockSelector = oreConfigBuilder.blockSelector();
+
+            if (blockSelector == null) {
+                itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                setAction = false;
+            } else if (!blockSelector.getNeededOreSettings().isEmpty()) {
+                if (oreSettings.isEmpty()) {
+                    itemStack = menuGuiSettings.getStatusNotPresentNotNeededItemStack();
+                } else {
+                    itemStack = menuGuiSettings.getStatusPresentItemStack();
+                }
+            } else {
+                itemStack = menuGuiSettings.getStatusNotSetAbleItemStack();
+                setAction = false;
+            }
+
+            if (setAction) {
+                addItem(menuGuiSettings.getStepBlockSelectorOreSettingsSlot(),
+                        MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])),
+                        inventoryClickEvent -> oreConfigFactory.setBlockSelectorOreSettings(oreConfigFactory1 -> new MenuGui(plugin, serviceSupplier, oreConfigFactory).openSync(oreConfigFactory1.getPlayer())));
+            } else {
+                addItem(menuGuiSettings.getStepBlockSelectorOreSettingsSlot(),
                         MessageUtil.replaceItemStack(plugin, itemStack, messageValues.toArray(new MessageValue[0])));
             }
         }
@@ -330,7 +357,8 @@ public class MenuGui extends BasicGui {
                                 oreConfig.setGeneratedAll(false);
                             }
 
-                            oreConfigBuilder.oreSettings().forEach(oreConfig::setValue);
+                            oreConfigBuilder.getOreGeneratorOreSettings().getValues().forEach((oreSetting, aDouble) -> oreConfig.getOreGeneratorOreSettings().setValue(oreSetting, aDouble));
+                            oreConfigBuilder.getBlockSelectorOreSettings().getValues().forEach((oreSetting, aDouble) -> oreConfig.getBlockSelectorOreSettings().setValue(oreSetting, aDouble));
                             oreConfigBuilder.customDatas().forEach(oreConfig::setCustomData);
 
                             service.saveOreConfig(oreConfig);

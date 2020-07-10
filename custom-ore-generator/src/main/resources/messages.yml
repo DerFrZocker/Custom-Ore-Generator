@@ -29,7 +29,8 @@ ore-config:
           ore-generator: 'Step: Ore Generator'
           block-selector: 'Step: Block Selector'
           biome: 'Step: Biome'
-          ore-setting: 'Step: Ore Setting'
+          ore-generator-ore-setting: 'Step: Ore Generator Ore Setting'
+          block-selector-ore-setting: 'Step: Block Selector Ore Setting'
           custom-data: 'Step: Custom Data'
           world: 'Step: World'
       ore-generator:
@@ -145,22 +146,90 @@ info:
     COUNT_RANGE:
       display-name: "Count Range"
       description: "Minecraft's Block Selector for ores"
+      ore-setting:
+        HEIGHT_RANGE:
+          display-name: "Height Range"
+          description: "The Range in which the vein gets generated"
+        MINIMUM_HEIGHT:
+          display-name: "Minimum Height"
+          description: "The minimum Height in which the vein gets generated"
+        VEINS_PER_CHUNK:
+          display-name: "Veins Per Chunk"
+          description: "The amount of tries to generate a vein, per chunk"
     HIGHEST_BLOCK:
       display-name: "Highest Block"
       description: "Selects the highest Air block on a random x and z location"
+      ore-setting:
+        VEINS_PER_CHUNK:
+          display-name: "Veins Per Chunk"
+          description: "The amount of tries to generate a vein, per chunk"
   ore-generator:
     GLOW_STONE_GENERATOR:
       display-name: "Glow Stone Generator"
       description: "Minecraft's generator for generation glowstone"
+      ore-setting:
+        CONNECTIONS:
+          display-name: "Connections"
+          description: "//TODO add explanation"
+        HORIZONTAL_SCOPE:
+          display-name: "Horizontal Scope"
+          description: "How much the blocks should spread in x and z"
+        NEGATIVE_TRIES:
+          display-name: "Negative Tries"
+          description: "How high from the first block it should generate down"
+        NEGATIVE_VERTICAL_SCOPE:
+          display-name: "Negative Vertical Scope"
+          description: "How often it should try to generated a block"
+        POSITIVE_TRIES:
+          display-name: "Positive Tries"
+          description: "How high from the first block it should generate up"
+        POSITIVE_VERTICAL_SCOPE:
+          display-name: "Positive Vertical Scope"
+          description: "How often it should try to generated a block"
     SINGLE_ORE_GENERATOR:
       display-name: "Single Ore Generator"
       description: "Generate a single block on the given location"
     VANILLA_MINABLE_GENERATOR:
       display-name: "Vanilla Minable Generator"
       description: "Minecraft's generator for ores"
+      ore-setting:
+        VEIN_SIZE:
+          display-name: "Vein Size"
+          description: "The maximum size of the vein"
     ROOT_GENERATOR:
       display-name: "Root Generator"
       description: "A generator which is based on root growth"
+      ore-setting:
+        CHANGE_SUBTRACTION_RANGE:
+          display-name: "Change Subtraction Range"
+          description: "The range from which the Continue Change is additionally shortened"
+        CONTINUE_CHANGE:
+          display-name: "Continue Change"
+          description: "The change, that a new root is created"
+        CONTINUE_TRIES:
+          display-name: "Continue Tries"
+          description: "How often it tries, per block, to continue"
+        DOWN_CHANGE:
+          display-name: "Down Change"
+          description: "The change, that a root is going down"
+        LENGTH_SUBTRACTION_RANGE:
+          display-name: "Length Subtraction Range"
+          description: "The range from which, the Root Length is additionally shortened"
+        MINIMUM_CHANGE_SUBTRACTION:
+          display-name: "Minimum Change Subtraction"
+          description: "How much from the Continue Change gets subtracted minimum"
+        MINIMUM_LENGTH_SUBTRACTION:
+          display-name: "Minimum Length Subtraction"
+          description: "How much from the Root Length gets subtracted minimum"
+        MINIMUM_TRIES_SUBTRACTION:
+          display-name: "Minimum Tries Subtraction"
+          description: "How much from the Continue Tries gets subtracted minimum"
+        ROOT_LENGTH:
+          display-name: "Root Length"
+          description: "The length of a individuate root"
+        TRIES_SUBTRACTION_RANGE:
+          display-name: "Tries Subtraction Range"
+          description: "The range from which the Continue Tries is additionally shortened"
   custom-data:
     AUTO:
       display-name: "Auto"
@@ -236,15 +305,31 @@ command:
     description: "Main command for different 'set' subcommands"
 
     value:
-      usage: "&f/&doregen set value <&dore-config&f> <&dsetting&f> <&damount&f>"
-      description: "Set a setting value to the ore config"
-      not-enough-args:
-        - "&4Wrong amount of arguments!"
-        - "&cuse %%translation:[command.set.value.usage]%"
-      setting-not-found: "&4The setting &f'&d%setting%&f' &4does not exist!"
-      setting-not-valid: "&4The setting &f'&d%setting%&f' &4is not valid with the ore generator &f'&d%ore-generator%&f'&4!"
-      value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
-      success: "&aThe value has been updated successfully!"
+      usage: "&f/&doregen set value &f<&dsubcommand&f>"
+      description: "Main command for different 'set value' subcommands"
+      ore-generator:
+        usage: "&f/&doregen set value ore-generator <&dore-config&f> <&dsetting&f> <&damount&f>"
+        description: "Set a ore generator setting value to the ore config"
+        not-enough-args:
+          - "&4Wrong amount of arguments!"
+          - "&cuse %%translation:[command.set.value.ore-generator.usage]%"
+        setting-not-found: "&4The setting &f'&d%setting%&f' &4does not exist!"
+        setting-not-valid: "&4The setting &f'&d%setting%&f' &4is not valid with the ore generator &f'&d%ore-generator%&f'&4!"
+        value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
+        success: "&aThe value has been updated successfully!"
+      block-selector:
+        usage: "&f/&doregen set value block-selector <&dore-config&f> <&dsetting&f> <&damount&f>"
+        description: "Set a block-selector setting value to the ore config"
+        not-enough-args:
+          - "&4Wrong amount of arguments!"
+          - "&cuse %%translation:[command.set.value.block-selector.usage]%"
+        setting-not-found: "&4The setting &f'&d%setting%&f' &4does not exist!"
+        setting-not-valid: "&4The setting &f'&d%setting%&f' &4is not valid with the block selector &f'&d%block-selector%&f'&4!"
+        value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
+        success: "&aThe value has been updated successfully!"
+
+      help:
+        usage: "&f/&doregen set value help &f(<&dsubcommand&f>)"
 
     customdata:
       usage: "&f/&doregen set customdata <&dore-config&f> <&dcustomdata&f> <&dvalue&f>"

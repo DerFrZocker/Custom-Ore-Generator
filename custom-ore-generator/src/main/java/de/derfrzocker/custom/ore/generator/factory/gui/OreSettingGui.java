@@ -27,6 +27,8 @@ package de.derfrzocker.custom.ore.generator.factory.gui;
 
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.OreSettingContainer;
+import de.derfrzocker.custom.ore.generator.api.OreSettingsAble;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.OreSettingGuiSettings;
@@ -48,13 +50,23 @@ public class OreSettingGui extends BasicGui {
 
     private final OreSetting oreSetting;
     private final OreConfigBuilder oreConfigBuilder;
+    private final OreSettingsAble oreSettingsAble;
+    private final OreSettingContainer oreSettingContainer;
     private final int oreSettingSlot;
 
-    public OreSettingGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer, @NotNull final OreSetting oreSetting) {
+    public OreSettingGui(@NotNull final JavaPlugin plugin,
+                         @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
+                         @NotNull final OreConfigFactory oreConfigFactory,
+                         @NotNull final Consumer<OreConfigFactory> consumer,
+                         @NotNull final OreSetting oreSetting,
+                         @NotNull final OreSettingsAble oreSettingsAble,
+                         @NotNull final OreSettingContainer oreSettingContainer) {
         super(plugin, checkSettings(plugin));
 
         this.oreSetting = oreSetting;
         this.oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
+        this.oreSettingsAble = oreSettingsAble;
+        this.oreSettingContainer = oreSettingContainer;
         this.oreSettingSlot = oreSettingGuiSettings.getOreSettingSlot();
 
         addDecorations();
@@ -64,11 +76,11 @@ public class OreSettingGui extends BasicGui {
         });
         addItem(oreSettingGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(plugin, oreSettingGuiSettings.getAbortItemStack()), inventoryClickEvent -> closeSync(inventoryClickEvent.getWhoClicked()));
         addItem(oreSettingGuiSettings.getBackSlot(), MessageUtil.replaceItemStack(plugin, oreSettingGuiSettings.getBackItemStack()), inventoryClickEvent -> {
-            new OreSettingsGui(plugin, serviceSupplier, oreConfigFactory, consumer).openSync(inventoryClickEvent.getWhoClicked());
+            new OreSettingsGui(plugin, serviceSupplier, oreConfigFactory, consumer, oreSettingsAble, oreSettingContainer).openSync(inventoryClickEvent.getWhoClicked());
         });
 
-        final Double tempCurrent = oreConfigBuilder.getOreSetting(oreSetting);
-        updateItemStack(tempCurrent == null ? 0 : tempCurrent);
+        final Double tempCurrent = oreSettingContainer.getValue(oreSetting).orElse(0d);
+        updateItemStack(tempCurrent);
         oreSettingGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), value.getItemStack(), new SettingConsumer(value.getValue())));
     }
 
@@ -82,9 +94,9 @@ public class OreSettingGui extends BasicGui {
     private void updateItemStack(final double value) {
         final ItemStack itemStack = oreSettingGuiSettings.getOreSettingItemStack();
 
-        itemStack.setType(oreSetting.getMaterial());
+        itemStack.setType(oreSettingsAble.getOreSettingInfo(oreSetting).getMaterial());
 
-        addItem(oreSettingSlot, MessageUtil.replaceItemStack(getPlugin(), itemStack, new MessageValue("value", value), new MessageValue("name", oreSetting.getName())));
+        addItem(oreSettingSlot, MessageUtil.replaceItemStack(getPlugin(), itemStack, new MessageValue("value", value), new MessageValue("name", oreSettingsAble.getOreSettingInfo(oreSetting).getDisplayName())));
     }
 
     private final class SettingConsumer implements Consumer<InventoryClickEvent> {
@@ -97,11 +109,10 @@ public class OreSettingGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
-            final Double tempCurrent = oreConfigBuilder.getOreSetting(oreSetting);
-            final double current = tempCurrent == null ? 0 : tempCurrent;
+            final double current = oreSettingContainer.getValue(oreSetting).orElse(0d);
             final double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 
-            oreConfigBuilder.setOreSetting(oreSetting, newValue);
+            oreSettingContainer.setValue(oreSetting, newValue);
             updateItemStack(newValue);
             //TODO add save check
         }

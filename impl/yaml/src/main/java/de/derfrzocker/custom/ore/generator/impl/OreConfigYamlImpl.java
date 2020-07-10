@@ -55,7 +55,12 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final static String REPLACE_MATERIALS_KEY = "replace-materials";
     private final static String SELECT_MATERIALS_KEY = "select-materials";
     private final static String CUSTOM_DATA_KEY = "custom-data";
+
+    @Deprecated
     private final static String ORE_SETTINGS_KEY = "ore-settings";
+
+    private final static String ORE_GENERATOR_SETTINGS_KEY = "ore-generator-settings";
+    private final static String BLOCK_SELECTOR_SETTINGS_KEY = "block-selector-settings";
 
 
     @NotNull
@@ -65,10 +70,12 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final Set<Biome> biomes = new HashSet<>();
     private final Set<Material> replaceMaterials = new HashSet<>();
     private final Set<Material> selectMaterials = new HashSet<>();
-    private final Map<String, Double> lazyOreSettings = new HashMap<>();
-    private final Map<OreSetting, Double> oreSettings = new HashMap<>();
+    private final OreSettingContainer oreGeneratorOreSettings = new OreSettingsContainerYamlImpl();
+    private final OreSettingContainer blockSelectorOreSettings = new OreSettingsContainerYamlImpl();
     private final Map<String, Object> lazyCustomData = new HashMap<>();
     private final Map<CustomData, Object> customData = new HashMap<>();
+    @Deprecated
+    private final Map<OreSetting, Double> unsortedOreSettings = new HashMap<>();
     @NotNull
     private String oreGenerator;
     @NotNull
@@ -109,7 +116,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
         // check if it is the old or new format
         if (!map.containsKey(NAME_KEY)) {
-            // older format version
+            // very old format version
             service.getLogger().info("Found old OreConfig format, replacing it with new one");
 
             final BlockSelector blockSelector = service.getDefaultBlockSelector();
@@ -118,7 +125,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
 
             oreConfig = new DummyOreConfig(Material.valueOf((String) map.get(MATERIAL_KEY)), ((String) map.get(ORE_GENERATOR_KEY_OLD)).toUpperCase(), blockSelector.getName());
 
-            map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.lazyOreSettings.put(entry.getKey(), NumberConversions.toDouble(entry.getValue())));
+            map.entrySet().stream().filter(entry -> OreSetting.getOreSetting(entry.getKey()) != null).forEach(entry -> oreConfig.unsortedOreSettings.put(OreSetting.createOreSetting(entry.getKey()), NumberConversions.toDouble(entry.getValue())));
 
             // add Default Materials
             oreConfig.addReplaceMaterial(Material.STONE);
@@ -158,8 +165,17 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             }
 
             if (map.containsKey(ORE_SETTINGS_KEY)) {
-                ((Map<String, Object>) map.get(ORE_SETTINGS_KEY)).forEach((setting, value) -> oreConfig.lazyOreSettings.put(setting, NumberConversions.toDouble(value)));
+                ((Map<String, Object>) map.get(ORE_SETTINGS_KEY)).forEach((setting, value) -> oreConfig.unsortedOreSettings.put(OreSetting.createOreSetting(setting), NumberConversions.toDouble(value)));
             }
+
+            if (map.containsKey(ORE_GENERATOR_SETTINGS_KEY)) {
+                ((OreSettingContainer) map.get(ORE_GENERATOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.oreGeneratorOreSettings.setValue(oreSetting, aDouble));
+            }
+
+            if (map.containsKey(BLOCK_SELECTOR_SETTINGS_KEY)) {
+                ((OreSettingContainer) map.get(BLOCK_SELECTOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.blockSelectorOreSettings.setValue(oreSetting, aDouble));
+            }
+
         }
 
         return oreConfig;
@@ -180,12 +196,17 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         target.setGeneratedAll(toCopy.shouldGeneratedAll());
         target.getBiomes().forEach(target::addBiome);
         toCopy.getCustomData().forEach(target::setCustomData);
-        toCopy.getOreSettings().forEach(target::setValue);
+        toCopy.getOreGeneratorOreSettings().getValues().forEach((oreSetting, aDouble) -> target.getOreGeneratorOreSettings().setValue(oreSetting, aDouble));
+        toCopy.getBlockSelectorOreSettings().getValues().forEach((oreSetting, aDouble) -> target.getBlockSelectorOreSettings().setValue(oreSetting, aDouble));
         toCopy.getReplaceMaterials().forEach(target::addReplaceMaterial);
         toCopy.getSelectMaterials().forEach(target::addSelectMaterial);
 
         target.lazyCustomData.putAll(toCopy.getLazyCustomData());
-        target.lazyOreSettings.putAll(toCopy.getLazyOreSettings());
+
+        if (toCopy instanceof OreConfigYamlImpl) {
+            ((OreConfigYamlImpl) toCopy).unsortedOreSettings.forEach((oreSetting, aDouble) -> target.unsortedOreSettings.put(oreSetting, aDouble));
+        }
+
     }
 
     @NotNull
@@ -259,53 +280,27 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         return this.blockSelector;
     }
 
+    @NotNull
+    @Override
+    public OreSettingContainer getOreGeneratorOreSettings() {
+        checkUnsortedValues();
+
+        return this.oreGeneratorOreSettings;
+    }
+
+    @NotNull
+    @Override
+    public OreSettingContainer getBlockSelectorOreSettings() {
+        checkUnsortedValues();
+
+        return this.blockSelectorOreSettings;
+    }
+
     @Override
     public void setBlockSelector(@NotNull final BlockSelector blockSelector) {
         Validate.notNull(blockSelector, "BlockSelector can not be null");
 
         this.blockSelector = blockSelector.getName();
-    }
-
-    @NotNull
-    @Override
-    public Optional<Double> getValue(@NotNull final OreSetting oreSetting) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-
-        return Optional.ofNullable(getOreSettings().get(oreSetting));
-    }
-
-    @Override
-    public void setValue(@NotNull final OreSetting oreSetting, final double value) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-
-        checkLazyOreSettings();
-
-        this.oreSettings.put(oreSetting, value);
-    }
-
-    @Override
-    public boolean removeValue(@NotNull final OreSetting oreSetting) {
-        Validate.notNull(oreSetting, "OreSetting can not be null");
-
-        checkLazyOreSettings();
-
-        return this.oreSettings.remove(oreSetting) != null;
-    }
-
-    @NotNull
-    @Override
-    public Map<OreSetting, Double> getOreSettings() {
-        checkLazyOreSettings();
-
-        return new HashMap<>(this.oreSettings);
-    }
-
-    @NotNull
-    @Override
-    public Map<String, Double> getLazyOreSettings() {
-        checkLazyOreSettings();
-
-        return new HashMap<>(this.lazyOreSettings);
     }
 
     @NotNull
@@ -433,37 +428,79 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             serialize.put(CUSTOM_DATA_KEY, data);
         }
 
-        final Map<OreSetting, Double> oreSettingsMap = getOreSettings();
-        if (!oreSettingsMap.isEmpty() || !lazyOreSettings.isEmpty()) {
-            final Map<String, Double> data = new LinkedHashMap<>(lazyOreSettings);
+        if (!unsortedOreSettings.isEmpty()) {
+            final Map<String, Double> data = new LinkedHashMap<>();
 
-            oreSettingsMap.forEach((key, value) -> data.put(key.getName(), value));
+            unsortedOreSettings.forEach((key, value) -> data.put(key.getName(), value));
 
             serialize.put(ORE_SETTINGS_KEY, data);
+        }
+
+        final OreSettingContainer oreGeneratorOreSettings = getOreGeneratorOreSettings();
+        if (!oreGeneratorOreSettings.getValues().isEmpty()) {
+            if (oreGeneratorOreSettings instanceof ConfigurationSerializable) {
+                serialize.put(ORE_GENERATOR_SETTINGS_KEY, oreGeneratorOreSettings);
+            } else {
+                final OreSettingContainer oreSettingContainer = new OreSettingsContainerYamlImpl();
+
+                oreGeneratorOreSettings.getValues().forEach(oreSettingContainer::setValue);
+
+                serialize.put(ORE_GENERATOR_SETTINGS_KEY, oreSettingContainer);
+            }
+        }
+
+        final OreSettingContainer blockSelectorOreSettings = getBlockSelectorOreSettings();
+        if (!blockSelectorOreSettings.getValues().isEmpty()) {
+            if (blockSelectorOreSettings instanceof ConfigurationSerializable) {
+                serialize.put(BLOCK_SELECTOR_SETTINGS_KEY, blockSelectorOreSettings);
+            } else {
+                final OreSettingContainer oreSettingContainer = new OreSettingsContainerYamlImpl();
+
+                blockSelectorOreSettings.getValues().forEach(oreSettingContainer::setValue);
+
+                serialize.put(BLOCK_SELECTOR_SETTINGS_KEY, oreSettingContainer);
+            }
         }
 
         return serialize;
     }
 
-    /**
-     * Checks if the lazyOreSettings have any new OreSetting create and put them if so to the oreSettings map
-     */
-    private void checkLazyOreSettings() {
-        if (lazyOreSettings.isEmpty())
+    @Deprecated
+    private void checkUnsortedValues() {
+        if (this.unsortedOreSettings.isEmpty()) {
             return;
+        }
 
-        final Set<String> toRemove = new HashSet<>();
+        final Set<OreSetting> toRemove = new HashSet<>();
 
-        lazyOreSettings.forEach((name, value) -> {
-            final OreSetting oreSetting = OreSetting.getOreSetting(name);
-            if (oreSetting == null)
-                return;
+        this.unsortedOreSettings.keySet().stream()
+                .filter(oreSetting -> this.oreGeneratorOreSettings.getValue(oreSetting).isPresent() || this.blockSelectorOreSettings.getValue(oreSetting).isPresent())
+                .forEach(toRemove::add);
 
-            toRemove.add(name);
-            oreSettings.put(oreSetting, value);
-        });
+        @Nullable final CustomOreGeneratorService service = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
 
-        toRemove.forEach(lazyOreSettings::remove);
+        if (service != null) {
+            final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(getOreGenerator());
+
+            optionalOreGenerator.ifPresent(oreGenerator -> this.unsortedOreSettings.entrySet().stream()
+                    .filter(entry -> oreGenerator.getNeededOreSettings().contains(entry.getKey()))
+                    .forEach(entry -> {
+                        toRemove.add(entry.getKey());
+                        this.oreGeneratorOreSettings.setValue(entry.getKey(), entry.getValue());
+                    }));
+
+            final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(getBlockSelector());
+
+            optionalBlockSelector.ifPresent(blockSelector -> this.unsortedOreSettings.entrySet().stream()
+                    .filter(entry -> blockSelector.getNeededOreSettings().contains(entry.getKey()))
+                    .forEach(entry -> {
+                        toRemove.add(entry.getKey());
+                        this.blockSelectorOreSettings.setValue(entry.getKey(), entry.getValue());
+                    }));
+
+        }
+
+        toRemove.forEach(this.unsortedOreSettings::remove);
     }
 
     /**
@@ -473,7 +510,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         if (lazyCustomData.isEmpty())
             return;
 
-        final CustomOreGeneratorService customOreGeneratorService = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
+        @Nullable final CustomOreGeneratorService customOreGeneratorService = Bukkit.getServicesManager().load(CustomOreGeneratorService.class);
         final Set<String> toRemove = new HashSet<>();
 
         if (customOreGeneratorService == null)

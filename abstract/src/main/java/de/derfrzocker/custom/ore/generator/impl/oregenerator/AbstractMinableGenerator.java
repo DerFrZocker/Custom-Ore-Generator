@@ -29,20 +29,29 @@ import com.google.common.collect.Sets;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
-import de.derfrzocker.custom.ore.generator.api.OreSettings;
 import org.apache.commons.lang.Validate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public abstract class AbstractMinableGenerator extends AbstractOreGenerator {
 
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEIN_SIZE));
+    protected final static OreSetting VEIN_SIZE = OreSetting.createOreSetting("VEIN_SIZE");
+    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(VEIN_SIZE));
 
-    public AbstractMinableGenerator(@NotNull final Function<String, Info> infoFunction) {
-        super("VANILLA_MINABLE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the OreGenerator as value.
+     * The oreSettingInfo gives the name of the OreGenerator and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this OreGenerator
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public AbstractMinableGenerator(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("VANILLA_MINABLE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction, oreSettingInfo);
     }
 
     @Override

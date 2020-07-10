@@ -26,10 +26,7 @@
 package de.derfrzocker.custom.ore.generator.impl.oregenerator;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
-import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -39,6 +36,7 @@ import org.bukkit.block.BlockFace;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class RootGenerator extends AbstractOreGenerator {
@@ -71,8 +69,16 @@ public class RootGenerator extends AbstractOreGenerator {
         DIRECTIONS = Collections.unmodifiableMap(blockFaces);
     }
 
-    public RootGenerator(@NotNull final Function<String, Info> infoFunction) {
-        super("ROOT_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the OreGenerator as value.
+     * The oreSettingInfo gives the name of the OreGenerator and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this OreGenerator
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public RootGenerator(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("ROOT_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction, oreSettingInfo);
     }
 
     @Override
@@ -80,17 +86,18 @@ public class RootGenerator extends AbstractOreGenerator {
         final Location chunkLocation = new Location(null, x << 4, 0, z << 4);
         final Material material = config.getMaterial();
         final Set<Material> replaceMaterials = config.getReplaceMaterials();
+        final OreSettingContainer oreSettingContainer = config.getOreGeneratorOreSettings();
 
-        final int rootLength = NumberUtil.getInt(config.getValue(ROOT_LENGTH).orElse(0d), random);
-        final int continueChange = NumberUtil.getInt(config.getValue(CONTINUE_CHANGE).orElse(0d), random);
-        final int continueTries = NumberUtil.getInt(config.getValue(CONTINUE_TRIES).orElse(0d), random);
-        final int minimumLengthSubtraction = NumberUtil.getInt(config.getValue(MINIMUM_LENGTH_SUBTRACTION).orElse(0d), random);
-        final int lengthSubtractionRange = NumberUtil.getInt(config.getValue(LENGTH_SUBTRACTION_RANGE).orElse(0d), random);
-        final int minimumChangeSubtraction = NumberUtil.getInt(config.getValue(MINIMUM_CHANGE_SUBTRACTION).orElse(0d), random);
-        final int changeSubtractionRange = NumberUtil.getInt(config.getValue(CHANGE_SUBTRACTION_RANGE).orElse(0d), random);
-        final int minimumTriesSubtraction = NumberUtil.getInt(config.getValue(MINIMUM_TRIES_SUBTRACTION).orElse(0d), random);
-        final int triesSubtractionRange = NumberUtil.getInt(config.getValue(TRIES_SUBTRACTION_RANGE).orElse(0d), random);
-        final int downChange = NumberUtil.getInt(config.getValue(DOWN_CHANGE).orElse(0d), random);
+        final int rootLength = NumberUtil.getInt(oreSettingContainer.getValue(ROOT_LENGTH).orElse(0d), random);
+        final int continueChange = NumberUtil.getInt(oreSettingContainer.getValue(CONTINUE_CHANGE).orElse(0d), random);
+        final int continueTries = NumberUtil.getInt(oreSettingContainer.getValue(CONTINUE_TRIES).orElse(0d), random);
+        final int minimumLengthSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_LENGTH_SUBTRACTION).orElse(0d), random);
+        final int lengthSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(LENGTH_SUBTRACTION_RANGE).orElse(0d), random);
+        final int minimumChangeSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_CHANGE_SUBTRACTION).orElse(0d), random);
+        final int changeSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(CHANGE_SUBTRACTION_RANGE).orElse(0d), random);
+        final int minimumTriesSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_TRIES_SUBTRACTION).orElse(0d), random);
+        final int triesSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(TRIES_SUBTRACTION_RANGE).orElse(0d), random);
+        final int downChange = NumberUtil.getInt(oreSettingContainer.getValue(DOWN_CHANGE).orElse(0d), random);
 
         for (final Location location : locations) {
             final int xPosition = chunkLocation.getBlockX() + location.getBlockX();

@@ -26,10 +26,7 @@
 package de.derfrzocker.custom.ore.generator.impl.oregenerator;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
-import de.derfrzocker.custom.ore.generator.api.Info;
-import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -41,6 +38,7 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class GlowStoneGenerator extends AbstractOreGenerator {
@@ -54,8 +52,16 @@ public class GlowStoneGenerator extends AbstractOreGenerator {
     private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(POSITIVE_VERTICAL_SCOPE, NEGATIVE_VERTICAL_SCOPE, HORIZONTAL_SCOPE, POSITIVE_TRIES, NEGATIVE_TRIES, CONNECTIONS));
     private final static BlockFace[] BLOCK_FACES = new BlockFace[]{BlockFace.UP, BlockFace.DOWN, BlockFace.WEST, BlockFace.NORTH, BlockFace.EAST, BlockFace.SOUTH};
 
-    public GlowStoneGenerator(@NotNull final Function<String, Info> infoFunction) {
-        super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the OreGenerator as value.
+     * The oreSettingInfo gives the name of the OreGenerator and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this OreGenerator
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public GlowStoneGenerator(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("GLOW_STONE_GENERATOR", NEEDED_ORE_SETTINGS, infoFunction, oreSettingInfo);
     }
 
     @Override
@@ -63,13 +69,14 @@ public class GlowStoneGenerator extends AbstractOreGenerator {
         final Location chunkLocation = new Location(null, x << 4, 0, z << 4);
         final Material material = config.getMaterial();
         final Set<Material> replaceMaterial = config.getReplaceMaterials();
+        final OreSettingContainer oreSettingContainer = config.getOreGeneratorOreSettings();
 
-        final int positiveVerticalScope = NumberUtil.getInt(config.getValue(POSITIVE_VERTICAL_SCOPE).orElse(0d), random);
-        final int negativeVerticalScope = NumberUtil.getInt(config.getValue(NEGATIVE_VERTICAL_SCOPE).orElse(12d), random);
-        final int horizontalScope = NumberUtil.getInt(config.getValue(HORIZONTAL_SCOPE).orElse(8d), random);
-        final int positiveTries = NumberUtil.getInt(config.getValue(POSITIVE_TRIES).orElse(0d), random);
-        final int negativeTries = NumberUtil.getInt(config.getValue(NEGATIVE_TRIES).orElse(1500d), random);
-        final int connections = NumberUtil.getInt(config.getValue(CONNECTIONS).orElse(1d), random);
+        final int positiveVerticalScope = NumberUtil.getInt(oreSettingContainer.getValue(POSITIVE_VERTICAL_SCOPE).orElse(0d), random);
+        final int negativeVerticalScope = NumberUtil.getInt(oreSettingContainer.getValue(NEGATIVE_VERTICAL_SCOPE).orElse(12d), random);
+        final int horizontalScope = NumberUtil.getInt(oreSettingContainer.getValue(HORIZONTAL_SCOPE).orElse(8d), random);
+        final int positiveTries = NumberUtil.getInt(oreSettingContainer.getValue(POSITIVE_TRIES).orElse(0d), random);
+        final int negativeTries = NumberUtil.getInt(oreSettingContainer.getValue(NEGATIVE_TRIES).orElse(1500d), random);
+        final int connections = NumberUtil.getInt(oreSettingContainer.getValue(CONNECTIONS).orElse(1d), random);
 
         for (final Location location : locations) {
             final int xPosition = chunkLocation.getBlockX() + location.getBlockX();

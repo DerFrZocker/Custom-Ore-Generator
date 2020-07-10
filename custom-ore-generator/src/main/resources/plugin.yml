@@ -30,7 +30,7 @@ permissions:
     default: op
     children:
       custom.ore.gen.set: true
-      custom.ore.gen.set.value: true
+      custom.ore.gen.set.value.*: true
       custom.ore.gen.set.biome: true
       custom.ore.gen.set.customdata: true
       custom.ore.gen.set.replace-material: true
@@ -41,11 +41,28 @@ permissions:
     default: op
     children:
       custom.ore.gen: true
+  custom.ore.gen.set.value.*:
+    description: "Gives access to all 'set value' subcommands"
+    default: op
+    children:
+      custom.ore.gen.set.value: true
+      custom.ore.gen.set.value.ore-generator: true
+      custom.ore.gen.set.value.block-selector: true
   custom.ore.gen.set.value:
-    description: "Gives access to the subcommand 'set value'"
+    description: "Base permission of the 'set value' subcommand"
     default: op
     children:
       custom.ore.gen.set: true
+  custom.ore.gen.set.value.ore-generator:
+    description: "Gives access to the subcommand 'set value ore-generator'"
+    default: op
+    children:
+      custom.ore.gen.set.value: true
+  custom.ore.gen.set.value.block-selector:
+    description: "Gives access to the subcommand 'set value block-selector'"
+    default: op
+    children:
+      custom.ore.gen.set.value: true
   custom.ore.gen.set.biome:
     description: "Gives access to the subcommand 'set biome'"
     default: op

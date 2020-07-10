@@ -29,7 +29,7 @@ import com.google.common.base.Predicate;
 import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import de.derfrzocker.custom.ore.generator.api.OreSettings;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.impl.oregenerator.AbstractMinableGenerator;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.ChunkAccessImpl;
 import de.derfrzocker.spigot.utils.NumberUtil;
@@ -43,17 +43,26 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class MinableGenerator_v1_12_R1 extends AbstractMinableGenerator {
 
-    public MinableGenerator_v1_12_R1(@NotNull final Function<String, Info> infoFunction) {
-        super(infoFunction);
+    /**
+     * The infoFunction gives the name of the OreGenerator as value.
+     * The oreSettingInfo gives the name of the OreGenerator and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this OreGenerator
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public MinableGenerator_v1_12_R1(@NotNull Function<String, Info> infoFunction, @NotNull BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super(infoFunction, oreSettingInfo);
     }
 
     @Override
     public void generate(@NotNull final OreConfig config, @NotNull final ChunkAccess chunkAccess, final int x, final int z, @NotNull final Random random, @NotNull final Biome biome, @NotNull final Set<Location> locations) {
-        final int veinSize = NumberUtil.getInt(config.getValue(OreSettings.VEIN_SIZE).orElse(0d), random);
+        final int veinSize = NumberUtil.getInt(config.getOreGeneratorOreSettings().getValue(VEIN_SIZE).orElse(0d), random);
 
         if (veinSize == 0)
             return;

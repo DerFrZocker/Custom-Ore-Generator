@@ -37,6 +37,8 @@ public final class Permissions {
     public final Permission CREATE_PERMISSION;
     public final Permission SET_PERMISSION;
     public final Permission SET_VALUE_PERMISSION;
+    public final Permission SET_VALUE_ORE_GENERATOR_PERMISSION;
+    public final Permission SET_VALUE_BLOCK_SELECTOR_PERMISSION;
     public final Permission SET_BIOME_PERMISSION;
     public final Permission SET_CUSTOMDATA_PERMISSION;
     public final Permission SET_REPLACE_MATERIAL_PERMISSION;
@@ -54,6 +56,10 @@ public final class Permissions {
 
         SET_PERMISSION = new Permission(BASE_PERMISSION, "set", javaPlugin, true);
         SET_VALUE_PERMISSION = new Permission(SET_PERMISSION, "value", javaPlugin, true);
+
+        SET_VALUE_ORE_GENERATOR_PERMISSION = new Permission(SET_VALUE_PERMISSION, "ore-generator", javaPlugin, true);
+        SET_VALUE_BLOCK_SELECTOR_PERMISSION = new Permission(SET_VALUE_PERMISSION, "block-selector", javaPlugin, true);
+
         SET_BIOME_PERMISSION = new Permission(SET_PERMISSION, "biome", javaPlugin, true);
         SET_CUSTOMDATA_PERMISSION = new Permission(SET_PERMISSION, "customdata", javaPlugin, true);
         SET_REPLACE_MATERIAL_PERMISSION = new Permission(SET_PERMISSION, "replace-material", javaPlugin, true);

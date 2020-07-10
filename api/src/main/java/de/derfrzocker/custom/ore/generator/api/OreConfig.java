@@ -144,61 +144,19 @@ public interface OreConfig {
     String getBlockSelector();
 
     /**
-     * If this OreConfig contains the value of the given OreSetting,
-     * it returns an Optional that contains the value,
-     * otherwise it return an empty Optional
-     *
-     * @param oreSetting which must be non-null
-     * @return an Optional that hold the value of the given OreSetting,
-     * or an empty Optional if the OreConfig not contain the given oreSetting.
-     * @throws IllegalArgumentException if oreSetting is null
+     * @return the OreSettingContainer for the OreGenerator
      */
     @NotNull
-    Optional<Double> getValue(@NotNull OreSetting oreSetting);
+    OreSettingContainer getOreGeneratorOreSettings();
 
     /**
-     * This sets the given OreSetting with the given value, to this
-     * OreConfig. If this OreConfig already contains the given OreSetting,
-     * than the old value get's replaced.
-     *
-     * @param oreSetting which must be non-null
-     * @param value      for the given setting
-     * @throws IllegalArgumentException if oreSetting is null
-     */
-    void setValue(@NotNull OreSetting oreSetting, double value);
-
-    /**
-     * Removes the value of the given OreSetting from this OreConfig.
-     * If this OreConfig don't contains a value of the given OreSetting, nothing happens.
-     *
-     * @param oreSetting which get's removed
-     * @return true if it was removed, false if this OreConfig don't have the OreSetting.
-     * @throws IllegalArgumentException if oreSetting is null
-     */
-    boolean removeValue(@NotNull OreSetting oreSetting);
-
-    /**
-     * Returns a copy of all OreSettings and it's values, which this OreConfig has.
-     * <p>
-     * The map that get's returned is maybe immutable.
-     *
-     * @return a map with all OreSetting and values
+     * @return the OreSettingContainer for the BlockSelector
      */
     @NotNull
-    Map<OreSetting, Double> getOreSettings();
+    OreSettingContainer getBlockSelectorOreSettings();
 
     /**
-     * Returns a copy of all lazy OreSettings and it's values, which this OreConfig has.
-     * Lazy OreSettings are OreSetting, which can be loaded at the moment. Because their are not
-     * registered jet.
-     *
-     * @return a map with all lazy OreSetting and values
-     */
-    @NotNull
-    Map<String, Double> getLazyOreSettings();
-
-    /**
-     * Returns a copy of all CustomData and it's values, which this OreConfig has.
+     * Returns a copy of all loaded CustomData and it's values, which this OreConfig has.
      * <p>
      * The map that get's returned is maybe immutable.
      *

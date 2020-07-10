@@ -1,3 +1,4 @@
+version: 2
 name: '%%translation:[ore-config.factory.gui.menu.name]%'
 rows: 5
 abort:
@@ -77,9 +78,10 @@ step:
   ore-generator: 23
   block-selector: 24
   biome: 25
-  ore-settings: 28
-  custom-datas: 29
-  world: 30
+  ore-generator-ore-settings: 28
+  block-selector-ore-settings: 29
+  custom-datas: 30
+  world: 31
 decorations:
   '0':
     slot:

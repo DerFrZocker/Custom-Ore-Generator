@@ -26,7 +26,10 @@
 package de.derfrzocker.custom.ore.generator.impl.blockselector;
 
 import com.google.common.collect.Sets;
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.ChunkInfo;
+import de.derfrzocker.custom.ore.generator.api.Info;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.spigot.utils.NumberUtil;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -36,14 +39,24 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.function.BiFunction;
 import java.util.function.Function;
 
 public class HighestBlockBlockSelector extends AbstractBlockSelector {
 
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(OreSettings.VEINS_PER_CHUNK));
+    private final static OreSetting VEINS_PER_CHUNK = OreSetting.createOreSetting("VEINS_PER_CHUNK");
+    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(VEINS_PER_CHUNK));
 
-    public HighestBlockBlockSelector(@NotNull Function<String, Info> infoFunction) {
-        super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, infoFunction);
+    /**
+     * The infoFunction gives the name of the BlockSelector as value.
+     * The oreSettingInfo gives the name of the BlockSelector and the OreSetting as values.
+     *
+     * @param infoFunction   function to get the info object of this BlockSelector
+     * @param oreSettingInfo biFunction to get the info object of a given OreSetting
+     * @throws IllegalArgumentException if one of the arguments are null
+     */
+    public HighestBlockBlockSelector(@NotNull final Function<String, Info> infoFunction, @NotNull final BiFunction<String, OreSetting, Info> oreSettingInfo) {
+        super("HIGHEST_BLOCK", NEEDED_ORE_SETTINGS, infoFunction, oreSettingInfo);
     }
 
     @NotNull
@@ -51,7 +64,7 @@ public class HighestBlockBlockSelector extends AbstractBlockSelector {
     public Set<Location> selectBlocks(@NotNull final ChunkInfo chunkInfo, @NotNull final OreConfig config, @NotNull final Random random) {
         final Set<Location> locations = new HashSet<>();
 
-        final int veinsPerChunk = NumberUtil.getInt(config.getValue(OreSettings.VEINS_PER_CHUNK).orElse(0d), random);
+        final int veinsPerChunk = NumberUtil.getInt(config.getBlockSelectorOreSettings().getValue(VEINS_PER_CHUNK).orElse(0d), random);
 
         for (int i = 0; i < veinsPerChunk; i++) {
             final int x = random.nextInt(16);
