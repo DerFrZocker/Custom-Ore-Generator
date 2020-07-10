@@ -120,7 +120,7 @@ public class CustomOreGenerator extends JavaPlugin {
             checkFile("data/factory/gui/menu-gui.yml");
         }
 
-        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), Version.getCurrent());
+        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), Version.getCurrent(), Version.isPaper());
 
         initWorldHandler();
         registerStandardOreGenerators(registerUtil);
@@ -146,7 +146,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_11_R1, Version.v1_11_R1, () -> new MinableGenerator_v1_11_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_12_R1, Version.v1_12_R1, () -> new MinableGenerator_v1_12_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_13_R1, Version.v1_13_R1, () -> new MinableGenerator_v1_13_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, false, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, true, () -> new MinableGenerator_v1_13_R2_paper(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);

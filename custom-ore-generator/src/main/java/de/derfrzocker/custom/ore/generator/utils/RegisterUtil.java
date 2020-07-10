@@ -42,8 +42,9 @@ public class RegisterUtil {
     private final CustomOreGeneratorService service;
     @NotNull
     private final Version currentVersion;
+    private final boolean paper;
 
-    public RegisterUtil(@NotNull Plugin plugin, @NotNull final CustomOreGeneratorService service, @NotNull final Version currentVersion) {
+    public RegisterUtil(@NotNull Plugin plugin, @NotNull final CustomOreGeneratorService service, @NotNull final Version currentVersion, final boolean paper) {
         Validate.notNull(plugin, "Plugin can not be null");
         Validate.notNull(service, "CustomOreGeneratorService can not be null");
         Validate.notNull(currentVersion, "Version can not be null");
@@ -51,6 +52,7 @@ public class RegisterUtil {
         this.plugin = plugin;
         this.service = service;
         this.currentVersion = currentVersion;
+        this.paper = paper;
     }
 
     // OreGenerator
@@ -79,7 +81,7 @@ public class RegisterUtil {
     public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, final boolean paper, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
         if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
             if (maximumVersion.isOlderOrSameVersion(this.currentVersion)) {
-                if (Version.isPaper()) {
+                if (paper && this.paper) {
                     register(oreGenerator.get(), defaultOreGenerator);
                 }
             }
