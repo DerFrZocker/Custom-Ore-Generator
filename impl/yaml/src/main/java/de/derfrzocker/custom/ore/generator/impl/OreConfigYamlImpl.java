@@ -280,6 +280,13 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         return this.blockSelector;
     }
 
+    @Override
+    public void setBlockSelector(@NotNull final BlockSelector blockSelector) {
+        Validate.notNull(blockSelector, "BlockSelector can not be null");
+
+        this.blockSelector = blockSelector.getName();
+    }
+
     @NotNull
     @Override
     public OreSettingContainer getOreGeneratorOreSettings() {
@@ -294,13 +301,6 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         checkUnsortedValues();
 
         return this.blockSelectorOreSettings;
-    }
-
-    @Override
-    public void setBlockSelector(@NotNull final BlockSelector blockSelector) {
-        Validate.notNull(blockSelector, "BlockSelector can not be null");
-
-        this.blockSelector = blockSelector.getName();
     }
 
     @NotNull

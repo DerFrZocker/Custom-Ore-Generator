@@ -57,20 +57,6 @@ public class LazyWorldConfigCache implements ReloadAble {
     }
 
     /**
-     * @param worldConfig to set
-     * @throws IllegalArgumentException if worldConfig is null
-     * @throws RuntimeException         if the file name and the worldConfig name does't match
-     */
-    public void setWorldConfig(@NotNull final WorldConfig worldConfig) {
-        Validate.notNull(worldConfig, "worldConfig can not be null");
-
-        if (!worldConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
-            throw new RuntimeException("File name " + file.getName() + " and WorldConfig name " + worldConfig.getName() + " does not match");
-
-        this.worldConfig = worldConfig;
-    }
-
-    /**
      * When this LazyWorldConfigCache has a WorldConfig loaded, it will save it to disk.
      * Nothing will happen, if this LazyWorldConfigCache does not holds a WorldConfig
      */
@@ -135,6 +121,20 @@ public class LazyWorldConfigCache implements ReloadAble {
         }
 
         return worldConfig;
+    }
+
+    /**
+     * @param worldConfig to set
+     * @throws IllegalArgumentException if worldConfig is null
+     * @throws RuntimeException         if the file name and the worldConfig name does't match
+     */
+    public void setWorldConfig(@NotNull final WorldConfig worldConfig) {
+        Validate.notNull(worldConfig, "worldConfig can not be null");
+
+        if (!worldConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
+            throw new RuntimeException("File name " + file.getName() + " and WorldConfig name " + worldConfig.getName() + " does not match");
+
+        this.worldConfig = worldConfig;
     }
 
     @Override

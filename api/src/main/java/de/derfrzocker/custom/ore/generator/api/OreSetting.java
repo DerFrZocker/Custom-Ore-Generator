@@ -36,6 +36,16 @@ public final class OreSetting {
 
     private static final Map<String, OreSetting> ORE_SETTINGS = Collections.synchronizedMap(new HashMap<>());
     private static final Pattern NAME_PATTER = Pattern.compile("^[A-Z_]*$");
+    @NotNull
+    private final String name;
+
+    private OreSetting(@NotNull final String name) {
+        Validate.notNull(name, "Name can't be null");
+        Validate.notEmpty(name, "Name can't be empty");
+        Validate.isTrue(NAME_PATTER.matcher(name).matches(), "Name " + name + " doesn't match the regex: ^[A-Z_]*$");
+
+        this.name = name;
+    }
 
     /**
      * @param name of the OreSetting
@@ -74,17 +84,6 @@ public final class OreSetting {
      */
     public static Set<OreSetting> getOreSettings() {
         return new HashSet<>(ORE_SETTINGS.values());
-    }
-
-    @NotNull
-    private final String name;
-
-    private OreSetting(@NotNull final String name) {
-        Validate.notNull(name, "Name can't be null");
-        Validate.notEmpty(name, "Name can't be empty");
-        Validate.isTrue(NAME_PATTER.matcher(name).matches(), "Name " + name + " doesn't match the regex: ^[A-Z_]*$");
-
-        this.name = name;
     }
 
     /**

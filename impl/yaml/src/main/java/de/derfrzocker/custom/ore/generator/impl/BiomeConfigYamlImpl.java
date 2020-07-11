@@ -53,6 +53,18 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
         this.biome = biome;
     }
 
+    public static BiomeConfigYamlImpl deserialize(Map<String, Object> map) {
+        BiomeConfigYamlImpl biomeConfig = new BiomeConfigYamlImpl(Biome.valueOf((String) map.get(BIOME_KEY)));
+
+        map.entrySet().stream().filter(BiomeConfigYamlImpl::isOreConfig).map(entry -> (OreConfig) entry.getValue()).forEach(biomeConfig::addOreConfig);
+
+        return biomeConfig;
+    }
+
+    private static boolean isOreConfig(Map.Entry<String, Object> entry) {
+        return entry.getValue() instanceof OreConfig;
+    }
+
     @Override
     public Optional<OreConfig> getOreConfig(Material material) {
         return Optional.ofNullable(oreConfigs.get(material));
@@ -73,18 +85,6 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
     @Override
     public Map<String, Object> serialize() {
         throw new UnsupportedOperationException("Not supported");
-    }
-
-    public static BiomeConfigYamlImpl deserialize(Map<String, Object> map) {
-        BiomeConfigYamlImpl biomeConfig = new BiomeConfigYamlImpl(Biome.valueOf((String) map.get(BIOME_KEY)));
-
-        map.entrySet().stream().filter(BiomeConfigYamlImpl::isOreConfig).map(entry -> (OreConfig) entry.getValue()).forEach(biomeConfig::addOreConfig);
-
-        return biomeConfig;
-    }
-
-    private static boolean isOreConfig(Map.Entry<String, Object> entry) {
-        return entry.getValue() instanceof OreConfig;
     }
 
 }

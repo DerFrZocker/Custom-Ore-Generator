@@ -71,6 +71,12 @@ public interface CustomOreGeneratorService {
     Set<BlockSelector> getBlockSelectors();
 
     /**
+     * @return the default BlockSelector or null if not set
+     */
+    @Nullable
+    BlockSelector getDefaultBlockSelector();
+
+    /**
      * Set's the default BlockSelector if a default BlockSelector is
      * already set, it get's overridden by the new one.
      *
@@ -78,12 +84,6 @@ public interface CustomOreGeneratorService {
      * @throws IllegalArgumentException if the blockSelector is not null and not registered
      */
     void setDefaultBlockSelector(@Nullable BlockSelector blockSelector);
-
-    /**
-     * @return the default BlockSelector or null if not set
-     */
-    @Nullable
-    BlockSelector getDefaultBlockSelector();
 
     /**
      * If this CustomOreGeneratorService have the OreGenerator registered
@@ -119,6 +119,12 @@ public interface CustomOreGeneratorService {
     Set<OreGenerator> getOreGenerators();
 
     /**
+     * @return the default OreGenerator or null if not set
+     */
+    @Nullable
+    OreGenerator getDefaultOreGenerator();
+
+    /**
      * Set's the default OreGenerator if a default OreGenerator is
      * already set, it get's overridden by the new one.
      *
@@ -126,12 +132,6 @@ public interface CustomOreGeneratorService {
      * @throws IllegalArgumentException if the oreGenerator is not null and not registered
      */
     void setDefaultOreGenerator(@Nullable OreGenerator oreGenerator);
-
-    /**
-     * @return the default OreGenerator or null if not set
-     */
-    @Nullable
-    OreGenerator getDefaultOreGenerator();
 
     /**
      * If this CustomOreGeneratorService have the CustomData registered

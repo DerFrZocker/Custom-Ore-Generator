@@ -57,20 +57,6 @@ public class LazyOreConfigCache implements ReloadAble {
     }
 
     /**
-     * @param oreConfig to set
-     * @throws IllegalArgumentException if oreConfig is null
-     * @throws RuntimeException         if the file name and the oreConfig name does't match
-     */
-    public void setOreConfig(@NotNull final OreConfig oreConfig) {
-        Validate.notNull(oreConfig, "OreConfig can not be null");
-
-        if (!oreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
-            throw new RuntimeException("File name " + file.getName() + " and OreConfig name " + oreConfig.getName() + " does not match");
-
-        this.oreConfig = oreConfig;
-    }
-
-    /**
      * When this LazyOreConfigCache has a OreConfig loaded, it will save it to disk.
      * Nothing will happen, if this LazyOreConfigCache does not holds a OreConfig
      */
@@ -136,6 +122,20 @@ public class LazyOreConfigCache implements ReloadAble {
         }
 
         return oreConfig;
+    }
+
+    /**
+     * @param oreConfig to set
+     * @throws IllegalArgumentException if oreConfig is null
+     * @throws RuntimeException         if the file name and the oreConfig name does't match
+     */
+    public void setOreConfig(@NotNull final OreConfig oreConfig) {
+        Validate.notNull(oreConfig, "OreConfig can not be null");
+
+        if (!oreConfig.getName().equals(file.getName().substring(0, file.getName().length() - 4)))
+            throw new RuntimeException("File name " + file.getName() + " and OreConfig name " + oreConfig.getName() + " does not match");
+
+        this.oreConfig = oreConfig;
     }
 
     @Override

@@ -59,19 +59,19 @@ public interface OreConfig {
     boolean isActivated();
 
     /**
+     * Set if this OreConfig should get generated or not.
+     *
+     * @param activated true for generate, false for not generate
+     */
+    void setActivated(boolean activated);
+
+    /**
      * Return if this OreConfig should be generated on all biomes,
      * or only on the biomes that are in the Set which getBiomes() returns.
      *
      * @return true if this should generate on all biomes other wise false
      */
     boolean shouldGeneratedAll(); //TODO maybe better name
-
-    /**
-     * Set if this OreConfig should get generated or not.
-     *
-     * @param activated true for generate, false for not generate
-     */
-    void setActivated(boolean activated);
 
     /**
      * Set if this OreConfig should get generated on all biomes.
@@ -114,6 +114,11 @@ public interface OreConfig {
     @NotNull
     Material getMaterial();
 
+    /**
+     * @return the name of the OreGenerator
+     */
+    @NotNull
+    String getOreGenerator();
 
     /**
      * Set the OreGenerator of this OreConfig
@@ -124,10 +129,10 @@ public interface OreConfig {
     void setOreGenerator(@NotNull OreGenerator oreGenerator);
 
     /**
-     * @return the name of the OreGenerator
+     * @return the name of the BlockSelector
      */
     @NotNull
-    String getOreGenerator();
+    String getBlockSelector();
 
     /**
      * Set the BlockSelector of this OreConfig
@@ -136,12 +141,6 @@ public interface OreConfig {
      * @throws IllegalArgumentException if blockSelector is null
      */
     void setBlockSelector(@NotNull BlockSelector blockSelector);
-
-    /**
-     * @return the name of the BlockSelector
-     */
-    @NotNull
-    String getBlockSelector();
 
     /**
      * @return the OreSettingContainer for the OreGenerator
