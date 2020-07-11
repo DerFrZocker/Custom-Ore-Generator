@@ -12,14 +12,6 @@ import java.util.*;
 
 public class OreConfigBuilder {
 
-    @Nullable
-    private String name;
-    @Nullable
-    private Material material;
-    @Nullable
-    private OreGenerator oreGenerator;
-    @Nullable
-    private BlockSelector blockSelector;
     @NotNull
     private final Set<Material> replaceMaterial = new LinkedHashSet<>();
     @NotNull
@@ -36,7 +28,14 @@ public class OreConfigBuilder {
     private final Set<World> worlds = new LinkedHashSet<>();
     @NotNull
     private final Map<CustomData, Object> foundCustomData = new LinkedHashMap<>();
-
+    @Nullable
+    private String name;
+    @Nullable
+    private Material material;
+    @Nullable
+    private OreGenerator oreGenerator;
+    @Nullable
+    private BlockSelector blockSelector;
 
     public static OreConfigBuilder newBuilder() {
         return new OreConfigBuilder();

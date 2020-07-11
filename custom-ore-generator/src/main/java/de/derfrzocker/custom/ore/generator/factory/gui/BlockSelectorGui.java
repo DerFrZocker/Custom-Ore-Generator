@@ -74,6 +74,13 @@ public class BlockSelectorGui extends PageGui<BlockSelector> {
 
     }
 
+    private static BlockSelectorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+        if (blockSelectorGuiSettings == null)
+            blockSelectorGuiSettings = new BlockSelectorGuiSettings(javaPlugin, "data/factory/gui/block-selector-gui.yml", true);
+
+        return blockSelectorGuiSettings;
+    }
+
     private ItemStack getItemStack(@NotNull final BlockSelector blockSelector) {
         final ItemStack itemStack = blockSelectorGuiSettings.getBlockSelectorItemStack();
 
@@ -84,13 +91,6 @@ public class BlockSelectorGui extends PageGui<BlockSelector> {
                 new MessageValue("name", blockSelector.getName()),
                 new MessageValue("display-name", blockSelector.getInfo().getDisplayName())
         );
-    }
-
-    private static BlockSelectorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (blockSelectorGuiSettings == null)
-            blockSelectorGuiSettings = new BlockSelectorGuiSettings(javaPlugin, "data/factory/gui/block-selector-gui.yml", true);
-
-        return blockSelectorGuiSettings;
     }
 
 }

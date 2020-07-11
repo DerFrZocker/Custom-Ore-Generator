@@ -81,19 +81,19 @@ public class OreSettingsGui extends PageGui<OreSetting> {
 
     }
 
+    private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+        if (oreSettingsGuiSettings == null)
+            oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/factory/gui/ore-settings-gui.yml", true);
+
+        return oreSettingsGuiSettings;
+    }
+
     private ItemStack getItemStack(@NotNull final OreSetting oreSetting) {
         final ItemStack itemStack = oreSettingsGuiSettings.getOreSettingItemStack();
 
         itemStack.setType(this.oreSettingsAble.getOreSettingInfo(oreSetting).getMaterial());
 
         return MessageUtil.replaceItemStack(getPlugin(), itemStack, new MessageValue("name", oreSettingsAble.getOreSettingInfo(oreSetting).getDisplayName()));
-    }
-
-    private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (oreSettingsGuiSettings == null)
-            oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/factory/gui/ore-settings-gui.yml", true);
-
-        return oreSettingsGuiSettings;
     }
 
 }

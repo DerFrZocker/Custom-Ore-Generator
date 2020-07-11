@@ -30,6 +30,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.TickBlockApp
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.TickBlockApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.TickBlockApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.TickBlockApplier_v1_15_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.TickBlockApplier_v1_16_R1;
 import de.derfrzocker.spigot.utils.Version;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
@@ -75,6 +76,8 @@ public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> i
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_16_R1:
+                return new TickBlockApplier_v1_16_R1(this);
             case v1_15_R1:
                 return new TickBlockApplier_v1_15_R1(this);
             case v1_14_R1:

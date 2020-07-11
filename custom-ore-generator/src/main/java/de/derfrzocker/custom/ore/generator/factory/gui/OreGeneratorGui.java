@@ -74,6 +74,13 @@ public class OreGeneratorGui extends PageGui<OreGenerator> {
         }
     }
 
+    private static OreGeneratorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+        if (oreGeneratorGuiSettings == null)
+            oreGeneratorGuiSettings = new OreGeneratorGuiSettings(javaPlugin, "data/factory/gui/ore-generator-gui.yml", true);
+
+        return oreGeneratorGuiSettings;
+    }
+
     private ItemStack getItemStack(@NotNull final OreGenerator oreGenerator) {
         final ItemStack itemStack = oreGeneratorGuiSettings.getOreGeneratorItemStack();
 
@@ -84,13 +91,6 @@ public class OreGeneratorGui extends PageGui<OreGenerator> {
                 new MessageValue("name", oreGenerator.getName()),
                 new MessageValue("display-name", oreGenerator.getInfo().getDisplayName())
         );
-    }
-
-    private static OreGeneratorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
-        if (oreGeneratorGuiSettings == null)
-            oreGeneratorGuiSettings = new OreGeneratorGuiSettings(javaPlugin, "data/factory/gui/ore-generator-gui.yml", true);
-
-        return oreGeneratorGuiSettings;
     }
 
 }
