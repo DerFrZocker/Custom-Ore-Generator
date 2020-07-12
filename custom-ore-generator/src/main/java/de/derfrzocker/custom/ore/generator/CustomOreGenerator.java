@@ -71,7 +71,6 @@ import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.RegisterUtil;
 import de.derfrzocker.spigot.utils.Config;
 import de.derfrzocker.spigot.utils.Version;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -129,7 +128,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerStandardBlockSelector(registerUtil);
         registerStandardCustomDatas(registerUtil);
 
-        new Metrics(this);
+        new CustomOreGeneratorMetrics(this, CustomOreGeneratorServiceSupplier.INSTANCE);
 
         final CustomOreGeneratorService service = CustomOreGeneratorServiceSupplier.INSTANCE.get();
         // re-save all ore-configs to apply new save formats
