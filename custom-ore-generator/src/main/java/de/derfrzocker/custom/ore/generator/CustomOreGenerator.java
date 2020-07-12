@@ -130,6 +130,14 @@ public class CustomOreGenerator extends JavaPlugin {
         registerStandardCustomDatas(registerUtil);
 
         new Metrics(this);
+
+        final CustomOreGeneratorService service = CustomOreGeneratorServiceSupplier.INSTANCE.get();
+        // re-save all ore-configs to apply new save formats
+        service.getOreConfigs().forEach(service::saveOreConfig);
+
+        // re-save all world-configs to apply new save formats
+        service.getWorldConfigs().forEach(service::saveWorldConfig);
+
     }
 
     private void registerStandardOreGenerators(@NotNull final RegisterUtil registerUtil) {
