@@ -1,0 +1,3 @@
+display-name: "%%translation:[info.ore-generator.ROOT_GENERATOR.ore-setting.CONTINUE_CHANCE.display-name]%"
+material: COAL
+description: "%%translation:[info.ore-generator.ROOT_GENERATOR.ore-setting.CONTINUE_CHANCE.description]%"

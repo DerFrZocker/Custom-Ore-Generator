@@ -200,22 +200,22 @@ info:
       display-name: "Root Generator"
       description: "A generator which is based on root growth"
       ore-setting:
-        CHANGE_SUBTRACTION_RANGE:
+        CHANCE_SUBTRACTION_RANGE:
           display-name: "Change Subtraction Range"
           description: "The range from which the Continue Change is additionally shortened"
-        CONTINUE_CHANGE:
+        CONTINUE_CHANCE:
           display-name: "Continue Change"
-          description: "The change, that a new root is created"
+          description: "The chance, that a new root is created"
         CONTINUE_TRIES:
           display-name: "Continue Tries"
           description: "How often it tries, per block, to continue"
-        DOWN_CHANGE:
+        DOWN_CHANCE:
           display-name: "Down Change"
-          description: "The change, that a root is going down"
+          description: "The chance, that a root is going down"
         LENGTH_SUBTRACTION_RANGE:
           display-name: "Length Subtraction Range"
           description: "The range from which, the Root Length is additionally shortened"
-        MINIMUM_CHANGE_SUBTRACTION:
+        MINIMUM_CHANCE_SUBTRACTION:
           display-name: "Minimum Change Subtraction"
           description: "How much from the Continue Change gets subtracted minimum"
         MINIMUM_LENGTH_SUBTRACTION:

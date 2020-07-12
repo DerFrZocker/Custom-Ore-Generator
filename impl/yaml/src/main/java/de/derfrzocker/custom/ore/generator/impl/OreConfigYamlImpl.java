@@ -165,20 +165,34 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             }
 
             if (map.containsKey(ORE_SETTINGS_KEY)) {
-                ((Map<String, Object>) map.get(ORE_SETTINGS_KEY)).forEach((setting, value) -> oreConfig.unsortedOreSettings.put(OreSetting.createOreSetting(setting), NumberConversions.toDouble(value)));
+                ((Map<String, Object>) map.get(ORE_SETTINGS_KEY)).forEach((setting, value) -> oreConfig.unsortedOreSettings.put(OreSetting.createOreSetting(replace(setting)), NumberConversions.toDouble(value)));
             }
 
             if (map.containsKey(ORE_GENERATOR_SETTINGS_KEY)) {
-                ((OreSettingContainer) map.get(ORE_GENERATOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.oreGeneratorOreSettings.setValue(oreSetting, aDouble));
+                ((OreSettingContainer) map.get(ORE_GENERATOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.oreGeneratorOreSettings.setValue(OreSetting.createOreSetting(replace(oreSetting.getName())), aDouble));
             }
 
             if (map.containsKey(BLOCK_SELECTOR_SETTINGS_KEY)) {
-                ((OreSettingContainer) map.get(BLOCK_SELECTOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.blockSelectorOreSettings.setValue(oreSetting, aDouble));
+                ((OreSettingContainer) map.get(BLOCK_SELECTOR_SETTINGS_KEY)).getValues().forEach((oreSetting, aDouble) -> oreConfig.blockSelectorOreSettings.setValue(OreSetting.createOreSetting(replace(oreSetting.getName())), aDouble));
             }
 
         }
 
         return oreConfig;
+    }
+
+    //TODO remove in newer version
+    private static final Map<String, String> REPLACMENTS = new HashMap<>();
+
+    static {
+        REPLACMENTS.put("CONTINUE_CHANGE", "CONTINUE_CHANCE");
+        REPLACMENTS.put("MINIMUM_CHANGE_SUBTRACTION", "MINIMUM_CHANCE_SUBTRACTION");
+        REPLACMENTS.put("CHANGE_SUBTRACTION_RANGE", "CHANCE_SUBTRACTION_RANGE");
+        REPLACMENTS.put("DOWN_CHANGE", "DOWN_CHANCE");
+    }
+
+    private static String replace(@NotNull final String oreSetting) {
+        return REPLACMENTS.getOrDefault(oreSetting, oreSetting);
     }
 
     /**

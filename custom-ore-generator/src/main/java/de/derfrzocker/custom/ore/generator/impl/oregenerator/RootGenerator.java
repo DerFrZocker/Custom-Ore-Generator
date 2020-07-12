@@ -42,16 +42,16 @@ import java.util.function.Function;
 public class RootGenerator extends AbstractOreGenerator {
 
     private final static OreSetting ROOT_LENGTH = OreSetting.createOreSetting("ROOT_LENGTH");
-    private final static OreSetting CONTINUE_CHANGE = OreSetting.createOreSetting("CONTINUE_CHANGE");
+    private final static OreSetting CONTINUE_CHANCE = OreSetting.createOreSetting("CONTINUE_CHANCE");
     private final static OreSetting CONTINUE_TRIES = OreSetting.createOreSetting("CONTINUE_TRIES");
     private final static OreSetting MINIMUM_LENGTH_SUBTRACTION = OreSetting.createOreSetting("MINIMUM_LENGTH_SUBTRACTION");
     private final static OreSetting LENGTH_SUBTRACTION_RANGE = OreSetting.createOreSetting("LENGTH_SUBTRACTION_RANGE");
-    private final static OreSetting MINIMUM_CHANGE_SUBTRACTION = OreSetting.createOreSetting("MINIMUM_CHANGE_SUBTRACTION");
-    private final static OreSetting CHANGE_SUBTRACTION_RANGE = OreSetting.createOreSetting("CHANGE_SUBTRACTION_RANGE");
+    private final static OreSetting MINIMUM_CHANCE_SUBTRACTION = OreSetting.createOreSetting("MINIMUM_CHANCE_SUBTRACTION");
+    private final static OreSetting CHANCE_SUBTRACTION_RANGE = OreSetting.createOreSetting("CHANCE_SUBTRACTION_RANGE");
     private final static OreSetting MINIMUM_TRIES_SUBTRACTION = OreSetting.createOreSetting("MINIMUM_TRIES_SUBTRACTION");
     private final static OreSetting TRIES_SUBTRACTION_RANGE = OreSetting.createOreSetting("TRIES_SUBTRACTION_RANGE");
-    private final static OreSetting DOWN_CHANGE = OreSetting.createOreSetting("DOWN_CHANGE");
-    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(ROOT_LENGTH, CONTINUE_CHANGE, CONTINUE_TRIES, MINIMUM_LENGTH_SUBTRACTION, LENGTH_SUBTRACTION_RANGE, MINIMUM_CHANGE_SUBTRACTION, CHANGE_SUBTRACTION_RANGE, MINIMUM_TRIES_SUBTRACTION, TRIES_SUBTRACTION_RANGE, DOWN_CHANGE));
+    private final static OreSetting DOWN_CHANCE = OreSetting.createOreSetting("DOWN_CHANCE");
+    private final static Set<OreSetting> NEEDED_ORE_SETTINGS = Collections.unmodifiableSet(Sets.newHashSet(ROOT_LENGTH, CONTINUE_CHANCE, CONTINUE_TRIES, MINIMUM_LENGTH_SUBTRACTION, LENGTH_SUBTRACTION_RANGE, MINIMUM_CHANCE_SUBTRACTION, CHANCE_SUBTRACTION_RANGE, MINIMUM_TRIES_SUBTRACTION, TRIES_SUBTRACTION_RANGE, DOWN_CHANCE));
     private final static Map<Integer, BlockFace> DIRECTIONS;
 
     static {
@@ -89,15 +89,15 @@ public class RootGenerator extends AbstractOreGenerator {
         final OreSettingContainer oreSettingContainer = config.getOreGeneratorOreSettings();
 
         final int rootLength = NumberUtil.getInt(oreSettingContainer.getValue(ROOT_LENGTH).orElse(0d), random);
-        final int continueChange = NumberUtil.getInt(oreSettingContainer.getValue(CONTINUE_CHANGE).orElse(0d), random);
+        final int continueChance = NumberUtil.getInt(oreSettingContainer.getValue(CONTINUE_CHANCE).orElse(0d), random);
         final int continueTries = NumberUtil.getInt(oreSettingContainer.getValue(CONTINUE_TRIES).orElse(0d), random);
         final int minimumLengthSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_LENGTH_SUBTRACTION).orElse(0d), random);
         final int lengthSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(LENGTH_SUBTRACTION_RANGE).orElse(0d), random);
-        final int minimumChangeSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_CHANGE_SUBTRACTION).orElse(0d), random);
-        final int changeSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(CHANGE_SUBTRACTION_RANGE).orElse(0d), random);
+        final int minimumChanceSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_CHANCE_SUBTRACTION).orElse(0d), random);
+        final int chanceSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(CHANCE_SUBTRACTION_RANGE).orElse(0d), random);
         final int minimumTriesSubtraction = NumberUtil.getInt(oreSettingContainer.getValue(MINIMUM_TRIES_SUBTRACTION).orElse(0d), random);
         final int triesSubtractionRange = NumberUtil.getInt(oreSettingContainer.getValue(TRIES_SUBTRACTION_RANGE).orElse(0d), random);
-        final int downChange = NumberUtil.getInt(oreSettingContainer.getValue(DOWN_CHANGE).orElse(0d), random);
+        final int downChance = NumberUtil.getInt(oreSettingContainer.getValue(DOWN_CHANCE).orElse(0d), random);
 
         for (final Location location : locations) {
             final int xPosition = chunkLocation.getBlockX() + location.getBlockX();
@@ -110,7 +110,7 @@ public class RootGenerator extends AbstractOreGenerator {
 
             final Location startLocation = new Location(null, xPosition, yPosition, zPosition);
 
-            generateRoot(material, replaceMaterials, chunkAccess, startLocation, random, continueTries, continueChange, rootLength, minimumTriesSubtraction, triesSubtractionRange, minimumChangeSubtraction, changeSubtractionRange, minimumLengthSubtraction, lengthSubtractionRange, downChange);
+            generateRoot(material, replaceMaterials, chunkAccess, startLocation, random, continueTries, continueChance, rootLength, minimumTriesSubtraction, triesSubtractionRange, minimumChanceSubtraction, chanceSubtractionRange, minimumLengthSubtraction, lengthSubtractionRange, downChance);
         }
 
     }
@@ -125,11 +125,11 @@ public class RootGenerator extends AbstractOreGenerator {
             return value >= 0;
         }
 
-        if (oreSetting == CONTINUE_CHANGE) {
+        if (oreSetting == CONTINUE_CHANCE) {
             return value >= 0 && value <= 100;
         }
 
-        if (oreSetting == DOWN_CHANGE) {
+        if (oreSetting == DOWN_CHANCE) {
             return value >= 0 && value <= 100;
         }
 
@@ -141,7 +141,7 @@ public class RootGenerator extends AbstractOreGenerator {
             return value >= 1;
         }
 
-        if (oreSetting == CHANGE_SUBTRACTION_RANGE) {
+        if (oreSetting == CHANCE_SUBTRACTION_RANGE) {
             return value >= 1;
         }
 
@@ -154,20 +154,20 @@ public class RootGenerator extends AbstractOreGenerator {
     }
 
 
-    private void generateRoot(final Material setMaterial, final Set<Material> replaceMaterials, final ChunkAccess chunkAccess, final Location startLocation, final Random random, final int tries, final int change, final int length, final int triesDeMin, final int triesDeRange, final int changeDeMin, final int changeDeRange, final int lengthDeMin, final int lengthDeRange, final int downChange) {
+    private void generateRoot(final Material setMaterial, final Set<Material> replaceMaterials, final ChunkAccess chunkAccess, final Location startLocation, final Random random, final int tries, final int chance, final int length, final int triesDeMin, final int triesDeRange, final int chanceDeMin, final int chanceDeRange, final int lengthDeMin, final int lengthDeRange, final int downchance) {
         for (int i = 0; i < tries; i++) {
             final int con = random.nextInt(100);
-            if (con < change) {
+            if (con < chance) {
                 Location newLocation = startLocation.clone();
                 int newTries = tries;
-                int newChange = change;
+                int newchance = chance;
                 int newLength = length;
                 length:
                 for (int i2 = 0; i2 < length; i2++) {
                     final BlockFace blockFace = DIRECTIONS.get(random.nextInt(DIRECTIONS.size()));
                     final Location tempNewLocation = newLocation.clone().add(blockFace.getModX(), blockFace.getModY(), blockFace.getModZ());
 
-                    if (random.nextInt(100) < downChange) {
+                    if (random.nextInt(100) < downchance) {
                         tempNewLocation.add(0, -1, 0);
                     }
 
@@ -175,14 +175,14 @@ public class RootGenerator extends AbstractOreGenerator {
                         newLocation = tempNewLocation;
                         chunkAccess.setMaterial(setMaterial, newLocation.getBlockX(), newLocation.getBlockY(), newLocation.getBlockZ());
                         final int tempNewTries = newTries - triesDeMin - (triesDeRange <= 0 ? 0 : random.nextInt(triesDeRange));
-                        final int tempNewChange = newChange - changeDeMin - (changeDeRange <= 0 ? 0 : random.nextInt(changeDeRange));
+                        final int tempNewchance = newchance - chanceDeMin - (chanceDeRange <= 0 ? 0 : random.nextInt(chanceDeRange));
                         final int tempNewLength = newLength - lengthDeMin - (lengthDeRange <= 0 ? 0 : random.nextInt(lengthDeRange));
 
                         if (tempNewTries <= 0) {
                             continue length;
                         }
 
-                        if (tempNewChange <= 0) {
+                        if (tempNewchance <= 0) {
                             continue length;
                         }
 
@@ -191,10 +191,10 @@ public class RootGenerator extends AbstractOreGenerator {
                         }
 
                         newTries = tempNewTries;
-                        newChange = tempNewChange;
+                        newchance = tempNewchance;
                         newLength = tempNewLength;
 
-                        generateRoot(setMaterial, replaceMaterials, chunkAccess, newLocation, random, newTries, newChange, newLength, triesDeMin, triesDeRange, changeDeMin, changeDeRange, lengthDeMin, lengthDeRange, downChange);
+                        generateRoot(setMaterial, replaceMaterials, chunkAccess, newLocation, random, newTries, newchance, newLength, triesDeMin, triesDeRange, chanceDeMin, chanceDeRange, lengthDeMin, lengthDeRange, downchance);
                     }
 
                 }
