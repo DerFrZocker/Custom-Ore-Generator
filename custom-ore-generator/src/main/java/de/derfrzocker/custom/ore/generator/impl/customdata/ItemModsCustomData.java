@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.github.codedoctorde.itemmods.Main;
-import com.github.codedoctorde.itemmods.api.CustomBlock;
-import com.github.codedoctorde.itemmods.api.CustomBlockManager;
+import com.github.codedoctorde.itemmods.ItemMods;
+import com.github.codedoctorde.itemmods.api.block.CustomBlock;
+import com.github.codedoctorde.itemmods.api.block.CustomBlockManager;
 import com.github.codedoctorde.itemmods.config.BlockConfig;
 import de.derfrzocker.custom.ore.generator.api.*;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.ItemModsApplier_v1_13_R1;
@@ -55,8 +55,8 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
 
     @Override
     public boolean canApply(@NotNull final OreConfig oreConfig) {
-        final CustomBlockManager customBlockManager = Main.getPlugin().getCustomBlockManager();
-        final List<BlockConfig> blockConfigs = customBlockManager.getBlockConfigs();
+        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
+        final List<BlockConfig> blockConfigs = customBlockManager.getBlocks();
 
         return blockConfigs.stream().anyMatch(blockConfig -> blockConfig.getBlock().getMaterial() == oreConfig.getMaterial());
     }
@@ -66,8 +66,8 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
         if (!(customData instanceof String))
             return false;
 
-        final CustomBlockManager customBlockManager = Main.getPlugin().getCustomBlockManager();
-        final List<BlockConfig> blockConfigs = customBlockManager.getBlockConfigs();
+        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
+        final List<BlockConfig> blockConfigs = customBlockManager.getBlocks();
 
         return blockConfigs.stream().filter(blockConfig -> blockConfig.getBlock().getMaterial() == oreConfig.getMaterial()).anyMatch(blockConfig -> blockConfig.getName().equals(customData));
     }
@@ -82,7 +82,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public boolean hasCustomData(@NotNull final BlockState blockState) {
         Validate.notNull(blockState, "BlockState can not be null");
 
-        final CustomBlockManager customBlockManager = Main.getPlugin().getCustomBlockManager();
+        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
 
         return customBlockManager.getCustomBlock(blockState.getLocation()) != null;
     }
@@ -92,7 +92,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public String getCustomData(@NotNull final BlockState blockState) {
         Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
 
-        final CustomBlockManager customBlockManager = Main.getPlugin().getCustomBlockManager();
+        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
         final CustomBlock customBlock = customBlockManager.getCustomBlock(blockState.getLocation());
 
         return customBlock.getConfig().getName();
@@ -122,10 +122,10 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public Set<Object> getPossibleValues(@NotNull final Material material) {
         Validate.notNull(material, "Material can not be null");
 
-        final CustomBlockManager customBlockManager = Main.getPlugin().getCustomBlockManager();
+        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
         final Set<Object> set = new HashSet<>();
 
-        customBlockManager.getBlockConfigs().stream().filter(blockConfig -> blockConfig.getBlock().getMaterial() == material).forEach(blockConfig -> set.add(blockConfig.getName()));
+        customBlockManager.getBlocks().stream().filter(blockConfig -> blockConfig.getBlock().getMaterial() == material).forEach(blockConfig -> set.add(blockConfig.getName()));
 
         return Collections.unmodifiableSet(set);
     }

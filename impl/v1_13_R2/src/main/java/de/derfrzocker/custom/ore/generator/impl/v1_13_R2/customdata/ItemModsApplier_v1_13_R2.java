@@ -25,16 +25,14 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata;
 
-import com.github.codedoctorde.itemmods.Main;
+import com.github.codedoctorde.itemmods.ItemMods;
 import com.github.codedoctorde.itemmods.config.ArmorStandBlockConfig;
 import com.github.codedoctorde.itemmods.config.BlockConfig;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import net.minecraft.server.v1_13_R2.BlockPosition;
-import net.minecraft.server.v1_13_R2.EntityArmorStand;
-import net.minecraft.server.v1_13_R2.EnumItemSlot;
-import net.minecraft.server.v1_13_R2.GeneratorAccess;
+import net.minecraft.server.v1_13_R2.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.v1_13_R2.inventory.CraftItemStack;
 import org.bukkit.craftbukkit.v1_13_R2.util.CraftChatMessage;
@@ -64,7 +62,7 @@ public class ItemModsApplier_v1_13_R2 implements CustomDataApplier {
             return; //TODO maybe throw exception?
 
         final String name = (String) objectOptional.get();
-        final Optional<BlockConfig> blockConfigOptional = Main.getPlugin().getCustomBlockManager().getBlockConfigs().stream().filter(blockConfig -> blockConfig.getName().equals(name)).findAny();
+        final Optional<BlockConfig> blockConfigOptional = ItemMods.getPlugin().getCustomBlockManager().getBlocks().stream().filter(blockConfig -> blockConfig.getName().equals(name)).findAny();
 
         if (!blockConfigOptional.isPresent())
             return; //TODO maybe throw exception?
@@ -72,37 +70,56 @@ public class ItemModsApplier_v1_13_R2 implements CustomDataApplier {
         final BlockConfig blockConfig = blockConfigOptional.get();
         final ArmorStandBlockConfig armorStandBlockConfig = blockConfig.getArmorStand();
 
-        if (armorStandBlockConfig == null)
-            return; //TODO maybe throw exception?
+        if (armorStandBlockConfig != null) {
+            final EntityArmorStand entityArmorStand = new EntityArmorStand(generatorAccess.getMinecraftWorld(), blockPosition.getX() + 0.5, blockPosition.getY(), blockPosition.getZ() + 0.5);
 
-        final EntityArmorStand entityArmorStand = new EntityArmorStand(generatorAccess.getMinecraftWorld(), blockPosition.getX() + 0.5, blockPosition.getY(), blockPosition.getZ() + 0.5);
+            entityArmorStand.setSmall(armorStandBlockConfig.isSmall());
+            entityArmorStand.setMarker(armorStandBlockConfig.isMarker());
+            entityArmorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
+            entityArmorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
+            entityArmorStand.setCustomName(CraftChatMessage.fromStringOrNull(armorStandBlockConfig.getCustomName()));
+            entityArmorStand.setInvisible(armorStandBlockConfig.isInvisible());
+            entityArmorStand.getScoreboardTags().add(blockConfig.getTag());
+            entityArmorStand.setNoGravity(true);
+            entityArmorStand.setSilent(true);
+            entityArmorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
+            entityArmorStand.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(armorStandBlockConfig.getHelmet()));
+            entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
+            entityArmorStand.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
+            entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getLeggings()));
+            entityArmorStand.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(armorStandBlockConfig.getBoots()));
+            entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getMainHand()));
+            entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getOffHand()));
 
-        entityArmorStand.setSmall(armorStandBlockConfig.isSmall());
-        entityArmorStand.setMarker(armorStandBlockConfig.isMarker());
-        entityArmorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
-        entityArmorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
-        entityArmorStand.setCustomName(CraftChatMessage.fromStringOrNull(armorStandBlockConfig.getCustomName()));
-        entityArmorStand.setInvisible(armorStandBlockConfig.isInvisible());
-        entityArmorStand.getScoreboardTags().add(blockConfig.getTag());
-        entityArmorStand.setNoGravity(true);
-        entityArmorStand.setSilent(true);
-        entityArmorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
-        entityArmorStand.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(armorStandBlockConfig.getHelmet()));
-        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
-        entityArmorStand.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
-        entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getLeggings()));
-        entityArmorStand.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(armorStandBlockConfig.getBoots()));
-        entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getMainHand()));
-        entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getOffHand()));
+            // Fixing ArmorStand rotating issue, I have now idea why the yaw and/or pitch is another value than 0.
+            // That needs a more detailed investigation, which of the above methods changes the yaw and/or pitch,
+            // but for now it works.
+            entityArmorStand.yaw = 0;
+            entityArmorStand.pitch = 0;
+            generatorAccess.addEntity(entityArmorStand);
+        }
 
-        // Fixing ArmorStand rotating issue, I have now idea why the yaw and/or pitch is another value than 0.
-        // That needs a more detailed investigation, which of the above methods changes the yaw and/or pitch,
-        // but for now it works.
-        entityArmorStand.yaw = 0;
-        entityArmorStand.pitch = 0;
+        final TileEntity tileEntity = generatorAccess.getTileEntity(blockPosition);
 
+        if (tileEntity != null) {
+            if (blockConfig.getData() != null) {
+                final NBTTagCompound nbtTagCompound = new NBTTagCompound();
+                tileEntity.save(nbtTagCompound);
 
-        generatorAccess.addEntity(entityArmorStand);
+                try {
+                    final NBTTagCompound nbtTagCompound1 = MojangsonParser.parse(blockConfig.getData());
+
+                    nbtTagCompound.a(nbtTagCompound1);
+                } catch (final CommandSyntaxException e) {
+                    throw new RuntimeException("Error while parsing String to NBTTagCompound", e);
+                }
+
+                tileEntity.load(nbtTagCompound);
+            }
+
+            generatorAccess.y(blockPosition).d(blockPosition);
+            generatorAccess.y(blockPosition).a(blockPosition, tileEntity);
+        }
     }
 
 }
