@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractBlockStateCustomData;
 import net.minecraft.server.v1_13_R2.*;
 import org.apache.commons.lang.Validate;

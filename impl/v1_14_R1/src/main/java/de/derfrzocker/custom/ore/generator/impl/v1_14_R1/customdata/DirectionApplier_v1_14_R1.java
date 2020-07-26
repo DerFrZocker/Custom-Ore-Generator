@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_14_R1.BlockPosition;

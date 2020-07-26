@@ -23,8 +23,9 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.api;
+package de.derfrzocker.custom.ore.generator.api.customdata;
 
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.jetbrains.annotations.NotNull;
 
 /**

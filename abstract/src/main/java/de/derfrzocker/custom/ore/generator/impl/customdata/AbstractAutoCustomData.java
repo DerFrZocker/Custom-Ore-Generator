@@ -25,7 +25,11 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.Info;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
+import de.derfrzocker.custom.ore.generator.api.customdata.LimitedValuesCustomData;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;

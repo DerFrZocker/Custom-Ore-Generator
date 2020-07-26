@@ -26,10 +26,10 @@
 package de.derfrzocker.custom.ore.generator.command.set;
 
 import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;

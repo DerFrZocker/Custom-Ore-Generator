@@ -25,6 +25,7 @@
 
 package de.derfrzocker.custom.ore.generator.api;
 
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.jetbrains.annotations.NotNull;

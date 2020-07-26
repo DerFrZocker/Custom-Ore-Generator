@@ -26,9 +26,9 @@
 package de.derfrzocker.custom.ore.generator.utils;
 
 import de.derfrzocker.custom.ore.generator.api.BlockSelector;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;

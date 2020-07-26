@@ -26,6 +26,7 @@
 package de.derfrzocker.custom.ore.generator.factory.gui;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.MenuGuiSettings;

@@ -25,9 +25,9 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import net.minecraft.server.v1_9_R2.BlockPosition;
 import net.minecraft.server.v1_9_R2.TileEntity;
 import net.minecraft.server.v1_9_R2.TileEntityCommand;

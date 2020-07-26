@@ -25,10 +25,10 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import de.derfrzocker.custom.ore.generator.api.CustomDataApplier;
-import de.derfrzocker.custom.ore.generator.api.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.CommandApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.CommandApplier_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.CommandApplier_v1_12_R1;

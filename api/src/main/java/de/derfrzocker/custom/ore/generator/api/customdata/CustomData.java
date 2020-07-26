@@ -23,8 +23,10 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.api;
+package de.derfrzocker.custom.ore.generator.api.customdata;
 
+import de.derfrzocker.custom.ore.generator.api.InfoAble;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
 

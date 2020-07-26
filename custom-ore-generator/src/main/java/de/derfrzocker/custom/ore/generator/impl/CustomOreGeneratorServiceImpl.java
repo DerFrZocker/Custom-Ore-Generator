@@ -26,6 +26,7 @@
 package de.derfrzocker.custom.ore.generator.impl;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.dao.OreConfigDao;
 import de.derfrzocker.custom.ore.generator.api.dao.WorldConfigDao;
 import org.apache.commons.lang.Validate;

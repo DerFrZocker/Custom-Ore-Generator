@@ -27,8 +27,8 @@ package de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata;
 
 import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractSkullTextureCustomData;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;

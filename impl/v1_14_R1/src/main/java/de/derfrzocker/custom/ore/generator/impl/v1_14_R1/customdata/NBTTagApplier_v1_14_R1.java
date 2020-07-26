@@ -26,8 +26,8 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata;
 
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractNBTTagCustomData;
 import net.minecraft.server.v1_14_R1.*;
 import org.apache.commons.lang.Validate;

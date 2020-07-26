@@ -1,6 +1,10 @@
 package de.derfrzocker.custom.ore.generator.factory;
 
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.OreSettingContainer;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Material;
 import org.bukkit.World;

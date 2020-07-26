@@ -25,8 +25,8 @@
 
 package de.derfrzocker.custom.ore.generator.factory.gui;
 
-import de.derfrzocker.custom.ore.generator.api.CustomData;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.CustomDatasGuiSettings;
 import de.derfrzocker.spigot.utils.gui.PageGui;
