@@ -35,6 +35,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.DirectionApp
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.DirectionApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.DirectionApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.DirectionApplier_v1_16_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.DirectionApplier_v1_16_R2;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -117,6 +118,8 @@ public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> i
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getCurrent()) {
+            case v1_16_R2:
+                return new DirectionApplier_v1_16_R2(this, blockFace);
             case v1_16_R1:
                 return new DirectionApplier_v1_16_R1(this, blockFace);
             case v1_15_R1:

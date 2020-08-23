@@ -37,7 +37,7 @@ import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Locale;
@@ -54,7 +54,7 @@ public class OreSettingGui extends BasicGui {
     private final OreSettingContainer oreSettingContainer;
     private final int oreSettingSlot;
 
-    public OreSettingGui(@NotNull final JavaPlugin plugin,
+    public OreSettingGui(@NotNull final Plugin plugin,
                          @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
                          @NotNull final OreConfigFactory oreConfigFactory,
                          @NotNull final Consumer<OreConfigFactory> consumer,
@@ -84,9 +84,9 @@ public class OreSettingGui extends BasicGui {
         oreSettingGuiSettings.getItemStackValues().forEach(value -> addItem(value.getSlot(), value.getItemStack(), new SettingConsumer(value.getValue())));
     }
 
-    private static OreSettingGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static OreSettingGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (oreSettingGuiSettings == null)
-            oreSettingGuiSettings = new OreSettingGuiSettings(javaPlugin, "data/factory/gui/ore-setting-gui.yml", true);
+            oreSettingGuiSettings = new OreSettingGuiSettings(plugin, "data/factory/gui/ore-setting-gui.yml", true);
 
         return oreSettingGuiSettings;
     }

@@ -36,7 +36,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.World;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -49,7 +49,7 @@ public class WorldGui extends PageGui<World> {
     @NotNull
     private final OreConfigFactory oreConfigFactory;
 
-    public WorldGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    public WorldGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
         super(plugin, checkSettings(plugin));
 
         Validate.notNull(oreConfigFactory, "OreConfigFactory can not be null");
@@ -67,9 +67,9 @@ public class WorldGui extends PageGui<World> {
         addItem(worldGuiSettings.getNextSlot(), MessageUtil.replaceItemStack(plugin, worldGuiSettings.getNextItemStack()), inventoryClickEvent -> consumer.accept(oreConfigFactory));
     }
 
-    private static WorldGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static WorldGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (worldGuiSettings == null) {
-            worldGuiSettings = new WorldGuiSettings(javaPlugin, "data/factory/gui/world-gui.yml", true);
+            worldGuiSettings = new WorldGuiSettings(plugin, "data/factory/gui/world-gui.yml", true);
         }
 
         return worldGuiSettings;

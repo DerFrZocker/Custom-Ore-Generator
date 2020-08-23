@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -43,7 +43,7 @@ public class BlockSelectorGui extends PageGui<BlockSelector> {
 
     private static BlockSelectorGuiSettings blockSelectorGuiSettings;
 
-    public BlockSelectorGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    public BlockSelectorGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
         super(plugin, checkSettings(plugin));
 
 
@@ -74,9 +74,9 @@ public class BlockSelectorGui extends PageGui<BlockSelector> {
 
     }
 
-    private static BlockSelectorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static BlockSelectorGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (blockSelectorGuiSettings == null)
-            blockSelectorGuiSettings = new BlockSelectorGuiSettings(javaPlugin, "data/factory/gui/block-selector-gui.yml", true);
+            blockSelectorGuiSettings = new BlockSelectorGuiSettings(plugin, "data/factory/gui/block-selector-gui.yml", true);
 
         return blockSelectorGuiSettings;
     }

@@ -40,7 +40,7 @@ import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.conversations.*;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -62,7 +62,7 @@ public class CustomDataGui extends BasicGui {
     @NotNull
     private final CustomData customData;
 
-    public CustomDataGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer, @NotNull final CustomData customData) {
+    public CustomDataGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer, @NotNull final CustomData customData) {
         super(plugin, checkSettings(plugin));
 
         this.serviceSupplier = serviceSupplier;
@@ -124,12 +124,12 @@ public class CustomDataGui extends BasicGui {
         });
     }
 
-    private static CustomDataGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static CustomDataGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (customDataGuiSettings == null)
-            customDataGuiSettings = new CustomDataGuiSettings(javaPlugin, "data/factory/gui/custom-data-gui.yml", true);
+            customDataGuiSettings = new CustomDataGuiSettings(plugin, "data/factory/gui/custom-data-gui.yml", true);
 
         if (booleanGuiSettings == null)
-            booleanGuiSettings = new BooleanGuiSettings(javaPlugin, "data/factory/gui/boolean-gui.yml", true);
+            booleanGuiSettings = new BooleanGuiSettings(plugin, "data/factory/gui/boolean-gui.yml", true);
 
         return customDataGuiSettings;
     }

@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -43,7 +43,7 @@ public class OreGeneratorGui extends PageGui<OreGenerator> {
 
     private static OreGeneratorGuiSettings oreGeneratorGuiSettings;
 
-    public OreGeneratorGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    public OreGeneratorGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
         super(plugin, checkSettings(plugin));
 
         final CustomOreGeneratorService service = serviceSupplier.get();
@@ -74,9 +74,9 @@ public class OreGeneratorGui extends PageGui<OreGenerator> {
         }
     }
 
-    private static OreGeneratorGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static OreGeneratorGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (oreGeneratorGuiSettings == null)
-            oreGeneratorGuiSettings = new OreGeneratorGuiSettings(javaPlugin, "data/factory/gui/ore-generator-gui.yml", true);
+            oreGeneratorGuiSettings = new OreGeneratorGuiSettings(plugin, "data/factory/gui/ore-generator-gui.yml", true);
 
         return oreGeneratorGuiSettings;
     }

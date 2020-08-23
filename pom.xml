@@ -29,7 +29,7 @@
         <project.author>DerFrZocker</project.author>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
-        <spigot-utils.version>dev-45-SNAPSHOT</spigot-utils.version>
+        <spigot-utils.version>dev-47-SNAPSHOT</spigot-utils.version>
         <ItemMods.version>1.3.1-SNAPSHOT</ItemMods.version>
     </properties>
 

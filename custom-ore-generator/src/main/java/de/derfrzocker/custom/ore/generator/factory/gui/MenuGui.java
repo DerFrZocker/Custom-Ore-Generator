@@ -38,7 +38,7 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Biome;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashSet;
@@ -51,7 +51,7 @@ public class MenuGui extends BasicGui {
     private static MenuGuiSettings menuGuiSettings;
     private boolean ready = true;
 
-    public MenuGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory) {
+    public MenuGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory) {
         super(plugin, checkSettings(plugin));
 
         addDecorations();
@@ -384,9 +384,9 @@ public class MenuGui extends BasicGui {
         addItem(menuGuiSettings.getAbortSlot(), MessageUtil.replaceItemStack(plugin, menuGuiSettings.getAbortItemStack()), inventoryClickEvent -> closeSync(inventoryClickEvent.getWhoClicked()));
     }
 
-    private static MenuGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static MenuGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (menuGuiSettings == null)
-            menuGuiSettings = new MenuGuiSettings(javaPlugin, "data/factory/gui/menu-gui.yml", true);
+            menuGuiSettings = new MenuGuiSettings(plugin, "data/factory/gui/menu-gui.yml", true);
 
         return menuGuiSettings;
     }

@@ -27,22 +27,22 @@ package de.derfrzocker.custom.ore.generator.factory.gui.settings;
 import de.derfrzocker.spigot.utils.gui.PageSettings;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Supplier;
 
 public class WorldGuiSettings extends PageSettings {
 
-    public WorldGuiSettings(@NotNull final JavaPlugin plugin, @NotNull final String file) {
+    public WorldGuiSettings(@NotNull final Plugin plugin, @NotNull final String file) {
         super(plugin, file);
     }
 
-    public WorldGuiSettings(@NotNull final JavaPlugin plugin, @NotNull final String file, final boolean copy) {
+    public WorldGuiSettings(@NotNull final Plugin plugin, @NotNull final String file, final boolean copy) {
         super(plugin, file, copy);
     }
 
-    public WorldGuiSettings(@NotNull final JavaPlugin plugin, @NotNull final Supplier<ConfigurationSection> configurationSectionSupplier) {
+    public WorldGuiSettings(@NotNull final Plugin plugin, @NotNull final Supplier<ConfigurationSection> configurationSectionSupplier) {
         super(plugin, configurationSectionSupplier);
     }
 

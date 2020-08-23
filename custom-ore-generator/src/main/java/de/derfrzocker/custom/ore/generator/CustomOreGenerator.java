@@ -57,6 +57,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.WorldHandler_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.oregenerator.MinableGenerator_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.WorldHandler_v1_16_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.oregenerator.MinableGenerator_v1_16_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.WorldHandler_v1_16_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.oregenerator.MinableGenerator_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -160,6 +162,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_16_R1, Version.v1_16_R1, () -> new MinableGenerator_v1_16_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_16_R2, Version.v1_16_R2, () -> new MinableGenerator_v1_16_R2(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -193,6 +196,9 @@ public class CustomOreGenerator extends JavaPlugin {
 
     private void initWorldHandler() {
         switch (Version.getCurrent()) {
+            case v1_16_R2:
+                new WorldHandler_v1_16_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+                return;
             case v1_16_R1:
                 new WorldHandler_v1_16_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 return;

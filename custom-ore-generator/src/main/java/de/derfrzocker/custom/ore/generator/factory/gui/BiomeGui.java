@@ -35,7 +35,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.block.Biome;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Consumer;
@@ -48,7 +48,7 @@ public class BiomeGui extends PageGui<Biome> {
     @NotNull
     private final OreConfigFactory oreConfigFactory;
 
-    public BiomeGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    public BiomeGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
         super(plugin, checkSettings(plugin));
 
         Validate.notNull(oreConfigFactory, "OreConfigFactory can not be null");
@@ -66,9 +66,9 @@ public class BiomeGui extends PageGui<Biome> {
         addItem(biomeGuiSettings.getNextSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getNextItemStack()), inventoryClickEvent -> consumer.accept(oreConfigFactory));
     }
 
-    private static BiomeGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static BiomeGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (biomeGuiSettings == null) {
-            biomeGuiSettings = new BiomeGuiSettings(javaPlugin, "data/factory/gui/biome-gui.yml", true);
+            biomeGuiSettings = new BiomeGuiSettings(plugin, "data/factory/gui/biome-gui.yml", true);
         }
 
         return biomeGuiSettings;

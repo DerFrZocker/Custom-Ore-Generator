@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
@@ -47,7 +47,7 @@ public class OreSettingsGui extends PageGui<OreSetting> {
     @NotNull
     private final OreSettingsAble oreSettingsAble;
 
-    public OreSettingsGui(@NotNull final JavaPlugin plugin,
+    public OreSettingsGui(@NotNull final Plugin plugin,
                           @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
                           @NotNull final OreConfigFactory oreConfigFactory,
                           @NotNull final Consumer<OreConfigFactory> consumer,
@@ -81,9 +81,9 @@ public class OreSettingsGui extends PageGui<OreSetting> {
 
     }
 
-    private static OreSettingsGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static OreSettingsGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (oreSettingsGuiSettings == null)
-            oreSettingsGuiSettings = new OreSettingsGuiSettings(javaPlugin, "data/factory/gui/ore-settings-gui.yml", true);
+            oreSettingsGuiSettings = new OreSettingsGuiSettings(plugin, "data/factory/gui/ore-settings-gui.yml", true);
 
         return oreSettingsGuiSettings;
     }

@@ -33,7 +33,7 @@ import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.LinkedHashSet;
@@ -46,7 +46,7 @@ public class CustomDatasGui extends PageGui<CustomData> {
 
     private static CustomDatasGuiSettings customDatasGuiSettings;
 
-    public CustomDatasGui(@NotNull final JavaPlugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
+    public CustomDatasGui(@NotNull final Plugin plugin, @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier, @NotNull final OreConfigFactory oreConfigFactory, @NotNull final Consumer<OreConfigFactory> consumer) {
         super(plugin, checkSettings(plugin));
 
         final Map<CustomData, Object> customDatas = oreConfigFactory.getOreConfigBuilder().customDatas();
@@ -86,9 +86,9 @@ public class CustomDatasGui extends PageGui<CustomData> {
 
     }
 
-    private static CustomDatasGuiSettings checkSettings(@NotNull final JavaPlugin javaPlugin) {
+    private static CustomDatasGuiSettings checkSettings(@NotNull final Plugin plugin) {
         if (customDatasGuiSettings == null)
-            customDatasGuiSettings = new CustomDatasGuiSettings(javaPlugin, "data/factory/gui/custom-datas-gui.yml", true);
+            customDatasGuiSettings = new CustomDatasGuiSettings(plugin, "data/factory/gui/custom-datas-gui.yml", true);
 
         return customDatasGuiSettings;
     }

@@ -34,20 +34,20 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.server.TabCompleteEvent;
-import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandListener implements Listener {
 
     @NotNull
-    private final JavaPlugin plugin;
+    private final Plugin plugin;
     @NotNull
     private final Player player;
     @NotNull
     private final Conversation conversation;
 
-    public CommandListener(@NotNull final JavaPlugin plugin, @NotNull final Player player, @NotNull final Conversation conversation) {
-        Validate.notNull(plugin, "JavaPlugin can not be null");
+    public CommandListener(@NotNull final Plugin plugin, @NotNull final Player player, @NotNull final Conversation conversation) {
+        Validate.notNull(plugin, "plugin can not be null");
         Validate.notNull(player, "Player can not be null");
         Validate.notNull(conversation, "Conversation can not be null");
 
