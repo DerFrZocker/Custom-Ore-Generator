@@ -12,13 +12,6 @@
 
     <artifactId>custom-ore-generator-impl-v1_14_R1</artifactId>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <url>https://maven.pkg.github.com/CodeDoctorDE/ItemMods</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.github.codedoctorde</groupId>
