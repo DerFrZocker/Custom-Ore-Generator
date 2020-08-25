@@ -14,12 +14,6 @@
 
     <dependencies>
         <dependency>
-            <groupId>com.github.codedoctorde</groupId>
-            <artifactId>ItemMods</artifactId>
-            <version>${ItemMods.version}</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-api</artifactId>
             <version>${project.version}</version>

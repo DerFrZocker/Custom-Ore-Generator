@@ -102,6 +102,9 @@ public class ItemModsApplier_v1_15_R1 implements CustomDataApplier {
             // but for now it works.
             entityArmorStand.yaw = 0;
             entityArmorStand.pitch = 0;
+
+            entityArmorStand.getBukkitEntity().getPersistentDataContainer().set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
+
             generatorAccess.addEntity(entityArmorStand);
         }
 

@@ -34,8 +34,6 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
 import de.derfrzocker.custom.ore.generator.api.customdata.LimitedValuesCustomData;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.customdata.ItemModsApplier_v1_13_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.customdata.ItemModsApplier_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.ItemModsApplier_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.ItemModsApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.ItemModsApplier_v1_16_R1;
@@ -115,10 +113,6 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
                 return new ItemModsApplier_v1_15_R1(this);
             case v1_14_R1:
                 return new ItemModsApplier_v1_14_R1(this);
-            case v1_13_R2:
-                return new ItemModsApplier_v1_13_R2(this);
-            case v1_13_R1:
-                return new ItemModsApplier_v1_13_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

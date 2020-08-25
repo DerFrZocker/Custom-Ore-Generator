@@ -191,7 +191,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, infoFunction));
         registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
         registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
-        registerUtil.register(Version.v1_13_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
+        registerUtil.register(Version.v1_14_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
     }
 
     private void initWorldHandler() {
