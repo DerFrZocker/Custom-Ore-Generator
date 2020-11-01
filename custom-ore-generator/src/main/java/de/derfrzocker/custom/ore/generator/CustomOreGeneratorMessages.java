@@ -129,6 +129,10 @@ public final class CustomOreGeneratorMessages {
     public final MessageKey COMMAND_ADD_ORE_CONFIG_PRESENT;
     public final MessageKey COMMAND_ADD_ORE_CONFIG_SUCCESS;
 
+    // info messages
+    public final MessageKey COMMAND_INFO_USAGE;
+    public final MessageKey COMMAND_INFO_DESCRIPTION;
+
     // help command
     public final MessageKey COMMAND_HELP_USAGE;
     public final MessageKey COMMAND_SET_HELP_USAGE;
@@ -242,6 +246,10 @@ public final class CustomOreGeneratorMessages {
         COMMAND_ADD_ORE_CONFIG_VALUE_NOT_VALID = new MessageKey(javaPlugin, "command.add.ore-config.value-not-valid");
         COMMAND_ADD_ORE_CONFIG_PRESENT = new MessageKey(javaPlugin, "command.add.ore-config.present");
         COMMAND_ADD_ORE_CONFIG_SUCCESS = new MessageKey(javaPlugin, "command.add.ore-config.success");
+
+        // info messages
+        COMMAND_INFO_USAGE = new MessageKey(javaPlugin, "command.info.usage");
+        COMMAND_INFO_DESCRIPTION = new MessageKey(javaPlugin, "command.info.description");
 
         // help command
         COMMAND_HELP_USAGE = new MessageKey(javaPlugin, "command.help.usage");

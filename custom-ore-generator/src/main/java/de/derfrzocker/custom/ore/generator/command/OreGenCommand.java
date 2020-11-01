@@ -65,6 +65,7 @@ public class OreGenCommand extends CommandSeparator {
         final HelpCommand helpCommand = new HelpCommand(this, new HelpConfigImpl(messages));
         registerExecutor(helpCommand, "help", null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
         registerExecutor(helpCommand, null, null, messages.COMMAND_HELP_USAGE, messages.COMMAND_HELP_DESCRIPTION);
+        registerExecutor(new InfoCommand(javaPlugin), "info", null, messages.COMMAND_INFO_USAGE, messages.COMMAND_INFO_DESCRIPTION);
     }
 
     /**

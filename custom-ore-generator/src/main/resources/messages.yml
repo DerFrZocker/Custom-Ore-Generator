@@ -402,6 +402,10 @@ command:
     begin: "&aBegin with the reload!"
     end: "&aReload finish!"
 
+  info:
+    usage: '&f/&9oregen info'
+    description: 'Shows you some infos about the plugin'
+
   help:
     usage: "&f/&doregen help &f(<&dsubcommand&f>)"
     description: "Displays all commands and if a subcommand is specified, more details are displayed"
