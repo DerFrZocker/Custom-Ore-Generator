@@ -35,6 +35,7 @@ import de.derfrzocker.custom.ore.generator.factory.gui.settings.OreSettingGuiSet
 import de.derfrzocker.spigot.utils.gui.BasicGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -109,6 +110,10 @@ public class OreSettingGui extends BasicGui {
 
         @Override
         public void accept(@NotNull final InventoryClickEvent event) {
+            if (event.getClick() != ClickType.LEFT) {
+                return;
+            }
+
             final double current = oreSettingContainer.getValue(oreSetting).orElse(0d);
             final double newValue = Double.parseDouble(String.format(Locale.ENGLISH, "%1.2f", current + value));
 

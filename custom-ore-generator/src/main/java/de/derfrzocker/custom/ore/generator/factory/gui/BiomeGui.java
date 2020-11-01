@@ -34,6 +34,7 @@ import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
 import org.bukkit.block.Biome;
+import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.Plugin;
@@ -91,6 +92,10 @@ public class BiomeGui extends PageGui<Biome> {
     }
 
     private void handleNormalClick(@NotNull final Biome biome, @NotNull final InventoryClickEvent event) {
+        if (event.getClick() != ClickType.LEFT) {
+            return;
+        }
+
         final OreConfigBuilder oreConfigBuilder = oreConfigFactory.getOreConfigBuilder();
 
         if (oreConfigBuilder.containsBiome(biome)) {
