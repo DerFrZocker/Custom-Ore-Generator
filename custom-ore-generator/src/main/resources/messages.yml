@@ -276,6 +276,9 @@ info:
     WEST:
       display-name: "West"
       description: "Correspond to the 'west' block state"
+    ORAXEN:
+      display-name: "Oraxen"
+      description: "Adds support for the plugin Oraxen"
 
 command:
   world-not-found: "&4The world &f'&d%world%&f' &4does not exist!"
