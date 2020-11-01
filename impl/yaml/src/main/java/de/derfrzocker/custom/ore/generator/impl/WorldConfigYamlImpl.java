@@ -1,7 +1,7 @@
 /*
  * MIT License
  *
- * Copyright (c) 2019 Marvin (DerFrZocker)
+ * Copyright (c) 2019 - 2020 Marvin (DerFrZocker)
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -286,7 +286,7 @@ public class WorldConfigYamlImpl implements WorldConfig, ConfigurationSerializab
         for (final OreConfig source : biomeConfig.getOreConfigs()) {
             final OreConfigYamlImpl oreConfig = new OreConfigYamlImpl("biome-config_" + index, source.getMaterial(), source.getOreGenerator(), source.getBlockSelector());
 
-            OreConfigYamlImpl.copyData((OreConfigYamlImpl) source, oreConfig);
+            OreConfigYamlImpl.copyData(source, oreConfig);
 
             oreConfig.setGeneratedAll(false);
             oreConfig.addBiome(biomeConfig.getBiome());
