@@ -35,6 +35,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.VariantApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.VariantApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.VariantApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -48,7 +49,7 @@ public class VariantCustomData extends AbstractVariantCustomData {
     @NotNull
     @Override
     protected VariantApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_12_R1:
                 return new VariantApplier_v1_12_R1(this);
             case v1_11_R1:

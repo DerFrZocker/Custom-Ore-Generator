@@ -40,6 +40,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.ItemModsApplier_v1_16_R2;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -104,7 +105,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new ItemModsApplier_v1_16_R2(this);
             case v1_16_R1:

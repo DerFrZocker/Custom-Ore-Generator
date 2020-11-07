@@ -40,6 +40,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.AutoApplier_v
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.AutoApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
@@ -53,7 +54,7 @@ public class AutoCustomData extends AbstractAutoCustomData {
     private static final Set<Material> MATERIALS = new HashSet<>();
 
     static {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
             case v1_16_R1:
             case v1_15_R1:
@@ -95,7 +96,7 @@ public class AutoCustomData extends AbstractAutoCustomData {
     @NotNull
     @Override
     protected AutoApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new AutoApplier_v1_16_R2(this);
             case v1_16_R1:

@@ -71,16 +71,16 @@ public class RegisterUtil {
     }
 
     public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
-        if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
-            if (maximumVersion.isOlderOrSameVersion(this.currentVersion)) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
                 register(oreGenerator.get(), defaultOreGenerator);
             }
         }
     }
 
     public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, final boolean paper, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
-        if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
-            if (maximumVersion.isOlderOrSameVersion(this.currentVersion)) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
                 if (paper && this.paper) {
                     register(oreGenerator.get(), defaultOreGenerator);
                 }
@@ -110,13 +110,13 @@ public class RegisterUtil {
     }
 
     public void register(@NotNull final Version minimalVersion, @NotNull final CustomDataSupplier customData) {
-        if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
             register(customData.get());
         }
     }
 
     public void register(@NotNull final Version minimalVersion, @NotNull final String pluginName, @NotNull final CustomDataSupplier customData) {
-        if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
             if (this.plugin.getServer().getPluginManager().getPlugin(pluginName) != null) {
                 register(customData.get());
             }
@@ -124,8 +124,8 @@ public class RegisterUtil {
     }
 
     public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, @NotNull final CustomDataSupplier customData) {
-        if (minimalVersion.isNewerOrSameVersion(this.currentVersion)) {
-            if (maximumVersion.isOlderOrSameVersion(this.currentVersion)) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
                 register(customData.get());
             }
         }

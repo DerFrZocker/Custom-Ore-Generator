@@ -38,6 +38,7 @@ import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -77,7 +78,7 @@ public class CreateCommand implements TabExecutor {
 
     @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (args.length == 0 && sender instanceof Player && Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent())) {
+        if (args.length == 0 && sender instanceof Player && Version.getServerVersion(Bukkit.getServer()).isNewerOrSameThan(Version.v1_14_R1)) {
             sender.sendMessage("   ");
             sender.sendMessage(ChatColor.DARK_RED + "This feature is in development!");
             sender.sendMessage(ChatColor.DARK_RED + "It is lacking some feature, information and has some bugs!");

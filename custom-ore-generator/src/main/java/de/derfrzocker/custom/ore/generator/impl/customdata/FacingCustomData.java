@@ -102,7 +102,7 @@ public class FacingCustomData extends AbstractCustomData<CustomDataApplier> impl
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new FacingApplier_v1_16_R2(this);
             case v1_16_R1:

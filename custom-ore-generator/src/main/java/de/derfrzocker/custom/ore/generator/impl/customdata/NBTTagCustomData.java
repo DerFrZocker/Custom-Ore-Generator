@@ -41,6 +41,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.NBTTagApplier
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.NBTTagApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.NBTTagApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.Version;
+import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -55,7 +56,7 @@ public class NBTTagCustomData extends AbstractNBTTagCustomData {
     @NotNull
     @Override
     protected NBTTagApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new NBTTagApplier_v1_16_R2(this);
             case v1_16_R1:

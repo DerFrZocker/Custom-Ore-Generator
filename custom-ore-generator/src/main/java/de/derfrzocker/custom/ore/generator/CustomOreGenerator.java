@@ -97,11 +97,14 @@ public class CustomOreGenerator extends JavaPlugin {
 
     private CustomOreGeneratorMessages messages;
     private Permissions permissions;
+    private Version version = Version.UNKNOWN;
 
     @Override
     public void onLoad() {
         messages = new CustomOreGeneratorMessages(this);
         permissions = new Permissions(this);
+
+        version = Version.getServerVersion(getServer());
 
         final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world-config"));
         final OreConfigYamlDao oreConfigYamlDao = new OreConfigYamlDao(new File(getDataFolder(), "data/ore-config"));
@@ -119,11 +122,11 @@ public class CustomOreGenerator extends JavaPlugin {
     public void onEnable() {
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
-        if (Version.v1_14_R1.isNewerOrSameVersion(Version.getCurrent())) {
+        if (version.isNewerOrSameThan(Version.v1_14_R1)) {
             checkFile("data/factory/gui/menu-gui.yml");
         }
 
-        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), Version.getCurrent(), Version.isPaper());
+        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), version, Version.isPaper(getServer()));
 
         initWorldHandler();
         registerStandardOreGenerators(registerUtil);
@@ -196,7 +199,7 @@ public class CustomOreGenerator extends JavaPlugin {
     }
 
     private void initWorldHandler() {
-        switch (Version.getCurrent()) {
+        switch (version) {
             case v1_16_R2:
                 new WorldHandler_v1_16_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 return;
@@ -210,7 +213,7 @@ public class CustomOreGenerator extends JavaPlugin {
                 new WorldHandler_v1_14_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 return;
             case v1_13_R2:
-                if (Version.isPaper())
+                if (Version.isPaper(getServer()))
                     new WorldHandler_v1_13_R2_paper(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 else
                     new WorldHandler_v1_13_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);

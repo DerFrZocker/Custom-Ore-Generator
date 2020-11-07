@@ -38,6 +38,7 @@ import io.th0rgal.oraxen.items.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanicFactory;
 import io.th0rgal.oraxen.utils.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
@@ -104,7 +105,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new OraxenApplier_v1_16_R2(this);
             case v1_16_R1:

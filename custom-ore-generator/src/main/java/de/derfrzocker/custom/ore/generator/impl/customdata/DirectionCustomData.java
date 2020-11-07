@@ -117,7 +117,7 @@ public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> i
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        switch (Version.getCurrent()) {
+        switch (Version.getServerVersion(Bukkit.getServer())) {
             case v1_16_R2:
                 return new DirectionApplier_v1_16_R2(this, blockFace);
             case v1_16_R1:
