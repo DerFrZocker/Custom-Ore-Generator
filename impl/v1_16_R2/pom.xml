@@ -20,7 +20,7 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.DerFrZocker</groupId>
+            <groupId>com.github.oraxen</groupId>
             <artifactId>Oraxen</artifactId>
             <version>${Oraxen.version}</version>
             <scope>provided</scope>

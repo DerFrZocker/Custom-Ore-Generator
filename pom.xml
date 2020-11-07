@@ -31,7 +31,7 @@
         <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>dev-47-SNAPSHOT</spigot-utils.version>
         <ItemMods.version>1.4-SNAPSHOT</ItemMods.version>
-        <Oraxen.version>00c2d3a5b2</Oraxen.version>
+        <Oraxen.version>5b10acaf8a</Oraxen.version>
     </properties>
 
     <repositories>
