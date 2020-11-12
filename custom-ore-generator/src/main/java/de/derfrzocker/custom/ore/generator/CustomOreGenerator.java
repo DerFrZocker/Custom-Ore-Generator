@@ -87,6 +87,7 @@ import java.io.File;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 
 public class CustomOreGenerator extends JavaPlugin {
 
@@ -103,10 +104,26 @@ public class CustomOreGenerator extends JavaPlugin {
 
     @Override
     public void onLoad() {
+        version = Version.getServerVersion(getServer());
+
+        // if no suitable version was found, log and return
+        if (version == Version.UNKNOWN) {
+            getLogger().warning("The Server version which you are running is unsupported, you are running version '" + version + "'");
+            getLogger().warning("The plugin supports following versions " + combineVersions(Version.v1_8_R1, Version.v1_8_R2, Version.v1_8_R3,
+                    Version.v1_9_R1, Version.v1_9_R2, Version.v1_10_R1, Version.v1_11_R1, Version.v1_12_R1, Version.v1_13_R1, Version.v1_13_R2,
+                    Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2, Version.v1_16_R3));
+            getLogger().warning("(Spigot / Paper version 1.8 - 1.16.4), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
+
+            if (version == Version.UNKNOWN) {
+                getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");
+                getLogger().warning("In this case please update to the newest version of this plugin. If this is the newest Version, than please be patient. It can take some weeks until the plugin is updated");
+            }
+
+            return;
+        }
+
         messages = new CustomOreGeneratorMessages(this);
         permissions = new Permissions(this);
-
-        version = Version.getServerVersion(getServer());
 
         final WorldConfigYamlDao worldConfigYamlDao = new WorldConfigYamlDao(new File(getDataFolder(), "data/world-config"));
         final OreConfigYamlDao oreConfigYamlDao = new OreConfigYamlDao(new File(getDataFolder(), "data/ore-config"));
@@ -122,6 +139,13 @@ public class CustomOreGenerator extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        if (version == Version.UNKNOWN) {
+            // print a stack Trace, so that the server owner can easily spot, that the plugin is not working
+            getLogger().log(Level.WARNING, "No compatible Server version found!", new IllegalStateException("No compatible Server version found!"));
+            getServer().getPluginManager().disablePlugin(this);
+            return;
+        }
+
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
         if (version.isNewerOrSameThan(Version.v1_14_R1)) {
@@ -317,6 +341,26 @@ public class CustomOreGenerator extends JavaPlugin {
             return service;
         }
 
+    }
+
+    private String combineVersions(Version... versions) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        boolean first = true;
+
+        for (Version version : versions) {
+            if (first) {
+                first = false;
+            } else {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append("'");
+            stringBuilder.append(version);
+            stringBuilder.append("'");
+        }
+
+        return stringBuilder.toString();
     }
 
 }
