@@ -36,6 +36,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.FacingApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.FacingApplier_v1_15_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.FacingApplier_v1_16_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.FacingApplier_v1_16_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.FacingApplier_v1_16_R3;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -103,6 +104,8 @@ public class FacingCustomData extends AbstractCustomData<CustomDataApplier> impl
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_16_R3:
+                return new FacingApplier_v1_16_R3(this);
             case v1_16_R2:
                 return new FacingApplier_v1_16_R2(this);
             case v1_16_R1:
