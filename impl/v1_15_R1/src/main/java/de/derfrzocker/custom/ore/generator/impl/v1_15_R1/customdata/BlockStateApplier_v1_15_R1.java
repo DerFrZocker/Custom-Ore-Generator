@@ -164,7 +164,7 @@ public class BlockStateApplier_v1_15_R1 implements AbstractBlockStateCustomData.
             }
 
             stringBuilder.append(iBlockState.a());
-            stringBuilder.append(",");
+            stringBuilder.append("=");
             stringBuilder.append(iBlockState.a(iBlockData.get(iBlockState)));
         }
 
