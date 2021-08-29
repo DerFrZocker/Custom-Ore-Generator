@@ -29,10 +29,24 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
-import de.derfrzocker.custom.ore.generator.impl.*;
+import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
+import de.derfrzocker.custom.ore.generator.impl.OreConfigYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.OreSettingsContainerYamlImpl;
+import de.derfrzocker.custom.ore.generator.impl.WorldConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.CountRangeBlockSelector;
 import de.derfrzocker.custom.ore.generator.impl.blockselector.HighestBlockBlockSelector;
-import de.derfrzocker.custom.ore.generator.impl.customdata.*;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AutoCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.BlockStateCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.CommandCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.DirectionCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.FacingCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.ItemModsCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.NBTTagCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.OraxenCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.SkullTextureCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.TickBlockCustomData;
+import de.derfrzocker.custom.ore.generator.impl.customdata.VariantCustomData;
 import de.derfrzocker.custom.ore.generator.impl.dao.OreConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao;
 import de.derfrzocker.custom.ore.generator.impl.dao.WorldConfigYamlDao_Old;
@@ -61,6 +75,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.WorldHandler_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.oregenerator.MinableGenerator_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.WorldHandler_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.oregenerator.MinableGenerator_v1_16_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.WorldHandler_v1_17_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.oregenerator.MinableGenerator_v1_17_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -101,6 +117,7 @@ public class CustomOreGenerator extends JavaPlugin {
     private CustomOreGeneratorMessages messages;
     private Permissions permissions;
     private Version version = Version.UNKNOWN;
+    private boolean shouldLoad = true;
 
     @Override
     public void onLoad() {
@@ -111,15 +128,27 @@ public class CustomOreGenerator extends JavaPlugin {
             getLogger().warning("The Server version which you are running is unsupported, you are running version '" + version + "'");
             getLogger().warning("The plugin supports following versions " + combineVersions(Version.v1_8_R1, Version.v1_8_R2, Version.v1_8_R3,
                     Version.v1_9_R1, Version.v1_9_R2, Version.v1_10_R1, Version.v1_11_R1, Version.v1_12_R1, Version.v1_13_R1, Version.v1_13_R2,
-                    Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2, Version.v1_16_R3));
-            getLogger().warning("(Spigot / Paper version 1.8 - 1.16.4), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
+                    Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2, Version.v1_16_R3, Version.v1_17_R1));
+            getLogger().warning("(Spigot / Paper version 1.8 - 1.17.1), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
 
             if (version == Version.UNKNOWN) {
                 getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");
                 getLogger().warning("In this case please update to the newest version of this plugin. If this is the newest Version, than please be patient. It can take some weeks until the plugin is updated");
             }
-
+            shouldLoad = false;
             return;
+        }
+
+        if (version == Version.v1_17_R1) {
+            try {
+                Class.forName("org.bukkit.generator.WorldInfo");
+            } catch (ClassNotFoundException e) {
+                // Unsupported version
+                shouldLoad = false;
+                getLogger().warning("The server version which you are running is unsupported");
+                getLogger().warning("Make sure that you are running 1.17.1 Spigot build 3218 or higher, 1.17 is not supported.");
+                return;
+            }
         }
 
         messages = new CustomOreGeneratorMessages(this);
@@ -139,7 +168,7 @@ public class CustomOreGenerator extends JavaPlugin {
 
     @Override
     public void onEnable() {
-        if (version == Version.UNKNOWN) {
+        if (version == Version.UNKNOWN || !shouldLoad) {
             // print a stack Trace, so that the server owner can easily spot, that the plugin is not working
             getLogger().log(Level.WARNING, "No compatible Server version found!", new IllegalStateException("No compatible Server version found!"));
             getServer().getPluginManager().disablePlugin(this);
@@ -193,6 +222,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_16_R1, Version.v1_16_R1, () -> new MinableGenerator_v1_16_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_16_R2, Version.v1_16_R2, () -> new MinableGenerator_v1_16_R2(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_16_R3, Version.v1_16_R3, () -> new MinableGenerator_v1_16_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(Version.v1_17_R1, Version.v1_17_R1, () -> new MinableGenerator_v1_17_R1(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -227,6 +257,9 @@ public class CustomOreGenerator extends JavaPlugin {
 
     private void initWorldHandler() {
         switch (version) {
+            case v1_17_R1:
+                new WorldHandler_v1_17_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+                return;
             case v1_16_R3:
                 new WorldHandler_v1_16_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 return;

@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata;
 
 import com.github.codedoctorde.itemmods.ItemMods;
 import com.github.codedoctorde.itemmods.config.ArmorStandBlockConfig;
@@ -32,41 +32,42 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
-import net.minecraft.server.v1_15_R1.BlockPosition;
-import net.minecraft.server.v1_15_R1.EntityArmorStand;
-import net.minecraft.server.v1_15_R1.EnumItemSlot;
-import net.minecraft.server.v1_15_R1.GeneratorAccess;
-import net.minecraft.server.v1_15_R1.MojangsonParser;
-import net.minecraft.server.v1_15_R1.NBTTagCompound;
-import net.minecraft.server.v1_15_R1.TileEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.TagParser;
+import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import org.apache.commons.lang.Validate;
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.craftbukkit.v1_15_R1.inventory.CraftItemStack;
-import org.bukkit.craftbukkit.v1_15_R1.persistence.CraftPersistentDataContainer;
-import org.bukkit.craftbukkit.v1_15_R1.persistence.CraftPersistentDataTypeRegistry;
-import org.bukkit.craftbukkit.v1_15_R1.util.CraftChatMessage;
+import org.bukkit.craftbukkit.v1_17_R1.generator.CraftLimitedRegion;
+import org.bukkit.craftbukkit.v1_17_R1.persistence.CraftPersistentDataContainer;
+import org.bukkit.craftbukkit.v1_17_R1.persistence.CraftPersistentDataTypeRegistry;
+import org.bukkit.generator.LimitedRegion;
 import org.bukkit.persistence.PersistentDataType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Optional;
 
-public class ItemModsApplier_v1_15_R1 implements CustomDataApplier {
+public class ItemModsApplier_v1_17_R1 implements CustomDataApplier {
 
     private static final CraftPersistentDataTypeRegistry DATA_TYPE_REGISTRY = new CraftPersistentDataTypeRegistry();
 
     @NotNull
     private final CustomData customData;
 
-    public ItemModsApplier_v1_15_R1(@NotNull final CustomData data) {
+    public ItemModsApplier_v1_17_R1(@NotNull final CustomData data) {
         Validate.notNull(data, "CustomData can not be null");
 
         customData = data;
     }
 
     @Override
-    public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object location, @NotNull final Object blockAccess) {
-        final BlockPosition blockPosition = (BlockPosition) location;
-        final GeneratorAccess generatorAccess = (GeneratorAccess) blockAccess;
+    public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {
+        final Location location = (Location) position;
+        final LimitedRegion limitedRegion = (LimitedRegion) blockAccess;
+        final BlockPos blockPosition = new BlockPos(location.getBlockX(), location.getBlockY(), location.getBlockZ());
+        final WorldGenLevel generatorAccess = ((CraftLimitedRegion) limitedRegion).getHandle();
 
         final Optional<Object> objectOptional = oreConfig.getCustomData(customData);
 
@@ -83,47 +84,43 @@ public class ItemModsApplier_v1_15_R1 implements CustomDataApplier {
         final ArmorStandBlockConfig armorStandBlockConfig = blockConfig.getArmorStand();
 
         if (armorStandBlockConfig != null) {
-            final EntityArmorStand entityArmorStand = new EntityArmorStand(generatorAccess.getMinecraftWorld(), blockPosition.getX() + 0.5, blockPosition.getY(), blockPosition.getZ() + 0.5);
+            final org.bukkit.entity.ArmorStand armorStand = limitedRegion.spawn(location, org.bukkit.entity.ArmorStand.class);
 
-            entityArmorStand.setSmall(armorStandBlockConfig.isSmall());
-            entityArmorStand.setMarker(armorStandBlockConfig.isMarker());
-            entityArmorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
-            entityArmorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
-            entityArmorStand.setCustomName(CraftChatMessage.fromStringOrNull(armorStandBlockConfig.getCustomName()));
-            entityArmorStand.setInvisible(armorStandBlockConfig.isInvisible());
-            entityArmorStand.getScoreboardTags().add(blockConfig.getTag());
-            entityArmorStand.setNoGravity(true);
-            entityArmorStand.setSilent(true);
-            entityArmorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
-            entityArmorStand.setSlot(EnumItemSlot.HEAD, CraftItemStack.asNMSCopy(armorStandBlockConfig.getHelmet()));
-            entityArmorStand.setSlot(EnumItemSlot.CHEST, CraftItemStack.asNMSCopy(armorStandBlockConfig.getChestplate()));
-            entityArmorStand.setSlot(EnumItemSlot.LEGS, CraftItemStack.asNMSCopy(armorStandBlockConfig.getLeggings()));
-            entityArmorStand.setSlot(EnumItemSlot.FEET, CraftItemStack.asNMSCopy(armorStandBlockConfig.getBoots()));
-            entityArmorStand.setSlot(EnumItemSlot.MAINHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getMainHand()));
-            entityArmorStand.setSlot(EnumItemSlot.OFFHAND, CraftItemStack.asNMSCopy(armorStandBlockConfig.getOffHand()));
+            armorStand.setSmall(armorStandBlockConfig.isSmall());
+            armorStand.setMarker(armorStandBlockConfig.isMarker());
+            armorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
+            armorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
+            armorStand.setCustomName(armorStandBlockConfig.getCustomName());
+            armorStand.setInvisible(armorStandBlockConfig.isInvisible());
+            armorStand.addScoreboardTag(blockConfig.getTag());
+            armorStand.setGravity(false);
+            armorStand.setSilent(true);
+            armorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
+            armorStand.getEquipment().setHelmet(armorStandBlockConfig.getHelmet());
+            armorStand.getEquipment().setChestplate(armorStandBlockConfig.getChestplate());
+            armorStand.getEquipment().setLeggings(armorStandBlockConfig.getLeggings());
+            armorStand.getEquipment().setBoots(armorStandBlockConfig.getBoots());
+            armorStand.getEquipment().setItemInMainHand(armorStandBlockConfig.getMainHand());
+            armorStand.getEquipment().setItemInOffHand(armorStandBlockConfig.getOffHand());
 
             // Fixing ArmorStand rotating issue, I have now idea why the yaw and/or pitch is another value than 0.
             // That needs a more detailed investigation, which of the above methods changes the yaw and/or pitch,
             // but for now it works.
-            entityArmorStand.yaw = 0;
-            entityArmorStand.pitch = 0;
-
-            entityArmorStand.getBukkitEntity().getPersistentDataContainer().set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
-
-            generatorAccess.addEntity(entityArmorStand);
+            armorStand.setRotation(0, 0);
+            armorStand.getPersistentDataContainer().set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
         }
 
-        final TileEntity tileEntity = generatorAccess.getTileEntity(blockPosition);
+        final BlockEntity tileEntity = generatorAccess.getBlockEntity(blockPosition);
 
         if (tileEntity != null) {
             if (blockConfig.getData() != null) {
-                final NBTTagCompound nbtTagCompound = new NBTTagCompound();
+                final CompoundTag nbtTagCompound = new CompoundTag();
                 tileEntity.save(nbtTagCompound);
 
                 try {
-                    final NBTTagCompound nbtTagCompound1 = MojangsonParser.parse(blockConfig.getData());
+                    final CompoundTag nbtTagCompound1 = TagParser.parseTag(blockConfig.getData());
 
-                    nbtTagCompound.a(nbtTagCompound1);
+                    nbtTagCompound.merge(nbtTagCompound1);
                 } catch (final CommandSyntaxException e) {
                     throw new RuntimeException("Error while parsing String to NBTTagCompound", e);
                 }
@@ -139,8 +136,8 @@ public class ItemModsApplier_v1_15_R1 implements CustomDataApplier {
                 tileEntity.persistentDataContainer.set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
             }
 
-            generatorAccess.x(blockPosition).removeTileEntity(blockPosition);
-            generatorAccess.x(blockPosition).setTileEntity(blockPosition, tileEntity);
+            generatorAccess.getChunk(blockPosition).removeBlockEntity(blockPosition);
+            generatorAccess.getChunk(blockPosition).setBlockEntity(tileEntity);
         }
     }
 

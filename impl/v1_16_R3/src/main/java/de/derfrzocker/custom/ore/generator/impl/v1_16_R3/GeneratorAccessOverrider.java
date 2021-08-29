@@ -27,7 +27,49 @@ package de.derfrzocker.custom.ore.generator.impl.v1_16_R3;
 
 import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import net.minecraft.server.v1_16_R3.*;
+import net.minecraft.server.v1_16_R3.AxisAlignedBB;
+import net.minecraft.server.v1_16_R3.BiomeBase;
+import net.minecraft.server.v1_16_R3.BiomeManager;
+import net.minecraft.server.v1_16_R3.Block;
+import net.minecraft.server.v1_16_R3.BlockPosition;
+import net.minecraft.server.v1_16_R3.ChunkStatus;
+import net.minecraft.server.v1_16_R3.DifficultyDamageScaler;
+import net.minecraft.server.v1_16_R3.DimensionManager;
+import net.minecraft.server.v1_16_R3.Entity;
+import net.minecraft.server.v1_16_R3.EntityHuman;
+import net.minecraft.server.v1_16_R3.EntityLiving;
+import net.minecraft.server.v1_16_R3.EnumDifficulty;
+import net.minecraft.server.v1_16_R3.EnumDirection;
+import net.minecraft.server.v1_16_R3.EnumSkyBlock;
+import net.minecraft.server.v1_16_R3.Fluid;
+import net.minecraft.server.v1_16_R3.FluidType;
+import net.minecraft.server.v1_16_R3.GeneratorAccessSeed;
+import net.minecraft.server.v1_16_R3.HeightMap;
+import net.minecraft.server.v1_16_R3.IBlockAccess;
+import net.minecraft.server.v1_16_R3.IBlockData;
+import net.minecraft.server.v1_16_R3.IChunkAccess;
+import net.minecraft.server.v1_16_R3.IChunkProvider;
+import net.minecraft.server.v1_16_R3.IRegistryCustom;
+import net.minecraft.server.v1_16_R3.LightEngine;
+import net.minecraft.server.v1_16_R3.MovingObjectPositionBlock;
+import net.minecraft.server.v1_16_R3.ParticleParam;
+import net.minecraft.server.v1_16_R3.PathfinderTargetCondition;
+import net.minecraft.server.v1_16_R3.ProtoChunkExtension;
+import net.minecraft.server.v1_16_R3.RayTrace;
+import net.minecraft.server.v1_16_R3.ResourceKey;
+import net.minecraft.server.v1_16_R3.SectionPosition;
+import net.minecraft.server.v1_16_R3.SoundCategory;
+import net.minecraft.server.v1_16_R3.SoundEffect;
+import net.minecraft.server.v1_16_R3.StructureGenerator;
+import net.minecraft.server.v1_16_R3.StructureStart;
+import net.minecraft.server.v1_16_R3.TickList;
+import net.minecraft.server.v1_16_R3.TileEntity;
+import net.minecraft.server.v1_16_R3.Vec3D;
+import net.minecraft.server.v1_16_R3.VoxelShape;
+import net.minecraft.server.v1_16_R3.VoxelShapeCollision;
+import net.minecraft.server.v1_16_R3.WorldBorder;
+import net.minecraft.server.v1_16_R3.WorldData;
+import net.minecraft.server.v1_16_R3.WorldServer;
 import org.apache.commons.lang.Validate;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
 import org.bukkit.event.entity.CreatureSpawnEvent;
@@ -565,8 +607,8 @@ public class GeneratorAccessOverrider implements GeneratorAccessSeed, ChunkAcces
     }
 
     @Override
-    public boolean addAllEntities(Entity entity, CreatureSpawnEvent.SpawnReason reason) {
-        return parent.addAllEntities(entity, reason);
+    public void addAllEntities(Entity entity, CreatureSpawnEvent.SpawnReason reason) {
+        parent.addAllEntities(entity, reason);
     }
 
     @Override

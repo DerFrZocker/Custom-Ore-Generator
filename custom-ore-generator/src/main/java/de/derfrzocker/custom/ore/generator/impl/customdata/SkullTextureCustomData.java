@@ -37,6 +37,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.SkullTexture
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.SkullTextureApplier_v1_16_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.SkullTextureApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.SkullTextureApplier_v1_16_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata.SkullTextureApplier_v1_17_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.SkullTextureApplier_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.SkullTextureApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.SkullTextureApplier_v1_8_R3;
@@ -57,6 +58,8 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
 
     static {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_17_R1:
+            case v1_16_R3:
             case v1_16_R2:
             case v1_16_R1:
             case v1_15_R1:
@@ -93,6 +96,8 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
     @Override
     protected SkullTextureApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_17_R1:
+                return new SkullTextureApplier_v1_17_R1(this);
             case v1_16_R3:
                 return new SkullTextureApplier_v1_16_R3(this);
             case v1_16_R2:
