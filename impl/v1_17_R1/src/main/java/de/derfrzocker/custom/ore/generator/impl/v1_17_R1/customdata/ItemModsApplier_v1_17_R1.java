@@ -25,18 +25,27 @@
 
 package de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata;
 
-import com.github.codedoctorde.itemmods.ItemMods;
-import com.github.codedoctorde.itemmods.config.ArmorStandBlockConfig;
-import com.github.codedoctorde.itemmods.config.BlockConfig;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
+import dev.linwood.itemmods.ItemMods;
+import dev.linwood.itemmods.pack.PackObject;
+import dev.linwood.itemmods.pack.asset.BlockAsset;
+import dev.linwood.itemmods.pack.asset.raw.ModelAsset;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Registry;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.TagParser;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.decoration.ArmorStand;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.BaseSpawner;
+import net.minecraft.world.level.SpawnData;
 import net.minecraft.world.level.WorldGenLevel;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.SpawnerBlockEntity;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
@@ -75,66 +84,43 @@ public class ItemModsApplier_v1_17_R1 implements CustomDataApplier {
             return; //TODO maybe throw exception?
 
         final String name = (String) objectOptional.get();
-        final Optional<BlockConfig> blockConfigOptional = ItemMods.getPlugin().getCustomBlockManager().getBlocks().stream().filter(blockConfig -> blockConfig.getName().equals(name)).findAny();
+        PackObject packObject = new PackObject(name);
+        BlockAsset blockAsset = packObject.getBlock();
 
-        if (!blockConfigOptional.isPresent())
+        if (blockAsset == null) {
             return; //TODO maybe throw exception?
+        }
 
-        final BlockConfig blockConfig = blockConfigOptional.get();
-        final ArmorStandBlockConfig armorStandBlockConfig = blockConfig.getArmorStand();
+        ModelAsset modelAsset = packObject.getModel();
 
-        if (armorStandBlockConfig != null) {
-            final org.bukkit.entity.ArmorStand armorStand = limitedRegion.spawn(location, org.bukkit.entity.ArmorStand.class);
-
-            armorStand.setSmall(armorStandBlockConfig.isSmall());
-            armorStand.setMarker(armorStandBlockConfig.isMarker());
-            armorStand.setInvulnerable(armorStandBlockConfig.isInvulnerable());
-            armorStand.setCustomNameVisible(armorStandBlockConfig.isCustomNameVisible());
-            armorStand.setCustomName(armorStandBlockConfig.getCustomName());
-            armorStand.setInvisible(armorStandBlockConfig.isInvisible());
-            armorStand.addScoreboardTag(blockConfig.getTag());
-            armorStand.setGravity(false);
-            armorStand.setSilent(true);
-            armorStand.setBasePlate(armorStandBlockConfig.isBasePlate());
-            armorStand.getEquipment().setHelmet(armorStandBlockConfig.getHelmet());
-            armorStand.getEquipment().setChestplate(armorStandBlockConfig.getChestplate());
-            armorStand.getEquipment().setLeggings(armorStandBlockConfig.getLeggings());
-            armorStand.getEquipment().setBoots(armorStandBlockConfig.getBoots());
-            armorStand.getEquipment().setItemInMainHand(armorStandBlockConfig.getMainHand());
-            armorStand.getEquipment().setItemInOffHand(armorStandBlockConfig.getOffHand());
-
-            // Fixing ArmorStand rotating issue, I have now idea why the yaw and/or pitch is another value than 0.
-            // That needs a more detailed investigation, which of the above methods changes the yaw and/or pitch,
-            // but for now it works.
-            armorStand.setRotation(0, 0);
-            armorStand.getPersistentDataContainer().set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
+        if (modelAsset == null) {
+            return; //TODO maybe throw exception?
         }
 
         final BlockEntity tileEntity = generatorAccess.getBlockEntity(blockPosition);
 
         if (tileEntity != null) {
-            if (blockConfig.getData() != null) {
-                final CompoundTag nbtTagCompound = new CompoundTag();
-                tileEntity.save(nbtTagCompound);
+            SpawnerBlockEntity spawnerBlock = (SpawnerBlockEntity) tileEntity;
+            BaseSpawner spawner = spawnerBlock.getSpawner();
+            spawner.requiredPlayerRange = 0;
+            spawner.spawnCount = 0;
 
-                try {
-                    final CompoundTag nbtTagCompound1 = TagParser.parseTag(blockConfig.getData());
+            ArmorStand armorStand = new ArmorStand(EntityType.ARMOR_STAND, null);
+            Item item = Registry.ITEM.get(new ResourceLocation(modelAsset.getFallbackTexture().getKey().toString()));
+            ItemStack itemStack = new ItemStack(item);
+            CompoundTag compoundTag = itemStack.getOrCreateTag();
+            compoundTag.putInt("CustomModelData", packObject.getCustomModel());
+            armorStand.setSlot(EquipmentSlot.MAINHAND, itemStack, true);
 
-                    nbtTagCompound.merge(nbtTagCompound1);
-                } catch (final CommandSyntaxException e) {
-                    throw new RuntimeException("Error while parsing String to NBTTagCompound", e);
-                }
+            CompoundTag saved = new CompoundTag();
+            armorStand.save(saved);
+            spawner.nextSpawnData = new SpawnData(1, saved);
 
-                tileEntity.load(nbtTagCompound);
+            if (tileEntity.persistentDataContainer == null) {
+                tileEntity.persistentDataContainer = new CraftPersistentDataContainer(DATA_TYPE_REGISTRY);
             }
 
-            if (blockConfig.getTag() != null) {
-                if (tileEntity.persistentDataContainer == null) {
-                    tileEntity.persistentDataContainer = new CraftPersistentDataContainer(DATA_TYPE_REGISTRY);
-                }
-
-                tileEntity.persistentDataContainer.set(new NamespacedKey(ItemMods.getPlugin(), "type"), PersistentDataType.STRING, blockConfig.getTag());
-            }
+            tileEntity.persistentDataContainer.set(new NamespacedKey(ItemMods.getPlugin(), "custom_block_type"), PersistentDataType.STRING, packObject.toString());
 
             generatorAccess.getChunk(blockPosition).removeBlockEntity(blockPosition);
             generatorAccess.getChunk(blockPosition).setBlockEntity(tileEntity);
