@@ -30,7 +30,7 @@
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>dev-55-SNAPSHOT</spigot-utils.version>
-        <ItemMods.version>2.0.0-alpha.0</ItemMods.version>
+        <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
         <Oraxen.version>5b10acaf8a</Oraxen.version>
     </properties>
 

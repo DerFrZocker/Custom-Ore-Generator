@@ -95,7 +95,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public String getCustomData(@NotNull final BlockState blockState) {
         Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
 
-        return new CustomBlock(blockState.getLocation()).getType();
+        return new CustomBlock(blockState.getLocation()).getPackObject().toString();
     }
 
     @NotNull
