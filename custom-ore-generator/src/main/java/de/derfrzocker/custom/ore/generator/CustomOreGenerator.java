@@ -181,6 +181,8 @@ public class CustomOreGenerator extends JavaPlugin {
             checkFile("data/factory/gui/menu-gui.yml");
         }
 
+        checkFile("data/factory/gui/biome-gui.yml");
+
         final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), version, Version.isPaper(getServer()));
 
         initWorldHandler();

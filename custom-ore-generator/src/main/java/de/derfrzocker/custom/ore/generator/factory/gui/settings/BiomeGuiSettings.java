@@ -78,7 +78,13 @@ public class BiomeGuiSettings extends PageSettings {
 
     @NotNull
     public Material getBiomeMaterial(@NotNull final String biome) {
-        return Material.valueOf(getSection().getString("biomes." + biome));
+        String value = getSection().getString("biomes." + biome);
+
+        if (value == null) {
+            throw new IllegalStateException("There is no material for the biome " + biome);
+        }
+
+        return Material.valueOf(value);
     }
 
     @NotNull
