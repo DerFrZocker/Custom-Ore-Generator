@@ -133,7 +133,7 @@ public class CustomOreGenerator extends JavaPlugin {
             getLogger().warning("The plugin supports following versions " + combineVersions(Version.v1_8_R1, Version.v1_8_R2, Version.v1_8_R3,
                     Version.v1_9_R1, Version.v1_9_R2, Version.v1_10_R1, Version.v1_11_R1, Version.v1_12_R1, Version.v1_13_R1, Version.v1_13_R2,
                     Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2, Version.v1_16_R3, Version.v1_17_R1, Version.v1_18_R1, Version.v1_18_R2));
-            getLogger().warning("(Spigot / Paper version 1.8 - 1.18), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
+            getLogger().warning("(Spigot / Paper version 1.8 - 1.18.2), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
 
             if (version == Version.UNKNOWN) {
                 getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");
