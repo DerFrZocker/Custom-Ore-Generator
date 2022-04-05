@@ -37,6 +37,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.ItemModsApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata.ItemModsApplier_v1_17_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_18_R1.customdata.ItemModsApplier_v1_18_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.ItemModsApplier_v1_18_R2;
 import de.derfrzocker.spigot.utils.Version;
 import dev.linwood.itemmods.ItemMods;
 import dev.linwood.itemmods.api.block.CustomBlock;
@@ -103,6 +104,8 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_18_R2:
+                return new ItemModsApplier_v1_18_R2(this);
             case v1_18_R1:
                 return new ItemModsApplier_v1_18_R1(this);
             case v1_17_R1:
