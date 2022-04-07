@@ -35,17 +35,21 @@ import org.jetbrains.annotations.NotNull;
 import java.util.function.Supplier;
 
 public class BiomeGuiSettings extends PageSettings {
+    private final Plugin plugin;
 
     public BiomeGuiSettings(@NotNull final Plugin plugin, @NotNull final String file) {
         super(plugin, file);
+        this.plugin = plugin;
     }
 
     public BiomeGuiSettings(@NotNull final Plugin plugin, @NotNull final String file, final boolean copy) {
         super(plugin, file, copy);
+        this.plugin = plugin;
     }
 
     public BiomeGuiSettings(@NotNull final Plugin plugin, @NotNull final Supplier<ConfigurationSection> configurationSectionSupplier) {
         super(plugin, configurationSectionSupplier);
+        this.plugin = plugin;
     }
 
     @NotNull
@@ -78,7 +82,14 @@ public class BiomeGuiSettings extends PageSettings {
 
     @NotNull
     public Material getBiomeMaterial(@NotNull final String biome) {
-        return Material.valueOf(getSection().getString("biomes." + biome));
+        String value = getSection().getString("biomes." + biome);
+
+        if (value == null) {
+            plugin.getLogger().warning("There is no material for the biome " + biome + " using default Material " + Material.STONE);
+            return Material.STONE;
+        }
+
+        return Material.valueOf(value);
     }
 
     @NotNull

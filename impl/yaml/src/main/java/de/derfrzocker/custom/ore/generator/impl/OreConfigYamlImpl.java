@@ -25,7 +25,12 @@
 
 package de.derfrzocker.custom.ore.generator.impl;
 
-import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.api.BlockSelector;
+import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.api.OreGenerator;
+import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.OreSettingContainer;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -37,7 +42,14 @@ import org.bukkit.util.NumberConversions;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
 
 @SerializableAs(value = "CustomOreGenerator#OreConfig")
 public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
@@ -68,6 +80,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
     private final String name;
     @NotNull
     private final Material material;
+    private final Set<String> invalidBiome = new HashSet<>();
     private final Set<Biome> biomes = new HashSet<>();
     private final Set<Material> replaceMaterials = new HashSet<>();
     private final Set<Material> selectMaterials = new HashSet<>();
@@ -135,7 +148,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             final String blockSelectorName;
 
             if (!map.containsKey(BLOCK_SELECTOR_KEY)) {
-                service.getLogger().info("BlockSelector not found try to use default one");
+                service.getLogger().warning("BlockSelector not found try to use default one");
                 final BlockSelector blockSelector = service.getDefaultBlockSelector();
 
                 Validate.notNull(blockSelector, "Default BlockSelector is null");
@@ -150,7 +163,14 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             oreConfig.setGeneratedAll((boolean) map.get(GENERATED_ALL_KEY));
 
             if (map.containsKey(BIOMES_KEY)) {
-                ((List<String>) map.get(BIOMES_KEY)).forEach(biome -> oreConfig.addBiome(Biome.valueOf(biome)));
+                for (String biomeString : ((List<String>) map.get(BIOMES_KEY))) {
+                    try {
+                        oreConfig.addBiome(Biome.valueOf(biomeString));
+                    } catch (IllegalArgumentException e) {
+                        oreConfig.invalidBiome.add(biomeString);
+                        service.getLogger().warning("OreConfig: " + oreConfig.getName() + " >> The biome " + biomeString + " is not present in this server version ignoring it!");
+                    }
+                }
             }
 
             if (map.containsKey(REPLACE_MATERIALS_KEY)) {
@@ -412,6 +432,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             final List<String> data = new ArrayList<>();
 
             biomesSet.forEach(biome -> data.add(biome.toString()));
+            data.addAll(invalidBiome);
 
             serialize.put(BIOMES_KEY, data);
         }

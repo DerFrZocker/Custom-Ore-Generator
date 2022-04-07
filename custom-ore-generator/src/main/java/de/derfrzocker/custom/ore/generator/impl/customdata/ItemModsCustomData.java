@@ -25,10 +25,6 @@
 
 package de.derfrzocker.custom.ore.generator.impl.customdata;
 
-import com.github.codedoctorde.itemmods.ItemMods;
-import com.github.codedoctorde.itemmods.api.block.CustomBlock;
-import com.github.codedoctorde.itemmods.api.block.CustomBlockManager;
-import com.github.codedoctorde.itemmods.config.BlockConfig;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
@@ -40,7 +36,15 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.ItemModsApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.ItemModsApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata.ItemModsApplier_v1_17_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_18_R1.customdata.ItemModsApplier_v1_18_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.ItemModsApplier_v1_18_R2;
 import de.derfrzocker.spigot.utils.Version;
+import dev.linwood.itemmods.ItemMods;
+import dev.linwood.itemmods.api.block.CustomBlock;
+import dev.linwood.itemmods.pack.ItemModsPack;
+import dev.linwood.itemmods.pack.PackManager;
+import dev.linwood.itemmods.pack.PackObject;
+import dev.linwood.itemmods.pack.asset.BlockAsset;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -49,7 +53,6 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -61,10 +64,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
 
     @Override
     public boolean canApply(@NotNull final OreConfig oreConfig) {
-        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
-        final List<BlockConfig> blockConfigs = customBlockManager.getBlocks();
-
-        return blockConfigs.stream().anyMatch(blockConfig -> blockConfig.getBlock().getMaterial() == oreConfig.getMaterial());
+        return oreConfig.getMaterial() == Material.SPAWNER;
     }
 
     @Override
@@ -72,10 +72,11 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
         if (!(customData instanceof String))
             return false;
 
-        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
-        final List<BlockConfig> blockConfigs = customBlockManager.getBlocks();
+        if (oreConfig.getMaterial() != Material.SPAWNER) {
+            return false;
+        }
 
-        return blockConfigs.stream().filter(blockConfig -> blockConfig.getBlock().getMaterial() == oreConfig.getMaterial()).anyMatch(blockConfig -> blockConfig.getName().equals(customData));
+        return new PackObject((String) customData).getBlock() != null;
     }
 
     @NotNull
@@ -88,9 +89,7 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public boolean hasCustomData(@NotNull final BlockState blockState) {
         Validate.notNull(blockState, "BlockState can not be null");
 
-        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
-
-        return customBlockManager.getCustomBlock(blockState.getLocation()) != null;
+        return new CustomBlock(blockState.getLocation()).getConfig() != null;
     }
 
     @NotNull
@@ -98,16 +97,17 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public String getCustomData(@NotNull final BlockState blockState) {
         Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
 
-        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
-        final CustomBlock customBlock = customBlockManager.getCustomBlock(blockState.getLocation());
-
-        return customBlock.getConfig().getName();
+        return new CustomBlock(blockState.getLocation()).getPackObject().toString();
     }
 
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_18_R2:
+                return new ItemModsApplier_v1_18_R2(this);
+            case v1_18_R1:
+                return new ItemModsApplier_v1_18_R1(this);
             case v1_17_R1:
                 return new ItemModsApplier_v1_17_R1(this);
             case v1_16_R3:
@@ -130,10 +130,18 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     public Set<Object> getPossibleValues(@NotNull final Material material) {
         Validate.notNull(material, "Material can not be null");
 
-        final CustomBlockManager customBlockManager = ItemMods.getPlugin().getCustomBlockManager();
+        if (material != Material.SPAWNER) {
+            return new HashSet<>();
+        }
+
+        final PackManager packManager = ItemMods.getPackManager();
         final Set<Object> set = new HashSet<>();
 
-        customBlockManager.getBlocks().stream().filter(blockConfig -> blockConfig.getBlock().getMaterial() == material).forEach(blockConfig -> set.add(blockConfig.getName()));
+        for (ItemModsPack pack : packManager.getPacks()) {
+            for (BlockAsset blockAsset : pack.getBlocks()) {
+                set.add(pack.getName() + ":" + blockAsset.getName());
+            }
+        }
 
         return Collections.unmodifiableSet(set);
     }
