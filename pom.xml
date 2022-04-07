@@ -40,8 +40,12 @@
             <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
         </repository>
         <repository>
-            <id>derfrzocker-repo</id>
+            <id>derfrzocker-snapshots</id>
             <url>https://nexus.derfrzocker.de/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
+            <id>derfrzocker-release</id>
+            <url>https://nexus.derfrzocker.de/repository/maven-releases/</url>
         </repository>
         <repository>
             <id>CodeMC</id>
