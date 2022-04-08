@@ -105,7 +105,7 @@ public class CustomOreBlockPopulator_v1_10_R1 extends BlockPopulator implements 
 
         final OreGenerator oreGenerator = optionalOreGenerator.get();
         final BlockSelector blockSelector = optionalBlockSelector.get();
-        final Random random = service.createRandom(craftWorld.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunk.getX(), chunk.getZ());
+        final Random random = service.createRandom(craftWorld.getSeed() + oreConfig.getMaterial().toString().hashCode() + oreConfig.getName().hashCode(), chunk.getX(), chunk.getZ());
         final Location chunkLocation = new Location(null, chunk.getX() << 4, 0, chunk.getZ() << 4);
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> craftWorld.getHighestBlockYAt(chunkLocation.getBlockX() + x, chunkLocation.getBlockZ() + z), oreConfig, random);

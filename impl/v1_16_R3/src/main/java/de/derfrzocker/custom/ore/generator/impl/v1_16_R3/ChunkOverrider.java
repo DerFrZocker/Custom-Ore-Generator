@@ -240,7 +240,7 @@ public class ChunkOverrider extends ChunkGenerator {
 
         final OreGenerator oreGenerator = optionalOreGenerator.get();
         final BlockSelector blockSelector = optionalBlockSelector.get();
-        final Random random = service.createRandom(access.getSeed() + oreConfig.getMaterial().toString().hashCode(), access.a(), access.b());
+        final Random random = service.createRandom(access.getSeed() + oreConfig.getMaterial().toString().hashCode() + oreConfig.getName().hashCode(), access.a(), access.b());
         final BlockPosition blockPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> access.getHighestBlockYAt(HeightMap.Type.MOTION_BLOCKING, blockPosition.b(x, 0, z)).getY(), oreConfig, random);

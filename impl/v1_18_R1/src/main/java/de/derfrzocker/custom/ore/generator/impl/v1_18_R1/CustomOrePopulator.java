@@ -122,7 +122,7 @@ public class CustomOrePopulator extends BlockPopulator {
 
         final OreGenerator oreGenerator = optionalOreGenerator.get();
         final BlockSelector blockSelector = optionalBlockSelector.get();
-        final Random random = service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode(), chunkX, chunkZ);
+        final Random random = service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode() + oreConfig.getName().hashCode(), chunkX, chunkZ);
         final BlockPos blockPosition = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> ((CraftLimitedRegion) limitedRegion).getHandle().getHeight(Heightmap.Types.MOTION_BLOCKING, blockPosition.getX() + x, blockPosition.getZ() + z), oreConfig, random);
