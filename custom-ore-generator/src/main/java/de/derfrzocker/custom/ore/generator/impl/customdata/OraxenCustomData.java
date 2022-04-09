@@ -38,15 +38,20 @@ import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata.OraxenApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_18_R1.customdata.OraxenApplier_v1_18_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.OraxenApplier_v1_18_R2;
 import de.derfrzocker.spigot.utils.Version;
+import io.th0rgal.oraxen.compatibilities.provided.itembridge.OraxenItemBridge;
 import io.th0rgal.oraxen.items.OraxenItems;
-import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanic;
-import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
 import io.th0rgal.oraxen.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
+import org.bukkit.block.data.type.NoteBlock;
+import org.bukkit.block.data.type.Tripwire;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
@@ -82,13 +87,23 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     public boolean hasCustomData(@NotNull BlockState blockState) {
         BlockData blockData = blockState.getBlockData();
 
-        if (!(blockData instanceof MultipleFacing)) {
-            return false;
+        // Check for block mechanic
+        if (blockState.getType() == Material.MUSHROOM_STEM) {
+            return BlockMechanicFactory.getBlockMechanic(BlockMechanic.getCode((MultipleFacing) blockData)) != null;
         }
 
-        int code = Utils.getCode((MultipleFacing) blockData);
+        // Check for note block mechanic
+        if (blockState.getType() == Material.NOTE_BLOCK) {
+            NoteBlock noteBlock = (NoteBlock) blockData;
+            return NoteBlockMechanicFactory.getBlockMechanic((int) (noteBlock.getInstrument().getType()) * 25 + (int) noteBlock.getNote().getId() + (noteBlock.isPowered() ? 400 : 0) - 26) != null;
+        }
 
-        return BlockMechanicFactory.getBlockMechanic(code) != null;
+        // Check for string mechanic
+        if (blockState.getType() == Material.TRIPWIRE) {
+            return StringBlockMechanicFactory.getBlockMechanic(StringBlockMechanicFactory.getCode((Tripwire) blockData)) != null;
+        }
+
+        return false;
     }
 
     @NotNull
@@ -96,14 +111,23 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     public Object getCustomData(@NotNull BlockState blockState) {
         BlockData blockData = blockState.getBlockData();
 
-        if (!(blockData instanceof MultipleFacing)) {
-            return false;
+        // Check for block mechanic
+        if (blockState.getType() == Material.MUSHROOM_STEM) {
+            return BlockMechanicFactory.getBlockMechanic(BlockMechanic.getCode((MultipleFacing) blockData)).getItemID();
         }
 
-        int code = Utils.getCode((MultipleFacing) blockData);
-        BlockMechanic blockMechanic = BlockMechanicFactory.getBlockMechanic(code);
+        // Check for note block mechanic
+        if (blockState.getType() == Material.NOTE_BLOCK) {
+            NoteBlock noteBlock = (NoteBlock) blockData;
+            return NoteBlockMechanicFactory.getBlockMechanic((int) (noteBlock.getInstrument().getType()) * 25 + (int) noteBlock.getNote().getId() + (noteBlock.isPowered() ? 400 : 0) - 26).getItemID();
+        }
 
-        return blockMechanic.getItemID();
+        // Check for string mechanic
+        if (blockState.getType() == Material.TRIPWIRE) {
+            return StringBlockMechanicFactory.getBlockMechanic(StringBlockMechanicFactory.getCode((Tripwire) blockData)).getItemID();
+        }
+
+        return false;
     }
 
     @NotNull

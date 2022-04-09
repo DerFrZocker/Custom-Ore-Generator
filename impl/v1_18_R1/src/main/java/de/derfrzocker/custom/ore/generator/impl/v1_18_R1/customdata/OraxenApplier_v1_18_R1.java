@@ -29,11 +29,16 @@ import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import io.th0rgal.oraxen.mechanics.MechanicsManager;
-import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanic;
-import io.th0rgal.oraxen.mechanics.provided.block.BlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanic;
+import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.generator.LimitedRegion;
 import org.jetbrains.annotations.NotNull;
@@ -49,7 +54,11 @@ public class OraxenApplier_v1_18_R1 implements CustomDataApplier {
     @NotNull
     private final CustomData customData;
     @Nullable
-    private BlockMechanicFactory mechanicFactory;
+    private BlockMechanicFactory blockMechanicFactory;
+    @Nullable
+    private NoteBlockMechanicFactory noteBlockMechanicFactory;
+    @Nullable
+    private StringBlockMechanicFactory stringBlockMechanicFactory;
 
     public OraxenApplier_v1_18_R1(@NotNull CustomData customData) {
         Validate.notNull(customData, "CustomData can not be null");
@@ -62,7 +71,7 @@ public class OraxenApplier_v1_18_R1 implements CustomDataApplier {
         final Location location = (Location) position;
         final LimitedRegion limitedRegion = (LimitedRegion) blockAccess;
 
-        MultipleFacing blockData = (MultipleFacing) limitedRegion.getBlockData(location);
+        BlockData blockData = limitedRegion.getBlockData(location);
 
         Optional<Object> objectOptional = oreConfig.getCustomData(customData);
 
@@ -71,16 +80,39 @@ public class OraxenApplier_v1_18_R1 implements CustomDataApplier {
 
         final String name = (String) objectOptional.get();
 
-        if (mechanicFactory == null) {
-            mechanicFactory = (BlockMechanicFactory) MechanicsManager.getMechanicFactory("block");
+        if (blockMechanicFactory == null) {
+            blockMechanicFactory = (BlockMechanicFactory) MechanicsManager.getMechanicFactory("block");
+        }
+        if (noteBlockMechanicFactory == null) {
+            noteBlockMechanicFactory = (NoteBlockMechanicFactory) MechanicsManager.getMechanicFactory("noteblock");
+        }
+        if (stringBlockMechanicFactory == null) {
+            stringBlockMechanicFactory = (StringBlockMechanicFactory) MechanicsManager.getMechanicFactory("stringblock");
         }
 
-        BlockMechanic mechanic = (BlockMechanic) mechanicFactory.getMechanic(name);
+        if (blockMechanicFactory != null) {
+            BlockMechanic blockMechanic = (BlockMechanic) blockMechanicFactory.getMechanic(name);
+            if (blockMechanic != null) {
+                int code = blockMechanic.getCustomVariation();
 
-        int code = mechanic.getCustomVariation();
+                for (int i = 0; i < BLOCK_FACES.length; i++) {
+                    ((MultipleFacing) blockData).setFace(BLOCK_FACES[i], (code & 0x1 << i) != 0);
+                }
+            }
+        }
 
-        for (int i = 0; i < BLOCK_FACES.length; i++) {
-            blockData.setFace(BLOCK_FACES[i], (code & 0x1 << i) != 0);
+        if (noteBlockMechanicFactory != null) {
+            NoteBlockMechanic noteBlockMechanic = (NoteBlockMechanic) noteBlockMechanicFactory.getMechanic(name);
+            if (noteBlockMechanic != null) {
+                blockData = NoteBlockMechanicFactory.createNoteBlockData(noteBlockMechanic.getCustomVariation());
+            }
+        }
+
+        if (stringBlockMechanicFactory != null) {
+            StringBlockMechanic stringBlockMechanic = (StringBlockMechanic) stringBlockMechanicFactory.getMechanic(name);
+            if (stringBlockMechanic != null) {
+                blockData = StringBlockMechanicFactory.createTripwireData(stringBlockMechanic.getCustomVariation());
+            }
         }
 
         limitedRegion.setBlockData(location, blockData);
