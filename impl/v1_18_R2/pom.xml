@@ -46,11 +46,6 @@
             <optional>true</optional>
         </dependency>
         <dependency>
-            <groupId>com.mojang</groupId>
-            <artifactId>brigadier</artifactId>
-            <version>1.0.18</version>
-        </dependency>
-        <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-impl-abstract</artifactId>
             <version>${project.version}</version>
