@@ -30,7 +30,7 @@
         <project.authors>Nononitas</project.authors>
         <version.maven-install-plugin>2.5.2</version.maven-install-plugin>
         <version.non-maven1>1.0.0</version.non-maven1>
-        <spigot-utils.version>cog</spigot-utils.version>
+        <spigot-utils.version>cog-2</spigot-utils.version>
         <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
         <Oraxen.version>b8daf9f42d</Oraxen.version>
     </properties>
