@@ -182,6 +182,12 @@
             <version>${project.version}</version>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
+            <artifactId>custom-ore-generator-impl-v1_19_R2</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>
