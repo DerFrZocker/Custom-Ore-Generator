@@ -32,7 +32,7 @@
         <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>cog-3</spigot-utils.version>
         <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
-        <Oraxen.version>b8daf9f42d</Oraxen.version>
+        <Oraxen.version>ebd90cfbb2</Oraxen.version>
     </properties>
 
     <repositories>

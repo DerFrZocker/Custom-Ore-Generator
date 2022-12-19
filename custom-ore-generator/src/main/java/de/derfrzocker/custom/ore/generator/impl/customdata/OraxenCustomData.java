@@ -40,15 +40,13 @@ import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.OraxenApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.OraxenApplier_v1_19_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.OraxenApplier_v1_19_R2;
 import de.derfrzocker.spigot.utils.Version;
-import io.th0rgal.oraxen.compatibilities.provided.itembridge.OraxenItemBridge;
-import io.th0rgal.oraxen.items.OraxenItems;
-import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanic;
+import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
-import io.th0rgal.oraxen.utils.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.block.BlockFace;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
@@ -56,6 +54,8 @@ import org.bukkit.block.data.type.NoteBlock;
 import org.bukkit.block.data.type.Tripwire;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.function.Function;
 
 public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
@@ -91,7 +91,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
 
         // Check for block mechanic
         if (blockState.getType() == Material.MUSHROOM_STEM) {
-            return BlockMechanicFactory.getBlockMechanic(BlockMechanic.getCode((MultipleFacing) blockData)) != null;
+            return BlockMechanicFactory.getBlockMechanic(getCode((MultipleFacing) blockData)) != null;
         }
 
         // Check for note block mechanic
@@ -115,7 +115,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
 
         // Check for block mechanic
         if (blockState.getType() == Material.MUSHROOM_STEM) {
-            return BlockMechanicFactory.getBlockMechanic(BlockMechanic.getCode((MultipleFacing) blockData)).getItemID();
+            return BlockMechanicFactory.getBlockMechanic(getCode((MultipleFacing) blockData)).getItemID();
         }
 
         // Check for note block mechanic
@@ -130,6 +130,17 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
         }
 
         return false;
+    }
+
+    private int getCode(MultipleFacing blockData) {
+        int sum = 0;
+        List<BlockFace> properties = Arrays.asList(BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP);
+
+        for (BlockFace blockFace : blockData.getFaces()) {
+            sum += Math.pow(2.0, properties.indexOf(blockFace));
+        }
+
+        return sum;
     }
 
     @NotNull
