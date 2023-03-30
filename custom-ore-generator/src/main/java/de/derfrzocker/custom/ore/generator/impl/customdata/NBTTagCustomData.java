@@ -41,6 +41,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_18_R1.customdata.NBTTagApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.NBTTagApplier_v1_18_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.NBTTagApplier_v1_19_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.NBTTagApplier_v1_19_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.NBTTagApplier_v1_19_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.NBTTagApplier_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.NBTTagApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.NBTTagApplier_v1_8_R3;
@@ -63,6 +64,8 @@ public class NBTTagCustomData extends AbstractNBTTagCustomData {
     @Override
     protected NBTTagApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_19_R3:
+                return new NBTTagApplier_v1_19_R3(this);
             case v1_19_R2:
                 return new NBTTagApplier_v1_19_R2(this);
             case v1_19_R1:
