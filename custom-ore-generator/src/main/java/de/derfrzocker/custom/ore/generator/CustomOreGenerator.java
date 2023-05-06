@@ -63,8 +63,6 @@ import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.WorldHandler_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R1.oregenerator.MinableGenerator_v1_13_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.WorldHandler_v1_13_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.oregenerator.MinableGenerator_v1_13_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.WorldHandler_v1_13_R2_paper;
-import de.derfrzocker.custom.ore.generator.impl.v1_13_R2.paper.oregenerator.MinableGenerator_v1_13_R2_paper;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.WorldHandler_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.oregenerator.MinableGenerator_v1_14_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.WorldHandler_v1_15_R1;
@@ -228,7 +226,6 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_12_R1, Version.v1_12_R1, () -> new MinableGenerator_v1_12_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_13_R1, Version.v1_13_R1, () -> new MinableGenerator_v1_13_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, false, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, true, () -> new MinableGenerator_v1_13_R2_paper(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(Version.v1_16_R1, Version.v1_16_R1, () -> new MinableGenerator_v1_16_R1(infoFunction, oreSettingInfoBiFunction), true);
@@ -309,7 +306,7 @@ public class CustomOreGenerator extends JavaPlugin {
                 return;
             case v1_13_R2:
                 if (Version.isPaper(getServer()))
-                    new WorldHandler_v1_13_R2_paper(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+                    getLogger().warning("Paper is not supported on this version of Minecraft");
                 else
                     new WorldHandler_v1_13_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
                 return;

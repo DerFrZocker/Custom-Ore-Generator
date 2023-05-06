@@ -118,12 +118,6 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
-            <artifactId>custom-ore-generator-impl-v1_13_R2-paper</artifactId>
-            <version>${project.version}</version>
-            <scope>compile</scope>
-        </dependency>
-        <dependency>
-            <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-impl-v1_14_R1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
