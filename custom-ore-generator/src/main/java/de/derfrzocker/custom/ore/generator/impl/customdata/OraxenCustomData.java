@@ -41,6 +41,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.OraxenApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.OraxenApplier_v1_19_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.OraxenApplier_v1_19_R3;
 import de.derfrzocker.spigot.utils.Version;
+import io.th0rgal.oraxen.api.OraxenBlocks;
 import io.th0rgal.oraxen.api.OraxenItems;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.block.BlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
@@ -67,7 +68,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
 
     @Override
     public boolean canApply(@NotNull OreConfig oreConfig) {
-        return oreConfig.getMaterial() == Material.MUSHROOM_STEM;
+        return oreConfig.getMaterial() == Material.NOTE_BLOCK;
     }
 
     @Override
@@ -75,9 +76,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
         if (!(customData instanceof String))
             return false;
 
-        String name = (String) customData;
-
-        return OraxenItems.exists(name);
+        return OraxenBlocks.isOraxenBlock((String) customData);
     }
 
     @NotNull
@@ -90,20 +89,14 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     public boolean hasCustomData(@NotNull BlockState blockState) {
         BlockData blockData = blockState.getBlockData();
 
-        // Check for block mechanic
-        if (blockState.getType() == Material.MUSHROOM_STEM) {
-            return BlockMechanicFactory.getBlockMechanic(getCode((MultipleFacing) blockData)) != null;
-        }
-
         // Check for note block mechanic
         if (blockState.getType() == Material.NOTE_BLOCK) {
-            NoteBlock noteBlock = (NoteBlock) blockData;
-            return NoteBlockMechanicFactory.getBlockMechanic((int) (noteBlock.getInstrument().getType()) * 25 + (int) noteBlock.getNote().getId() + (noteBlock.isPowered() ? 400 : 0) - 26) != null;
+            return OraxenBlocks.getNoteBlockMechanic(blockData) != null;
         }
 
         // Check for string mechanic
         if (blockState.getType() == Material.TRIPWIRE) {
-            return StringBlockMechanicFactory.getBlockMechanic(StringBlockMechanicFactory.getCode((Tripwire) blockData)) != null;
+            return OraxenBlocks.getStringMechanic(blockData) != null;
         }
 
         return false;
@@ -114,34 +107,17 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     public Object getCustomData(@NotNull BlockState blockState) {
         BlockData blockData = blockState.getBlockData();
 
-        // Check for block mechanic
-        if (blockState.getType() == Material.MUSHROOM_STEM) {
-            return BlockMechanicFactory.getBlockMechanic(getCode((MultipleFacing) blockData)).getItemID();
-        }
-
         // Check for note block mechanic
         if (blockState.getType() == Material.NOTE_BLOCK) {
-            NoteBlock noteBlock = (NoteBlock) blockData;
-            return NoteBlockMechanicFactory.getBlockMechanic((int) (noteBlock.getInstrument().getType()) * 25 + (int) noteBlock.getNote().getId() + (noteBlock.isPowered() ? 400 : 0) - 26).getItemID();
+            return OraxenBlocks.getNoteBlockMechanic(blockData);
         }
 
         // Check for string mechanic
         if (blockState.getType() == Material.TRIPWIRE) {
-            return StringBlockMechanicFactory.getBlockMechanic(StringBlockMechanicFactory.getCode((Tripwire) blockData)).getItemID();
+            return OraxenBlocks.getStringMechanic(blockData);
         }
 
         return false;
-    }
-
-    private int getCode(MultipleFacing blockData) {
-        int sum = 0;
-        List<BlockFace> properties = Arrays.asList(BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH, BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP);
-
-        for (BlockFace blockFace : blockData.getFaces()) {
-            sum += Math.pow(2.0, properties.indexOf(blockFace));
-        }
-
-        return sum;
     }
 
     @NotNull
