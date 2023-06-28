@@ -57,17 +57,12 @@ public class InfoCommand implements TabExecutor {
         CommandUtil.runAsynchronously(sender, plugin, () -> {
 
             final BaseComponent[] source = buildUrlButton("Source", "https://github.com/DerFrZocker/Custom-Ore-Generator");
-            final BaseComponent[] discord = buildUrlButton("Discord", "http://discord.derfrzocker.de");
-            final BaseComponent[] patreon = buildUrlButton("Patreon", "https://www.patreon.com/woollydevelopment");
 
             final BaseComponent[] spaceSource = combineBaseComponent(space, source);
             final BaseComponent[] spaceSourceSpace = combineBaseComponent(spaceSource, space);
-            final BaseComponent[] spaceSourceSpaceDiscord = combineBaseComponent(spaceSourceSpace, discord);
-            final BaseComponent[] spaceSourceSpaceDiscordSpace = combineBaseComponent(spaceSourceSpaceDiscord, space);
-            final BaseComponent[] spaceSourceSpaceDiscordSpacePatreon = combineBaseComponent(spaceSourceSpaceDiscordSpace, patreon);
 
             sender.sendMessage("--- " + ChatColor.BLUE + "Custom-Ore-Generator" + ChatColor.RESET + " ---");
-            sender.spigot().sendMessage(spaceSourceSpaceDiscordSpacePatreon);
+            sender.spigot().sendMessage(spaceSourceSpace);
             sender.sendMessage("    ");
             sender.sendMessage("      Version: " + ChatColor.BLUE + plugin.getDescription().getVersion());
             sender.sendMessage("      Author: " + ChatColor.BLUE + plugin.getDescription().getAuthors().iterator().next());

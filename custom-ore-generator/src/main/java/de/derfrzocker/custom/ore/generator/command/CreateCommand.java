@@ -79,32 +79,6 @@ public class CreateCommand implements TabExecutor {
     @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
         if (args.length == 0 && sender instanceof Player && Version.getServerVersion(Bukkit.getServer()).isNewerOrSameThan(Version.v1_14_R1)) {
-            sender.sendMessage("   ");
-            sender.sendMessage(ChatColor.DARK_RED + "This feature is in development!");
-            sender.sendMessage(ChatColor.DARK_RED + "It is lacking some feature, information and has some bugs!");
-            sender.sendMessage(ChatColor.DARK_RED + "I would highly appreciate it if you send me feedback of this feature.");
-            sender.sendMessage(ChatColor.DARK_RED + "e.g. Which part you like, which part you don't like.");
-            TextComponent textComponent = new TextComponent(ChatColor.DARK_PURPLE + "discord");
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("<Click me>")}));
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "http://discord.derfrzocker.de"));
-            sender.spigot().sendMessage(new TextComponent(ChatColor.DARK_RED + "You can send me feedback by joining my "), textComponent, new TextComponent(ChatColor.DARK_RED + " server"));
-
-            sender.sendMessage(ChatColor.DARK_RED + "Or by sending me a private message over: ");
-
-            textComponent = new TextComponent(ChatColor.DARK_PURPLE + "    SpigotMC" + ChatColor.DARK_RED + " (english)");
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("<Click me>")}));
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://www.spigotmc.org/conversations/add?to=DerFrZocker"));
-            sender.spigot().sendMessage(textComponent);
-
-            textComponent = new TextComponent(ChatColor.DARK_PURPLE + "    minecraft-server.eu" + ChatColor.DARK_RED + " (german)");
-            textComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new TextComponent[]{new TextComponent("<Click me>")}));
-            textComponent.setClickEvent(new ClickEvent(ClickEvent.Action.OPEN_URL, "https://minecraft-server.eu/forum/conversations/add?to=DerFrZocker"));
-            sender.spigot().sendMessage(textComponent);
-
-            sender.spigot().sendMessage(new TextComponent(ChatColor.DARK_RED + "    Discord:" + ChatColor.DARK_PURPLE + " DerFrZocker#3723"));
-
-            sender.sendMessage("   ");
-
             final OreConfigFactory oreConfigFactory = new OreConfigFactory(this.javaPlugin, this.serviceSupplier, (Player) sender);
 
             oreConfigFactory.setName();
