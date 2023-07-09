@@ -58,7 +58,7 @@ public class LevelChunkSectionOverride extends LevelChunkSection {
         this.delegate = delegate;
         this.protoChunk = protoChunk;
         this.blockSet = blockSet;
-        this.baseY = index << 4;
+        this.baseY = (index << 4) + protoChunk.getMinBuildHeight();
     }
 
     @Override
