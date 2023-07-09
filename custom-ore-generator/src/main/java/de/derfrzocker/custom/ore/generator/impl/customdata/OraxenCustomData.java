@@ -100,12 +100,12 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
 
         // Check for note block mechanic
         if (blockState.getType() == Material.NOTE_BLOCK) {
-            return OraxenBlocks.getNoteBlockMechanic(blockData);
+            return OraxenBlocks.getNoteBlockMechanic(blockData).getItemID();
         }
 
         // Check for string mechanic
         if (blockState.getType() == Material.TRIPWIRE) {
-            return OraxenBlocks.getStringMechanic(blockData);
+            return OraxenBlocks.getStringMechanic(blockData).getItemID();
         }
 
         return false;
