@@ -51,6 +51,13 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.spigotmc</groupId>
+            <artifactId>spigot-api</artifactId>
+            <version>1.13-R0.1-SNAPSHOT</version>
+            <scope>provided</scope>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-api</artifactId>
             <version>${project.version}</version>

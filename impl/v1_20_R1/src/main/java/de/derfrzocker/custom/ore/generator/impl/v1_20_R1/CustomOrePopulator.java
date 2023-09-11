@@ -30,9 +30,16 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
+import java.util.function.Supplier;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.levelgen.Heightmap;
 import org.apache.commons.lang.Validate;
+import org.bukkit.HeightMap;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
@@ -41,14 +48,6 @@ import org.bukkit.generator.BlockPopulator;
 import org.bukkit.generator.LimitedRegion;
 import org.bukkit.generator.WorldInfo;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Random;
-import java.util.Set;
-import java.util.function.Supplier;
 
 public class CustomOrePopulator extends BlockPopulator {
 
@@ -89,7 +88,7 @@ public class CustomOrePopulator extends BlockPopulator {
         biomes.forEach(biome -> {
             final List<OreConfig> oreConfigs = Arrays.asList(worldConfig.getOreConfigs().stream().filter(oreConfig -> oreConfig.getBiomes().contains(biome) || oreConfig.shouldGeneratedAll()).filter(OreConfig::isActivated).toArray(OreConfig[]::new));
 
-            oreConfigs.forEach(oreConfig -> generate(oreConfig, chunkX, chunkZ, limitedRegion, biome, service));
+            oreConfigs.forEach(oreConfig -> generate(worldInfo, oreConfig, chunkX, chunkZ, limitedRegion, biome, service));
         });
     }
 
@@ -111,7 +110,7 @@ public class CustomOrePopulator extends BlockPopulator {
         return set;
     }
 
-    private void generate(final OreConfig oreConfig, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion, final Biome biome, final CustomOreGeneratorService service) {
+    private void generate(WorldInfo worldInfo, final OreConfig oreConfig, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion, final Biome biome, final CustomOreGeneratorService service) {
         final Optional<OreGenerator> optionalOreGenerator = service.getOreGenerator(oreConfig.getOreGenerator());
         final Optional<BlockSelector> optionalBlockSelector = service.getBlockSelector(oreConfig.getBlockSelector());
         if (!optionalOreGenerator.isPresent())
@@ -125,7 +124,7 @@ public class CustomOrePopulator extends BlockPopulator {
         final Random random = service.createRandom(world.getSeed() + oreConfig.getMaterial().toString().hashCode() + oreConfig.getName().hashCode(), chunkX, chunkZ);
         final BlockPos blockPosition = new BlockPos(chunkX << 4, 0, chunkZ << 4);
 
-        final Set<Location> locations = blockSelector.selectBlocks((x, z) -> ((CraftLimitedRegion) limitedRegion).getHandle().getHeight(Heightmap.Types.MOTION_BLOCKING, blockPosition.getX() + x, blockPosition.getZ() + z), oreConfig, random);
+        final Set<Location> locations = blockSelector.selectBlocks((x, z) -> limitedRegion.getHighestBlockYAt(blockPosition.getX() + x, blockPosition.getZ() + z, HeightMap.MOTION_BLOCKING), oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
         final Location chunkPosition = new Location(null, chunkX << 4, 0, chunkZ << 4);
         final Set<Material> replaceMaterials = oreConfig.getReplaceMaterials();
@@ -134,7 +133,8 @@ public class CustomOrePopulator extends BlockPopulator {
             selectMaterials = replaceMaterials;
 
         Set<Material> finalSelectMaterials = selectMaterials;
-        locations.stream().filter(location -> checkBlockAndBiome(limitedRegion, chunkPosition, location, biome, finalSelectMaterials))
+        locations.stream().peek(location -> location.setY(Math.max(location.getY(), worldInfo.getMinHeight())))
+                .filter(location -> checkBlockAndBiome(limitedRegion, chunkPosition, location, biome, finalSelectMaterials))
                 .forEach(biomeLocations::add);
 
         ChunkAccessImpl chunkAccess = new ChunkAccessImpl(((CraftLimitedRegion) limitedRegion).getHandle());
