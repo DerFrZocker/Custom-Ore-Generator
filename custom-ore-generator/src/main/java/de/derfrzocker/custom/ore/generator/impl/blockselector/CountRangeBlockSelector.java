@@ -91,9 +91,6 @@ public class CountRangeBlockSelector extends AbstractBlockSelector {
         if (oreSetting == HEIGHT_RANGE)
             return value >= 0;
 
-        if (oreSetting == MINIMUM_HEIGHT)
-            return value >= 0;
-
         if (oreSetting == VEINS_PER_CHUNK)
             return value >= 0;
 
