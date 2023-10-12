@@ -2,6 +2,7 @@
 /abstract/target/
 /abstract/.flattened-pom.xml
 /abstract/abstract.iml
+/abstract/custom-ore-generator-impl-abstract.iml
 /api/target/
 /api/.flattened-pom.xml
 /api/custom-ore-generator-api.iml
@@ -51,6 +52,12 @@
 /impl/v1_16_R1/target/
 /impl/v1_16_R1/.flattened-pom.xml
 /impl/v1_16_R1/custom-ore-generator-impl-v1_16_R1.iml
+/impl/v1_16_R2/target/
+/impl/v1_16_R2/.flattened-pom.xml
+/impl/v1_16_R2/custom-ore-generator-impl-v1_16_R2.iml
+/impl/v1_16_R3/target/
+/impl/v1_16_R3/.flattened-pom.xml
+/impl/v1_16_R3/custom-ore-generator-impl-v1_16_R3.iml
 /impl/v1_17_R1/target/
 /impl/v1_17_R1/.flattened-pom.xml
 /impl/v1_17_R1/custom-ore-generator-impl-v1_17_R1.iml
