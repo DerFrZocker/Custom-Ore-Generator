@@ -41,6 +41,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.OraxenApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.OraxenApplier_v1_19_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.OraxenApplier_v1_19_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.OraxenApplier_v1_20_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.OraxenApplier_v1_20_R2;
 import de.derfrzocker.spigot.utils.Version;
 import io.th0rgal.oraxen.api.OraxenBlocks;
 import org.bukkit.Bukkit;
@@ -115,6 +116,8 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R2:
+                return new OraxenApplier_v1_20_R2(this);
             case v1_20_R1:
                 return new OraxenApplier_v1_20_R1(this);
             case v1_19_R3:

@@ -46,6 +46,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.CommandAppli
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.CommandApplier_v1_19_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.CommandApplier_v1_19_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.CommandApplier_v1_20_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.CommandApplier_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.CommandApplier_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.CommandApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.CommandApplier_v1_8_R3;
@@ -69,6 +70,7 @@ public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
 
     static {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R2:
             case v1_20_R1:
             case v1_19_R3:
             case v1_19_R2:
@@ -143,6 +145,8 @@ public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R2:
+                return new CommandApplier_v1_20_R2(this);
             case v1_20_R1:
                 return new CommandApplier_v1_20_R1(this);
             case v1_19_R3:
