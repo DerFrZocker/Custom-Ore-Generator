@@ -26,9 +26,10 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.oraxen</groupId>
-            <artifactId>Oraxen</artifactId>
+            <groupId>io.th0rgal</groupId>
+            <artifactId>oraxen</artifactId>
             <version>${Oraxen.version}</version>
+            <classifier>dev</classifier>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>

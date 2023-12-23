@@ -32,7 +32,7 @@
         <version.non-maven1>1.0.0</version.non-maven1>
         <spigot-utils.version>cog-7</spigot-utils.version>
         <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
-        <Oraxen.version>1.157.5</Oraxen.version>
+        <Oraxen.version>1.165.0</Oraxen.version>
     </properties>
 
     <repositories>
@@ -55,6 +55,11 @@
         <repository>
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
+        </repository>
+        <repository>
+            <id>oraxen</id>
+            <name>Oraxen Repository</name>
+            <url>https://repo.oraxen.com/releases</url>
         </repository>
     </repositories>
 
