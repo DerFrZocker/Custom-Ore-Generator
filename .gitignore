@@ -82,6 +82,9 @@
 /impl/v1_20_R2/target/
 /impl/v1_20_R2/.flattened-pom.xml
 /impl/v1_20_R2/custom-ore-generator-impl-v1_20_R2.iml
+/impl/v1_20_R3/target/
+/impl/v1_20_R3/.flattened-pom.xml
+/impl/v1_20_R3/custom-ore-generator-impl-v1_20_R3.iml
 /impl/yaml/target/
 /impl/yaml/.flattened-pom.xml
 /impl/yaml/custom-ore-generator-impl-yaml.iml
