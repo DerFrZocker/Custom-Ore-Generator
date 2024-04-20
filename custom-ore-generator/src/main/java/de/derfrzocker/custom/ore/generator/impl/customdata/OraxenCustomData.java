@@ -29,11 +29,6 @@ import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
-import de.derfrzocker.custom.ore.generator.impl.v1_14_R1.customdata.OraxenApplier_v1_14_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.OraxenApplier_v1_15_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.OraxenApplier_v1_16_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.OraxenApplier_v1_16_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.OraxenApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.OraxenApplier_v1_16_R3_post;
 import de.derfrzocker.spigot.utils.Version;
 import io.th0rgal.oraxen.api.OraxenBlocks;
@@ -110,19 +105,6 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     protected CustomDataApplier getCustomDataApplier0() {
         if (Version.getServerVersion(Bukkit.getServer()).isNewerThan(Version.v1_16_R3)) {
             return new OraxenApplier_v1_16_R3_post(this);
-        }
-
-        switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_16_R3:
-                return new OraxenApplier_v1_16_R3(this);
-            case v1_16_R2:
-                return new OraxenApplier_v1_16_R2(this);
-            case v1_16_R1:
-                return new OraxenApplier_v1_16_R1(this);
-            case v1_15_R1:
-                return new OraxenApplier_v1_15_R1(this);
-            case v1_14_R1:
-                return new OraxenApplier_v1_14_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

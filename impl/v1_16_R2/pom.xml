@@ -20,19 +20,6 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>io.th0rgal</groupId>
-            <artifactId>oraxen</artifactId>
-            <version>${Oraxen.version}</version>
-            <classifier>dev</classifier>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>*</groupId>
-                    <artifactId>*</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
             <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-api</artifactId>
             <version>${project.version}</version>
