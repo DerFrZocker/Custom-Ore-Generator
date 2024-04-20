@@ -23,25 +23,21 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
 import org.bukkit.block.data.Directional;
 import org.bukkit.generator.LimitedRegion;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
-
-@RequiredArgsConstructor
-public class FacingApplier_v1_19_R3 implements CustomDataApplier {
+public class FacingApplier_v1_16_R3_post implements CustomDataApplier {
 
     private final static Map<String, BlockFace> DIRECTION_MAP = new HashMap<>(6);
 
@@ -54,8 +50,11 @@ public class FacingApplier_v1_19_R3 implements CustomDataApplier {
         DIRECTION_MAP.put("NORTH", BlockFace.NORTH);
     }
 
-    @NonNull
     private final CustomData customData;
+
+    public FacingApplier_v1_16_R3_post(CustomData customData) {
+        this.customData = customData;
+    }
 
     @Override
     public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {

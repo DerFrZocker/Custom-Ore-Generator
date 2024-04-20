@@ -58,6 +58,9 @@
 /impl/v1_16_R3/target/
 /impl/v1_16_R3/.flattened-pom.xml
 /impl/v1_16_R3/custom-ore-generator-impl-v1_16_R3.iml
+/impl/v1_16_R3-post/target/
+/impl/v1_16_R3-post/.flattened-pom.xml
+/impl/v1_16_R3-post/custom-ore-generator-impl-v1_16_R3-post.iml
 /impl/v1_17_R1/target/
 /impl/v1_17_R1/.flattened-pom.xml
 /impl/v1_17_R1/custom-ore-generator-impl-v1_17_R1.iml

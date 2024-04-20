@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
@@ -35,6 +35,7 @@ import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanic
 import io.th0rgal.oraxen.mechanics.provided.gameplay.noteblock.NoteBlockMechanicFactory;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanic;
 import io.th0rgal.oraxen.mechanics.provided.gameplay.stringblock.StringBlockMechanicFactory;
+import java.util.Optional;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.BlockFace;
@@ -44,9 +45,7 @@ import org.bukkit.generator.LimitedRegion;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Optional;
-
-public class OraxenApplier_v1_20_R1 implements CustomDataApplier {
+public class OraxenApplier_v1_16_R3_post implements CustomDataApplier {
 
     private final static BlockFace[] BLOCK_FACES = new BlockFace[]{BlockFace.EAST, BlockFace.WEST, BlockFace.SOUTH,
             BlockFace.NORTH, BlockFace.DOWN, BlockFace.UP};
@@ -60,7 +59,7 @@ public class OraxenApplier_v1_20_R1 implements CustomDataApplier {
     @Nullable
     private StringBlockMechanicFactory stringBlockMechanicFactory;
 
-    public OraxenApplier_v1_20_R1(@NotNull CustomData customData) {
+    public OraxenApplier_v1_16_R3_post(@NotNull CustomData customData) {
         Validate.notNull(customData, "CustomData can not be null");
 
         this.customData = customData;
@@ -102,14 +101,14 @@ public class OraxenApplier_v1_20_R1 implements CustomDataApplier {
         }
 
         if (noteBlockMechanicFactory != null) {
-            NoteBlockMechanic noteBlockMechanic = (NoteBlockMechanic) noteBlockMechanicFactory.getMechanic(name);
+            NoteBlockMechanic noteBlockMechanic = noteBlockMechanicFactory.getMechanic(name);
             if (noteBlockMechanic != null) {
                 blockData = NoteBlockMechanicFactory.createNoteBlockData(noteBlockMechanic.getCustomVariation());
             }
         }
 
         if (stringBlockMechanicFactory != null) {
-            StringBlockMechanic stringBlockMechanic = (StringBlockMechanic) stringBlockMechanicFactory.getMechanic(name);
+            StringBlockMechanic stringBlockMechanic = stringBlockMechanicFactory.getMechanic(name);
             if (stringBlockMechanic != null) {
                 blockData = StringBlockMechanicFactory.createTripwireData(stringBlockMechanic.getCustomVariation());
             }

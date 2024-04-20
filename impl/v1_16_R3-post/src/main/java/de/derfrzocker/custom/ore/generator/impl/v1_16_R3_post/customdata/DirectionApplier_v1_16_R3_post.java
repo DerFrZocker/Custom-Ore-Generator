@@ -23,44 +23,43 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata;
+package de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata;
 
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
-import org.apache.commons.lang.Validate;
+import java.util.Optional;
 import org.bukkit.Location;
-import org.bukkit.block.CommandBlock;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.data.MultipleFacing;
 import org.bukkit.generator.LimitedRegion;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Optional;
+public class DirectionApplier_v1_16_R3_post implements CustomDataApplier {
 
-public class CommandApplier_v1_19_R1 implements CustomDataApplier {
-
-    @NotNull
     private final CustomData customData;
 
-    public CommandApplier_v1_19_R1(@NotNull final CustomData data) {
-        Validate.notNull(data, "CustomData can not be null");
+    private final BlockFace blockFace;
 
-        customData = data;
+    public DirectionApplier_v1_16_R3_post(CustomData customData, BlockFace blockFace) {
+        this.customData = customData;
+        this.blockFace = blockFace;
     }
 
     @Override
     public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {
         final Location location = (Location) position;
         final LimitedRegion limitedRegion = (LimitedRegion) blockAccess;
-        final CommandBlock commandBlock = (CommandBlock) limitedRegion.getBlockState(location);
+        MultipleFacing blockData = (MultipleFacing) limitedRegion.getBlockData(location);
 
         final Optional<Object> objectOptional = oreConfig.getCustomData(customData);
 
         if (!objectOptional.isPresent())
             return; //TODO maybe throw exception?
 
-        final String command = (String) objectOptional.get();
-        commandBlock.setCommand(command);
-        commandBlock.update();
+        blockData.setFace(blockFace, (boolean) objectOptional.get());
+
+        limitedRegion.setBlockData(location, blockData);
     }
 
 }

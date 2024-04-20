@@ -39,15 +39,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_15_R1.customdata.CommandAppli
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.CommandApplier_v1_16_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.CommandApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.CommandApplier_v1_16_R3;
-import de.derfrzocker.custom.ore.generator.impl.v1_17_R1.customdata.CommandApplier_v1_17_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_18_R1.customdata.CommandApplier_v1_18_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_18_R2.customdata.CommandApplier_v1_18_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_19_R1.customdata.CommandApplier_v1_19_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_19_R2.customdata.CommandApplier_v1_19_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.CommandApplier_v1_19_R3;
-import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.CommandApplier_v1_20_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.CommandApplier_v1_20_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.CommandApplier_v1_20_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.CommandApplier_v1_16_R3_post;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.CommandApplier_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.CommandApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.CommandApplier_v1_8_R3;
@@ -146,25 +138,11 @@ public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
+        if (Version.getServerVersion(Bukkit.getServer()).isNewerThan(Version.v1_16_R3)) {
+            return new CommandApplier_v1_16_R3_post(this);
+        }
+
         switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_20_R3:
-                return new CommandApplier_v1_20_R3(this);
-            case v1_20_R2:
-                return new CommandApplier_v1_20_R2(this);
-            case v1_20_R1:
-                return new CommandApplier_v1_20_R1(this);
-            case v1_19_R3:
-                return new CommandApplier_v1_19_R3(this);
-            case v1_19_R2:
-                return new CommandApplier_v1_19_R2(this);
-            case v1_19_R1:
-                return new CommandApplier_v1_19_R1(this);
-            case v1_18_R2:
-                return new CommandApplier_v1_18_R2(this);
-            case v1_18_R1:
-                return new CommandApplier_v1_18_R1(this);
-            case v1_17_R1:
-                return new CommandApplier_v1_17_R1(this);
             case v1_16_R3:
                 return new CommandApplier_v1_16_R3(this);
             case v1_16_R2:
