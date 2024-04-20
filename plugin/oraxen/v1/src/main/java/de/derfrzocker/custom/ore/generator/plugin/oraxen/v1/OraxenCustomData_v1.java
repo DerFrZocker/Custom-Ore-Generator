@@ -23,13 +23,13 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.customdata;
+package de.derfrzocker.custom.ore.generator.plugin.oraxen.v1;
 
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataType;
-import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.OraxenApplier_v1_16_R3_post;
+import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractCustomData;
 import de.derfrzocker.spigot.utils.Version;
 import io.th0rgal.oraxen.api.OraxenBlocks;
 import org.bukkit.Bukkit;
@@ -40,15 +40,15 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.function.Function;
 
-public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
+public class OraxenCustomData_v1 extends AbstractCustomData<CustomDataApplier> {
 
-    public OraxenCustomData(@NotNull Function<String, Info> infoFunction) {
+    public OraxenCustomData_v1(@NotNull Function<String, Info> infoFunction) {
         super("ORAXEN", CustomDataType.STRING, infoFunction);
     }
 
     @Override
     public boolean canApply(@NotNull OreConfig oreConfig) {
-        return oreConfig.getMaterial() == Material.NOTE_BLOCK;
+        return oreConfig.getMaterial() == Material.NOTE_BLOCK || oreConfig.getMaterial() == Material.TRIPWIRE;
     }
 
     @Override
@@ -104,7 +104,7 @@ public class OraxenCustomData extends AbstractCustomData<CustomDataApplier> {
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         if (Version.getServerVersion(Bukkit.getServer()).isNewerThan(Version.v1_16_R3)) {
-            return new OraxenApplier_v1_16_R3_post(this);
+            return new OraxenApplier(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

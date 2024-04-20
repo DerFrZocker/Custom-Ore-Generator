@@ -30,6 +30,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.spigot.utils.Version;
+import java.util.function.Predicate;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
 import org.jetbrains.annotations.NotNull;
@@ -120,6 +121,17 @@ public class RegisterUtil {
             if (this.plugin.getServer().getPluginManager().getPlugin(pluginName) != null) {
                 register(customData.get());
             }
+        }
+    }
+
+    public void register(@NotNull final Version minimalVersion, @NotNull final String pluginName, Predicate<Plugin> shouldRegister, @NotNull final CustomDataSupplier customData) {
+        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+            Plugin otherPlugin = this.plugin.getServer().getPluginManager().getPlugin(pluginName);
+            if (otherPlugin == null || !shouldRegister.test(otherPlugin)) {
+                return;
+            }
+
+            register(customData.get());
         }
     }
 

@@ -5,19 +5,26 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>custom-ore-generator-impl</artifactId>
+        <artifactId>custom-ore-generator-plugin-oraxen</artifactId>
         <groupId>de.derfrzocker</groupId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>custom-ore-generator-impl-v1_16_R3-post</artifactId>
+    <artifactId>custom-ore-generator-plugin-oraxen-v2</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>dev.linwood</groupId>
-            <artifactId>ItemMods</artifactId>
-            <version>${ItemMods.version}</version>
+            <groupId>io.th0rgal</groupId>
+            <artifactId>oraxen</artifactId>
+            <version>${Oraxen.version.v2}</version>
+            <classifier>dev</classifier>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
@@ -28,7 +35,7 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.17.1-R0.1-SNAPSHOT</version>
+            <version>1.18-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
             <optional>true</optional>
         </dependency>

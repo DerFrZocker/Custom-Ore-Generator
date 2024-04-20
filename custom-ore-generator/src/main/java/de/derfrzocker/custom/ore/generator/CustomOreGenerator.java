@@ -43,7 +43,6 @@ import de.derfrzocker.custom.ore.generator.impl.customdata.DirectionCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.FacingCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.ItemModsCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.NBTTagCustomData;
-import de.derfrzocker.custom.ore.generator.impl.customdata.OraxenCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.SkullTextureCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.TickBlockCustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.VariantCustomData;
@@ -101,6 +100,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.CustomOreBlockPopulator_
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.oregenerator.MinableGenerator_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.CustomOreBlockPopulator_v1_9_R2;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.oregenerator.MinableGenerator_v1_9_R2;
+import de.derfrzocker.custom.ore.generator.plugin.oraxen.v1.OraxenCustomData_v1;
+import de.derfrzocker.custom.ore.generator.plugin.oraxen.v2.OraxenCustomData_v2;
 import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.RegisterUtil;
 import de.derfrzocker.spigot.utils.Config;
@@ -276,7 +277,8 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
         registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
         registerUtil.register(Version.v1_14_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
-        registerUtil.register(Version.v1_14_R1, "Oraxen", () -> new OraxenCustomData(infoFunction));
+        registerUtil.register(Version.v1_17_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("1."), () -> new OraxenCustomData_v1(infoFunction));
+        registerUtil.register(Version.v1_18_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("2."), () -> new OraxenCustomData_v2(infoFunction));
     }
 
     private void initWorldHandler() {

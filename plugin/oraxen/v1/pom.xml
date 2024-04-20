@@ -5,19 +5,26 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>custom-ore-generator-impl</artifactId>
+        <artifactId>custom-ore-generator-plugin-oraxen</artifactId>
         <groupId>de.derfrzocker</groupId>
         <version>${revision}</version>
     </parent>
 
-    <artifactId>custom-ore-generator-impl-v1_16_R3-post</artifactId>
+    <artifactId>custom-ore-generator-plugin-oraxen-v1</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>dev.linwood</groupId>
-            <artifactId>ItemMods</artifactId>
-            <version>${ItemMods.version}</version>
+            <groupId>io.th0rgal</groupId>
+            <artifactId>oraxen</artifactId>
+            <version>${Oraxen.version}</version>
+            <classifier>dev</classifier>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>*</groupId>
+                    <artifactId>*</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>

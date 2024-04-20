@@ -13,6 +13,7 @@
         <module>impl</module>
         <module>api</module>
         <module>abstract</module>
+        <module>plugin</module>
     </modules>
 
     <packaging>pom</packaging>
@@ -33,6 +34,7 @@
         <spigot-utils.version>cog-7</spigot-utils.version>
         <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
         <Oraxen.version>1.165.0</Oraxen.version>
+        <Oraxen.version.v2>2.0-SNAPSHOT</Oraxen.version.v2>
     </properties>
 
     <repositories>
@@ -57,9 +59,14 @@
             <url>https://jitpack.io</url>
         </repository>
         <repository>
-            <id>oraxen</id>
-            <name>Oraxen Repository</name>
+            <id>oraxen-releases</id>
+            <name>Oraxen Release Repository</name>
             <url>https://repo.oraxen.com/releases</url>
+        </repository>
+        <repository>
+            <id>oraxen-snapshots</id>
+            <name>Oraxen Snapshot Repository</name>
+            <url>https://repo.oraxen.com/snapshots</url>
         </repository>
     </repositories>
 
