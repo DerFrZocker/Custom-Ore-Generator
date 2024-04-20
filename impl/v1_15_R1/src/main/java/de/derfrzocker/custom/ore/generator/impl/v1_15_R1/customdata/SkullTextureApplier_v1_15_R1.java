@@ -30,8 +30,6 @@ import com.mojang.authlib.properties.Property;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractSkullTextureCustomData;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_15_R1.*;
 import org.bukkit.block.Skull;
 import org.bukkit.craftbukkit.v1_15_R1.CraftWorld;
@@ -41,11 +39,13 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 public class SkullTextureApplier_v1_15_R1 implements AbstractSkullTextureCustomData.SkullTextureApplier {
 
-    @NonNull
     private final CustomData customData;
+
+    public SkullTextureApplier_v1_15_R1(CustomData customData) {
+        this.customData = customData;
+    }
 
     @Override
     public void apply(OreConfig oreConfig, Object location, Object blockAccess) {

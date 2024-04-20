@@ -13,18 +13,6 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>com.github.oraxen</groupId>
-      <artifactId>Oraxen</artifactId>
-      <version>1.157.5</version>
-      <scope>provided</scope>
-      <exclusions>
-        <exclusion>
-          <groupId>*</groupId>
-          <artifactId>*</artifactId>
-        </exclusion>
-      </exclusions>
-    </dependency>
-    <dependency>
       <groupId>de.derfrzocker</groupId>
       <artifactId>custom-ore-generator-api</artifactId>
       <version>dev-SNAPSHOT</version>
@@ -52,15 +40,9 @@
       <scope>provided</scope>
     </dependency>
     <dependency>
-      <groupId>org.projectlombok</groupId>
-      <artifactId>lombok</artifactId>
-      <version>1.18.20</version>
-      <scope>provided</scope>
-    </dependency>
-    <dependency>
       <groupId>de.derfrzocker</groupId>
       <artifactId>spigot-utils</artifactId>
-      <version>cog-5</version>
+      <version>cog-7</version>
       <scope>provided</scope>
     </dependency>
     <dependency>
@@ -95,6 +77,11 @@
     <repository>
       <id>jitpack.io</id>
       <url>https://jitpack.io</url>
+    </repository>
+    <repository>
+      <id>oraxen</id>
+      <name>Oraxen Repository</name>
+      <url>https://repo.oraxen.com/releases</url>
     </repository>
   </repositories>
 </project>

@@ -28,15 +28,12 @@ package de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.server.v1_16_R1.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 
-@RequiredArgsConstructor
 public class FacingApplier_v1_16_R1 implements CustomDataApplier {
 
     private final static Map<String, EnumDirection> DIRECTION_MAP = new HashMap<>(6);
@@ -50,8 +47,11 @@ public class FacingApplier_v1_16_R1 implements CustomDataApplier {
         DIRECTION_MAP.put("NORTH", EnumDirection.NORTH);
     }
 
-    @NonNull
     private final CustomData customData;
+
+    public FacingApplier_v1_16_R1(CustomData customData) {
+        this.customData = customData;
+    }
 
     @Override
     public void apply(OreConfig oreConfig, Object location, Object blockAccess) {

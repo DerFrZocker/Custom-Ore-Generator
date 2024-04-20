@@ -27,8 +27,6 @@ package de.derfrzocker.custom.ore.generator.impl;
 
 import de.derfrzocker.custom.ore.generator.api.BiomeConfig;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
-import lombok.Getter;
-import lombok.NonNull;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -43,8 +41,6 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
 
     private final static String BIOME_KEY = "biome";
 
-    @Getter
-    @NonNull
     private final Biome biome;
 
     private final Map<Material, OreConfig> oreConfigs = new HashMap<>();
@@ -63,6 +59,11 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
 
     private static boolean isOreConfig(Map.Entry<String, Object> entry) {
         return entry.getValue() instanceof OreConfig;
+    }
+
+    @Override
+    public Biome getBiome() {
+        return biome;
     }
 
     @Override

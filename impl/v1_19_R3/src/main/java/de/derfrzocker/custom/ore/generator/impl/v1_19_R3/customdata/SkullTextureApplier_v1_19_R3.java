@@ -30,8 +30,6 @@ import com.mojang.authlib.properties.Property;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.impl.customdata.AbstractSkullTextureCustomData;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.WorldGenLevel;
@@ -48,11 +46,13 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.UUID;
 
-@RequiredArgsConstructor
 public class SkullTextureApplier_v1_19_R3 implements AbstractSkullTextureCustomData.SkullTextureApplier {
 
-    @NonNull
     private final CustomData customData;
+
+    public SkullTextureApplier_v1_19_R3(CustomData customData) {
+        this.customData = customData;
+    }
 
     @Override
     public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {
