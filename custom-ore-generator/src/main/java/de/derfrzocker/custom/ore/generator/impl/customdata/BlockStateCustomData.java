@@ -46,6 +46,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_19_R3.customdata.BlockStateAp
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.BlockStateApplier_v1_20_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.BlockStateApplier_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.BlockStateApplier_v1_20_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.BlockStateApplier_v1_20_R4;
 import de.derfrzocker.spigot.utils.Version;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
@@ -71,6 +72,8 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @Override
     protected AbstractBlockStateCustomData.BlockStateApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R4:
+                return new BlockStateApplier_v1_20_R4(this.serviceSupplier, this);
             case v1_20_R3:
                 return new BlockStateApplier_v1_20_R3(this.serviceSupplier, this);
             case v1_20_R2:

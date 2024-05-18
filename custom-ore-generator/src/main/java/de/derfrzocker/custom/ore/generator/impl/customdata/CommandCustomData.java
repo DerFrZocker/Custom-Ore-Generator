@@ -63,6 +63,7 @@ public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
 
     static {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R4:
             case v1_20_R3:
             case v1_20_R2:
             case v1_20_R1:

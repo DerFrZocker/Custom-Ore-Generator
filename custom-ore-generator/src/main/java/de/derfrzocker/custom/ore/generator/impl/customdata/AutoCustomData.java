@@ -65,6 +65,7 @@ public class AutoCustomData extends AbstractAutoCustomData {
 
     static {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R4:
             case v1_20_R3:
             case v1_20_R2:
             case v1_20_R1:
@@ -117,6 +118,8 @@ public class AutoCustomData extends AbstractAutoCustomData {
     @Override
     protected AutoApplier getCustomDataApplier0() {
         switch (Version.getServerVersion(Bukkit.getServer())) {
+            case v1_20_R4:
+                return new AutoApplier_v1_20_R1(this);
             case v1_20_R3:
                 return new AutoApplier_v1_20_R3(this);
             case v1_20_R2:
