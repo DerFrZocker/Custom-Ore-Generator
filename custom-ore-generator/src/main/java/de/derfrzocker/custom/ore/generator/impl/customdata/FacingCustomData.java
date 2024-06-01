@@ -38,7 +38,12 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.FacingApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.FacingApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.FacingApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.FacingApplier_v1_16_R3_post;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.function.Function;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,11 +52,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.Directional;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.function.Function;
 
 public class FacingCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
@@ -104,25 +104,25 @@ public class FacingCustomData extends AbstractCustomData<CustomDataApplier> impl
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        if (Version.getServerVersion(Bukkit.getServer()).isNewerThan(Version.v1_16_R3)) {
+        ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
+        if (version.isNewerThan(InternalVersion.v1_16_R3.getServerVersionRange().maxInclusive())) {
             return new FacingApplier_v1_16_R3_post(this);
         }
 
-        switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_16_R3:
-                return new FacingApplier_v1_16_R3(this);
-            case v1_16_R2:
-                return new FacingApplier_v1_16_R2(this);
-            case v1_16_R1:
-                return new FacingApplier_v1_16_R1(this);
-            case v1_15_R1:
-                return new FacingApplier_v1_15_R1(this);
-            case v1_14_R1:
-                return new FacingApplier_v1_14_R1(this);
-            case v1_13_R2:
-                return new FacingApplier_v1_13_R2(this);
-            case v1_13_R1:
-                return new FacingApplier_v1_13_R1(this);
+        if (InternalVersion.v1_16_R3.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_16_R3(this);
+        } else if (InternalVersion.v1_16_R2.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_16_R2(this);
+        } else if (InternalVersion.v1_16_R1.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_16_R1(this);
+        } else if (InternalVersion.v1_15_R1.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_15_R1(this);
+        } else if (InternalVersion.v1_14_R1.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_14_R1(this);
+        } else if (InternalVersion.v1_13_R2.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_13_R2(this);
+        } else if (InternalVersion.v1_13_R1.getServerVersionRange().isInRange(version)) {
+            return new FacingApplier_v1_13_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

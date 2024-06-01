@@ -31,15 +31,12 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
-import de.derfrzocker.spigot.utils.Version;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
-import net.md_5.bungee.api.chat.ClickEvent;
-import net.md_5.bungee.api.chat.HoverEvent;
-import net.md_5.bungee.api.chat.TextComponent;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -78,7 +75,7 @@ public class CreateCommand implements TabExecutor {
 
     @Override //oregen create <name> <material> [<ore-generator>] [<block-selector>]
     public boolean onCommand(@NotNull final CommandSender sender, @NotNull final Command command, @NotNull final String label, @NotNull final String[] args) {
-        if (args.length == 0 && sender instanceof Player && Version.getServerVersion(Bukkit.getServer()).isNewerOrSameThan(Version.v1_14_R1)) {
+        if (args.length == 0 && sender instanceof Player && ServerVersion.getCurrentVersion(Bukkit.getServer()).isNewerThanOrSameAs(InternalVersion.v1_14_R1.getServerVersionRange().minInclusive())) {
             final OreConfigFactory oreConfigFactory = new OreConfigFactory(this.javaPlugin, this.serviceSupplier, (Player) sender);
 
             oreConfigFactory.setName();

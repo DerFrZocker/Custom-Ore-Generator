@@ -47,14 +47,14 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.TickBlockApp
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.TickBlockApplier_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.TickBlockApplier_v1_20_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.TickBlockApplier_v1_20_R4;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
+import java.util.Set;
+import java.util.function.Function;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.BlockState;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
-import java.util.function.Function;
 
 public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
@@ -92,41 +92,41 @@ public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> i
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_20_R4:
-                return new TickBlockApplier_v1_20_R4(this);
-            case v1_20_R3:
-                return new TickBlockApplier_v1_20_R3(this);
-            case v1_20_R2:
-                return new TickBlockApplier_v1_20_R2(this);
-            case v1_20_R1:
-                return new TickBlockApplier_v1_20_R1(this);
-            case v1_19_R3:
-                return new TickBlockApplier_v1_19_R3(this);
-            case v1_19_R2:
-                return new TickBlockApplier_v1_19_R2(this);
-            case v1_19_R1:
-                return new TickBlockApplier_v1_19_R1(this);
-            case v1_18_R2:
-                return new TickBlockApplier_v1_18_R2(this);
-            case v1_18_R1:
-                return new TickBlockApplier_v1_18_R1(this);
-            case v1_17_R1:
-                return new TickBlockApplier_v1_17_R1(this);
-            case v1_16_R3:
-                return new TickBlockApplier_v1_16_R3(this);
-            case v1_16_R2:
-                return new TickBlockApplier_v1_16_R2(this);
-            case v1_16_R1:
-                return new TickBlockApplier_v1_16_R1(this);
-            case v1_15_R1:
-                return new TickBlockApplier_v1_15_R1(this);
-            case v1_14_R1:
-                return new TickBlockApplier_v1_14_R1(this);
-            case v1_13_R2:
-                return new TickBlockApplier_v1_13_R2(this);
-            case v1_13_R1:
-                return new TickBlockApplier_v1_13_R1(this);
+        ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
+        if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_20_R4(this);
+        } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_20_R3(this);
+        } else if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_20_R2(this);
+        } else if (InternalVersion.v1_20_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_20_R1(this);
+        } else if (InternalVersion.v1_19_R3.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_19_R3(this);
+        } else if (InternalVersion.v1_19_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_19_R2(this);
+        } else if (InternalVersion.v1_19_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_19_R1(this);
+        } else if (InternalVersion.v1_18_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_18_R2(this);
+        } else if (InternalVersion.v1_18_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_18_R1(this);
+        } else if (InternalVersion.v1_17_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_17_R1(this);
+        } else if (InternalVersion.v1_16_R3.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_16_R3(this);
+        } else if (InternalVersion.v1_16_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_16_R2(this);
+        } else if (InternalVersion.v1_16_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_16_R1(this);
+        } else if (InternalVersion.v1_15_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_15_R1(this);
+        } else if (InternalVersion.v1_14_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_14_R1(this);
+        } else if (InternalVersion.v1_13_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_13_R2(this);
+        } else if (InternalVersion.v1_13_R1.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_13_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

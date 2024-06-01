@@ -38,7 +38,10 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.DirectionApp
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.DirectionApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.DirectionApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.DirectionApplier_v1_16_R3_post;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
+import java.util.Set;
+import java.util.function.Function;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -47,9 +50,6 @@ import org.bukkit.block.BlockState;
 import org.bukkit.block.data.BlockData;
 import org.bukkit.block.data.MultipleFacing;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Set;
-import java.util.function.Function;
 
 public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> implements LimitedValuesCustomData {
 
@@ -119,25 +119,25 @@ public class DirectionCustomData extends AbstractCustomData<CustomDataApplier> i
     @NotNull
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
-        if (Version.getServerVersion(Bukkit.getServer()).isNewerThan(Version.v1_16_R3)) {
+        ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
+        if (version.isNewerThan(InternalVersion.v1_16_R3.getServerVersionRange().maxInclusive())) {
             return new DirectionApplier_v1_16_R3_post(this, blockFace);
         }
 
-        switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_16_R3:
-                return new DirectionApplier_v1_16_R3(this, blockFace);
-            case v1_16_R2:
-                return new DirectionApplier_v1_16_R2(this, blockFace);
-            case v1_16_R1:
-                return new DirectionApplier_v1_16_R1(this, blockFace);
-            case v1_15_R1:
-                return new DirectionApplier_v1_15_R1(this, blockFace);
-            case v1_14_R1:
-                return new DirectionApplier_v1_14_R1(this, blockFace);
-            case v1_13_R2:
-                return new DirectionApplier_v1_13_R2(this, blockFace);
-            case v1_13_R1:
-                return new DirectionApplier_v1_13_R1(this, blockFace);
+        if (InternalVersion.v1_16_R3.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_16_R3(this, blockFace);
+        } else if (InternalVersion.v1_16_R2.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_16_R2(this, blockFace);
+        } else if (InternalVersion.v1_16_R1.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_16_R1(this, blockFace);
+        } else if (InternalVersion.v1_15_R1.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_15_R1(this, blockFace);
+        } else if (InternalVersion.v1_14_R1.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_14_R1(this, blockFace);
+        } else if (InternalVersion.v1_13_R2.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_13_R2(this, blockFace);
+        } else if (InternalVersion.v1_13_R1.getServerVersionRange().isInRange(version)) {
+            return new DirectionApplier_v1_13_R1(this, blockFace);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

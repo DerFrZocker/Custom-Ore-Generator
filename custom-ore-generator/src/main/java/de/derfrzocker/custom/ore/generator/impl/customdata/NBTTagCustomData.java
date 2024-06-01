@@ -51,12 +51,12 @@ import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.NBTTagApplier
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.NBTTagApplier_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.NBTTagApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.NBTTagApplier_v1_9_R2;
-import de.derfrzocker.spigot.utils.Version;
-import org.bukkit.Bukkit;
-import org.jetbrains.annotations.NotNull;
-
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
 import java.io.File;
 import java.util.function.Function;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.NotNull;
 
 public class NBTTagCustomData extends AbstractNBTTagCustomData {
 
@@ -67,57 +67,57 @@ public class NBTTagCustomData extends AbstractNBTTagCustomData {
     @NotNull
     @Override
     protected NBTTagApplier getCustomDataApplier0() {
-        switch (Version.getServerVersion(Bukkit.getServer())) {
-            case v1_20_R4:
-                return new NBTTagApplier_v1_20_R4(this);
-            case v1_20_R3:
-                return new NBTTagApplier_v1_20_R3(this);
-            case v1_20_R2:
-                return new NBTTagApplier_v1_20_R2(this);
-            case v1_20_R1:
-                return new NBTTagApplier_v1_20_R1(this);
-            case v1_19_R3:
-                return new NBTTagApplier_v1_19_R3(this);
-            case v1_19_R2:
-                return new NBTTagApplier_v1_19_R2(this);
-            case v1_19_R1:
-                return new NBTTagApplier_v1_19_R1(this);
-            case v1_18_R2:
-                return new NBTTagApplier_v1_18_R2(this);
-            case v1_18_R1:
-                return new NBTTagApplier_v1_18_R1(this);
-            case v1_17_R1:
-                return new NBTTagApplier_v1_17_R1(this);
-            case v1_16_R3:
-                return new NBTTagApplier_v1_16_R3(this);
-            case v1_16_R2:
-                return new NBTTagApplier_v1_16_R2(this);
-            case v1_16_R1:
-                return new NBTTagApplier_v1_16_R1(this);
-            case v1_15_R1:
-                return new NBTTagApplier_v1_15_R1(this);
-            case v1_14_R1:
-                return new NBTTagApplier_v1_14_R1(this);
-            case v1_13_R2:
-                return new NBTTagApplier_v1_13_R2(this);
-            case v1_13_R1:
-                return new NBTTagApplier_v1_13_R1(this);
-            case v1_12_R1:
-                return new NBTTagApplier_v1_12_R1(this);
-            case v1_11_R1:
-                return new NBTTagApplier_v1_11_R1(this);
-            case v1_10_R1:
-                return new NBTTagApplier_v1_10_R1(this);
-            case v1_9_R2:
-                return new NBTTagApplier_v1_9_R2(this);
-            case v1_9_R1:
-                return new NBTTagApplier_v1_9_R1(this);
-            case v1_8_R3:
-                return new NBTTagApplier_v1_8_R3(this);
-            case v1_8_R2:
-                return new NBTTagApplier_v1_8_R2(this);
-            case v1_8_R1:
-                return new NBTTagApplier_v1_8_R1(this);
+        ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
+        if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_20_R4(this);
+        } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_20_R3(this);
+        } else if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_20_R2(this);
+        } else if (InternalVersion.v1_20_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_20_R1(this);
+        } else if (InternalVersion.v1_19_R3.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_19_R3(this);
+        } else if (InternalVersion.v1_19_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_19_R2(this);
+        } else if (InternalVersion.v1_19_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_19_R1(this);
+        } else if (InternalVersion.v1_18_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_18_R2(this);
+        } else if (InternalVersion.v1_18_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_18_R1(this);
+        } else if (InternalVersion.v1_17_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_17_R1(this);
+        } else if (InternalVersion.v1_16_R3.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_16_R3(this);
+        } else if (InternalVersion.v1_16_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_16_R2(this);
+        } else if (InternalVersion.v1_16_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_16_R1(this);
+        } else if (InternalVersion.v1_15_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_15_R1(this);
+        } else if (InternalVersion.v1_14_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_14_R1(this);
+        } else if (InternalVersion.v1_13_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_13_R2(this);
+        } else if (InternalVersion.v1_13_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_13_R1(this);
+        } else if (InternalVersion.v1_12_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_12_R1(this);
+        } else if (InternalVersion.v1_11_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_11_R1(this);
+        } else if (InternalVersion.v1_10_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_10_R1(this);
+        } else if (InternalVersion.v1_9_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_9_R2(this);
+        } else if (InternalVersion.v1_9_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_9_R1(this);
+        } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_8_R3(this);
+        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_8_R2(this);
+        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
+            return new NBTTagApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

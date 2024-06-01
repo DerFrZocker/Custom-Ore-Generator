@@ -28,6 +28,7 @@ package de.derfrzocker.custom.ore.generator;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
+import de.derfrzocker.custom.ore.generator.api.WorldHandler;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
 import de.derfrzocker.custom.ore.generator.impl.BiomeConfigYamlImpl;
 import de.derfrzocker.custom.ore.generator.impl.CustomOreGeneratorServiceImpl;
@@ -89,8 +90,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.oregenerator.MinableGen
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.WorldHandler_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.oregenerator.MinableGenerator_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.WorldHandler_v1_20_R3;
-import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.WorldHandler_v1_20_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.oregenerator.MinableGenerator_v1_20_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.WorldHandler_v1_20_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.oregenerator.MinableGenerator_v1_20_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
@@ -107,7 +108,14 @@ import de.derfrzocker.custom.ore.generator.plugin.oraxen.v2.OraxenCustomData_v2;
 import de.derfrzocker.custom.ore.generator.utils.InfoUtil;
 import de.derfrzocker.custom.ore.generator.utils.RegisterUtil;
 import de.derfrzocker.spigot.utils.Config;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersionRange;
+import dev.linwood.api.server.Version;
+import java.io.File;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import org.bukkit.Bukkit;
 import org.bukkit.block.BlockFace;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -116,13 +124,12 @@ import org.bukkit.plugin.ServicePriority;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.File;
-import java.util.function.BiFunction;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.logging.Level;
-
 public class CustomOreGenerator extends JavaPlugin {
+
+    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_20, ServerVersionRange.V1_19,
+            ServerVersionRange.V1_18, ServerVersionRange.V1_17, ServerVersionRange.V1_16, ServerVersionRange.V1_15, ServerVersionRange.V1_14,
+            ServerVersionRange.V1_13, ServerVersionRange.V1_12, ServerVersionRange.V1_11, ServerVersionRange.V1_10, ServerVersionRange.V1_9,
+            ServerVersionRange.V1_8};
 
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
@@ -133,37 +140,21 @@ public class CustomOreGenerator extends JavaPlugin {
 
     private CustomOreGeneratorMessages messages;
     private Permissions permissions;
-    private Version version = Version.UNKNOWN;
-    private boolean shouldLoad = true;
+    private ServerVersion version = ServerVersion.NONE;
+    private boolean loaded = false;
 
     @Override
     public void onLoad() {
-        version = Version.getServerVersion(getServer());
-
-        // if no suitable version was found, log and return
-        if (version == Version.UNKNOWN) {
-            getLogger().warning("The Server version which you are running is unsupported, you are running version '" + version + "'");
-            getLogger().warning("The plugin supports following versions " + combineVersions(Version.v1_8_R1, Version.v1_8_R2, Version.v1_8_R3,
-                    Version.v1_9_R1, Version.v1_9_R2, Version.v1_10_R1, Version.v1_11_R1, Version.v1_12_R1, Version.v1_13_R1, Version.v1_13_R2,
-                    Version.v1_14_R1, Version.v1_15_R1, Version.v1_16_R1, Version.v1_16_R2, Version.v1_16_R3, Version.v1_17_R1, Version.v1_18_R1,
-                    Version.v1_18_R2, Version.v1_19_R1, Version.v1_19_R2, Version.v1_19_R3, Version.v1_20_R1, Version.v1_20_R2, Version.v1_20_R3,
-                    Version.v1_20_R4));
-            getLogger().warning("(Spigot / Paper version 1.8 - 1.20.4), if you are running such a Minecraft version, than your bukkit implementation is unsupported, in this case please contact the developer, so he can resolve this Issue");
-
-            if (version == Version.UNKNOWN) {
-                getLogger().warning("The Version '" + version + "' can indicate, that you are using a newer Minecraft version than currently supported.");
-                getLogger().warning("In this case please update to the newest version of this plugin. If this is the newest Version, than please be patient. It can take some weeks until the plugin is updated");
-            }
-            shouldLoad = false;
+        version = ServerVersion.getCurrentVersion(getServer());
+        if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
             return;
         }
 
-        if (version == Version.v1_17_R1) {
+        if (InternalVersion.v1_17_R1.getServerVersionRange().isInRange(version)) {
             try {
                 Class.forName("org.bukkit.generator.WorldInfo");
             } catch (ClassNotFoundException e) {
                 // Unsupported version
-                shouldLoad = false;
                 getLogger().warning("The server version which you are running is unsupported");
                 getLogger().warning("Make sure that you are running 1.17.1 Spigot build 3218 or higher, 1.17 is not supported.");
                 return;
@@ -183,26 +174,26 @@ public class CustomOreGenerator extends JavaPlugin {
         worldConfigYamlDao.init();
 
         checkOldStorageType();
+
+        loaded = true;
     }
 
     @Override
     public void onEnable() {
-        if (version == Version.UNKNOWN || !shouldLoad) {
-            // print a stack Trace, so that the server owner can easily spot, that the plugin is not working
-            getLogger().log(Level.WARNING, "No compatible Server version found!", new IllegalStateException("No compatible Server version found!"));
+        if (!loaded) {
             getServer().getPluginManager().disablePlugin(this);
             return;
         }
 
         getCommand("oregen").setExecutor(new OreGenCommand(CustomOreGeneratorServiceSupplier.INSTANCE, this, messages, permissions));
 
-        if (version.isNewerOrSameThan(Version.v1_14_R1)) {
+        if (version.isNewerThanOrSameAs(InternalVersion.v1_14_R1.getServerVersionRange().minInclusive())) {
             checkFile("data/factory/gui/menu-gui.yml");
         }
 
         checkFile("data/factory/gui/biome-gui.yml");
 
-        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), version, Version.isPaper(getServer()));
+        final RegisterUtil registerUtil = new RegisterUtil(this, CustomOreGeneratorServiceSupplier.INSTANCE.get(), version);
 
         initWorldHandler();
         registerStandardOreGenerators(registerUtil);
@@ -227,31 +218,31 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(new GlowStoneGenerator(infoFunction, oreSettingInfoBiFunction));
         registerUtil.register(new RootGenerator(infoFunction, oreSettingInfoBiFunction));
         registerUtil.register(new SingleOreGenerator(infoFunction, oreSettingInfoBiFunction));
-        registerUtil.register(Version.v1_8_R1, Version.v1_8_R1, () -> new MinableGenerator_v1_8_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_8_R2, Version.v1_8_R2, () -> new MinableGenerator_v1_8_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_8_R3, Version.v1_8_R3, () -> new MinableGenerator_v1_8_R3(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_9_R1, Version.v1_9_R1, () -> new MinableGenerator_v1_9_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_9_R2, Version.v1_9_R2, () -> new MinableGenerator_v1_9_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_10_R1, Version.v1_10_R1, () -> new MinableGenerator_v1_10_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_11_R1, Version.v1_11_R1, () -> new MinableGenerator_v1_11_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_12_R1, Version.v1_12_R1, () -> new MinableGenerator_v1_12_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_13_R1, Version.v1_13_R1, () -> new MinableGenerator_v1_13_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_13_R2, Version.v1_13_R2, false, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_14_R1, Version.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_15_R1, Version.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_16_R1, Version.v1_16_R1, () -> new MinableGenerator_v1_16_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_16_R2, Version.v1_16_R2, () -> new MinableGenerator_v1_16_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_16_R3, Version.v1_16_R3, () -> new MinableGenerator_v1_16_R3(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_17_R1, Version.v1_17_R1, () -> new MinableGenerator_v1_17_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_18_R1, Version.v1_18_R1, () -> new MinableGenerator_v1_18_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_18_R2, Version.v1_18_R2, () -> new MinableGenerator_v1_18_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_19_R1, Version.v1_19_R1, () -> new MinableGenerator_v1_19_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_19_R2, Version.v1_19_R2, () -> new MinableGenerator_v1_19_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_19_R3, Version.v1_19_R3, () -> new MinableGenerator_v1_19_R3(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_20_R1, Version.v1_20_R1, () -> new MinableGenerator_v1_20_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_20_R2, Version.v1_20_R2, () -> new MinableGenerator_v1_20_R2(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_20_R3, Version.v1_20_R3, () -> new MinableGenerator_v1_20_R3(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(Version.v1_20_R4, Version.v1_20_R4, () -> new MinableGenerator_v1_20_R4(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_8_R1, InternalVersion.v1_8_R1, () -> new MinableGenerator_v1_8_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_8_R2, InternalVersion.v1_8_R2, () -> new MinableGenerator_v1_8_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_8_R3, InternalVersion.v1_8_R3, () -> new MinableGenerator_v1_8_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_9_R1, InternalVersion.v1_9_R1, () -> new MinableGenerator_v1_9_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_9_R2, InternalVersion.v1_9_R2, () -> new MinableGenerator_v1_9_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_10_R1, InternalVersion.v1_10_R1, () -> new MinableGenerator_v1_10_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_11_R1, InternalVersion.v1_11_R1, () -> new MinableGenerator_v1_11_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_12_R1, InternalVersion.v1_12_R1, () -> new MinableGenerator_v1_12_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_13_R1, InternalVersion.v1_13_R1, () -> new MinableGenerator_v1_13_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_13_R2, InternalVersion.v1_13_R2, () -> new MinableGenerator_v1_13_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_14_R1, InternalVersion.v1_14_R1, () -> new MinableGenerator_v1_14_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_15_R1, InternalVersion.v1_15_R1, () -> new MinableGenerator_v1_15_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_16_R1, InternalVersion.v1_16_R1, () -> new MinableGenerator_v1_16_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_16_R2, InternalVersion.v1_16_R2, () -> new MinableGenerator_v1_16_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_16_R3, InternalVersion.v1_16_R3, () -> new MinableGenerator_v1_16_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_17_R1, InternalVersion.v1_17_R1, () -> new MinableGenerator_v1_17_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_18_R1, InternalVersion.v1_18_R1, () -> new MinableGenerator_v1_18_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_18_R2, InternalVersion.v1_18_R2, () -> new MinableGenerator_v1_18_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_19_R1, InternalVersion.v1_19_R1, () -> new MinableGenerator_v1_19_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_19_R2, InternalVersion.v1_19_R2, () -> new MinableGenerator_v1_19_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_19_R3, InternalVersion.v1_19_R3, () -> new MinableGenerator_v1_19_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_20_R1, InternalVersion.v1_20_R1, () -> new MinableGenerator_v1_20_R1(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_20_R2, InternalVersion.v1_20_R2, () -> new MinableGenerator_v1_20_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_20_R3, InternalVersion.v1_20_R3, () -> new MinableGenerator_v1_20_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_20_R4, InternalVersion.v1_20_R4, () -> new MinableGenerator_v1_20_R4(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -269,103 +260,76 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(new SkullTextureCustomData(infoFunction));
         registerUtil.register(new CommandCustomData(infoFunction));
         registerUtil.register(new NBTTagCustomData(infoFunction, fileFolder));
-        registerUtil.register(Version.v1_9_R1, () -> new AutoCustomData(infoFunction));
-        registerUtil.register(Version.v1_10_R1, () -> new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, infoFunction, fileFolder));
-        registerUtil.register(Version.v1_8_R1, Version.v1_12_R1, () -> new VariantCustomData(infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new TickBlockCustomData(infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new FacingCustomData(infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.DOWN, infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.UP, infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.NORTH, infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
-        registerUtil.register(Version.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
-        registerUtil.register(Version.v1_14_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
-        registerUtil.register(Version.v1_17_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("1."), () -> new OraxenCustomData_v1(infoFunction));
-        registerUtil.register(Version.v1_18_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("2."), () -> new OraxenCustomData_v2(infoFunction));
+        registerUtil.register(InternalVersion.v1_9_R1, () -> new AutoCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_10_R1, () -> new BlockStateCustomData(CustomOreGeneratorServiceSupplier.INSTANCE, infoFunction, fileFolder));
+        registerUtil.register(InternalVersion.v1_8_R1, InternalVersion.v1_12_R1, () -> new VariantCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new TickBlockCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new FacingCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.DOWN, infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.UP, infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.NORTH, infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
+        registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
+        registerUtil.register(InternalVersion.v1_14_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_17_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("1."), () -> new OraxenCustomData_v1(infoFunction));
+        registerUtil.register(InternalVersion.v1_18_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("2."), () -> new OraxenCustomData_v2(infoFunction));
     }
 
-    private void initWorldHandler() {
-        switch (version) {
-            case v1_20_R4:
-                new WorldHandler_v1_20_R4(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_20_R3:
-                new WorldHandler_v1_20_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_20_R2:
-                new WorldHandler_v1_20_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_20_R1:
-                new WorldHandler_v1_20_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_19_R3:
-                new WorldHandler_v1_19_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_19_R2:
-                new WorldHandler_v1_19_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_19_R1:
-                new WorldHandler_v1_19_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_18_R2:
-                new WorldHandler_v1_18_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                break;
-            case v1_18_R1:
-                new WorldHandler_v1_18_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_17_R1:
-                new WorldHandler_v1_17_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_16_R3:
-                new WorldHandler_v1_16_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_16_R2:
-                new WorldHandler_v1_16_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_16_R1:
-                new WorldHandler_v1_16_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_15_R1:
-                new WorldHandler_v1_15_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_14_R1:
-                new WorldHandler_v1_14_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_13_R2:
-                if (Version.isPaper(getServer()))
-                    getLogger().warning("Paper is not supported on this version of Minecraft");
-                else
-                    new WorldHandler_v1_13_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_13_R1:
-                new WorldHandler_v1_13_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_12_R1:
-                new CustomOreBlockPopulator_v1_12_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_11_R1:
-                new CustomOreBlockPopulator_v1_11_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_10_R1:
-                new CustomOreBlockPopulator_v1_10_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_9_R2:
-                new CustomOreBlockPopulator_v1_9_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_9_R1:
-                new CustomOreBlockPopulator_v1_9_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_8_R3:
-                new CustomOreBlockPopulator_v1_8_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_8_R2:
-                new CustomOreBlockPopulator_v1_8_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
-            case v1_8_R1:
-                new CustomOreBlockPopulator_v1_8_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-                return;
+    private WorldHandler initWorldHandler() {
+        if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_20_R4(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_20_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_20_R2.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_20_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_20_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_20_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_19_R3.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_19_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_19_R2.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_19_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_19_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_19_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_18_R2.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_18_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_18_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_18_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_17_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_17_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_16_R3.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_16_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_16_R2.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_16_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_16_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_16_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_15_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_15_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_14_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_14_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_13_R2.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_13_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_13_R1.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_13_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_12_R1.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_12_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_11_R1.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_11_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_10_R1.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_10_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_9_R2.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_9_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_9_R1.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_9_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_8_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_8_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
+            return new CustomOreBlockPopulator_v1_8_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         }
+
+        throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));
     }
 
     @Deprecated
@@ -412,6 +376,26 @@ public class CustomOreGenerator extends JavaPlugin {
         saveResource(name, true);
     }
 
+    private String combineVersions(Version... versions) {
+        StringBuilder stringBuilder = new StringBuilder();
+
+        boolean first = true;
+
+        for (Version version : versions) {
+            if (first) {
+                first = false;
+            } else {
+                stringBuilder.append(" ");
+            }
+
+            stringBuilder.append("'");
+            stringBuilder.append(version);
+            stringBuilder.append("'");
+        }
+
+        return stringBuilder.toString();
+    }
+
     private static final class CustomOreGeneratorServiceSupplier implements Supplier<CustomOreGeneratorService> {
 
         private static final CustomOreGeneratorServiceSupplier INSTANCE = new CustomOreGeneratorServiceSupplier();
@@ -431,26 +415,6 @@ public class CustomOreGenerator extends JavaPlugin {
             return service;
         }
 
-    }
-
-    private String combineVersions(Version... versions) {
-        StringBuilder stringBuilder = new StringBuilder();
-
-        boolean first = true;
-
-        for (Version version : versions) {
-            if (first) {
-                first = false;
-            } else {
-                stringBuilder.append(" ");
-            }
-
-            stringBuilder.append("'");
-            stringBuilder.append(version);
-            stringBuilder.append("'");
-        }
-
-        return stringBuilder.toString();
     }
 
 }

@@ -29,7 +29,8 @@ import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
-import de.derfrzocker.spigot.utils.Version;
+import de.derfrzocker.spigot.utils.version.InternalVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersion;
 import java.util.function.Predicate;
 import org.apache.commons.lang.Validate;
 import org.bukkit.plugin.Plugin;
@@ -42,10 +43,9 @@ public class RegisterUtil {
     @NotNull
     private final CustomOreGeneratorService service;
     @NotNull
-    private final Version currentVersion;
-    private final boolean paper;
+    private final ServerVersion currentVersion;
 
-    public RegisterUtil(@NotNull Plugin plugin, @NotNull final CustomOreGeneratorService service, @NotNull final Version currentVersion, final boolean paper) {
+    public RegisterUtil(@NotNull Plugin plugin, @NotNull final CustomOreGeneratorService service, @NotNull final ServerVersion currentVersion) {
         Validate.notNull(plugin, "Plugin can not be null");
         Validate.notNull(service, "CustomOreGeneratorService can not be null");
         Validate.notNull(currentVersion, "Version can not be null");
@@ -53,7 +53,6 @@ public class RegisterUtil {
         this.plugin = plugin;
         this.service = service;
         this.currentVersion = currentVersion;
-        this.paper = paper;
     }
 
     // OreGenerator
@@ -71,20 +70,10 @@ public class RegisterUtil {
 
     }
 
-    public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
-            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
+    public void register(@NotNull final InternalVersion minimalVersion, @NotNull final InternalVersion maximumVersion, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion.getServerVersionRange().minInclusive())) {
+            if (currentVersion.isOlderThanOrSameAs(maximumVersion.getServerVersionRange().maxInclusive())) {
                 register(oreGenerator.get(), defaultOreGenerator);
-            }
-        }
-    }
-
-    public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, final boolean paper, @NotNull final OreGeneratorSupplier oreGenerator, final boolean defaultOreGenerator) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
-            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
-                if (paper && this.paper) {
-                    register(oreGenerator.get(), defaultOreGenerator);
-                }
             }
         }
     }
@@ -110,22 +99,22 @@ public class RegisterUtil {
         this.service.registerCustomData(customData);
     }
 
-    public void register(@NotNull final Version minimalVersion, @NotNull final CustomDataSupplier customData) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+    public void register(@NotNull final InternalVersion minimalVersion, @NotNull final CustomDataSupplier customData) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion.getServerVersionRange().minInclusive())) {
             register(customData.get());
         }
     }
 
-    public void register(@NotNull final Version minimalVersion, @NotNull final String pluginName, @NotNull final CustomDataSupplier customData) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+    public void register(@NotNull final InternalVersion minimalVersion, @NotNull final String pluginName, @NotNull final CustomDataSupplier customData) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion.getServerVersionRange().minInclusive())) {
             if (this.plugin.getServer().getPluginManager().getPlugin(pluginName) != null) {
                 register(customData.get());
             }
         }
     }
 
-    public void register(@NotNull final Version minimalVersion, @NotNull final String pluginName, Predicate<Plugin> shouldRegister, @NotNull final CustomDataSupplier customData) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
+    public void register(@NotNull final InternalVersion minimalVersion, @NotNull final String pluginName, Predicate<Plugin> shouldRegister, @NotNull final CustomDataSupplier customData) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion.getServerVersionRange().minInclusive())) {
             Plugin otherPlugin = this.plugin.getServer().getPluginManager().getPlugin(pluginName);
             if (otherPlugin == null || !shouldRegister.test(otherPlugin)) {
                 return;
@@ -135,9 +124,9 @@ public class RegisterUtil {
         }
     }
 
-    public void register(@NotNull final Version minimalVersion, @NotNull final Version maximumVersion, @NotNull final CustomDataSupplier customData) {
-        if (currentVersion.isNewerOrSameThan(minimalVersion)) {
-            if (currentVersion.isOlderOrSameThan(maximumVersion)) {
+    public void register(@NotNull final InternalVersion minimalVersion, @NotNull final InternalVersion maximumVersion, @NotNull final CustomDataSupplier customData) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion.getServerVersionRange().minInclusive())) {
+            if (currentVersion.isOlderThanOrSameAs(maximumVersion.getServerVersionRange().maxInclusive())) {
                 register(customData.get());
             }
         }
