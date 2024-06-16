@@ -45,6 +45,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R1.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.ItemModsApplier_v1_20_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.ItemModsApplier_v1_20_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.ItemModsApplier_v1_20_R4;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.ItemModsApplier_v1_21_R1;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
 import dev.linwood.itemmods.ItemMods;
@@ -111,7 +112,9 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
+            return new ItemModsApplier_v1_21_R1(this);
+        } else if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
             return new ItemModsApplier_v1_20_R4(this);
         } else if (InternalVersion.v1_20_R3.getServerVersionRange().isInRange(version)) {
             return new ItemModsApplier_v1_20_R3(this);
