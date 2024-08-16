@@ -17,7 +17,6 @@
             <groupId>io.th0rgal</groupId>
             <artifactId>oraxen</artifactId>
             <version>${Oraxen.version.v2}</version>
-            <classifier>dev</classifier>
             <scope>provided</scope>
             <exclusions>
                 <exclusion>
