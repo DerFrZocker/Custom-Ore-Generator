@@ -46,6 +46,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.ItemModsAppl
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.ItemModsApplier_v1_20_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.ItemModsApplier_v1_20_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.ItemModsApplier_v1_21_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.customdata.ItemModsApplier_v1_21_R2;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
 import dev.linwood.itemmods.ItemMods;
@@ -77,8 +78,9 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
 
     @Override
     public boolean isValidCustomData(@NotNull final Object customData, @NotNull final OreConfig oreConfig) {
-        if (!(customData instanceof String))
+        if (!(customData instanceof String)) {
             return false;
+        }
 
         if (oreConfig.getMaterial() != Material.SPAWNER) {
             return false;
@@ -103,7 +105,8 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     @NotNull
     @Override
     public String getCustomData(@NotNull final BlockState blockState) {
-        Validate.isTrue(hasCustomData(blockState), "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
+        Validate.isTrue(hasCustomData(blockState),
+                        "The given BlockState '" + blockState.getType() + ", " + blockState.getLocation() + "' can not have the CustomData '" + getName() + "'");
 
         return new CustomBlock(blockState.getLocation()).getPackObject().toString();
     }
@@ -112,7 +115,9 @@ public class ItemModsCustomData extends AbstractCustomData<CustomDataApplier> im
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
+            return new ItemModsApplier_v1_21_R2(this);
+        } else if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
             return new ItemModsApplier_v1_21_R1(this);
         } else if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
             return new ItemModsApplier_v1_20_R4(this);

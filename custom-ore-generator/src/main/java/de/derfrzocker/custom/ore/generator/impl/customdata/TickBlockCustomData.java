@@ -48,6 +48,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R2.customdata.TickBlockApp
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R3.customdata.TickBlockApplier_v1_20_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.TickBlockApplier_v1_20_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.TickBlockApplier_v1_21_R1;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.customdata.TickBlockApplier_v1_21_R2;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
 import java.util.Set;
@@ -94,7 +95,9 @@ public class TickBlockCustomData extends AbstractCustomData<CustomDataApplier> i
     @Override
     protected CustomDataApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
+            return new TickBlockApplier_v1_21_R2(this);
+        } else if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
             return new TickBlockApplier_v1_21_R1(this);
         } else if (InternalVersion.v1_20_R4.getServerVersionRange().isInRange(version)) {
             return new TickBlockApplier_v1_20_R4(this);
