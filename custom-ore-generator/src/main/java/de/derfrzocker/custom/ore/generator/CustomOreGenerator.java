@@ -97,6 +97,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.WorldHandler_v1_21_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.oregenerator.MinableGenerator_v1_21_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.WorldHandler_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.oregenerator.MinableGenerator_v1_21_R2;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.WorldHandler_v1_21_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.oregenerator.MinableGenerator_v1_21_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -249,6 +251,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(InternalVersion.v1_20_R4, InternalVersion.v1_20_R4, () -> new MinableGenerator_v1_20_R4(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R1, InternalVersion.v1_21_R1, () -> new MinableGenerator_v1_21_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R2, InternalVersion.v1_21_R2, () -> new MinableGenerator_v1_21_R2(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_21_R3, InternalVersion.v1_21_R3, () -> new MinableGenerator_v1_21_R3(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -277,13 +280,16 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.SOUTH, infoFunction));
         registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.EAST, infoFunction));
         registerUtil.register(InternalVersion.v1_13_R1, () -> new DirectionCustomData(BlockFace.WEST, infoFunction));
-        registerUtil.register(InternalVersion.v1_14_R1, "ItemMods", () -> new ItemModsCustomData(infoFunction));
+        registerUtil.register(InternalVersion.v1_14_R1, InternalVersion.v1_21_R2, "ItemMods",
+                              () -> new ItemModsCustomData(infoFunction));
         registerUtil.register(InternalVersion.v1_17_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("1."), () -> new OraxenCustomData_v1(infoFunction));
         registerUtil.register(InternalVersion.v1_18_R1, "Oraxen", plugin -> plugin.getDescription().getVersion().startsWith("2."), () -> new OraxenCustomData_v2(infoFunction));
     }
 
     private WorldHandler initWorldHandler() {
-        if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_21_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_21_R1.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);

@@ -23,7 +23,7 @@
  *
  */
 
-package de.derfrzocker.custom.ore.generator.impl.v1_21_R2;
+package de.derfrzocker.custom.ore.generator.impl.v1_21_R3;
 
 import it.unimi.dsi.fastutil.longs.LongSet;
 import it.unimi.dsi.fastutil.shorts.ShortList;
@@ -222,13 +222,8 @@ public class CustomChunkAccess extends ChunkAccess {
     }
 
     @Override
-    public void addPackedPostProcess(ShortList shortlist, int i) {
-        delegate.addPackedPostProcess(shortlist, i);
-    }
-
-    @Override
-    public boolean isSectionEmpty(int i) {
-        return delegate.isSectionEmpty(i);
+    public int getMinY() {
+        return delegate.getMinY();
     }
 
     @Override
@@ -237,18 +232,23 @@ public class CustomChunkAccess extends ChunkAccess {
     }
 
     @Override
-    public void markUnsaved() {
-        delegate.markUnsaved();
-    }
-
-    @Override
     public boolean tryMarkSaved() {
         return delegate.tryMarkSaved();
     }
 
     @Override
-    public int getMinY() {
-        return delegate.getMinY();
+    public void markUnsaved() {
+        delegate.markUnsaved();
+    }
+
+    @Override
+    public boolean isSectionEmpty(int i) {
+        return delegate.isSectionEmpty(i);
+    }
+
+    @Override
+    public void addPackedPostProcess(ShortList shortlist, int i) {
+        delegate.addPackedPostProcess(shortlist, i);
     }
 
     @Override

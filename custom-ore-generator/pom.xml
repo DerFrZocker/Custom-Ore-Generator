@@ -233,6 +233,12 @@
         </dependency>
         <dependency>
             <groupId>de.derfrzocker</groupId>
+            <artifactId>custom-ore-generator-impl-v1_21_R3</artifactId>
+            <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>de.derfrzocker</groupId>
             <artifactId>custom-ore-generator-plugin-oraxen-v1</artifactId>
             <version>${project.version}</version>
             <scope>compile</scope>
