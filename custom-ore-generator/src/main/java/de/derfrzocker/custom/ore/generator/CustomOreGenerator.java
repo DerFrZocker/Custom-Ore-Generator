@@ -99,6 +99,8 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.WorldHandler_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.oregenerator.MinableGenerator_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.WorldHandler_v1_21_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.oregenerator.MinableGenerator_v1_21_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.WorldHandler_v1_21_R4;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.oregenerator.MinableGenerator_v1_21_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
@@ -252,6 +254,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(InternalVersion.v1_21_R1, InternalVersion.v1_21_R1, () -> new MinableGenerator_v1_21_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R2, InternalVersion.v1_21_R2, () -> new MinableGenerator_v1_21_R2(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R3, InternalVersion.v1_21_R3, () -> new MinableGenerator_v1_21_R3(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(InternalVersion.v1_21_R4, InternalVersion.v1_21_R4, () -> new MinableGenerator_v1_21_R4(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -287,7 +290,9 @@ public class CustomOreGenerator extends JavaPlugin {
     }
 
     private WorldHandler initWorldHandler() {
-        if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
+            return new WorldHandler_v1_21_R4(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else  if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);

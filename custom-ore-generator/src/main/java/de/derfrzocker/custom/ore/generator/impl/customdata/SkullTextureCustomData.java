@@ -50,6 +50,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.SkullTexture
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.SkullTextureApplier_v1_21_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.customdata.SkullTextureApplier_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.customdata.SkullTextureApplier_v1_21_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.customdata.SkullTextureApplier_v1_21_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.SkullTextureApplier_v1_8_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.SkullTextureApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.SkullTextureApplier_v1_8_R3;
@@ -91,7 +92,9 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
     @Override
     protected SkullTextureApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
+            return new SkullTextureApplier_v1_21_R4(this);
+        } else if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
             return new SkullTextureApplier_v1_21_R3(this);
         } else if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
             return new SkullTextureApplier_v1_21_R2(this);
