@@ -50,6 +50,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_20_R4.customdata.BlockStateAp
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.BlockStateApplier_v1_21_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.customdata.BlockStateApplier_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.customdata.BlockStateApplier_v1_21_R3;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.customdata.BlockStateApplier_v1_21_R4;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
 import java.io.File;
@@ -77,7 +78,9 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @Override
     protected AbstractBlockStateCustomData.BlockStateApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
+            return new BlockStateApplier_v1_21_R4(this.serviceSupplier, this);
+        } else if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
             return new BlockStateApplier_v1_21_R3(this.serviceSupplier, this);
         } else if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
             return new BlockStateApplier_v1_21_R2(this.serviceSupplier, this);
