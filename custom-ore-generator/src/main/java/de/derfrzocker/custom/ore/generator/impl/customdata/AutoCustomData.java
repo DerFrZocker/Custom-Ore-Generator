@@ -51,6 +51,7 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R1.customdata.AutoApplier_
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R2.customdata.AutoApplier_v1_21_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.customdata.AutoApplier_v1_21_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.customdata.AutoApplier_v1_21_R4;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.customdata.AutoApplier_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.AutoApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.AutoApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
@@ -101,7 +102,9 @@ public class AutoCustomData extends AbstractAutoCustomData {
     @Override
     protected AutoApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
+        if (InternalVersion.v1_21_R5.getServerVersionRange().isInRange(version)) {
+            return new AutoApplier_v1_21_R5(this);
+        } else if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
             return new AutoApplier_v1_21_R4(this);
         } else if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
             return new AutoApplier_v1_21_R3(this);
