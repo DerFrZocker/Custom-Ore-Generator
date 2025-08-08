@@ -93,7 +93,7 @@ ore-config:
       already-exists: "&4The Ore-Config &f'&d%ore-config%&f' &4already exists!"
       success:
         - ' '
-        - '&2You choosed the name &r''&d%value%&r'''
+        - '&2You chose the name &r''&d%value%&r'''
     material:
       text: '&2Left Click on the Block you want to generated                     &2Type
         &r''&d!exit&r''&2 to go back to normal game play                          &2Type
@@ -170,7 +170,7 @@ info:
       ore-setting:
         CONNECTIONS:
           display-name: "Connections"
-          description: "//TODO add explanation"
+          description: "The number of connections between glowstone blocks"
         HORIZONTAL_SCOPE:
           display-name: "Horizontal Scope"
           description: "How much the blocks should spread in x and z"
@@ -201,23 +201,23 @@ info:
       description: "A generator which is based on root growth"
       ore-setting:
         CHANCE_SUBTRACTION_RANGE:
-          display-name: "Change Subtraction Range"
-          description: "The range from which the Continue Change is additionally shortened"
+          display-name: "Chance Subtraction Range"
+          description: "The range from which the Continue Chance is additionally shortened"
         CONTINUE_CHANCE:
-          display-name: "Continue Change"
+          display-name: "Continue Chance"
           description: "The chance, that a new root is created"
         CONTINUE_TRIES:
           display-name: "Continue Tries"
           description: "How often it tries, per block, to continue"
         DOWN_CHANCE:
-          display-name: "Down Change"
+          display-name: "Down Chance"
           description: "The chance, that a root is going down"
         LENGTH_SUBTRACTION_RANGE:
           display-name: "Length Subtraction Range"
           description: "The range from which, the Root Length is additionally shortened"
         MINIMUM_CHANCE_SUBTRACTION:
-          display-name: "Minimum Change Subtraction"
-          description: "How much from the Continue Change gets subtracted minimum"
+          display-name: "Minimum Chance Subtraction"
+          description: "How much from the Continue Chance gets subtracted minimum"
         MINIMUM_LENGTH_SUBTRACTION:
           display-name: "Minimum Length Subtraction"
           description: "How much from the Root Length gets subtracted minimum"
@@ -226,7 +226,7 @@ info:
           description: "How much from the Continue Tries gets subtracted minimum"
         ROOT_LENGTH:
           display-name: "Root Length"
-          description: "The length of a individuate root"
+          description: "The length of an individual root"
         TRIES_SUBTRACTION_RANGE:
           display-name: "Tries Subtraction Range"
           description: "The range from which the Continue Tries is additionally shortened"
@@ -266,7 +266,7 @@ info:
       description: "Correspond to the 'south' block state"
     TICK_BLOCK:
       display-name: "Tick Block"
-      description: "Allow you to let the block get a block update after the generation"
+      description: "Allows you to let the block get a block update after the generation"
     UP:
       display-name: "Up"
       description: "Correspond to the 'up' block state"
@@ -358,7 +358,7 @@ command:
       description: "Set the material on which the ore should be generate. You can set multiple Materials, by separate them with a space. Materials that are already set to the ore config, gets override."
       not-enough-args:
         - "&4Wrong amount of arguments!"
-        - "&cuse %%translation:[command.set.replacmaterial.usage]%"
+        - "&cuse %%translation:[command.set.replacematerial.usage]%"
       success: "&aThe materials are set successfully!"
     select-material:
       usage: "&f/&doregen set selectmaterial <&dore-config&f> <&dmaterial&f> &d..."
@@ -374,7 +374,7 @@ command:
         - "&4Wrong amount of arguments!"
         - "&cuse %%translation:[command.set.position.usage]%"
       value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
-      success: "&aThe position was change successfully!"
+      success: "&aThe position was changed successfully!"
 
     help:
       usage: "&f/&doregen set help &f(<&dsubcommand&f>)"
@@ -391,7 +391,7 @@ command:
         - "&cuse %%translation:[command.add.ore-config.usage]%"
       value-not-valid: "&f'&d%value%&f' &4is not a valid number!"
       present: "&4The Ore-Config &f'&d%ore-config%&f' &4 is already present in the world!"
-      success: "&aThe Ore-Config was add successfully!"
+      success: "&aThe Ore-Config was added successfully!"
 
     help:
       usage: "&f/&doregen add help &f(<&dsubcommand&f>)"
