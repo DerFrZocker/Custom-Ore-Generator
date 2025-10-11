@@ -40,8 +40,6 @@ import de.derfrzocker.custom.ore.generator.impl.v1_16_R1.customdata.CommandAppli
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R2.customdata.CommandApplier_v1_16_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3.customdata.CommandApplier_v1_16_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_16_R3_post.customdata.CommandApplier_v1_16_R3_post;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.CommandApplier_v1_8_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.CommandApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.CommandApplier_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.CommandApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.CommandApplier_v1_9_R2;
@@ -145,10 +143,6 @@ public class CommandCustomData extends AbstractCustomData<CustomDataApplier> {
             return new CommandApplier_v1_9_R1(this);
         } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
             return new CommandApplier_v1_8_R3(this);
-        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
-            return new CommandApplier_v1_8_R2(this);
-        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
-            return new CommandApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

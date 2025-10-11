@@ -105,10 +105,6 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.WorldHandler_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.oregenerator.MinableGenerator_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.WorldHandler_v1_21_R6;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.oregenerator.MinableGenerator_v1_21_R6;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.CustomOreBlockPopulator_v1_8_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.oregenerator.MinableGenerator_v1_8_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.CustomOreBlockPopulator_v1_8_R2;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.oregenerator.MinableGenerator_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.CustomOreBlockPopulator_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.oregenerator.MinableGenerator_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.CustomOreBlockPopulator_v1_9_R1;
@@ -141,7 +137,7 @@ public class CustomOreGenerator extends JavaPlugin {
     private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_21, ServerVersionRange.V1_20, ServerVersionRange.V1_19,
             ServerVersionRange.V1_18, ServerVersionRange.V1_17, ServerVersionRange.V1_16, ServerVersionRange.V1_15, ServerVersionRange.V1_14,
             ServerVersionRange.V1_13, ServerVersionRange.V1_12, ServerVersionRange.V1_11, ServerVersionRange.V1_10, ServerVersionRange.V1_9,
-            ServerVersionRange.V1_8};
+            ServerVersionRange.create("1.8.8", "1.8.9")};
 
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
@@ -230,8 +226,6 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(new GlowStoneGenerator(infoFunction, oreSettingInfoBiFunction));
         registerUtil.register(new RootGenerator(infoFunction, oreSettingInfoBiFunction));
         registerUtil.register(new SingleOreGenerator(infoFunction, oreSettingInfoBiFunction));
-        registerUtil.register(InternalVersion.v1_8_R1, InternalVersion.v1_8_R1, () -> new MinableGenerator_v1_8_R1(infoFunction, oreSettingInfoBiFunction), true);
-        registerUtil.register(InternalVersion.v1_8_R2, InternalVersion.v1_8_R2, () -> new MinableGenerator_v1_8_R2(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_8_R3, InternalVersion.v1_8_R3, () -> new MinableGenerator_v1_8_R3(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_9_R1, InternalVersion.v1_9_R1, () -> new MinableGenerator_v1_9_R1(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_9_R2, InternalVersion.v1_9_R2, () -> new MinableGenerator_v1_9_R2(infoFunction, oreSettingInfoBiFunction), true);
@@ -354,10 +348,6 @@ public class CustomOreGenerator extends JavaPlugin {
             return new CustomOreBlockPopulator_v1_9_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
             return new CustomOreBlockPopulator_v1_8_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
-            return new CustomOreBlockPopulator_v1_8_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
-            return new CustomOreBlockPopulator_v1_8_R1(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         }
 
         throw new IllegalStateException(String.format("No NMSReplacer found for version '%s', this is a bug!", version));

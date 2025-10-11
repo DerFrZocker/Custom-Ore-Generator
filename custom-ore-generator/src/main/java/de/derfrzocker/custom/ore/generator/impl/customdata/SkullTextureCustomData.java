@@ -53,8 +53,6 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R3.customdata.SkullTexture
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.customdata.SkullTextureApplier_v1_21_R4;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.customdata.SkullTextureApplier_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.customdata.SkullTextureApplier_v1_21_R6;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.SkullTextureApplier_v1_8_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.SkullTextureApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.SkullTextureApplier_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.SkullTextureApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.SkullTextureApplier_v1_9_R2;
@@ -152,10 +150,6 @@ public class SkullTextureCustomData extends AbstractSkullTextureCustomData {
             return new SkullTextureApplier_v1_9_R1(this);
         } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
             return new SkullTextureApplier_v1_8_R3(this);
-        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
-            return new SkullTextureApplier_v1_8_R2(this);
-        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
-            return new SkullTextureApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");

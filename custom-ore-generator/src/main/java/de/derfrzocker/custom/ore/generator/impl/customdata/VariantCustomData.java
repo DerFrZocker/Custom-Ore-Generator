@@ -29,8 +29,6 @@ import de.derfrzocker.custom.ore.generator.api.Info;
 import de.derfrzocker.custom.ore.generator.impl.v1_10_R1.customdata.VariantApplier_v1_10_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_11_R1.customdata.VariantApplier_v1_11_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_12_R1.customdata.VariantApplier_v1_12_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R1.customdata.VariantApplier_v1_8_R1;
-import de.derfrzocker.custom.ore.generator.impl.v1_8_R2.customdata.VariantApplier_v1_8_R2;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.VariantApplier_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.VariantApplier_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.VariantApplier_v1_9_R2;
@@ -62,10 +60,6 @@ public class VariantCustomData extends AbstractVariantCustomData {
             return new VariantApplier_v1_9_R1(this);
         } else if (InternalVersion.v1_8_R3.getServerVersionRange().isInRange(version)) {
             return new VariantApplier_v1_8_R3(this);
-        } else if (InternalVersion.v1_8_R2.getServerVersionRange().isInRange(version)) {
-            return new VariantApplier_v1_8_R2(this);
-        } else if (InternalVersion.v1_8_R1.getServerVersionRange().isInRange(version)) {
-            return new VariantApplier_v1_8_R1(this);
         }
 
         throw new UnsupportedOperationException("Version not supported jet!");
