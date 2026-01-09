@@ -35,6 +35,9 @@
         <ItemMods.version>2.0.0-alpha.1</ItemMods.version>
         <Oraxen.version>1.165.0</Oraxen.version>
         <Oraxen.version.v2>2.0-SNAPSHOT</Oraxen.version.v2>
+
+        <!-- https://github.com/jacoco/jacoco/releases -->
+        <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
     </properties>
 
     <repositories>
@@ -139,6 +142,29 @@
                         <goals>
                             <goal>clean</goal>
                         </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>report</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>report</goal>
+                        </goals>
+                        <configuration>
+                            <formats>XML</formats>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
