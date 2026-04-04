@@ -83,6 +83,15 @@ public class RegisterUtil {
         }
     }
 
+    public void register(
+            @NotNull final ServerVersion minimalVersion,
+            @NotNull final OreGeneratorSupplier oreGenerator,
+            final boolean defaultOreGenerator) {
+        if (currentVersion.isNewerThanOrSameAs(minimalVersion)) {
+            register(oreGenerator.get(), defaultOreGenerator);
+        }
+    }
+
     // BlockSelector
 
     public void register(@NotNull final BlockSelector blockSelector) {

@@ -104,13 +104,15 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.oregenerator.MinableGen
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.WorldHandler_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.oregenerator.MinableGenerator_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.WorldHandler_v1_21_R6;
-import de.derfrzocker.custom.ore.generator.impl.v1_21_R7.WorldHandler_v1_21_R7;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.oregenerator.MinableGenerator_v1_21_R6;
+import de.derfrzocker.custom.ore.generator.impl.v1_21_R7.WorldHandler_v1_21_R7;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R7.oregenerator.MinableGenerator_v1_21_R7;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.CustomOreBlockPopulator_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.oregenerator.MinableGenerator_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.CustomOreBlockPopulator_v1_9_R1;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.oregenerator.MinableGenerator_v1_9_R1;
+import de.derfrzocker.custom.ore.generator.impl.v26_1_base.WorldHandler_v26_1_base;
+import de.derfrzocker.custom.ore.generator.impl.v26_1_base.oregenerator.MinableGenerator_v26_1_base;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.CustomOreBlockPopulator_v1_9_R2;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.oregenerator.MinableGenerator_v1_9_R2;
 import de.derfrzocker.custom.ore.generator.plugin.oraxen.v1.OraxenCustomData_v1;
@@ -136,10 +138,23 @@ import org.jetbrains.annotations.NotNull;
 
 public class CustomOreGenerator extends JavaPlugin {
 
-    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V1_21, ServerVersionRange.V1_20, ServerVersionRange.V1_19,
-            ServerVersionRange.V1_18, ServerVersionRange.V1_17, ServerVersionRange.V1_16, ServerVersionRange.V1_15, ServerVersionRange.V1_14,
-            ServerVersionRange.V1_13, ServerVersionRange.V1_12, ServerVersionRange.V1_11, ServerVersionRange.V1_10, ServerVersionRange.V1_9,
-            ServerVersionRange.create("1.8.8", "1.8.9")};
+    private static final ServerVersionRange[] SUPPORTED_VERSION = new ServerVersionRange[]{ServerVersionRange.V26_1,
+                                                                                           ServerVersionRange.V1_21,
+                                                                                           ServerVersionRange.V1_20,
+                                                                                           ServerVersionRange.V1_19,
+                                                                                           ServerVersionRange.V1_18,
+                                                                                           ServerVersionRange.V1_17,
+                                                                                           ServerVersionRange.V1_16,
+                                                                                           ServerVersionRange.V1_15,
+                                                                                           ServerVersionRange.V1_14,
+                                                                                           ServerVersionRange.V1_13,
+                                                                                           ServerVersionRange.V1_12,
+                                                                                           ServerVersionRange.V1_11,
+                                                                                           ServerVersionRange.V1_10,
+                                                                                           ServerVersionRange.V1_9,
+                                                                                           ServerVersionRange.create(
+                                                                                                   "1.8.8",
+                                                                                                   "1.8.9")};
 
     static {
         ConfigurationSerialization.registerClass(BiomeConfigYamlImpl.class);
@@ -156,8 +171,14 @@ public class CustomOreGenerator extends JavaPlugin {
     @Override
     public void onLoad() {
         version = ServerVersion.getCurrentVersion(getServer());
-        if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
-            return;
+        if (version.isNewerThan(SUPPORTED_VERSION[0].maxInclusive())) {
+            getLogger().warning("You are running a server version which is newer than the latest version this plugin " +
+                                "was build against. The plugin might work or break in unexpected ways. Use at own " +
+                                "risk.");
+        } else {
+            if (!ServerVersion.isSupportedVersion(getLogger(), version, SUPPORTED_VERSION)) {
+                return;
+            }
         }
 
         if (InternalVersion.v1_17_R1.getServerVersionRange().isInRange(version)) {
@@ -258,6 +279,7 @@ public class CustomOreGenerator extends JavaPlugin {
         registerUtil.register(InternalVersion.v1_21_R5, InternalVersion.v1_21_R5, () -> new MinableGenerator_v1_21_R5(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R6, InternalVersion.v1_21_R6, () -> new MinableGenerator_v1_21_R6(infoFunction, oreSettingInfoBiFunction), true);
         registerUtil.register(InternalVersion.v1_21_R7, InternalVersion.v1_21_R7, () -> new MinableGenerator_v1_21_R7(infoFunction, oreSettingInfoBiFunction), true);
+        registerUtil.register(ServerVersionRange.V26_1.minInclusive(), () -> new MinableGenerator_v26_1_base(infoFunction, oreSettingInfoBiFunction), true);
     }
 
     private void registerStandardBlockSelector(@NotNull final RegisterUtil registerUtil) {
@@ -293,7 +315,9 @@ public class CustomOreGenerator extends JavaPlugin {
     }
 
     private WorldHandler initWorldHandler() {
-        if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
+        if (version.isNewerThanOrSameAs(ServerVersionRange.V26_1.minInclusive())) {
+            return new WorldHandler_v26_1_base(this, CustomOreGeneratorServiceSupplier.INSTANCE);
+        } else if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R7(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_21_R6.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R6(this, CustomOreGeneratorServiceSupplier.INSTANCE);
@@ -301,7 +325,7 @@ public class CustomOreGenerator extends JavaPlugin {
             return new WorldHandler_v1_21_R5(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_21_R4.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R4(this, CustomOreGeneratorServiceSupplier.INSTANCE);
-        } else  if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
+        } else if (InternalVersion.v1_21_R3.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R3(this, CustomOreGeneratorServiceSupplier.INSTANCE);
         } else if (InternalVersion.v1_21_R2.getServerVersionRange().isInRange(version)) {
             return new WorldHandler_v1_21_R2(this, CustomOreGeneratorServiceSupplier.INSTANCE);
@@ -442,5 +466,4 @@ public class CustomOreGenerator extends JavaPlugin {
         }
 
     }
-
 }

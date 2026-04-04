@@ -54,8 +54,10 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R4.customdata.BlockStateAp
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R5.customdata.BlockStateApplier_v1_21_R5;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.customdata.BlockStateApplier_v1_21_R6;
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R7.customdata.BlockStateApplier_v1_21_R7;
+import de.derfrzocker.custom.ore.generator.impl.v26_1_base.customdata.BlockStateApplier_v26_1_base;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersionRange;
 import java.io.File;
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -68,9 +70,10 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @NotNull
     private final Supplier<CustomOreGeneratorService> serviceSupplier;
 
-    public BlockStateCustomData(@NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
-                                @NotNull Function<String, Info> infoFunction,
-                                @NotNull final File fileFolder) {
+    public BlockStateCustomData(
+            @NotNull final Supplier<CustomOreGeneratorService> serviceSupplier,
+            @NotNull Function<String, Info> infoFunction,
+            @NotNull final File fileFolder) {
         super(infoFunction, fileFolder);
         Validate.notNull(serviceSupplier, "Service supplier can not be null");
 
@@ -81,7 +84,9 @@ public class BlockStateCustomData extends AbstractBlockStateCustomData {
     @Override
     protected AbstractBlockStateCustomData.BlockStateApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
+        if (version.isNewerThanOrSameAs(ServerVersionRange.V26_1.minInclusive())) {
+            return new BlockStateApplier_v26_1_base(this.serviceSupplier, this);
+        } else if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
             return new BlockStateApplier_v1_21_R7(this.serviceSupplier, this);
         } else if (InternalVersion.v1_21_R6.getServerVersionRange().isInRange(version)) {
             return new BlockStateApplier_v1_21_R6(this.serviceSupplier, this);

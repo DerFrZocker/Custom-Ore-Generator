@@ -55,9 +55,11 @@ import de.derfrzocker.custom.ore.generator.impl.v1_21_R6.customdata.NBTTagApplie
 import de.derfrzocker.custom.ore.generator.impl.v1_21_R7.customdata.NBTTagApplier_v1_21_R7;
 import de.derfrzocker.custom.ore.generator.impl.v1_8_R3.customdata.NBTTagApplier_v1_8_R3;
 import de.derfrzocker.custom.ore.generator.impl.v1_9_R1.customdata.NBTTagApplier_v1_9_R1;
+import de.derfrzocker.custom.ore.generator.impl.v26_1_base.customdata.NBTTagApplier_v26_1_base;
 import de.derfrzocker.custom.ore.generator.impl.v_1_9_R2.customdata.NBTTagApplier_v1_9_R2;
 import de.derfrzocker.spigot.utils.version.InternalVersion;
 import de.derfrzocker.spigot.utils.version.ServerVersion;
+import de.derfrzocker.spigot.utils.version.ServerVersionRange;
 import java.io.File;
 import java.util.function.Function;
 import org.bukkit.Bukkit;
@@ -73,7 +75,9 @@ public class NBTTagCustomData extends AbstractNBTTagCustomData {
     @Override
     protected NBTTagApplier getCustomDataApplier0() {
         ServerVersion version = ServerVersion.getCurrentVersion(Bukkit.getServer());
-        if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
+        if (version.isNewerThanOrSameAs(ServerVersionRange.V26_1.minInclusive())) {
+            return new NBTTagApplier_v26_1_base(this);
+        } else if (InternalVersion.v1_21_R7.getServerVersionRange().isInRange(version)) {
             return new NBTTagApplier_v1_21_R7(this);
         } else if (InternalVersion.v1_21_R6.getServerVersionRange().isInRange(version)) {
             return new NBTTagApplier_v1_21_R6(this);
