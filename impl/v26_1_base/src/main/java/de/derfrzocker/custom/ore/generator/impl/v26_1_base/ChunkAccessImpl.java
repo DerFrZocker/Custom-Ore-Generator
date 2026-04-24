@@ -16,16 +16,25 @@ import org.jetbrains.annotations.NotNull;
 
 public class ChunkAccessImpl extends BlockStateListPopulator implements ChunkAccess {
 
+    private final LevelAccessor world;
     private final Set<BlockPos> blockPosSet = new HashSet<>();
     private final Consumer<BlockPos> blockSet = blockPosSet::add;
 
     public ChunkAccessImpl(LevelAccessor world) {
         super(world);
+        this.world = world;
+    }
+    
+    // In Paper 1.21.11, getWorld() was removed from BlockStateListPopulator
+    public LevelAccessor getWorld() {
+        return world;
     }
 
     @Override
     public void setMaterial(@NotNull Material material, int x, int y, int z) {
-        setBlock(new BlockPos(x, y, z), ((CraftBlockData) material.createBlockData()).getState(), 3);
+        BlockPos pos = new BlockPos(x, y, z);
+        setBlock(pos, ((CraftBlockData) material.createBlockData()).getState(), 3);
+        blockPosSet.add(pos);
     }
 
     @NotNull
@@ -45,9 +54,9 @@ public class ChunkAccessImpl extends BlockStateListPopulator implements ChunkAcc
 
     @Override
     public Set<BlockPos> getBlocks() {
-        Set<BlockPos> blockPos = new HashSet<>(super.getBlocks());
-        blockPos.addAll(blockPosSet);
-        return blockPos;
+        // In Paper 1.21.11, getBlocks() was removed from BlockStateListPopulator
+        // We track blocks ourselves in blockPosSet (populated in setMaterial)
+        return new HashSet<>(blockPosSet);
     }
 
     @Override
