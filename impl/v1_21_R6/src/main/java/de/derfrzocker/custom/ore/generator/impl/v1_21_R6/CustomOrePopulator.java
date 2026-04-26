@@ -114,8 +114,7 @@ public class CustomOrePopulator extends BlockPopulator {
 
         ChunkAccessImpl chunkAccess = new ChunkAccessImpl(((CraftLimitedRegion) limitedRegion).getHandle());
         oreGenerator.generate(oreConfig, chunkAccess, chunkX, chunkZ, random, biome, biomeLocations);
-        chunkAccess.refreshTiles();
-        chunkAccess.updateList();
+        chunkAccess.submit();
         for (BlockPos pos : chunkAccess.getBlocks()) {
             oreConfig.getCustomData().forEach((customData, object) -> customData.getCustomDataApplier().apply(oreConfig, new Location(null, pos.getX(), pos.getY(), pos.getZ()), limitedRegion));
         }
