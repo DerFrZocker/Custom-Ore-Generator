@@ -5,6 +5,7 @@ import de.derfrzocker.custom.ore.generator.CustomOreGeneratorMessages;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.command.OreGenCommand;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import de.derfrzocker.spigot.utils.command.CommandUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
 import org.apache.commons.lang.Validate;
@@ -53,7 +54,7 @@ public class SetBiomeCommand implements TabExecutor {
 
             for (int i = 1; i < args.length; i++) {
                 try {
-                    biomes.add(Biome.valueOf(args[i].toUpperCase()));
+                    biomes.add(BiomeMapper.mapFromString(args[i].toUpperCase()));
                 } catch (IllegalArgumentException e) {
                     messages.COMMAND_BIOME_NOT_FOUND.sendMessage(sender, new MessageValue("biome", args[i]));
                     return;
@@ -91,17 +92,17 @@ public class SetBiomeCommand implements TabExecutor {
 
         for (int i = 1; i < (args.length - 1); i++) {
             try {
-                biomes.add(Biome.valueOf(args[i].toUpperCase()));
+                biomes.add(BiomeMapper.mapFromString(args[i]));
             } catch (IllegalArgumentException e) {
                 return list;
             }
         }
 
-        final Set<Biome> biomeSet = Sets.newHashSet(Biome.values());
+        final Set<Biome> biomeSet = BiomeMapper.listAll();
 
         biomeSet.removeAll(biomes);
 
-        biomeSet.stream().map(Enum::toString).filter(value -> value.contains(args[args.length - 1])).forEach(list::add);
+        biomeSet.stream().map(BiomeMapper::mapToString).filter(value -> value.contains(args[args.length - 1])).forEach(list::add);
 
         return list;
     }

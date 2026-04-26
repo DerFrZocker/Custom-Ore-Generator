@@ -4,6 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigBuilder;
 import de.derfrzocker.custom.ore.generator.factory.OreConfigFactory;
 import de.derfrzocker.custom.ore.generator.factory.gui.settings.BiomeGuiSettings;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import de.derfrzocker.spigot.utils.gui.PageGui;
 import de.derfrzocker.spigot.utils.message.MessageUtil;
 import de.derfrzocker.spigot.utils.message.MessageValue;
@@ -33,7 +34,7 @@ public class BiomeGui extends PageGui<Biome> {
         this.oreConfigFactory = oreConfigFactory;
 
         addDecorations();
-        init(Biome.values(), Biome[]::new, this::getItemStack, this::handleNormalClick);
+        init(BiomeMapper.listAll().toArray(new Biome[0]), Biome[]::new, this::getItemStack, this::handleNormalClick);
 
         addItem(biomeGuiSettings.getMenuSlot(), MessageUtil.replaceItemStack(plugin, biomeGuiSettings.getMenuItemStack()), inventoryClickEvent -> {
             oreConfigFactory.setRunning(false);
@@ -59,10 +60,10 @@ public class BiomeGui extends PageGui<Biome> {
             itemStack = biomeGuiSettings.getDeactivatedItemStack();
         }
 
-        itemStack.setType(biomeGuiSettings.getBiomeMaterial(biome.toString()));
+        itemStack.setType(biomeGuiSettings.getBiomeMaterial(BiomeMapper.mapToString(biome)));
 
         return MessageUtil.replaceItemStack(getPlugin(), itemStack,
-                new MessageValue("name", biome)
+                new MessageValue("name", BiomeMapper.mapToString(biome))
         );
     }
 

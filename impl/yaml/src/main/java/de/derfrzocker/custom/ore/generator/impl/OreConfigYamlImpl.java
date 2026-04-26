@@ -7,6 +7,7 @@ import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.api.OreSettingContainer;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -140,7 +141,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
             if (map.containsKey(BIOMES_KEY)) {
                 for (String biomeString : ((List<String>) map.get(BIOMES_KEY))) {
                     try {
-                        oreConfig.addBiome(Biome.valueOf(biomeString));
+                        oreConfig.addBiome(BiomeMapper.mapFromString(biomeString));
                     } catch (IllegalArgumentException e) {
                         oreConfig.invalidBiome.add(biomeString);
                         service.getLogger().warning("OreConfig: " + oreConfig.getName() + " >> The biome " + biomeString + " is not present in this server version ignoring it!");
@@ -406,7 +407,7 @@ public class OreConfigYamlImpl implements OreConfig, ConfigurationSerializable {
         if (!biomesSet.isEmpty()) {
             final List<String> data = new ArrayList<>();
 
-            biomesSet.forEach(biome -> data.add(biome.toString()));
+            biomesSet.forEach(biome -> data.add(BiomeMapper.mapToString(biome)));
             data.addAll(invalidBiome);
 
             serialize.put(BIOMES_KEY, data);

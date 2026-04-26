@@ -1,4 +1,4 @@
-version: 3
+version: 4
 name: '%%translation:[ore-config.factory.gui.biome.name]%'
 rows: 5
 gap: 1
@@ -209,3 +209,109 @@ biomes:
   FROZEN_PEAKS: "ICE"
   JAGGED_PEAKS: "SNOW"
   STONY_PEAKS: "STONE"
+
+  minecraft:ocean: WATER_BUCKET
+  minecraft:plains: POPPY
+  minecraft:desert: DEAD_BUSH
+  minecraft:mountains: STONE
+  minecraft:forest: OAK_SAPLING
+  minecraft:taiga: SPRUCE_SAPLING
+  minecraft:swamp: BROWN_MUSHROOM
+  minecraft:river: WATER_BUCKET
+  minecraft:nether: NETHERRACK
+  minecraft:the_end: END_STONE
+  minecraft:frozen_ocean: ICE
+  minecraft:frozen_river: ICE
+  minecraft:snowy_tundra: SNOW
+  minecraft:snowy_mountains: SNOW
+  minecraft:mushroom_fields: RED_MUSHROOM_BLOCK
+  minecraft:mushroom_field_shore: RED_MUSHROOM_BLOCK
+  minecraft:beach: SAND
+  minecraft:desert_hills: SANDSTONE
+  minecraft:wooded_hills: OAK_SAPLING
+  minecraft:taiga_hills: SPRUCE_SAPLING
+  minecraft:mountain_edge: STONE
+  minecraft:jungle: JUNGLE_SAPLING
+  minecraft:jungle_hills: JUNGLE_SAPLING
+  minecraft:jungle_edge: JUNGLE_SAPLING
+  minecraft:deep_ocean: WATER_BUCKET
+  minecraft:stone_shore: STONE
+  minecraft:snowy_beach: SNOW
+  minecraft:birch_forest: BIRCH_SAPLING
+  minecraft:birch_forest_hills: BIRCH_SAPLING
+  minecraft:dark_forest: DARK_OAK_SAPLING
+  minecraft:snowy_taiga: SNOW
+  minecraft:snowy_taiga_hills: SNOW
+  minecraft:giant_tree_taiga: SPRUCE_SAPLING
+  minecraft:giant_tree_taiga_hills: SPRUCE_SAPLING
+  minecraft:wooded_mountains: STONE
+  minecraft:savanna: ACACIA_SAPLING
+  minecraft:savanna_plateau: ACACIA_SAPLING
+  minecraft:badlands: RED_SAND
+  minecraft:wooded_badlands_plateau: RED_SAND
+  minecraft:badlands_plateau: RED_SAND
+  minecraft:small_end_islands: END_STONE
+  minecraft:end_midlands: END_STONE
+  minecraft:end_highlands: END_STONE
+  minecraft:end_barrens: END_STONE
+  minecraft:warm_ocean: WATER_BUCKET
+  minecraft:lukewarm_ocean: WATER_BUCKET
+  minecraft:cold_ocean: WATER_BUCKET
+  minecraft:deep_warm_ocean: WATER_BUCKET
+  minecraft:deep_lukewarm_ocean: WATER_BUCKET
+  minecraft:deep_cold_ocean: WATER_BUCKET
+  minecraft:deep_frozen_ocean: ICE
+  minecraft:the_void: BEDROCK
+  minecraft:sunflower_plains: SUNFLOWER
+  minecraft:desert_lakes: DEAD_BUSH
+  minecraft:gravelly_mountains: GRAVEL
+  minecraft:flower_forest: RED_TULIP
+  minecraft:taiga_mountains: SPRUCE_SAPLING
+  minecraft:swamp_hills: BROWN_MUSHROOM
+  minecraft:ice_spikes: PACKED_ICE
+  minecraft:modified_jungle: JUNGLE_SAPLING
+  minecraft:modified_jungle_edge: JUNGLE_SAPLING
+  minecraft:tall_birch_forest: BIRCH_SAPLING
+  minecraft:tall_birch_hills: BIRCH_SAPLING
+  minecraft:dark_forest_hills: DARK_OAK_SAPLING
+  minecraft:snowy_taiga_mountains: SNOW
+  minecraft:giant_spruce_taiga: SPRUCE_SAPLING
+  minecraft:giant_spruce_taiga_hills: SPRUCE_SAPLING
+  minecraft:modified_gravelly_mountains: GRAVEL
+  minecraft:shattered_savanna: ACACIA_SAPLING
+  minecraft:shattered_savanna_plateau: ACACIA_SAPLING
+  minecraft:eroded_badlands: RED_SAND
+  minecraft:modified_wooded_badlands_plateau: RED_SAND
+  minecraft:modified_badlands_plateau: RED_SAND
+  minecraft:bamboo_jungle: BAMBOO
+  minecraft:bamboo_jungle_hills: BAMBOO
+  minecraft:nether_wastes: NETHERRACK
+  minecraft:soul_sand_valley: SOUL_SAND
+  minecraft:crimson_forest: CRIMSON_FUNGUS
+  minecraft:warped_forest: WARPED_FUNGUS
+  minecraft:basalt_deltas: BASALT
+  minecraft:pointed_dripstone: POINTED_DRIPSTONE
+  minecraft:dripstone_caves: POINTED_DRIPSTONE
+  minecraft:lush_caves: GLOW_BERRIES
+  minecraft:custom: COMMAND_BLOCK
+  minecraft:windswept_hills: STONE
+  minecraft:snowy_plains: "SNOW"
+  minecraft:sparse_jungle: "JUNGLE_SAPLING"
+  minecraft:stony_shore: "STONE"
+  minecraft:old_growth_pine_taiga: "SPRUCE_SAPLING"
+  minecraft:windswept_forest: "OAK_SAPLING"
+  minecraft:wooded_badlands: "RED_SAND"
+  minecraft:windswept_gravelly_hills: "GRAVEL"
+  minecraft:old_growth_birch_forest: "BIRCH_SAPLING"
+  minecraft:old_growth_spruce_taiga: "SPRUCE_SAPLING"
+  minecraft:windswept_savanna: "ACACIA_SAPLING"
+  minecraft:meadow: "SPRUCE_SAPLING"
+  minecraft:grove: "STONE"
+  minecraft:snowy_slopes: "SNOW"
+  minecraft:frozen_peaks: "ICE"
+  minecraft:jagged_peaks: "SNOW"
+  minecraft:stony_peaks: "STONE"
+  minecraft:deep_dark: "SCULK"
+  minecraft:mangrove_swamp: "MANGROVE_LOG"
+  minecraft:pale_garden: "PALE_OAK_LOG"
+  minecraft:cherry_grove: "CHERRY_LOG"

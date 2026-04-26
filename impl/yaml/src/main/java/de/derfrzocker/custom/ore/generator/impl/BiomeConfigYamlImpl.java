@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.impl;
 
 import de.derfrzocker.custom.ore.generator.api.BiomeConfig;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import org.bukkit.Material;
 import org.bukkit.block.Biome;
 import org.bukkit.configuration.serialization.ConfigurationSerializable;
@@ -25,7 +26,7 @@ public class BiomeConfigYamlImpl implements BiomeConfig, ConfigurationSerializab
     }
 
     public static BiomeConfigYamlImpl deserialize(Map<String, Object> map) {
-        BiomeConfigYamlImpl biomeConfig = new BiomeConfigYamlImpl(Biome.valueOf((String) map.get(BIOME_KEY)));
+        BiomeConfigYamlImpl biomeConfig = new BiomeConfigYamlImpl(BiomeMapper.mapFromString((String) map.get(BIOME_KEY)));
 
         map.entrySet().stream().filter(BiomeConfigYamlImpl::isOreConfig).map(entry -> (OreConfig) entry.getValue()).forEach(biomeConfig::addOreConfig);
 

@@ -4,6 +4,7 @@ import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreSetting;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import org.apache.commons.lang.Validate;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Material;
@@ -70,9 +71,9 @@ public class CustomOreGeneratorMetrics {
 
             for (final OreConfig oreConfig : serviceSupplier.get().getOreConfigs()) {
                 for (final Biome biome : oreConfig.getBiomes()) {
-                    final int count = result.getOrDefault(biome.toString(), 0);
+                    final int count = result.getOrDefault(BiomeMapper.mapToString(biome), 0);
 
-                    result.put(biome.toString(), count + 1);
+                    result.put(BiomeMapper.mapToString(biome), count + 1);
                 }
             }
 

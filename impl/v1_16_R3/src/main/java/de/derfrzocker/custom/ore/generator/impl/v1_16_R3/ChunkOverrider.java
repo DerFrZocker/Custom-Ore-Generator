@@ -7,6 +7,7 @@ import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
 import org.bukkit.block.Biome;
 import org.bukkit.craftbukkit.v1_16_R3.util.CraftMagicNumbers;
+import org.bukkit.craftbukkit.v1_16_R3.util.CraftNamespacedKey;
 import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
@@ -193,7 +194,7 @@ public class ChunkOverrider extends ChunkGenerator {
             for (int z2 = z; z2 < z + 16; z2++) {
                 final BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
                 try {
-                    set.add(Biome.valueOf(registry.getKey(base).getKey().toUpperCase()));
+                    set.add(org.bukkit.Registry.BIOME.get(CraftNamespacedKey.fromMinecraft(registry.getKey(base))));
                 } catch (Exception ignored) {
                     System.out.println("Biome not Found"); //TODO test and remove
                 }
@@ -220,7 +221,7 @@ public class ChunkOverrider extends ChunkGenerator {
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> access.getHighestBlockYAt(HeightMap.Type.MOTION_BLOCKING, blockPosition.b(x, 0, z)).getY(), oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
-        final BiomeBase biomeBase = registry.get(new MinecraftKey(biome.name().toLowerCase()));
+        final BiomeBase biomeBase = registry.get(CraftNamespacedKey.toMinecraft(biome.getKey()));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
         final Set<org.bukkit.Material> replaceMaterials = oreConfig.getReplaceMaterials();
         Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();

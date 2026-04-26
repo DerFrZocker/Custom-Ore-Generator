@@ -1,6 +1,7 @@
 package de.derfrzocker.custom.ore.generator.impl.v1_13_R2;
 
 import de.derfrzocker.custom.ore.generator.api.*;
+import de.derfrzocker.custom.ore.generator.util.BiomeMapper;
 import net.minecraft.server.v1_13_R2.*;
 import org.apache.commons.lang.Validate;
 import org.bukkit.Location;
@@ -148,7 +149,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
             for (int z2 = z; z2 < z + 16; z2++) {
                 final BiomeBase base = access.getBiome(new BlockPosition(x2, 60, z2));
                 try {
-                    set.add(Biome.valueOf(IRegistry.BIOME.getKey(base).getKey().toUpperCase()));
+                    set.add(BiomeMapper.mapFromString(IRegistry.BIOME.getKey(base).getKey().toUpperCase()));
                 } catch (Exception ignored) {
                 }
             }
@@ -173,7 +174,7 @@ public class ChunkOverrieder<C extends GeneratorSettings> implements ChunkGenera
 
         final Set<Location> locations = blockSelector.selectBlocks((x, z) -> access.getHighestBlockYAt(HeightMap.Type.MOTION_BLOCKING, blockPosition.a(x, 0, z)).getY(), oreConfig, random);
         final Set<Location> biomeLocations = new HashSet<>();
-        final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(biome.name().toLowerCase()));
+        final BiomeBase biomeBase = IRegistry.BIOME.get(new MinecraftKey(BiomeMapper.mapToString(biome)));
         final BlockPosition chunkPosition = new BlockPosition(access.a() << 4, 0, access.b() << 4);
         Set<org.bukkit.Material> selectMaterials = oreConfig.getSelectMaterials();
         if (selectMaterials.isEmpty())
