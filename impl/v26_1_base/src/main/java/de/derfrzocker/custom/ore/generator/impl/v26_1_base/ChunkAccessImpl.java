@@ -1,6 +1,7 @@
 package de.derfrzocker.custom.ore.generator.impl.v26_1_base;
 
 import de.derfrzocker.custom.ore.generator.api.ChunkAccess;
+import java.lang.reflect.Method;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -15,6 +16,21 @@ import org.bukkit.craftbukkit.util.CraftMagicNumbers;
 import org.jetbrains.annotations.NotNull;
 
 public class ChunkAccessImpl extends BlockStateListPopulator implements ChunkAccess {
+
+    private static final Method PLACE_BLOCKS;
+    private static final boolean PAPER;
+
+    static {
+        Method tmpMethod;
+        try {
+            tmpMethod = BlockStateListPopulator.class.getDeclaredMethod("placeBlocks");
+        } catch (NoSuchMethodException e) {
+            tmpMethod = null;
+        }
+
+        PLACE_BLOCKS = tmpMethod;
+        PAPER = PLACE_BLOCKS != null;
+    }
 
     private final LevelAccessor world;
     private final Set<BlockPos> blockPosSet = new HashSet<>();
@@ -63,5 +79,20 @@ public class ChunkAccessImpl extends BlockStateListPopulator implements ChunkAcc
     public net.minecraft.world.level.chunk.ChunkAccess getChunk(int i, int i1, ChunkStatus cs, boolean bln) {
         net.minecraft.world.level.chunk.ChunkAccess chunkAccess = getWorld().getChunk(i, i1, cs, bln);
         return new CustomChunkAccess(chunkAccess, blockSet, getWorld().getServer().registryAccess());
+    }
+
+    public void submit() {
+        // refreshTiles() and updateList() methods were removed in Paper 1.21.11
+        // Tile entities are now handled automatically by the new BlockStateListPopulator API
+        if (PAPER) {
+            try {
+                PLACE_BLOCKS.invoke(this);
+            } catch (Exception e) {
+                throw new RuntimeException("Unexpected error while submitting chunk", e);
+            }
+        } else {
+            refreshTiles();
+            updateList();
+        }
     }
 }
