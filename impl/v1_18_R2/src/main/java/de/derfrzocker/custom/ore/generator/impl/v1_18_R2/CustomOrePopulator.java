@@ -46,7 +46,7 @@ public class CustomOrePopulator extends BlockPopulator {
 
     @Override
     public void populate(@NotNull WorldInfo worldInfo, @NotNull Random random, int chunkX, int chunkZ, @NotNull LimitedRegion limitedRegion) {
-        final Set<Biome> biomes = getBiomes(chunkX, chunkZ, limitedRegion);
+        final Set<Biome> biomes = getBiomes(worldInfo, chunkX, chunkZ, limitedRegion);
 
         final CustomOreGeneratorService service = serviceSupplier.get();
 
@@ -68,20 +68,25 @@ public class CustomOrePopulator extends BlockPopulator {
         });
     }
 
-    private Set<Biome> getBiomes(int chunkX, int chunkZ, LimitedRegion limitedRegion) {
+    private Set<Biome> getBiomes(WorldInfo worldInfo, int chunkX, int chunkZ, LimitedRegion limitedRegion) {
         final Set<Biome> set = new HashSet<>();
 
         final int x = chunkX << 4;
         final int z = chunkZ << 4;
 
-        for (int x2 = x; x2 < x + 16; x2++)
-            for (int z2 = z; z2 < z + 16; z2++) {
-                try {
-                    set.add(limitedRegion.getBiome(x2, 60, z2));
-                } catch (Exception ignored) {
-                    System.out.println("Biome not Found"); //TODO test and remove
+        for (int x2 = x; x2 < x + 16; x2 = x2 + 4) {
+            for (int z2 = z; z2 < z + 16; z2 = z2 + 4) {
+                for (int y = worldInfo.getMinHeight(); y < worldInfo.getMaxHeight(); y = y + 4) {
+                    try {
+                        if (limitedRegion.isInRegion(x2, y, z2)) {
+                            set.add(limitedRegion.getBiome(x2, y, z2));
+                        }
+                    } catch (Exception ignored) {
+                        System.out.println("Biome not Found"); //TODO test and remove
+                    }
                 }
             }
+        }
 
         return set;
     }
