@@ -1,5 +1,6 @@
 package de.derfrzocker.custom.ore.generator.plugin.oraxen.v1;
 
+import de.derfrzocker.custom.ore.generator.api.DebugLogger;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
@@ -42,6 +43,7 @@ public class OraxenApplier implements CustomDataApplier {
 
     @Override
     public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {
+        DebugLogger.log("Using Oraxen V1 Applier");
         final Location location = (Location) position;
         final LimitedRegion limitedRegion = (LimitedRegion) blockAccess;
 
@@ -49,10 +51,13 @@ public class OraxenApplier implements CustomDataApplier {
 
         Optional<Object> objectOptional = oreConfig.getCustomData(customData);
 
-        if (!objectOptional.isPresent())
+        if (!objectOptional.isPresent()) {
+            DebugLogger.log("No Oraxen custom data found");
             return; //TODO maybe throw exception?
+        }
 
         final String name = (String) objectOptional.get();
+        DebugLogger.log("Found oraxen custom data: " + name);
 
         if (blockMechanicFactory == null) {
             blockMechanicFactory = (BlockMechanicFactory) MechanicsManager.getMechanicFactory("block");
@@ -67,28 +72,44 @@ public class OraxenApplier implements CustomDataApplier {
         if (blockMechanicFactory != null) {
             BlockMechanic blockMechanic = (BlockMechanic) blockMechanicFactory.getMechanic(name);
             if (blockMechanic != null) {
+                DebugLogger.log("Found block mechanic " + blockMechanic + " with custom variation " + blockMechanic.getCustomVariation());
                 int code = blockMechanic.getCustomVariation();
 
                 for (int i = 0; i < BLOCK_FACES.length; i++) {
                     ((MultipleFacing) blockData).setFace(BLOCK_FACES[i], (code & 0x1 << i) != 0);
                 }
+            } else {
+                DebugLogger.log("No block mechanic found for custom data.");
             }
+        } else {
+            DebugLogger.log("No block mechanic factory found.");
         }
 
         if (noteBlockMechanicFactory != null) {
             NoteBlockMechanic noteBlockMechanic = noteBlockMechanicFactory.getMechanic(name);
             if (noteBlockMechanic != null) {
+                DebugLogger.log("Found note mechanic " + noteBlockMechanic + " with custom variation " + noteBlockMechanic.getCustomVariation());
                 blockData = NoteBlockMechanicFactory.createNoteBlockData(noteBlockMechanic.getCustomVariation());
+            } else {
+                DebugLogger.log("No note block mechanic found for custom data.");
             }
+        } else {
+            DebugLogger.log("No note block mechanic factory found.");
         }
 
         if (stringBlockMechanicFactory != null) {
             StringBlockMechanic stringBlockMechanic = stringBlockMechanicFactory.getMechanic(name);
             if (stringBlockMechanic != null) {
+                DebugLogger.log("Found string mechanic " + stringBlockMechanic + " with custom variation " + stringBlockMechanic.getCustomVariation());
                 blockData = StringBlockMechanicFactory.createTripwireData(stringBlockMechanic.getCustomVariation());
+            } else {
+                DebugLogger.log("No string block mechanic found for custom data.");
             }
+        } else {
+            DebugLogger.log("No string block mechanic factory found.");
         }
 
+        DebugLogger.log("Setting block data to " + blockData);
         limitedRegion.setBlockData(location, blockData);
     }
 

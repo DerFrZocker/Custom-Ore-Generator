@@ -1,5 +1,6 @@
 package de.derfrzocker.custom.ore.generator.plugin.oraxen.v2;
 
+import de.derfrzocker.custom.ore.generator.api.DebugLogger;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomData;
 import de.derfrzocker.custom.ore.generator.api.customdata.CustomDataApplier;
@@ -37,6 +38,7 @@ public class OraxenApplier implements CustomDataApplier {
 
     @Override
     public void apply(@NotNull final OreConfig oreConfig, @NotNull final Object position, @NotNull final Object blockAccess) {
+        DebugLogger.log("Using Oraxen V2 Applier");
         final Location location = (Location) position;
         final LimitedRegion limitedRegion = (LimitedRegion) blockAccess;
 

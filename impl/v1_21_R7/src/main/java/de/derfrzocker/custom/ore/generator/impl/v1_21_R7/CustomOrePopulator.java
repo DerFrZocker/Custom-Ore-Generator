@@ -2,6 +2,7 @@ package de.derfrzocker.custom.ore.generator.impl.v1_21_R7;
 
 import de.derfrzocker.custom.ore.generator.api.BlockSelector;
 import de.derfrzocker.custom.ore.generator.api.CustomOreGeneratorService;
+import de.derfrzocker.custom.ore.generator.api.DebugLogger;
 import de.derfrzocker.custom.ore.generator.api.OreConfig;
 import de.derfrzocker.custom.ore.generator.api.OreGenerator;
 import de.derfrzocker.custom.ore.generator.api.WorldConfig;
@@ -120,9 +121,20 @@ public class CustomOrePopulator extends BlockPopulator {
         ChunkAccessImpl chunkAccess = new ChunkAccessImpl(((CraftLimitedRegion) limitedRegion).getHandle());
         oreGenerator.generate(oreConfig, chunkAccess, chunkX, chunkZ, random, biome, biomeLocations);
         chunkAccess.submit();
+        DebugLogger.log("Applying " + oreConfig.getCustomData().size() + " custom data");
         for (BlockPos pos : chunkAccess.getBlocks()) {
-            oreConfig.getCustomData().forEach((customData, object) -> customData.getCustomDataApplier().apply(oreConfig, new Location(null, pos.getX(), pos.getY(), pos.getZ()), limitedRegion));
+            DebugLogger.log("Processing block at x: " + pos.getX() + ", y: " + pos.getY() + ", z: " + pos.getZ());
+            oreConfig
+                    .getCustomData()
+                    .forEach((customData, object) -> {
+                        DebugLogger.log("Applying custom data: " + customData.getName() + " with data " + object);
+                        customData.getCustomDataApplier().apply(oreConfig,
+                                                                new Location(null, pos.getX(), pos.getY(), pos.getZ()), limitedRegion);
+                        DebugLogger.log("Finish applying custom data: " + customData.getName() + " with data " + object);
+                    });
+            DebugLogger.log("Finish processing block at x: " + pos.getX() + ", y: " + pos.getY() + ", z: " + pos.getZ());
         }
+        DebugLogger.log("Finish applying " + oreConfig.getCustomData().size() + " custom data");
     }
 
     private boolean checkBlockAndBiome(final LimitedRegion limitedRegion, final Location chunkPosition, final Location location, final Biome biome, final Set<Material> materials) {
